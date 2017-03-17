@@ -1,17 +1,13 @@
-# VSCode Language Server - Client Module
+# README
+## This is the README for your extension "vscode" 
+You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
 
-[![NPM Version](https://img.shields.io/npm/v/vscode-languageclient.svg)](https://npmjs.org/package/vscode-languageclient)
-[![NPM Downloads](https://img.shields.io/npm/dm/vscode-languageclient.svg)](https://npmjs.org/package/vscode-languageclient)
-[![Build Status](https://travis-ci.org/Microsoft/vscode-languageserver-node.svg?branch=master)](https://travis-ci.org/Microsoft/vscode-languageserver-node)
+* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
+* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
+* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
 
-This npm module allows VSCode extensions to easily integrate language servers adhering to the [language server protocol](https://github.com/Microsoft/vscode-languageserver-protocol)
+### For more information
+* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
+* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
-See [here](https://code.visualstudio.com/docs/extensions/example-language-server) for a detailed documentation on how to 
-implement language servers for [VSCode](https://code.visualstudio.com/).
-
-## History
-
-For the history please see the [main repository](https://github.com/Microsoft/vscode-languageserver-node/blob/master/README.md)
-
-## License
-[MIT](https://github.com/Microsoft/vscode-languageserver-node/blob/master/License.txt)
+** Enjoy!**
