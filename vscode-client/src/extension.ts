@@ -6,7 +6,7 @@
 
 import * as path from 'path';
 
-import { commands, window, workspace, Disposable, ExtensionContext, Location, Position, TextEditorRevealType, Uri, Range, Selection } from 'vscode';
+import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind, RevealOutputChannelOn, InitializationFailedHandler, ErrorHandler, ErrorAction, CloseAction } from 'vscode-languageclient';
 import { Message } from 'vscode-jsonrpc';
 
@@ -35,25 +35,25 @@ class Foo implements ErrorHandler {
 		}
 }
 
-export function activate(context: ExtensionContext) {
+export function activate(context: vscode.ExtensionContext) {
 	console.log('Running');
 
 	// commands.getCommands(false).then((cmds: string[]) => {
 	// 	console.log(cmds.join(' '));
 	// });
 
-	commands.registerCommand('superindex.goto', (uri, position, locations) => {
-		function parsePosition(p): Position {
-			return new Position(p.line, p.character);
+	vscode.commands.registerCommand('superindex.goto', (uri, position, locations) => {
+		function parsePosition(p): vscode.Position {
+			return new vscode.Position(p.line, p.character);
 		}
-		function parseRange(r): Range {
-			return new Range(parsePosition(r.start), parsePosition(r.end));
+		function parseRange(r): vscode.Range {
+			return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
 		}
-		function parseLocation(l): Location {
-			return new Location(parseUri(l.uri), parseRange(l.range));
+		function parseLocation(l): vscode.Location {
+			return new vscode.Location(parseUri(l.uri), parseRange(l.range));
 		}
-		function parseUri(u): Uri {
-			return Uri.parse(u);
+		function parseUri(u): vscode.Uri {
+			return vscode.Uri.parse(u);
 		}
 
 		let parsedPosition = parsePosition(position);
@@ -65,17 +65,17 @@ export function activate(context: ExtensionContext) {
 
 		// const {scheme, path, query, fragment} = parsedUri;
 		// console.log(`openTextDocument parsedUri=${parsedUri} scheme=${scheme} path=${path} query=${query} fragment=${fragment}`);
-		workspace.openTextDocument(parsedUri).then(d => {
+		vscode.workspace.openTextDocument(parsedUri).then(d => {
 			console.log('got ' + d);
 
 			if (!d) {
-				window.activeTextEditor.revealRange(new Range(parsedPosition, parsedPosition), TextEditorRevealType.InCenter);
-				window.activeTextEditor.selection = new Selection(parsedPosition, parsedPosition);
+				vscode.window.activeTextEditor.revealRange(new vscode.Range(parsedPosition, parsedPosition), vscode.TextEditorRevealType.InCenter);
+				vscode.window.activeTextEditor.selection = new vscode.Selection(parsedPosition, parsedPosition);
 			}
 			else {
-				window.showTextDocument(d).then(e => {
-					e.revealRange(new Range(parsedPosition, parsedPosition), TextEditorRevealType.InCenter);
-					e.selection = new Selection(parsedPosition, parsedPosition);
+				vscode.window.showTextDocument(d).then(e => {
+					e.revealRange(new vscode.Range(parsedPosition, parsedPosition), vscode.TextEditorRevealType.InCenter);
+					e.selection = new vscode.Selection(parsedPosition, parsedPosition);
 				})
 			}
 		})
@@ -87,18 +87,18 @@ export function activate(context: ExtensionContext) {
 
 	// Proxy editor.action.showReferences so we can deserialize arguments into
 	// the correct vscode types.
-	commands.registerCommand('superindex.showReferences', (uri, position, locations) => {
-		function parsePosition(p): Position {
-			return new Position(p.line, p.character);
+	vscode.commands.registerCommand('superindex.showReferences', (uri, position, locations) => {
+		function parsePosition(p): vscode.Position {
+			return new vscode.Position(p.line, p.character);
 		}
-		function parseRange(r): Range {
-			return new Range(parsePosition(r.start), parsePosition(r.end));
+		function parseRange(r): vscode.Range {
+			return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
 		}
-		function parseLocation(l): Location {
-			return new Location(parseUri(l.uri), parseRange(l.range));
+		function parseLocation(l): vscode.Location {
+			return new vscode.Location(parseUri(l.uri), parseRange(l.range));
 		}
-		function parseUri(u): Uri {
-			return Uri.parse(u);
+		function parseUri(u): vscode.Uri {
+			return vscode.Uri.parse(u);
 		}
 
 		let parsedUri = parseUri(uri);
@@ -107,11 +107,13 @@ export function activate(context: ExtensionContext) {
 		for (let location of locations)
 			parsedLocations.push(parseLocation(location));
 
-		commands.executeCommand(
+		vscode.commands.executeCommand(
 			'editor.action.showReferences',
 			parsedUri, parsedPosition, parsedLocations);
 	});
 
+	let config = vscode.workspace.getConfiguration('cquery');
+	console.log('Config:', config);
 
 
 	let serverOptions: ServerOptions = {
@@ -140,6 +142,7 @@ export function activate(context: ExtensionContext) {
      * to 'utf8' if ommitted.
      */
     stdioEncoding: 'ascii',
+		initializationOptions: config,
     // initializationOptions?: any | (() => any);
     initializationFailedHandler: (e) => {
 			console.log(e);
