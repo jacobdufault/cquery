@@ -114,9 +114,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let config = vscode.workspace.getConfiguration('cquery');
   let clientConfig = {
-		cacheDirectory: config.get('cacheDirectory', ''),
-		whitelist: config.get('whitelist', []),
-		blacklist: config.get('blacklist', []),
+		cacheDirectory: config.get('cacheDirectory'),
+		whitelist: config.get('whitelist'),
+		blacklist: config.get('blacklist'),
+		indexerCount: config.get('indexerCount')
 	}
 
 	if (!clientConfig.cacheDirectory) {
@@ -131,6 +132,8 @@ export function activate(context: vscode.ExtensionContext) {
 										console.log(reason);
 									});
 	}
+
+	console.log('clientConfig', clientConfig);
 
 	let serverOptions: ServerOptions = {
 		command: 'indexer.exe', args: ['--language-server'], options: {
