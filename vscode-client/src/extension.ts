@@ -113,12 +113,28 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	let config = vscode.workspace.getConfiguration('cquery');
-	console.log('Config:', config);
+  let clientConfig = {
+		cacheDirectory: config.get('cacheDirectory', ''),
+		whitelist: config.get('whitelist', []),
+		blacklist: config.get('blacklist', []),
+	}
 
+	if (!clientConfig.cacheDirectory) {
+		console.log('Updating cache directory')
+		clientConfig.cacheDirectory = context.storagePath.replace(/\\/g, '/') + "/cquerycache/"
+		config.update('cacheDirectory',
+									clientConfig.cacheDirectory,
+									false /*global*/).then(() => {
+										console.log('Updated config cache directory');
+									}, (reason) => {
+										console.log('Cache directory update failed');
+										console.log(reason);
+									});
+	}
 
 	let serverOptions: ServerOptions = {
 		command: 'indexer.exe', args: ['--language-server'], options: {
-			cwd: 'C:\\Users\\jacob\\Desktop\\superindex\\indexer\\x64\\Debug',
+			cwd: 'C:\\Users\\jacob\\Desktop\\superindex\\indexer\\x64\\Release',
 			// stdio: 'ascii'
     	//stdio?: string | string[];
 			//env?: any;
