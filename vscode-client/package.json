@@ -1,15 +1,16 @@
 {
-  "name": "language-client-example",
-  "description": "VSCode part of a language server",
-  "author": "Microsoft Corporation",
+  "name": "cquery",
+  "description": "Low-latency language server for C++. Highly scalable and designed for huge code bases.",
+  "author": "Jacob Dufault",
   "license": "MIT",
   "version": "0.0.1",
-  "publisher": "vscode",
+  "publisher": "jacobdufault",
+  "preview": true,
   "engines": {
     "vscode": "^1.8.0"
   },
   "categories": [
-    "Other"
+    "Languages"
   ],
   "activationEvents": [
     "onLanguage:cpp"
@@ -18,7 +19,7 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Example configuration",
+      "title": "cquery",
       "properties": {
         "cquery.cacheDirectory": {
           "type": "string",
@@ -44,6 +45,11 @@
           "type": "number",
           "default": 1000,
           "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays."
+        },
+        "cquery.extraClangArguments": {
+          "type": "array",
+          "default": [],
+          "description": "An extra set of command line arguments to give clang when indexing. Each list entry is a separate argument."
         }
       }
     }
