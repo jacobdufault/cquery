@@ -39,6 +39,11 @@
           "type": "number",
           "default": 7,
           "description": "The number of indexing/worker jobs that run concurrently. This should be set to the number of CPU cores you have -1. cquery scales quite well, so this can go to a very high value.\n\nFor example, if you have a 4 core hyper-threaded processor, this should be set to 7. If you have dual 13 core hyper-threaded processors, this should be set to 2*13*2-1=51."
+        },
+        "cquery.maxWorkspaceSearchResults": {
+          "type": "number",
+          "default": 1000,
+          "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays."
         }
       }
     }

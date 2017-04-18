@@ -117,7 +117,8 @@ export function activate(context: vscode.ExtensionContext) {
 		cacheDirectory: config.get('cacheDirectory'),
 		whitelist: config.get('whitelist'),
 		blacklist: config.get('blacklist'),
-		indexerCount: config.get('indexerCount')
+		indexerCount: config.get('indexerCount'),
+		maxWorkspaceSearchResults: config.get('maxWorkspaceSearchResults')
 	}
 
 	if (!clientConfig.cacheDirectory) {
