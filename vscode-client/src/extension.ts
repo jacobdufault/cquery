@@ -151,13 +151,12 @@ export function activate(context: vscode.ExtensionContext) {
 	let clientOptions: LanguageClientOptions = {
 		documentSelector: ['cpp'],
 		// synchronize: {
-		// 	configurationSection: 'superindex',
+		// 	configurationSection: 'cquery',
 		// 	fileEvents: workspace.createFileSystemWatcher('**/.cc')
 		// },
-
-		diagnosticCollectionName: 'superindexdiag',
-    outputChannelName: 'superindexoutput',
-    revealOutputChannelOn: RevealOutputChannelOn.Info,
+		diagnosticCollectionName: 'cquery',
+    outputChannelName: 'cquery',
+    revealOutputChannelOn: RevealOutputChannelOn.Error,
     /**
      * The encoding use to read stdout and stderr. Defaults
      * to 'utf8' if ommitted.
@@ -177,7 +176,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	// Create the language client and start the client.
-	let languageClient = new LanguageClient('superindex', 'Super Index', serverOptions, clientOptions);
+	let languageClient = new LanguageClient('cquery', 'cquery', serverOptions, clientOptions);
 	languageClient.onReady().then(() => {
 		console.log('!! onReady');
 		// languageClient.onNotification('window/showMessage', (m) => {
