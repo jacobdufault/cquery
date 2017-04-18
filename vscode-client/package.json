@@ -23,7 +23,7 @@
         "cquery.cacheDirectory": {
           "type": "string",
           "default": "",
-          "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\nExample value: \"/work/cquery-cache/chrome/\""
+          "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\nCache directories are project-wide, so this should be configured in the workspace settings so multiple indexes do not clash.\n\nExample value: \"/work/cquery-cache/chrome/\""
         },
         "cquery.whitelist": {
           "type": "array",
@@ -34,6 +34,11 @@
           "type": "array",
           "default": [],
           "description": "A translation unit (cc/cpp file) is not indexed if any of the EMCAScript regexes in this list matches translation unit's the absolute path.\n\nYou probably want to begin the regex using `.*` because the passed paths are absolute."
+        },
+        "cquery.indexerCount": {
+          "type": "number",
+          "default": 7,
+          "description": "The number of indexing/worker jobs that run concurrently. This should be set to the number of CPU cores you have -1. cquery scales quite well, so this can go to a very high value.\n\nFor example, if you have a 4 core hyper-threaded processor, this should be set to 7. If you have dual 13 core hyper-threaded processors, this should be set to 2*13*2-1=51."
         }
       }
     }
