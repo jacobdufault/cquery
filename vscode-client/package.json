@@ -50,6 +50,21 @@
           "type": "array",
           "default": [],
           "description": "An extra set of command line arguments to give clang when indexing. Each list entry is a separate argument."
+        },
+        "cquery.enableIndexing": {
+          "type": "boolean",
+          "default": true,
+          "description": "If set to false, updating the index will be disabled."
+        },
+        "cquery.enableCacheWrite": {
+          "type": "boolean",
+          "default": true,
+          "description": "If set to false, writing indexed files out to cache will be disabled. Only useful if |enableIndexing| is true."
+        },
+        "cquery.enableCacheRead": {
+          "type": "boolean",
+          "default": true,
+          "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk."
         }
       }
     }
