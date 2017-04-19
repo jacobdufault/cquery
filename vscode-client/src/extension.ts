@@ -119,7 +119,10 @@ export function activate(context: vscode.ExtensionContext) {
     blacklist: config.get('blacklist'),
     indexerCount: config.get('indexerCount'),
     maxWorkspaceSearchResults: config.get('maxWorkspaceSearchResults'),
-    extraClangArguments: config.get('extraClangArguments')
+    extraClangArguments: config.get('extraClangArguments'),
+    enableIndexing: config.get('enableIndexing'),
+    enableCacheWrite: config.get('enableCacheWrite'),
+    enableCacheRead: config.get('enableCacheRead')
   }
 
   if (!clientConfig.cacheDirectory) {
@@ -137,7 +140,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let serverOptions: ServerOptions = {
       command: 'indexer.exe', args: ['--language-server'], options: {
-      cwd: 'C:/Users/jacob/Desktop/superindex/indexer/x64/Release',
+      cwd: 'C:/Users/jacob/Desktop/superindex/indexer/x64/Debug',
       // stdio: 'ascii'
       //stdio?: string | string[];
       // env: {
