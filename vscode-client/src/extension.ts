@@ -136,8 +136,8 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   let serverOptions: ServerOptions = {
-      command: './app', args: ['--language-server'], options: {
-      cwd: '/usr/local/google/home/jdufault/super-clang-index/build',
+      command: 'indexer.exe', args: ['--language-server'], options: {
+      cwd: 'C:/Users/jacob/Desktop/superindex/indexer/x64/Release',
       // stdio: 'ascii'
       //stdio?: string | string[];
       // env: {
