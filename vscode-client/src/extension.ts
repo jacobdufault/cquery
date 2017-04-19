@@ -166,7 +166,7 @@ export function activate(context: vscode.ExtensionContext) {
      * to 'utf8' if ommitted.
      */
     stdioEncoding: 'ascii',
-    initializationOptions: config,
+    initializationOptions: clientConfig,
     // initializationOptions?: any | (() => any);
     initializationFailedHandler: (e) => {
       console.log(e);
