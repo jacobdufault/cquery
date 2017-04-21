@@ -44,35 +44,35 @@
           "default": [],
           "description": "A translation unit (cc/cpp file) is not indexed if any of the EMCAScript regexes in this list matches translation unit's the absolute path.\n\nYou probably want to begin the regex using `.*` because the passed paths are absolute."
         },
-        "cquery.indexerCount": {
-          "type": "number",
-          "default": 7,
-          "description": "The number of indexing/worker jobs that run concurrently. This should be set to the number of CPU cores you have -1. cquery scales quite well, so this can go to a very high value.\n\nFor example, if you have a 4 core hyper-threaded processor, this should be set to 7. If you have dual 13 core hyper-threaded processors, this should be set to 2*13*2-1=51."
-        },
-        "cquery.maxWorkspaceSearchResults": {
-          "type": "number",
-          "default": 1000,
-          "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays."
-        },
         "cquery.extraClangArguments": {
           "type": "array",
           "default": [],
           "description": "An extra set of command line arguments to give clang when indexing. Each list entry is a separate argument."
         },
-        "cquery.enableIndexing": {
-          "type": "boolean",
-          "default": true,
-          "description": "If set to false, updating the index will be disabled."
+        "cquery.misc.maxWorkspaceSearchResults": {
+          "type": "number",
+          "default": 1000,
+          "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays."
         },
-        "cquery.enableCacheWrite": {
-          "type": "boolean",
-          "default": true,
-          "description": "If set to false, writing indexed files out to cache will be disabled. Only useful if |enableIndexing| is true."
+        "cquery.misc.indexerCount": {
+          "type": "number",
+          "default": 0,
+          "description": "Forcibly set the number of indexing/working jobs. This value is automatically computed by the indexer and you should not need to set it manually.\n\nIdeally, this should be the number of CPU cores you have, minus one. cquery scales quite well so this number can go very high; cquery will use 5000%+ CPU usage on machines with over 50 cores. If you set the value higher than your number of hardware threads, cquery will slow down significantly due to thread contention.\n\nIf set to 0 or a negative value, the indexer will ignore this value.\n\nFor example, if you have a 4 core hyper-threaded processor, this should be set to 7. If you have dual 13 core hyper-threaded processors, this should be set to 2*13*2-1=51."
         },
-        "cquery.enableCacheRead": {
+        "cquery.misc.enableIndexing": {
           "type": "boolean",
           "default": true,
-          "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk."
+          "description": "If set to false, updating the index will be disabled. You should not need to use this."
+        },
+        "cquery.misc.enableCacheWrite": {
+          "type": "boolean",
+          "default": true,
+          "description": "If set to false, writing indexed files out to cache will be disabled. Only useful if |enableIndexing| is true. You should not need to use this."
+        },
+        "cquery.misc.enableCacheRead": {
+          "type": "boolean",
+          "default": true,
+          "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
         }
       }
     }

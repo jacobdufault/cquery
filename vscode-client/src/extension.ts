@@ -117,12 +117,12 @@ export function activate(context: vscode.ExtensionContext) {
     cacheDirectory: config.get('cacheDirectory'),
     whitelist: config.get('whitelist'),
     blacklist: config.get('blacklist'),
-    indexerCount: config.get('indexerCount'),
-    maxWorkspaceSearchResults: config.get('maxWorkspaceSearchResults'),
     extraClangArguments: config.get('extraClangArguments'),
-    enableIndexing: config.get('enableIndexing'),
-    enableCacheWrite: config.get('enableCacheWrite'),
-    enableCacheRead: config.get('enableCacheRead')
+    maxWorkspaceSearchResults: config.get('misc.maxWorkspaceSearchResults'),
+    indexerCount: config.get('misc.indexerCount'),
+    enableIndexing: config.get('misc.enableIndexing'),
+    enableCacheWrite: config.get('misc.enableCacheWrite'),
+    enableCacheRead: config.get('misc.enableCacheRead')
   }
 
   if (!clientConfig.cacheDirectory) {
