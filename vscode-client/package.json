@@ -13,10 +13,18 @@
     "Languages"
   ],
   "activationEvents": [
-    "onLanguage:cpp"
+    "onLanguage:cpp",
+    "workspaceContains:compile_commands.json",
+    "workspaceContains:clang_args"
   ],
   "main": "./out/src/extension",
   "contributes": {
+    "commands": {
+      "title": "Freshen index",
+      "category": "cquery",
+      "command": "cquery.freshenIndex"
+    },
+
     "configuration": {
       "type": "object",
       "title": "cquery",

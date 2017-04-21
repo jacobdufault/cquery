@@ -191,4 +191,8 @@ export function activate(context: vscode.ExtensionContext) {
   console.log("starting");
   let disposable = languageClient.start();
   context.subscriptions.push(disposable);
+
+  vscode.commands.registerCommand('cquery.freshenIndex', () => {
+    languageClient.sendNotification('$cquery/freshenIndex');
+  });
 }
