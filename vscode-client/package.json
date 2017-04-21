@@ -20,7 +20,7 @@
   "main": "./out/src/extension",
   "contributes": {
     "commands": {
-      "title": "Freshen index",
+      "title": "Freshen Index",
       "category": "cquery",
       "command": "cquery.freshenIndex"
     },
