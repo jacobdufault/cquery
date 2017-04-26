@@ -140,7 +140,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let serverOptions: ServerOptions = {
       command: 'indexer.exe', args: ['--language-server'], options: {
-      cwd: 'C:/Users/jacob/Desktop/superindex/indexer/x64/Debug',
+      cwd: 'C:/Users/jacob/Desktop/superindex/indexer/x64/Release',
       // stdio: 'ascii'
       //stdio?: string | string[];
       // env: {
