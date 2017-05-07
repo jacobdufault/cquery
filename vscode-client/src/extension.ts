@@ -35,6 +35,26 @@ class Foo implements ErrorHandler {
     }
 }
 
+function parsePosition(p): vscode.Position {
+  return new vscode.Position(p.line, p.character);
+}
+function parseRange(r): vscode.Range {
+  return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
+}
+function parseLocation(l): vscode.Location {
+  return new vscode.Location(parseUri(l.uri), parseRange(l.range));
+}
+function parseLocations(ls): Array<vscode.Location> {
+  let parsedLocations = [];
+  for (let location of ls)
+    parsedLocations.push(parseLocation(location));
+  return parsedLocations;
+}
+function parseUri(u): vscode.Uri {
+  return vscode.Uri.parse(u);
+}
+
+
 export function activate(context: vscode.ExtensionContext) {
   console.log('Running');
 
@@ -42,20 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
   // 	console.log(cmds.join(' '));
   // });
 
-  vscode.commands.registerCommand('superindex.goto', (uri, position, locations) => {
-    function parsePosition(p): vscode.Position {
-      return new vscode.Position(p.line, p.character);
-    }
-    function parseRange(r): vscode.Range {
-      return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
-    }
-    function parseLocation(l): vscode.Location {
-      return new vscode.Location(parseUri(l.uri), parseRange(l.range));
-    }
-    function parseUri(u): vscode.Uri {
-      return vscode.Uri.parse(u);
-    }
-
+  vscode.commands.registerCommand('cquery.goto', (uri, position, locations) => {
     let parsedPosition = parsePosition(position);
     // let parsedUri = parseUri(uri + `#${position.line},${position.character}`);
     // let parsedUri = parseUri(uri + `#L${position.line}`);
@@ -87,26 +94,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Proxy editor.action.showReferences so we can deserialize arguments into
   // the correct vscode types.
-  vscode.commands.registerCommand('superindex.showReferences', (uri, position, locations) => {
-    function parsePosition(p): vscode.Position {
-      return new vscode.Position(p.line, p.character);
-    }
-    function parseRange(r): vscode.Range {
-      return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
-    }
-    function parseLocation(l): vscode.Location {
-      return new vscode.Location(parseUri(l.uri), parseRange(l.range));
-    }
-    function parseUri(u): vscode.Uri {
-      return vscode.Uri.parse(u);
-    }
-
+  vscode.commands.registerCommand('cquery.showReferences', (uri, position, locations) => {
     let parsedUri = parseUri(uri);
     let parsedPosition = parsePosition(position);
-    let parsedLocations = [];
-    for (let location of locations)
-      parsedLocations.push(parseLocation(location));
-
+    let parsedLocations = parseLocations(locations);
     vscode.commands.executeCommand(
       'editor.action.showReferences',
       parsedUri, parsedPosition, parsedLocations);
@@ -195,4 +186,31 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('cquery.freshenIndex', () => {
     languageClient.sendNotification('$cquery/freshenIndex');
   });
+
+  function makeRefHandler(methodName, autoGotoIfSingle = false) {
+    return () => {
+      let position = vscode.window.activeTextEditor.selection.active;
+      let uri = vscode.window.activeTextEditor.document.uri;
+      languageClient.sendRequest(methodName, {
+        textDocument: { uri: uri.toString(), },
+        position: position
+      }).then((locations: Array<object>) => {
+        // console.log(`${methodName} handler got ${locations.length} responses`);
+        if (autoGotoIfSingle && locations.length == 1) {
+          let location = parseLocation(locations[0])
+          vscode.commands.executeCommand(
+            'cquery.goto',
+            location.uri, location.range.start, []);
+        } else {
+          vscode.commands.executeCommand(
+            'editor.action.showReferences',
+            uri, position, parseLocations(locations));
+        }
+      })
+    }
+  }
+  vscode.commands.registerCommand('cquery.vars', makeRefHandler('$cquery/vars'));
+  vscode.commands.registerCommand('cquery.callers', makeRefHandler('$cquery/callers'));
+  vscode.commands.registerCommand('cquery.base', makeRefHandler('$cquery/base', true));
+  vscode.commands.registerCommand('cquery.derived', makeRefHandler('$cquery/derived'));
 }

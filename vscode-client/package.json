@@ -19,11 +19,33 @@
   ],
   "main": "./out/src/extension",
   "contributes": {
-    "commands": {
-      "title": "Freshen Index",
-      "category": "cquery",
-      "command": "cquery.freshenIndex"
-    },
+    "commands": [
+      {
+        "title": "Freshen Index",
+        "category": "cquery",
+        "command": "cquery.freshenIndex"
+      },
+      {
+        "title": "Show Variables",
+        "category": "cquery",
+        "command": "cquery.vars"
+      },
+      {
+        "title": "Show Callers",
+        "category": "cquery",
+        "command": "cquery.callers"
+      },
+      {
+        "title": "Show Base",
+        "category": "cquery",
+        "command": "cquery.base"
+      },
+      {
+        "title": "Show Derived",
+        "category": "cquery",
+        "command": "cquery.derived"
+      }
+    ],
 
     "configuration": {
       "type": "object",
