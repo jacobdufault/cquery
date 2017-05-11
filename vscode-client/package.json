@@ -17,7 +17,7 @@
     "workspaceContains:compile_commands.json",
     "workspaceContains:clang_args"
   ],
-  "main": "./out/src/extension",
+  "main": "./out/extension",
   "contributes": {
     "commands": [
       {
