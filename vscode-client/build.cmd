@@ -1,0 +1,1 @@
+vsce.cmd package -o ../vscode-extension.vsix

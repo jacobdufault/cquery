@@ -38,14 +38,17 @@ function parseUri(u): vscode.Uri {
   return vscode.Uri.parse(u);
 }
 
-
-export function activate(context: vscode.ExtensionContext) {
-  /////////////////////////////////////
-  // Setup configuration, start server.
-  /////////////////////////////////////
-
+function getClientConfig(context: vscode.ExtensionContext) {
   let config = vscode.workspace.getConfiguration('cquery');
+
+  if (config.get('launch.workingDirectory') == '') {
+    vscode.window.showErrorMessage('Please specify the \"launch.workingDirectory\" setting and reload vscode');
+    return;
+  }
+
   let clientConfig = {
+    launchWorkingDirectory: <string>config.get('launch.workingDirectory'),
+    launchCommand: <string>config.get('launch.command'),
     cacheDirectory: config.get('cacheDirectory'),
     whitelist: config.get('whitelist'),
     blacklist: config.get('blacklist'),
@@ -77,14 +80,40 @@ export function activate(context: vscode.ExtensionContext) {
                   });
   }
 
+  return clientConfig;
+}
+
+export function activate(context: vscode.ExtensionContext) {
+  /////////////////////////////////////
+  // Setup configuration, start server.
+  /////////////////////////////////////
+
+  // Load configuration. Tell user they need to restart vscode if they change
+  // configuration values. 
+  let clientConfig = getClientConfig(context);
+  context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(() => {
+    let newConfig = getClientConfig(context)
+    for (let key in newConfig) {
+      if (!newConfig.hasOwnProperty(key)) continue;
+
+      if (!clientConfig || JSON.stringify(clientConfig[key]) != JSON.stringify(newConfig[key])) {
+        vscode.window.showInformationMessage(`Please reload vscode for cquery configuration changes to take effect (${key} changed).`);
+        break;
+      }
+    }
+  }))
+  if (!clientConfig)
+    return;
+
   let serverOptions: ServerOptions = {
-      command: 'indexer.exe', args: ['--language-server'], options: {
-      cwd: 'C:/Users/jacob/Desktop/superindex/indexer/x64/Release',
-      // env: {
-      //   'MALLOC_CHECK_': '2'
-      // }
+    command: clientConfig.launchCommand,
+    args: ['--language-server'],
+    options: {
+      cwd: clientConfig.launchWorkingDirectory
+      // env: { 'MALLOC_CHECK_': '2' }
     }
   }
+  console.log(`Starting ${serverOptions.command} in ${serverOptions.options.cwd}`);
 
   // Options to control the language client
   let clientOptions: LanguageClientOptions = {

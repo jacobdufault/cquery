@@ -51,6 +51,16 @@
       "type": "object",
       "title": "cquery",
       "properties": {
+        "cquery.launch.workingDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the directory which contains the cquery binary (ie, if cquery is checkout out at /work/cquery/ then this directory is /work/cquery/build)"
+        },
+        "cquery.launch.command": {
+          "type": "string",
+          "default": "./app",
+          "description": "Command to start the cquery binary (on Linux ./app, on Windows indexer.exe)"
+        },
         "cquery.cacheDirectory": {
           "type": "string",
           "default": "",
