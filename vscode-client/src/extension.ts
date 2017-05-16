@@ -42,7 +42,9 @@ function getClientConfig(context: vscode.ExtensionContext) {
   let config = vscode.workspace.getConfiguration('cquery');
 
   if (config.get('launch.workingDirectory') == '') {
-    vscode.window.showErrorMessage('Please specify the \"launch.workingDirectory\" setting and reload vscode');
+    vscode.window.showErrorMessage('Please specify the \"launch.workingDirectory\" setting and reload vscode', 'Open Settings').then(() => {
+      vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
+    });
     return;
   }
 
@@ -64,7 +66,9 @@ function getClientConfig(context: vscode.ExtensionContext) {
     if (!context.storagePath) {
       vscode.window.showErrorMessage(
           'Could not auto-discover cache directory. Please use "Open Folder" ' +
-          'or specify it in the |cquery.cacheDirectory| setting.');
+          'or specify it in the |cquery.cacheDirectory| setting.', 'Open Settings').then(() => {
+        vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
+      });
       return;
     }
 
@@ -89,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
   /////////////////////////////////////
 
   // Load configuration. Tell user they need to restart vscode if they change
-  // configuration values. 
+  // configuration values.
   let clientConfig = getClientConfig(context);
   context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(() => {
     let newConfig = getClientConfig(context)
@@ -97,7 +101,9 @@ export function activate(context: vscode.ExtensionContext) {
       if (!newConfig.hasOwnProperty(key)) continue;
 
       if (!clientConfig || JSON.stringify(clientConfig[key]) != JSON.stringify(newConfig[key])) {
-        vscode.window.showInformationMessage(`Please reload vscode for cquery configuration changes to take effect (${key} changed).`);
+        vscode.window.showInformationMessage(`Please reload vscode for cquery configuration changes to take effect (${key} changed).`, 'Reload').then(() => {
+          vscode.commands.executeCommand('workbench.action.reloadWindow');
+        });
         break;
       }
     }
