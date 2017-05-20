@@ -105,6 +105,27 @@
           "type": "boolean",
           "default": true,
           "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
+        },
+
+        "cquery.theme.light.inactiveRegion.textColor": {
+          "type": "string",
+          "default": "rgb(100, 100, 100)",
+          "description": "css styling to apply to text when the code region has been disabled by the preprocessor in a light theme."
+        },
+        "cquery.theme.light.inactiveRegion.backgroundColor": {
+          "type": "string",
+          "default": "rgba(220, 220, 220, 0.3)",
+          "description": "css styling to apply to the background when the code region has been disabled by the preprocessor in a light theme."
+        },
+        "cquery.theme.dark.inactiveRegion.textColor": {
+          "type": "string",
+          "default": "rgb(100, 100, 100)",
+          "description": "css styling to apply to text when the code region has been disabled by the preprocessor in a dark theme."
+        },
+        "cquery.theme.dark.inactiveRegion.backgroundColor": {
+          "type": "string",
+          "default": "rgba(18, 18, 18, 0.3)",
+          "description": "css styling to apply to the background when the code region has been disabled by the preprocessor in a dark theme."
         }
       }
     }

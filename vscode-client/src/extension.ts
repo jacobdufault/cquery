@@ -30,14 +30,20 @@ function parsePosition(p): vscode.Position {
 function parseRange(r): vscode.Range {
   return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
 }
+function parseRanges(rs): Array<vscode.Range> {
+  let parsed = [];
+  for (let r of rs)
+    parsed.push(parseRange(r));
+  return parsed;
+}
 function parseLocation(l): vscode.Location {
   return new vscode.Location(parseUri(l.uri), parseRange(l.range));
 }
 function parseLocations(ls): Array<vscode.Location> {
-  let parsedLocations = [];
-  for (let location of ls)
-    parsedLocations.push(parseLocation(location));
-  return parsedLocations;
+  let parsed = [];
+  for (let l of ls)
+    parsed.push(parseLocation(l));
+  return parsed;
 }
 function parseUri(u): vscode.Uri {
   return vscode.Uri.parse(u);
@@ -215,6 +221,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
 
+  // FixIt support
   vscode.commands.registerCommand('cquery._applyFixIt', (uri, pTextEdits) => {
     const textEdits = p2c.asTextEdits(pTextEdits);
 
@@ -232,5 +239,33 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     vscode.window.showErrorMessage(`FixIt: could not find editor for ${uri}`);
+  });
+
+
+  // Inactive regions.
+  let config = vscode.workspace.getConfiguration('cquery');
+	const inactiveRegionDecorationType = vscode.window.createTextEditorDecorationType({
+    isWholeLine: true,
+    light: {
+      color: <string>config.get('theme.light.inactiveRegion.textColor'),
+      backgroundColor: <string>config.get('theme.light.inactiveRegion.backgroundColor'),
+    },
+    dark: {
+      color: <string>config.get('theme.dark.inactiveRegion.textColor'),
+      backgroundColor: <string>config.get('theme.dark.inactiveRegion.backgroundColor'),
+    }
+	});
+  languageClient.onReady().then(() => {
+    languageClient.onNotification('$cquery/setInactiveRegions', (args) => {
+      let uri = args.uri;
+      let ranges = parseRanges(args.inactiveRegions)
+      for (const textEditor of vscode.window.visibleTextEditors) {
+        if (textEditor.document.uri.toString() == uri) {
+          vscode.window.activeTextEditor.setDecorations(
+              inactiveRegionDecorationType, ranges);
+          break;
+        }
+      }
+    });
   });
 }
