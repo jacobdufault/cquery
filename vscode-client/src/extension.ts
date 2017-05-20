@@ -3,19 +3,24 @@
 import * as path from 'path';
 
 import * as vscode from 'vscode';
-import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind, RevealOutputChannelOn, InitializationFailedHandler, ErrorHandler, ErrorAction, CloseAction } from 'vscode-languageclient';
+import * as vscodelc from 'vscode-languageclient';
 import { Message } from 'vscode-jsonrpc';
 
-class MyErrorHandler implements ErrorHandler {
-    error(error: Error, message: Message, count: number): ErrorAction {
+// Increment version number whenever we want to make sure the user updates the
+// extension. cquery will emit an error notification if this does not match its
+// internal number.
+const VERSION = 1
+
+class MyErrorHandler implements vscodelc.ErrorHandler {
+    error(error: Error, message: Message, count: number): vscodelc.ErrorAction {
       console.log('!!!! error');
       console.log(error);
       console.log(message);
       console.log(count);
-      return ErrorAction.Continue;
+      return vscodelc.ErrorAction.Continue;
     }
-    closed(): CloseAction	{
-      return CloseAction.DoNotRestart;
+    closed(): vscodelc.CloseAction	{
+      return vscodelc.CloseAction.DoNotRestart;
     }
 }
 
@@ -111,7 +116,9 @@ export function activate(context: vscode.ExtensionContext) {
   if (!clientConfig)
     return;
 
-  let serverOptions: ServerOptions = {
+  clientConfig['clientVersion'] = VERSION
+
+  let serverOptions: vscodelc.ServerOptions = {
     command: clientConfig.launchCommand,
     args: ['--language-server'],
     options: {
@@ -122,7 +129,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log(`Starting ${serverOptions.command} in ${serverOptions.options.cwd}`);
 
   // Options to control the language client
-  let clientOptions: LanguageClientOptions = {
+  let clientOptions: vscodelc.LanguageClientOptions = {
     documentSelector: ['cpp'],
     // synchronize: {
     // 	configurationSection: 'cquery',
@@ -130,7 +137,7 @@ export function activate(context: vscode.ExtensionContext) {
     // },
     diagnosticCollectionName: 'cquery',
     outputChannelName: 'cquery',
-    revealOutputChannelOn: RevealOutputChannelOn.Error,
+    revealOutputChannelOn: vscodelc.RevealOutputChannelOn.Error,
     initializationOptions: clientConfig,
     initializationFailedHandler: (e) => {
       console.log(e);
@@ -140,10 +147,11 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   // Create the language client and start the client.
-  let languageClient = new LanguageClient('cquery', 'cquery', serverOptions, clientOptions);
+  let languageClient = new vscodelc.LanguageClient('cquery', 'cquery', serverOptions, clientOptions);
   let disposable = languageClient.start();
   context.subscriptions.push(disposable);
 
+  let p2c = languageClient.protocol2CodeConverter;
 
   /////////////////////
   // Register commands.
@@ -207,4 +215,22 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
 
+  vscode.commands.registerCommand('cquery._applyFixIt', (uri, pTextEdits) => {
+    const textEdits = p2c.asTextEdits(pTextEdits);
+
+    for (const textEditor of vscode.window.visibleTextEditors) {
+      if (textEditor.document.uri.toString() == uri) {
+        textEditor.edit(editBuilder => {
+          for (const edit of textEdits)
+            editBuilder.replace(edit.range, edit.newText);
+        }).then(success => {
+          if (!success)
+            vscode.window.showErrorMessage('Failed to apply FixIt');
+        });
+        return;
+      }
+    }
+
+    vscode.window.showErrorMessage(`FixIt: could not find editor for ${uri}`);
+  });
 }
