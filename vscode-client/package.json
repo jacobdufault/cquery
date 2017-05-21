@@ -107,7 +107,11 @@
           "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
         },
 
-
+        "cquery.completion.include.maximumPathLength": {
+          "type": "integer",
+          "default": 37,
+          "description": "Maximum length for path in #include proposals. If the path length goes beyond this number it will be elided. Set to 0 to always display the full path."
+        },
         "cquery.completion.include.whitelistLiteralEnding": {
           "type": "array",
           "default": [".h", ".hpp", ".hh"],

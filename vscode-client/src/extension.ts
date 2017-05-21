@@ -73,6 +73,7 @@ function getClientConfig(context: vscode.ExtensionContext) {
     enableIndexing: config.get('misc.enableIndexing'),
     enableCacheWrite: config.get('misc.enableCacheWrite'),
     enableCacheRead: config.get('misc.enableCacheRead'),
+    includeCompletionMaximumPathLength: config.get('completion.include.maximumPathLength'),
     includeCompletionWhitelistLiteralEnding: config.get('completion.include.whitelistLiteralEnding'),
     includeCompletionWhitelist: config.get('completion.include.whitelist'),
     includeCompletionBlacklist: config.get('completion.include.blacklist'),
