@@ -71,6 +71,7 @@ function getClientConfig(context: vscode.ExtensionContext) {
     enableIndexing: config.get('misc.enableIndexing'),
     enableCacheWrite: config.get('misc.enableCacheWrite'),
     enableCacheRead: config.get('misc.enableCacheRead'),
+    showDocumentLinksOnIncludes: config.get('showDocumentLinksOnIncludes'),
     codeLensOnLocalVariables: config.get('codeLens.onLocalVariables'),
   }
 

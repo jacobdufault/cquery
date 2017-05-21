@@ -107,6 +107,11 @@
           "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
         },
 
+        "cquery.showDocumentLinksOnIncludes": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, document links (an underline) will be rendered on includes. Goto definition (control click) will still work on includes even if this is false."
+        },
 
         "cquery.codeLens.onLocalVariables": {
           "type": "boolean",
