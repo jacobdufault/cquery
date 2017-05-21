@@ -53,8 +53,10 @@ function getClientConfig(context: vscode.ExtensionContext) {
   let config = vscode.workspace.getConfiguration('cquery');
 
   if (config.get('launch.workingDirectory') == '') {
-    vscode.window.showErrorMessage('Please specify the \"launch.workingDirectory\" setting and reload vscode', 'Open Settings').then(() => {
-      vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
+    const kOpenSettings = 'Open Settings';
+    vscode.window.showErrorMessage('Please specify the \"launch.workingDirectory\" setting and reload vscode', kOpenSettings).then((selected) => {
+      if (selected == kOpenSettings)
+        vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
     });
     return;
   }
@@ -80,10 +82,12 @@ function getClientConfig(context: vscode.ExtensionContext) {
 
   if (!clientConfig.cacheDirectory) {
     if (!context.storagePath) {
+      const kOpenSettings = 'Open Settings';
       vscode.window.showErrorMessage(
           'Could not auto-discover cache directory. Please use "Open Folder" ' +
-          'or specify it in the |cquery.cacheDirectory| setting.', 'Open Settings').then(() => {
-        vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
+          'or specify it in the |cquery.cacheDirectory| setting.', kOpenSettings).then((selected) => {
+        if (selected == kOpenSettings)
+          vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
       });
       return;
     }
@@ -117,8 +121,10 @@ export function activate(context: vscode.ExtensionContext) {
       if (!newConfig.hasOwnProperty(key)) continue;
 
       if (!clientConfig || JSON.stringify(clientConfig[key]) != JSON.stringify(newConfig[key])) {
-        vscode.window.showInformationMessage(`Please reload vscode for cquery configuration changes to take effect (${key} changed).`, 'Reload').then(() => {
-          vscode.commands.executeCommand('workbench.action.reloadWindow');
+        const kReload = 'Reload'
+        vscode.window.showInformationMessage(`Please reload to apply cquery configuration change (${key} changed).`, kReload).then((selected) => {
+          if (selected == kReload)
+            vscode.commands.executeCommand('workbench.action.reloadWindow');
         });
         break;
       }
