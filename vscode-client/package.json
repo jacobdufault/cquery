@@ -107,6 +107,14 @@
           "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
         },
 
+
+        "cquery.codeLens.onLocalVariables": {
+          "type": "boolean",
+          "default": true,
+          "description": "Set to false to hide code lens on parameters and function local variables."
+        },
+
+
         "cquery.theme.light.inactiveRegion.textColor": {
           "type": "string",
           "default": "rgb(100, 100, 100)",

@@ -70,7 +70,8 @@ function getClientConfig(context: vscode.ExtensionContext) {
     indexerCount: config.get('misc.indexerCount'),
     enableIndexing: config.get('misc.enableIndexing'),
     enableCacheWrite: config.get('misc.enableCacheWrite'),
-    enableCacheRead: config.get('misc.enableCacheRead')
+    enableCacheRead: config.get('misc.enableCacheRead'),
+    codeLensOnLocalVariables: config.get('codeLens.onLocalVariables'),
   }
 
   if (!clientConfig.cacheDirectory) {
