@@ -148,7 +148,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Options to control the language client
   let clientOptions: vscodelc.LanguageClientOptions = {
-    documentSelector: ['cpp'],
+    documentSelector: ['c', 'cpp'],
     // synchronize: {
     // 	configurationSection: 'cquery',
     // 	fileEvents: workspace.createFileSystemWatcher('**/.cc')
