@@ -66,6 +66,11 @@
           "default": "",
           "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\nCache directories are project-wide, so this should be configured in the workspace settings so multiple indexes do not clash.\n\nExample value: \"/work/cquery-cache/chrome/\""
         },
+        "cquery.index.extraClangArguments": {
+          "type": "array",
+          "default": [],
+          "description": "An extra set of command line arguments to give clang when indexing. Each list entry is a separate argument."
+        },
         "cquery.index.whitelist": {
           "type": "array",
           "default": [],
@@ -76,10 +81,10 @@
           "default": [],
           "description": "A translation unit (cc/cpp file) is not indexed if any of the EMCAScript regexes in this list matches translation unit's the absolute path.\n\nYou probably want to begin the regex using `.*` because the passed paths are absolute."
         },
-        "cquery.index.extraClangArguments": {
-          "type": "array",
-          "default": [],
-          "description": "An extra set of command line arguments to give clang when indexing. Each list entry is a separate argument."
+        "cquery.log.skippedPathsForIndex": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, paths which were skipped by `cquery.index.whitelist` and `cquery.index.blacklist` will be logged and viewable in the cquery output window."
         },
         "cquery.misc.maxWorkspaceSearchResults": {
           "type": "number",
