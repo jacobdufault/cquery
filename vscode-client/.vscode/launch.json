@@ -7,6 +7,7 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
+			// "args": ["C:/Users/jacob/Desktop/vscode", "--extensionDevelopmentPath=${workspaceRoot}" ],
 			"args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
 			"stopOnEntry": false,
 			"sourceMaps": true,
