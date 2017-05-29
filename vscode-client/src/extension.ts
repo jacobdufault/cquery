@@ -397,6 +397,25 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
 
+  // Insert include.
+  vscode.commands.registerCommand('cquery._insertInclude', (uri, pTextEdits) => {
+    if (pTextEdits.length == 1)
+      vscode.commands.executeCommand('cquery._applyFixIt', uri, pTextEdits);
+    else {
+      let items: Array<vscode.QuickPickItem> = [];
+      class MyQuickPick implements vscode.QuickPickItem {
+        constructor(public label: string, public description: string, public edit: any) {}
+      }
+      for (let edit of pTextEdits) {
+        items.push(new MyQuickPick(edit.newText, '', edit));
+      }
+      vscode.window.showQuickPick(items).then((selected: MyQuickPick) => {
+        vscode.commands.executeCommand('cquery._applyFixIt', uri, [selected.edit]);
+      });
+    }
+  });
+
+
   // Inactive regions.
   let config = vscode.workspace.getConfiguration('cquery');
 	const inactiveRegionDecorationType = vscode.window.createTextEditorDecorationType({
