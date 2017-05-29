@@ -359,20 +359,41 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('cquery._applyFixIt', (uri, pTextEdits) => {
     const textEdits = p2c.asTextEdits(pTextEdits);
 
-    for (const textEditor of vscode.window.visibleTextEditors) {
-      if (textEditor.document.uri.toString() == uri) {
-        textEditor.edit(editBuilder => {
+    function applyEdits(e: vscode.TextEditor) {
+        e.edit(editBuilder => {
           for (const edit of textEdits)
             editBuilder.replace(edit.range, edit.newText);
         }).then(success => {
           if (!success)
             vscode.window.showErrorMessage('Failed to apply FixIt');
         });
+    }
+
+    // Find existing open document.
+    for (const textEditor of vscode.window.visibleTextEditors) {
+      if (textEditor.document.uri.toString() == uri) {
+        applyEdits(textEditor);
         return;
       }
     }
 
-    vscode.window.showErrorMessage(`FixIt: could not find editor for ${uri}`);
+    // Failed, open new document.
+    vscode.workspace.openTextDocument(parseUri(uri)).then(d => {
+      vscode.window.showTextDocument(d).then(e => {
+        if (!e)
+          vscode.window.showErrorMessage('Failed to to get editor for FixIt');
+
+        applyEdits(e);
+      })
+    });
+  });
+
+
+  // AutoImplement
+  vscode.commands.registerCommand('cquery._autoImplement', (uri, pTextEdits) => {
+    vscode.commands.executeCommand('cquery._applyFixIt', uri, pTextEdits).then(() => {
+      vscode.commands.executeCommand('cquery.goto', uri, pTextEdits[0].range.start);
+    });
   });
 
 
