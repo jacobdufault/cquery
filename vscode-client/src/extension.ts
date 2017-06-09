@@ -9,7 +9,7 @@ import { Message } from 'vscode-jsonrpc';
 // Increment version number whenever we want to make sure the user updates the
 // extension. cquery will emit an error notification if this does not match its
 // internal number.
-const VERSION = 1
+const VERSION = 2
 
 
 function assert(condition: boolean) {
@@ -286,7 +286,7 @@ export function activate(context: vscode.ExtensionContext) {
     // },
     diagnosticCollectionName: 'cquery',
     outputChannelName: 'cquery',
-    revealOutputChannelOn: vscodelc.RevealOutputChannelOn.Error,
+    revealOutputChannelOn: vscodelc.RevealOutputChannelOn.Never,
     initializationOptions: clientConfig,
     initializationFailedHandler: (e) => {
       console.log(e);
