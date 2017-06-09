@@ -83,11 +83,6 @@
       "type": "object",
       "title": "cquery",
       "properties": {
-        "cquery.experimental.enableTypeHierarchyAndCallTree": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enables type hierarchy and call tree vscode integrations. Requires insiders builder."
-        },
         "cquery.launch.workingDirectory": {
           "type": "string",
           "default": "",

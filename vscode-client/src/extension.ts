@@ -6,9 +6,6 @@ import * as vscode from 'vscode';
 import * as vscodelc from 'vscode-languageclient';
 import { Message } from 'vscode-jsonrpc';
 
-import { ExtensionContext, TreeDataProvider, EventEmitter, TreeItem, Event, window, TreeItemCollapsibleState, Uri, commands, workspace, TextDocumentContentProvider, CancellationToken, ProviderResult } from 'vscode';
-
-
 // Increment version number whenever we want to make sure the user updates the
 // extension. cquery will emit an error notification if this does not match its
 // internal number.
@@ -142,23 +139,23 @@ class TypeHierarchyNode {
       readonly children: TypeHierarchyNode[]) {}
 }
 
-class TypeHierarchyProvider implements TreeDataProvider<TypeHierarchyNode> {
+class TypeHierarchyProvider implements vscode.TreeDataProvider<TypeHierarchyNode> {
     root: TypeHierarchyNode[] = [];
 
-    readonly onDidChangeEmitter: EventEmitter<any> = new EventEmitter<any>();
-    readonly onDidChangeTreeData: Event<any> = this.onDidChangeEmitter.event;
+    readonly onDidChangeEmitter: vscode.EventEmitter<any> = new vscode.EventEmitter<any>();
+    readonly onDidChangeTreeData: vscode.Event<any> = this.onDidChangeEmitter.event;
 
-		getTreeItem(element: TypeHierarchyNode): TreeItem {
+		getTreeItem(element: TypeHierarchyNode): vscode.TreeItem {
       const kBaseName = '[[Base]]'
 
-      let collapseState: TreeItemCollapsibleState | undefined = undefined
+      let collapseState: vscode.TreeItemCollapsibleState | undefined = undefined
       if (element.children.length > 0)
-        collapseState = TreeItemCollapsibleState.Expanded;
+        collapseState = vscode.TreeItemCollapsibleState.Expanded;
       if (element.children && element.name == kBaseName) {
-        collapseState = TreeItemCollapsibleState.Collapsed;
+        collapseState = vscode.TreeItemCollapsibleState.Collapsed;
       } else if (element.children.length == 1 && element.children[0].name == kBaseName) {
         assert(element.name != kBaseName);
-        collapseState = TreeItemCollapsibleState.Collapsed;
+        collapseState = vscode.TreeItemCollapsibleState.Collapsed;
       }
 
       return {
@@ -193,21 +190,21 @@ class CallTreeNode {
   _cachedCallers: CallTreeNode[] | undefined
 }
 
-class CallTreeProvider implements TreeDataProvider<CallTreeNode> {
+class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
     root: CallTreeNode[] = [];
 
     constructor(readonly languageClient: vscodelc.LanguageClient) {}
 
-    readonly onDidChangeEmitter: EventEmitter<any> = new EventEmitter<any>();
-    readonly onDidChangeTreeData: Event<any> = this.onDidChangeEmitter.event;
+    readonly onDidChangeEmitter: vscode.EventEmitter<any> = new vscode.EventEmitter<any>();
+    readonly onDidChangeTreeData: vscode.Event<any> = this.onDidChangeEmitter.event;
 
-		getTreeItem(element: CallTreeNode): TreeItem {
-      let collapseState: TreeItemCollapsibleState | undefined = undefined
+		getTreeItem(element: CallTreeNode): vscode.TreeItem {
+      let collapseState: vscode.TreeItemCollapsibleState | undefined = undefined
       if (element.hasCallers) {
         if (element._depth < 2)
-          collapseState = TreeItemCollapsibleState.Expanded
+          collapseState = vscode.TreeItemCollapsibleState.Expanded
         else
-          collapseState = TreeItemCollapsibleState.Collapsed
+          collapseState = vscode.TreeItemCollapsibleState.Collapsed
       }
 
       return {
@@ -444,62 +441,60 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
 
-  if (config.get('experimental.enableTypeHierarchyAndCallTree')) {
-    // Type hierarchy.
-    const typeHierarchyProvider = new TypeHierarchyProvider();
-    window.registerTreeDataProviderForView('cquery.typeHierarchy', typeHierarchyProvider);
-    // TODO: support showing base types, evaluate them on demand though as it may
-    // result in cyclic graphics.
-    vscode.commands.registerCommand('cquery.typeHierarchyTree', () => {
-      let position = vscode.window.activeTextEditor.selection.active;
-      let uri = vscode.window.activeTextEditor.document.uri;
-      languageClient.sendRequest('$cquery/typeHierarchyTree', {
-        textDocument: { uri: uri.toString(), },
-        position: position
-      }).then((typeEntry: TypeHierarchyNode | undefined) => {
-        if (typeEntry) {
-          typeHierarchyProvider.root.push(typeEntry);
-          typeHierarchyProvider.onDidChangeEmitter.fire();
-        }
-      })
-    });
-    vscode.commands.registerCommand('cquery.clearTypeHierarchyTree', () => {
-      typeHierarchyProvider.root = [];
-      typeHierarchyProvider.onDidChangeEmitter.fire();
-    });
+  // Type hierarchy.
+  const typeHierarchyProvider = new TypeHierarchyProvider();
+  vscode.window.registerTreeDataProvider('cquery.typeHierarchy', typeHierarchyProvider);
+  // TODO: support showing base types, evaluate them on demand though as it may
+  // result in cyclic graphics.
+  vscode.commands.registerCommand('cquery.typeHierarchyTree', () => {
+    let position = vscode.window.activeTextEditor.selection.active;
+    let uri = vscode.window.activeTextEditor.document.uri;
+    languageClient.sendRequest('$cquery/typeHierarchyTree', {
+      textDocument: { uri: uri.toString(), },
+      position: position
+    }).then((typeEntry: TypeHierarchyNode | undefined) => {
+      if (typeEntry) {
+        typeHierarchyProvider.root.push(typeEntry);
+        typeHierarchyProvider.onDidChangeEmitter.fire();
+      }
+    })
+  });
+  vscode.commands.registerCommand('cquery.clearTypeHierarchyTree', () => {
+    typeHierarchyProvider.root = [];
+    typeHierarchyProvider.onDidChangeEmitter.fire();
+  });
 
 
-    // Call tree
-    const callTreeProvider = new CallTreeProvider(languageClient);
-    window.registerTreeDataProviderForView('cquery.callTree', callTreeProvider);
-    vscode.commands.registerCommand('cquery.callTree', () => {
-      let position = vscode.window.activeTextEditor.selection.active;
-      let uri = vscode.window.activeTextEditor.document.uri;
-      languageClient.sendRequest('$cquery/callTreeInitial', {
-        textDocument: { uri: uri.toString(), },
-        position: position
-      }).then((callNodes: CallTreeNode[]) => {
-        for (let callNode of callNodes) {
-          callNode._depth = 0
-          callTreeProvider.root.push(callNode);
-        }
-        if (callNodes)
-          callTreeProvider.onDidChangeEmitter.fire();
-      });
+  // Call tree
+  const callTreeProvider = new CallTreeProvider(languageClient);
+  vscode.window.registerTreeDataProvider('cquery.callTree', callTreeProvider);
+  vscode.commands.registerCommand('cquery.callTree', () => {
+    let position = vscode.window.activeTextEditor.selection.active;
+    let uri = vscode.window.activeTextEditor.document.uri;
+    languageClient.sendRequest('$cquery/callTreeInitial', {
+      textDocument: { uri: uri.toString(), },
+      position: position
+    }).then((callNodes: CallTreeNode[]) => {
+      for (let callNode of callNodes) {
+        callNode._depth = 0
+        callTreeProvider.root.push(callNode);
+      }
+      if (callNodes)
+        callTreeProvider.onDidChangeEmitter.fire();
     });
-    vscode.commands.registerCommand('cquery.clearCallTree', () => {
-      callTreeProvider.root = [];
-      callTreeProvider.onDidChangeEmitter.fire();
-    });
+  });
+  vscode.commands.registerCommand('cquery.clearCallTree', () => {
+    callTreeProvider.root = [];
+    callTreeProvider.onDidChangeEmitter.fire();
+  });
 
-    vscode.commands.registerCommand('_cquery.gotoForTreeView', (node: TypeHierarchyNode | CallTreeNode) => {
-      if (!node.location)
-        return;
+  vscode.commands.registerCommand('_cquery.gotoForTreeView', (node: TypeHierarchyNode | CallTreeNode) => {
+    if (!node.location)
+      return;
 
-      let parsedUri = parseUri(node.location.uri);
-      let parsedPosition = parsePosition(node.location.range.start);
+    let parsedUri = parseUri(node.location.uri);
+    let parsedPosition = parsePosition(node.location.range.start);
 
-      jumpToUriAtPosition(parsedUri, parsedPosition, true /*preserveFocus*/)
-    });
-  }
+    jumpToUriAtPosition(parsedUri, parsedPosition, true /*preserveFocus*/)
+  });
 }
