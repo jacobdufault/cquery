@@ -31,6 +31,14 @@
         }
       ]
     },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "_cquery._gotoForTreeView",
+          "when": "viewItem == cqueryGoto"
+        }
+      ]
+    },
     "commands": [
       {
         "title": "Freshen Index",
@@ -76,9 +84,13 @@
         "title": "Show Derived",
         "category": "cquery",
         "command": "cquery.derived"
+      },
+      {
+        "title": "Go to Tree View Entry",
+        "category": "cquery",
+        "command": "_cquery._gotoForTreeView"
       }
     ],
-
     "configuration": {
       "type": "object",
       "title": "cquery",
@@ -143,7 +155,6 @@
           "default": true,
           "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
         },
-
         "cquery.completion.include.maximumPathLength": {
           "type": "integer",
           "default": 37,
@@ -151,7 +162,11 @@
         },
         "cquery.completion.include.whitelistLiteralEnding": {
           "type": "array",
-          "default": [".h", ".hpp", ".hh"],
+          "default": [
+            ".h",
+            ".hpp",
+            ".hh"
+          ],
           "description": "Only files ending in one of these values will be shown in include auto-complete. Set to the empty-list to disable include auto-complete."
         },
         "cquery.completion.include.whitelist": {
@@ -164,20 +179,16 @@
           "default": [],
           "description": "EMCAScript regex that checks absolute path. If it matches, the file is not added to include path auto-complete. An example is \".*/CACHE/.*\""
         },
-
         "cquery.showDocumentLinksOnIncludes": {
           "type": "boolean",
           "default": true,
           "description": "If true, document links (an underline) will be rendered on includes. Goto definition (control click) will still work on includes even if this is false."
         },
-
         "cquery.codeLens.onLocalVariables": {
           "type": "boolean",
           "default": true,
           "description": "Set to false to hide code lens on parameters and function local variables."
         },
-
-
         "cquery.theme.light.inactiveRegion.textColor": {
           "type": "string",
           "default": "rgb(100, 100, 100)",
@@ -209,10 +220,10 @@
   },
   "devDependencies": {
     "@types/node": "^6.0.52",
-    "typescript": "^2.1.5",
-    "vscode": "^1.0.3"
+    "typescript": "^2.1.5"
   },
   "dependencies": {
     "vscode-languageclient": "^3.0.3"
-  }
+  },
+  "false": {}
 }

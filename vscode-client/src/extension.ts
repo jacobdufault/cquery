@@ -148,7 +148,7 @@ class TypeHierarchyProvider implements vscode.TreeDataProvider<TypeHierarchyNode
 		getTreeItem(element: TypeHierarchyNode): vscode.TreeItem {
       const kBaseName = '[[Base]]'
 
-      let collapseState: vscode.TreeItemCollapsibleState | undefined = undefined
+      let collapseState = vscode.TreeItemCollapsibleState.None;
       if (element.children.length > 0)
         collapseState = vscode.TreeItemCollapsibleState.Expanded;
       if (element.children && element.name == kBaseName) {
@@ -161,10 +161,12 @@ class TypeHierarchyProvider implements vscode.TreeDataProvider<TypeHierarchyNode
       return {
         label: element.name,
         collapsibleState: collapseState,
-        command: {
-          command: '_cquery.gotoForTreeView',
-          title: 'Goto'
-        }
+        contextValue: 'cqueryGoto'
+        // command: {
+        //   command: '_cquery.gotoForTreeView',
+        //   title: 'Goto',
+        //   arguments: [element.location]
+        // }
       };
     }
 
@@ -199,7 +201,7 @@ class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
     readonly onDidChangeTreeData: vscode.Event<any> = this.onDidChangeEmitter.event;
 
 		getTreeItem(element: CallTreeNode): vscode.TreeItem {
-      let collapseState: vscode.TreeItemCollapsibleState | undefined = undefined
+      let collapseState = vscode.TreeItemCollapsibleState.None
       if (element.hasCallers) {
         if (element._depth < 2)
           collapseState = vscode.TreeItemCollapsibleState.Expanded
@@ -210,10 +212,12 @@ class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
       return {
         label: element.name,
         collapsibleState: collapseState,
-        command: {
-          command: '_cquery.gotoForTreeView',
-          title: 'Goto'
-        }
+        contextValue: 'cqueryGoto',
+        // command: {
+        //   command: '_cquery.gotoForTreeView',
+        //   title: 'Goto',
+        //   arguments: [element.location]
+        // }
       };
     }
 
@@ -440,7 +444,6 @@ export function activate(context: vscode.ExtensionContext) {
     });
   });
 
-
   // Type hierarchy.
   const typeHierarchyProvider = new TypeHierarchyProvider();
   vscode.window.registerTreeDataProvider('cquery.typeHierarchy', typeHierarchyProvider);
@@ -488,7 +491,7 @@ export function activate(context: vscode.ExtensionContext) {
     callTreeProvider.onDidChangeEmitter.fire();
   });
 
-  vscode.commands.registerCommand('_cquery.gotoForTreeView', (node: TypeHierarchyNode | CallTreeNode) => {
+  vscode.commands.registerCommand('_cquery._gotoForTreeView', (node: TypeHierarchyNode | CallTreeNode) => {
     if (!node.location)
       return;
 
