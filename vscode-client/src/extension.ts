@@ -9,7 +9,7 @@ import { Message } from 'vscode-jsonrpc';
 // Increment version number whenever we want to make sure the user updates the
 // extension. cquery will emit an error notification if this does not match its
 // internal number.
-const VERSION = 2
+const VERSION = 3
 
 
 function assert(condition: boolean) {
