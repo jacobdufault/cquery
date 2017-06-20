@@ -26,7 +26,7 @@ class MyErrorHandler implements vscodelc.ErrorHandler {
       return vscodelc.ErrorAction.Continue;
     }
     closed(): vscodelc.CloseAction	{
-      return vscodelc.CloseAction.DoNotRestart;
+      return vscodelc.CloseAction.Restart;
     }
 }
 
