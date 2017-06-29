@@ -105,6 +105,16 @@
           "default": "./app",
           "description": "Command to start the cquery binary (on Linux ./app, on Windows indexer.exe)"
         },
+        "cquery.launch.autoRestart": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, cquery will be automatically restarted if it crashes."
+        },
+        "cquery.launch.notifyOnCrash": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, a notification message will be displayed whenever cquery crashes."
+        },
         "cquery.cacheDirectory": {
           "type": "string",
           "default": "",

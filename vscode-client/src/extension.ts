@@ -18,16 +18,26 @@ function assert(condition: boolean) {
 }
 
 class MyErrorHandler implements vscodelc.ErrorHandler {
-    error(error: Error, message: Message, count: number): vscodelc.ErrorAction {
-      console.log('!!!! error');
-      console.log(error);
-      console.log(message);
-      console.log(count);
-      return vscodelc.ErrorAction.Continue;
+  constructor(readonly config: vscode.WorkspaceConfiguration) {}
+
+  error(error: Error, message: Message, count: number): vscodelc.ErrorAction {
+    return vscodelc.ErrorAction.Continue;
+  }
+
+  closed(): vscodelc.CloseAction	{
+    const restart = this.config.get('launch.autoRestart');
+
+    if (this.config.get('launch.notifyOnCrash')) {
+      if (restart)
+        vscode.window.showInformationMessage('cquery has crashed; it has been restarted.');
+      else
+        vscode.window.showInformationMessage('cquery has crashed; it has not been restarted.');
     }
-    closed(): vscodelc.CloseAction	{
+
+    if (restart)
       return vscodelc.CloseAction.Restart;
-    }
+    return vscodelc.CloseAction.DoNotRestart;
+  }
 }
 
 function parsePosition(p): vscode.Position {
@@ -296,7 +306,7 @@ export function activate(context: vscode.ExtensionContext) {
       console.log(e);
       return false;
     },
-    errorHandler: new MyErrorHandler()
+    errorHandler: new MyErrorHandler(vscode.workspace.getConfiguration('cquery'))
   }
 
   // Create the language client and start the client.
