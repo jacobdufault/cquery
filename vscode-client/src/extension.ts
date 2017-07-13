@@ -467,6 +467,7 @@ export function activate(context: vscode.ExtensionContext) {
       position: position
     }).then((typeEntry: TypeHierarchyNode | undefined) => {
       if (typeEntry) {
+        typeHierarchyProvider.root = [];
         typeHierarchyProvider.root.push(typeEntry);
         typeHierarchyProvider.onDidChangeEmitter.fire();
       }
@@ -488,6 +489,7 @@ export function activate(context: vscode.ExtensionContext) {
       textDocument: { uri: uri.toString(), },
       position: position
     }).then((callNodes: CallTreeNode[]) => {
+      callTreeProvider.root = [];
       for (let callNode of callNodes) {
         callNode._depth = 0
         callTreeProvider.root.push(callNode);
