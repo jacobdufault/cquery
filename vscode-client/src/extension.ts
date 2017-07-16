@@ -109,6 +109,8 @@ function getClientConfig(context: vscode.ExtensionContext) {
     includeCompletionWhitelist: config.get('completion.include.whitelist'),
     includeCompletionBlacklist: config.get('completion.include.blacklist'),
     showDocumentLinksOnIncludes: config.get('showDocumentLinksOnIncludes'),
+    diagnosticsOnParse: config.get('diagnostics.onParse'),
+    diagnosticsOnCodeCompletion: config.get('diagnostics.onCodeCompletion'),
     codeLensOnLocalVariables: config.get('codeLens.onLocalVariables'),
   }
 
