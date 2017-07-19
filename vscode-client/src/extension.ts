@@ -149,6 +149,8 @@ class TypeHierarchyNode {
       readonly name: string,
       readonly location: vscode.Location | undefined,
       readonly children: TypeHierarchyNode[]) {}
+
+  get usr() { return this.name; }
 }
 
 class TypeHierarchyProvider implements vscode.TreeDataProvider<TypeHierarchyNode> {
@@ -173,12 +175,12 @@ class TypeHierarchyProvider implements vscode.TreeDataProvider<TypeHierarchyNode
       return {
         label: element.name,
         collapsibleState: collapseState,
-        contextValue: 'cqueryGoto'
-        // command: {
-        //   command: '_cquery.gotoForTreeView',
-        //   title: 'Goto',
-        //   arguments: [element.location]
-        // }
+        contextValue: 'cqueryGoto',
+        command: {
+          command: '_cquery._hackGotoForTreeView',
+          title: 'Goto',
+          arguments: [element, element.children.length != 0]
+        }
       };
     }
 
@@ -225,11 +227,11 @@ class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
         label: element.name,
         collapsibleState: collapseState,
         contextValue: 'cqueryGoto',
-        // command: {
-        //   command: '_cquery.gotoForTreeView',
-        //   title: 'Goto',
-        //   arguments: [element.location]
-        // }
+        command: {
+          command: '_cquery._hackGotoForTreeView',
+          title: 'Goto',
+          arguments: [element, element.hasCallers]
+        }
       };
     }
 
@@ -514,4 +516,29 @@ export function activate(context: vscode.ExtensionContext) {
 
     jumpToUriAtPosition(parsedUri, parsedPosition, true /*preserveFocus*/)
   });
+
+  let lastGotoNodeUsr: string
+  let lastGotoClickTime: number
+  vscode.commands.registerCommand('_cquery._hackGotoForTreeView',
+      (node: TypeHierarchyNode | CallTreeNode, hasChildren: boolean) => {
+        if (!node.location)
+          return;
+
+        if (!hasChildren) {
+          vscode.commands.executeCommand('_cquery._gotoForTreeView', node);
+          return;
+        }
+
+        if (lastGotoNodeUsr != node.usr) {
+          lastGotoNodeUsr = node.usr;
+          lastGotoClickTime = Date.now()
+          return;
+        }
+
+        const kDoubleClickTimeMs = config.get('treeViews.doubleClickTimeoutMs');
+        const elapsed = Date.now() - lastGotoClickTime;
+        lastGotoClickTime = Date.now();
+        if (elapsed < kDoubleClickTimeMs)
+          vscode.commands.executeCommand('_cquery._gotoForTreeView', node);
+      });
 }

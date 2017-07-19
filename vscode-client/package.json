@@ -209,6 +209,11 @@
           "default": true,
           "description": "Set to false to hide code lens on parameters and function local variables."
         },
+        "cquery.treeViews.doubleClickTimeoutMs": {
+          "type": "number",
+          "default": 500,
+          "description": "If a tree view entry is double-clicked within this timeout value, vscode will navigate to the entry."
+        },
         "cquery.theme.light.inactiveRegion.textColor": {
           "type": "string",
           "default": "rgb(100, 100, 100)",
