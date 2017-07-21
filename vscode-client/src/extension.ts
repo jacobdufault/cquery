@@ -194,12 +194,16 @@ class TypeHierarchyProvider implements vscode.TreeDataProvider<TypeHierarchyNode
 
 
 
+enum CallType {
+  Normal = 0, Base = 1, Derived = 2
+}
 class CallTreeNode {
   // These properties come directly from the langauge server.
   name: string
   usr: string
   location: vscode.Location
   hasCallers: boolean
+  callType: CallType
 
   // Cached state, local to just the extension.
   _depth: number = 0
@@ -209,7 +213,11 @@ class CallTreeNode {
 class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
     root: CallTreeNode[] = [];
 
-    constructor(readonly languageClient: vscodelc.LanguageClient) {}
+    constructor(readonly languageClient: vscodelc.LanguageClient,
+                readonly derivedDark: string,
+                readonly derivedLight: string,
+                readonly baseDark: string,
+                readonly baseLight: string) {}
 
     readonly onDidChangeEmitter: vscode.EventEmitter<any> = new vscode.EventEmitter<any>();
     readonly onDidChangeTreeData: vscode.Event<any> = this.onDidChangeEmitter.event;
@@ -223,6 +231,16 @@ class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
           collapseState = vscode.TreeItemCollapsibleState.Collapsed
       }
 
+      let light = '';
+      let dark = '';
+      if (element.callType == CallType.Base) {
+        light = this.baseLight;
+        dark = this.baseDark;
+      }
+      else if (element.callType == CallType.Derived) {
+        light = this.derivedLight;
+        dark = this.derivedDark;
+      }
       return {
         label: element.name,
         collapsibleState: collapseState,
@@ -231,6 +249,10 @@ class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
           command: '_cquery._hackGotoForTreeView',
           title: 'Goto',
           arguments: [element, element.hasCallers]
+        },
+        iconPath: {
+          light: light,
+          dark: dark
         }
       };
     }
@@ -484,7 +506,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 
   // Call tree
-  const callTreeProvider = new CallTreeProvider(languageClient);
+  let derivedDark = context.asAbsolutePath(path.join('resources', 'derived-dark.svg'));
+  let derivedLight = context.asAbsolutePath(path.join('resources', 'derived-light.svg'));
+  let baseDark = context.asAbsolutePath(path.join('resources', 'base-dark.svg'));
+  let baseLight = context.asAbsolutePath(path.join('resources', 'base-light.svg'));
+  const callTreeProvider = new CallTreeProvider(languageClient, derivedDark, derivedLight, baseDark, baseLight);
   vscode.window.registerTreeDataProvider('cquery.callTree', callTreeProvider);
   vscode.commands.registerCommand('cquery.callTree', () => {
     let position = vscode.window.activeTextEditor.selection.active;
