@@ -120,6 +120,11 @@
           "default": "",
           "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\nCache directories are project-wide, so this should be configured in the workspace settings so multiple indexes do not clash.\n\nExample value: \"/work/cquery-cache/chrome/\""
         },
+        "cquery.resourceDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Default value to use for clang -resource-dir argument. This will be automatically supplied by cquery if not provided."
+        },
         "cquery.index.extraClangArguments": {
           "type": "array",
           "default": [],
