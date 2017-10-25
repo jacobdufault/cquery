@@ -211,7 +211,7 @@
         },
         "cquery.codeLens.onLocalVariables": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Set to false to hide code lens on parameters and function local variables."
         },
         "cquery.treeViews.doubleClickTimeoutMs": {
