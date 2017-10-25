@@ -557,7 +557,7 @@ export function activate(context: vscode.ExtensionContext) {
             `onIdMapped: ${onIdMappedCount}, ` +
             `onIndexed: ${onIndexedCount}`;
 
-        if (total == 0) {
+        if (total == 0 && statusStyle == 'short') {
           statusIcon.text = 'cquery: idle';
         } else {
           statusIcon.text = `cquery: ${total} jobs`;
