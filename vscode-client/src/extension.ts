@@ -534,7 +534,9 @@ export function activate(context: vscode.ExtensionContext) {
   // Progress
   let statusIcon =
       vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-  statusIcon.tooltip = 'Number of index pending index jobs';
+  statusIcon.text = 'cquery: loading';
+  statusIcon.tooltip =
+      'cquery is loading project metadata (ie, compile_commands.json)';
   statusIcon.show();
   languageClient.onReady().then(() => {
     languageClient.onNotification('$cquery/progress', (args) => {
