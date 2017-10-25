@@ -530,6 +530,36 @@ export function activate(context: vscode.ExtensionContext) {
     });
   });
 
+
+  // Progress
+  let statusIcon =
+      vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+  statusIcon.tooltip = 'Number of index pending index jobs';
+  statusIcon.show();
+  languageClient.onReady().then(() => {
+    languageClient.onNotification('$cquery/progress', (args) => {
+      let indexRequestCount = args.indexRequestCount;
+      let doIdMapCount = args.doIdMapCount;
+      let loadPreviousIndexCount = args.loadPreviousIndexCount;
+      let onIdMappedCount = args.onIdMappedCount;
+      let onIndexedCount = args.onIndexedCount;
+      let total = indexRequestCount + doIdMapCount + loadPreviousIndexCount +
+          onIdMappedCount + onIndexedCount;
+
+      if (total == 0)
+        statusIcon.text = 'cquery: idle';
+      else
+        statusIcon.text = `cquery: ${total} jobs`;
+
+      statusIcon.tooltip = 'cquery jobs: ' +
+          `indexRequest: ${indexRequestCount}, ` +
+          `doIdMap: ${doIdMapCount}, ` +
+          `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
+          `onIdMapped: ${onIdMappedCount}, ` +
+          `onIndexed: ${onIndexedCount}`;
+    });
+  });
+
   // Type hierarchy.
   const typeHierarchyProvider = new TypeHierarchyProvider();
   vscode.window.registerTreeDataProvider(
