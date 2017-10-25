@@ -133,12 +133,12 @@
         "cquery.index.whitelist": {
           "type": "array",
           "default": [],
-          "description": "Every EMCAScript regex in this list must match the translation unit's absolute path for it to get indexed. An empty list is interpreted as matching everything.\n\nYou probably want to begin the regex using `.*` because the passed paths are absolute."
+          "description": "If a translation unit's absolute path matches any EMCAScript regex in this list, it will be indexed. The whitelist takes priority over the blacklist. To only index files in the whitelist, make \"cquery.index.blacklist\" match everything, ie, set it to \".*\".\n\nYou probably want to begin the regex using \".*\" because the passed paths are absolute."
         },
         "cquery.index.blacklist": {
           "type": "array",
           "default": [],
-          "description": "A translation unit (cc/cpp file) is not indexed if any of the EMCAScript regexes in this list matches translation unit's the absolute path.\n\nYou probably want to begin the regex using `.*` because the passed paths are absolute."
+          "description": "A translation unit (cc/cpp file) is not indexed if any of the EMCAScript regexes in this list matches translation unit's the absolute path.\n\nYou probably want to begin the regex using \".*\" because the passed paths are absolute."
         },
         "cquery.log.skippedPathsForIndex": {
           "type": "boolean",
