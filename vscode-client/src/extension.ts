@@ -96,6 +96,7 @@ function getClientConfig(context: vscode.ExtensionContext) {
     launchWorkingDirectory: <string>config.get('launch.workingDirectory'),
     launchCommand: <string>config.get('launch.command'),
     cacheDirectory: config.get('cacheDirectory'),
+    resourceDirectory: config.get('resourceDirectory'),
     indexWhitelist: config.get('index.whitelist'),
     indexBlacklist: config.get('index.blacklist'),
     extraClangArguments: config.get('index.extraClangArguments'),
