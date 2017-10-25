@@ -94,9 +94,9 @@ function getClientConfig(context: vscode.ExtensionContext) {
     const kOpenSettings = 'Open Settings';
     vscode.window
         .showErrorMessage(
-            'Please specify the \"launch.workingDirectory\" setting and reload vscode',
+            'Please specify the "cquery.launch.workingDirectory" setting and reload vscode',
             kOpenSettings)
-        .then((selected) => {
+        .then(selected => {
           if (selected == kOpenSettings)
             vscode.commands.executeCommand(
                 'workbench.action.openWorkspaceSettings');
@@ -108,10 +108,10 @@ function getClientConfig(context: vscode.ExtensionContext) {
     launchWorkingDirectory: <string>config.get('launch.workingDirectory'),
     launchCommand: <string>config.get('launch.command'),
     cacheDirectory: config.get('cacheDirectory'),
-    resourceDirectory: config.get('resourceDirectory'),
     indexWhitelist: config.get('index.whitelist'),
     indexBlacklist: config.get('index.blacklist'),
     extraClangArguments: config.get('index.extraClangArguments'),
+    resourceDirectory: config.get('misc.resourceDirectory'),
     maxWorkspaceSearchResults: config.get('misc.maxWorkspaceSearchResults'),
     indexerCount: config.get('misc.indexerCount'),
     enableIndexing: config.get('misc.enableIndexing'),
@@ -532,35 +532,43 @@ export function activate(context: vscode.ExtensionContext) {
 
 
   // Progress
-  let statusIcon =
-      vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-  statusIcon.text = 'cquery: loading';
-  statusIcon.tooltip =
-      'cquery is loading project metadata (ie, compile_commands.json)';
-  statusIcon.show();
-  languageClient.onReady().then(() => {
-    languageClient.onNotification('$cquery/progress', (args) => {
-      let indexRequestCount = args.indexRequestCount;
-      let doIdMapCount = args.doIdMapCount;
-      let loadPreviousIndexCount = args.loadPreviousIndexCount;
-      let onIdMappedCount = args.onIdMappedCount;
-      let onIndexedCount = args.onIndexedCount;
-      let total = indexRequestCount + doIdMapCount + loadPreviousIndexCount +
-          onIdMappedCount + onIndexedCount;
+  let statusStyle = config.get('misc.status');
+  if (statusStyle == 'short' || statusStyle == 'detailed') {
+    let statusIcon =
+        vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+    statusIcon.text = 'cquery: loading';
+    statusIcon.tooltip =
+        'cquery is loading project metadata (ie, compile_commands.json)';
+    statusIcon.show();
+    languageClient.onReady().then(() => {
+      languageClient.onNotification('$cquery/progress', (args) => {
+        let indexRequestCount = args.indexRequestCount;
+        let doIdMapCount = args.doIdMapCount;
+        let loadPreviousIndexCount = args.loadPreviousIndexCount;
+        let onIdMappedCount = args.onIdMappedCount;
+        let onIndexedCount = args.onIndexedCount;
+        let total = indexRequestCount + doIdMapCount + loadPreviousIndexCount +
+            onIdMappedCount + onIndexedCount;
 
-      if (total == 0)
-        statusIcon.text = 'cquery: idle';
-      else
-        statusIcon.text = `cquery: ${total} jobs`;
 
-      statusIcon.tooltip = 'cquery jobs: ' +
-          `indexRequest: ${indexRequestCount}, ` +
-          `doIdMap: ${doIdMapCount}, ` +
-          `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
-          `onIdMapped: ${onIdMappedCount}, ` +
-          `onIndexed: ${onIndexedCount}`;
+        let detailedJobString = `indexRequest: ${indexRequestCount}, ` +
+            `doIdMap: ${doIdMapCount}, ` +
+            `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
+            `onIdMapped: ${onIdMappedCount}, ` +
+            `onIndexed: ${onIndexedCount}`;
+
+        if (total == 0) {
+          statusIcon.text = 'cquery: idle';
+        } else {
+          statusIcon.text = `cquery: ${total} jobs`;
+          if (statusStyle == 'detailed') {
+            statusIcon.text += ` (${detailedJobString})`
+          }
+        }
+        statusIcon.tooltip = 'cquery jobs: ' + detailedJobString;
+      });
     });
-  });
+  }
 
   // Type hierarchy.
   const typeHierarchyProvider = new TypeHierarchyProvider();
