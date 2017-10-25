@@ -145,19 +145,18 @@ function getClientConfig(context: vscode.ExtensionContext) {
       return;
     }
 
-    console.log('Updating cache directory')
-    clientConfig.cacheDirectory =
-        context.storagePath.replace(/\\/g, '/') + '/cquerycache/'
-    config
-        .update('cacheDirectory', clientConfig.cacheDirectory, false /*global*/)
-        .then(
-            () => {
-              console.log('Updated config cache directory');
-            },
-            (reason) => {
-              console.log('Cache directory update failed');
-              console.log(reason);
-            });
+    // Provide a default cache directory if it is not present. Insert next to
+    // the project since if the user has an SSD they most likely have their
+    // source files on the SSD as well.
+    const generateCacheDirectory = () => {
+      let workspaceDir = vscode.workspace.rootPath.replace(/\\/g, '/');
+      if (!workspaceDir.endsWith('/'))
+        workspaceDir += '/';
+      return workspaceDir + '.vscode/cquery_cached_index/'
+    };
+    let cacheDir = generateCacheDirectory();
+    clientConfig.cacheDirectory = cacheDir;
+    config.update('cacheDirectory', cacheDir, false /*global*/);
   }
 
   return clientConfig;
