@@ -200,7 +200,7 @@
           "description": "If true, document links (an underline) will be rendered on includes. Goto definition (control click) will still work on includes even if this is false."
         },
         "cquery.diagnostics.onParse": {
-          "type":"boolean",
+          "type": "boolean",
           "default": true,
           "description": "If true, diagnostics will be reported when a file is parsed (ie, saving or indexed)."
         },
