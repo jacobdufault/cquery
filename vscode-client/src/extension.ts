@@ -67,6 +67,19 @@ function parseUri(u): vscode.Uri {
   return vscode.Uri.parse(u);
 }
 
+enum SymbolType {
+  Type = 0,
+  Function,
+  Variable
+}
+class Symbol {
+  constructor(readonly type: SymbolType, readonly ranges: Array<vscode.Range>) {
+  }
+}
+function parseSymbol(u): Symbol {
+  return new Symbol(u.type, parseRanges(u.ranges));
+}
+
 function jumpToUriAtPosition(
     uri: vscode.Uri, position: vscode.Position, preserveFocus: boolean) {
   vscode.workspace.openTextDocument(uri).then(d => {
@@ -673,4 +686,97 @@ export function activate(context: vscode.ExtensionContext) {
         if (elapsed < kDoubleClickTimeMs)
           vscode.commands.executeCommand('_cquery._gotoForTreeView', node);
       });
+
+
+  // Semantic highlighting
+  let makeSemanticDecorationType =
+      (color: string | vscode.ThemeColor): vscode.TextEditorDecorationType => {
+        return vscode.window.createTextEditorDecorationType({
+          isWholeLine: false,
+          rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
+          color: color,
+        });
+      };
+  const typeDecorationType = makeSemanticDecorationType('red');
+  const funcDecorationType = makeSemanticDecorationType('blue');
+
+  // Colors using http://www.colourco.de/analogic/10/%23ba563e
+  let varColors =
+      config.get<Array<string>>('semanticHighlighting.variables.colors', [
+        '#ad543e', '#b0653e', '#b2783e', '#b58b3e', '#b79e3e', '#bab33e',
+        '#b0bc3e', '#9fbf3e', '#8dc13e', '#7bc23f'
+      ]);
+  const varDecorationTypes = varColors.map(makeSemanticDecorationType);
+  let lastVarDecorationType = 0;
+
+  let semanticEnableType = false;
+  let semanticEnableFunction = false;
+  let semanticEnableVariable = false;
+  let updateConfigValues = () => {
+    semanticEnableType =
+        config.get<boolean>('semanticHighlighting.types.enabled', false);
+    semanticEnableFunction =
+        config.get<boolean>('semanticHighlighting.functions.enabled', false);
+    semanticEnableVariable =
+        config.get<boolean>('semanticHighlighting.variables.enabled', false);
+  };
+  updateConfigValues();
+
+  let getDecorationType = (type: SymbolType): vscode.TextEditorDecorationType |
+      undefined => {
+    switch (type) {
+      case SymbolType.Type:
+        if (!semanticEnableType)
+          return undefined;
+        return typeDecorationType;
+      case SymbolType.Function:
+        if (!semanticEnableFunction)
+          return undefined;
+        return funcDecorationType;
+      case SymbolType.Variable:
+        if (!semanticEnableVariable)
+          return undefined;
+        return varDecorationTypes[lastVarDecorationType++ % varColors.length];
+    }
+  };
+
+  let allDecorationTypes =
+      [typeDecorationType, funcDecorationType, ...varDecorationTypes];
+
+  languageClient.onReady().then(() => {
+    languageClient.onNotification(
+        '$cquery/publishSemanticHighlighting', (args) => {
+          updateConfigValues();
+          lastVarDecorationType = 0;
+
+          let uri = args.uri;
+          if (vscode.window.activeTextEditor.document.uri.toString() == uri) {
+            let decorations =
+                new Map<vscode.TextEditorDecorationType, Array<vscode.Range>>();
+
+            for (let symbol0 of args.symbols) {
+              let symbol = parseSymbol(symbol0);
+              let type = getDecorationType(symbol.type);
+              if (type === undefined)
+                continue;
+              if (decorations.has(type)) {
+                let existing = decorations.get(type);
+                for (let range of symbol.ranges)
+                  existing.push(range);
+              } else {
+                decorations.set(type, symbol.ranges);
+              }
+            }
+
+            // Clear decorations and set new ones. We might not use all of the
+            // decorations so clear before setting.
+            allDecorationTypes.forEach((type) => {
+              vscode.window.activeTextEditor.setDecorations(type, []);
+            });
+            decorations.forEach((ranges, type) => {
+              vscode.window.activeTextEditor.setDecorations(type, ranges);
+            });
+          }
+        });
+  });
 }
