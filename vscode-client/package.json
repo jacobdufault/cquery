@@ -120,6 +120,37 @@
           "default": "",
           "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\nCache directories are project-wide, so this should be configured in the workspace settings so multiple indexes do not clash.\n\nExample value: \"/work/cquery-cache/chrome/\""
         },
+        "cquery.semanticHighlighting.types.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for types is enabled/disabled."
+        },
+        "cquery.semanticHighlighting.functions.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for functions is enabled/disabled."
+        },
+        "cquery.semanticHighlighting.variables.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for variables is enabled/disabled."
+        },
+        "cquery.semanticHighlighting.variables.colors": {
+          "type": "array",
+          "default": [
+            "#ad543e",
+            "#b0653e",
+            "#b2783e",
+            "#b58b3e",
+            "#b79e3e",
+            "#bab33e",
+            "#b0bc3e",
+            "#9fbf3e",
+            "#8dc13e",
+            "#7bc23f"
+          ],
+          "description": "Colors to use for semantic variable highlighting."
+        },
         "cquery.index.extraClangArguments": {
           "type": "array",
           "default": [],
@@ -144,7 +175,9 @@
           "type": "string",
           "default": "short",
           "enum": [
-            "short", "detailed", "off"
+            "short",
+            "detailed",
+            "off"
           ],
           "description": "Controls the visibility of the status indicator."
         },
