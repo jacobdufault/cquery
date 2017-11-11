@@ -6,6 +6,8 @@ import * as vscode from 'vscode';
 import * as vscodelc from 'vscode-languageclient';
 import {Message} from 'vscode-jsonrpc';
 
+type Nullable<T> = T|null;
+
 // Increment version number whenever we want to make sure the user updates the
 // extension. cquery will emit an error notification if this does not match its
 // internal number.
@@ -73,11 +75,12 @@ enum SymbolType {
   Variable
 }
 class Symbol {
-  constructor(readonly type: SymbolType, readonly ranges: Array<vscode.Range>) {
-  }
+  constructor(
+      readonly type: SymbolType, readonly isTypeMember: boolean,
+      readonly ranges: Array<vscode.Range>) {}
 }
 function parseSymbol(u): Symbol {
-  return new Symbol(u.type, parseRanges(u.ranges));
+  return new Symbol(u.type, u.is_type_member, parseRanges(u.ranges));
 }
 
 function jumpToUriAtPosition(
@@ -689,65 +692,88 @@ export function activate(context: vscode.ExtensionContext) {
 
 
   // Semantic highlighting
-  let makeSemanticDecorationType =
-      (color: string | vscode.ThemeColor): vscode.TextEditorDecorationType => {
-        return vscode.window.createTextEditorDecorationType({
-          isWholeLine: false,
-          rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
-          color: color,
-        });
-      };
-  const typeDecorationType = makeSemanticDecorationType('red');
-  const funcDecorationType = makeSemanticDecorationType('blue');
+  // TODO:
+  //   - enable bold/italic decorators, might need change in vscode
+  //   - only function call icon if the call is implicit
+  //   - get color of variable based on its USR
+  let makeSemanticDecorationType = (color: Nullable<string>, underline: boolean,
+                                    showIcon: boolean):
+                                       vscode.TextEditorDecorationType => {
+    return vscode.window.createTextEditorDecorationType({
+      isWholeLine: false,
+      rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
+      color: color,
+      textDecoration: underline ? 'underline' : '',
+      after: {
+        contentIconPath: showIcon ?
+            'C:/Users/jacob/Desktop/cquery/vscode-client/resources/function_call.svg' :
+            '',
+      }
+    });
+  };
+  const typeDecorationType = makeSemanticDecorationType(
+      'red' /*color*/, false /*underline*/, false /*showIcon*/);
+  const typeFuncDecorationType = makeSemanticDecorationType(
+      null /*color*/, false /*underline*/, true /*showIcon*/);
 
-  // Colors using http://www.colourco.de/analogic/10/%23ba563e
   let varColors =
-      config.get<Array<string>>('semanticHighlighting.variables.colors', [
-        '#ad543e', '#b0653e', '#b2783e', '#b58b3e', '#b79e3e', '#bab33e',
-        '#b0bc3e', '#9fbf3e', '#8dc13e', '#7bc23f'
-      ]);
-  const varDecorationTypes = varColors.map(makeSemanticDecorationType);
-  let lastVarDecorationType = 0;
+      config.get<Array<string>>('semanticHighlighting.variables.colors');
 
-  let semanticEnableType = false;
-  let semanticEnableFunction = false;
-  let semanticEnableVariable = false;
+  const localVarDecorationTypes = varColors.map(
+      (color) => makeSemanticDecorationType(
+          color /*color*/, false /*underline*/, false /*showIcon*/));
+  const typeVarDecorationTypes = varColors.map(
+      (color) => makeSemanticDecorationType(
+          color /*color*/, true /*underline*/, false /*showIcon*/));
+
+  let lastLocalVarDecorationType = 0;
+  let lastTypeVarDecorationType = 0;
+
+  let semanticConfig = {type: false, func: false, var : false};
   let updateConfigValues = () => {
-    semanticEnableType =
-        config.get<boolean>('semanticHighlighting.types.enabled', false);
-    semanticEnableFunction =
-        config.get<boolean>('semanticHighlighting.functions.enabled', false);
-    semanticEnableVariable =
-        config.get<boolean>('semanticHighlighting.variables.enabled', false);
+    let get = (name) => config.get<boolean>(name, false);
+    semanticConfig.type = get('semanticHighlighting.types.enabled');
+    semanticConfig.func = get('semanticHighlighting.functions.enabled');
+    semanticConfig.var = get('semanticHighlighting.variables.enabled');
   };
   updateConfigValues();
 
-  let getDecorationType = (type: SymbolType): vscode.TextEditorDecorationType |
-      undefined => {
-    switch (type) {
-      case SymbolType.Type:
-        if (!semanticEnableType)
-          return undefined;
-        return typeDecorationType;
-      case SymbolType.Function:
-        if (!semanticEnableFunction)
-          return undefined;
-        return funcDecorationType;
-      case SymbolType.Variable:
-        if (!semanticEnableVariable)
-          return undefined;
-        return varDecorationTypes[lastVarDecorationType++ % varColors.length];
-    }
-  };
+  let tryGetDecorationType =
+      (symbol: Symbol): Nullable<vscode.TextEditorDecorationType> => {
+        switch (symbol.type) {
+          case SymbolType.Type:
+            if (!semanticConfig.type)
+              return null;
+            return typeDecorationType;
+          case SymbolType.Function:
+            if (!semanticConfig.func)
+              return null;
+            if (symbol.isTypeMember)
+              return typeFuncDecorationType;
+            return null;
+          case SymbolType.Variable:
+            if (!semanticConfig.var)
+              return null;
+            if (symbol.isTypeMember) {
+              return typeVarDecorationTypes
+                  [lastTypeVarDecorationType++ % varColors.length];
+            }
+            return localVarDecorationTypes
+                [lastLocalVarDecorationType++ % varColors.length];
+        }
+      };
 
-  let allDecorationTypes =
-      [typeDecorationType, funcDecorationType, ...varDecorationTypes];
+  let allDecorationTypes = [
+    typeDecorationType, typeFuncDecorationType, ...localVarDecorationTypes,
+    ...typeVarDecorationTypes
+  ];
 
   languageClient.onReady().then(() => {
     languageClient.onNotification(
         '$cquery/publishSemanticHighlighting', (args) => {
           updateConfigValues();
-          lastVarDecorationType = 0;
+          lastLocalVarDecorationType = 0;
+          lastTypeVarDecorationType = 0;
 
           let uri = args.uri;
           if (vscode.window.activeTextEditor.document.uri.toString() == uri) {
@@ -755,9 +781,9 @@ export function activate(context: vscode.ExtensionContext) {
                 new Map<vscode.TextEditorDecorationType, Array<vscode.Range>>();
 
             for (let symbol0 of args.symbols) {
-              let symbol = parseSymbol(symbol0);
-              let type = getDecorationType(symbol.type);
-              if (type === undefined)
+              let symbol: Symbol = parseSymbol(symbol0);
+              let type = tryGetDecorationType(symbol);
+              if (!type)
                 continue;
               if (decorations.has(type)) {
                 let existing = decorations.get(type);
