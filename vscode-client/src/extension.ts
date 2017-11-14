@@ -696,21 +696,22 @@ export function activate(context: vscode.ExtensionContext) {
   //   - enable bold/italic decorators, might need change in vscode
   //   - only function call icon if the call is implicit
   //   - get color of variable based on its USR
-  let makeSemanticDecorationType = (color: Nullable<string>, underline: boolean,
-                                    showIcon: boolean):
-                                       vscode.TextEditorDecorationType => {
-    return vscode.window.createTextEditorDecorationType({
-      isWholeLine: false,
-      rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
-      color: color,
-      textDecoration: underline ? 'underline' : '',
-      after: {
-        contentIconPath: showIcon ?
-            'C:/Users/jacob/Desktop/cquery/vscode-client/resources/function_call.svg' :
-            '',
-      }
-    });
-  };
+  let makeSemanticDecorationType =
+      (color: Nullable<string>, underline: boolean,
+       showIcon: boolean): vscode.TextEditorDecorationType => {
+
+        return vscode.window.createTextEditorDecorationType({
+          isWholeLine: false,
+          rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
+          color: color,
+          textDecoration: underline ? 'underline' : '',
+          after: {
+            contentIconPath: showIcon ?
+                context.asAbsolutePath('resources/function_call.svg') :
+                '',
+          }
+        });
+      };
   const typeDecorationType = makeSemanticDecorationType(
       'red' /*color*/, false /*underline*/, false /*showIcon*/);
   const typeFuncDecorationType = makeSemanticDecorationType(
