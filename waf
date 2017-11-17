@@ -1,7 +1,19 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # encoding: ISO8859-1
 # Thomas Nagy, 2005-2016
 #
+
+import sys
+
+if sys.version > '3':
+  python2 = os.popen('which python2 2> /dev/null').read().rstrip()
+  if python2:
+    args = sys.argv[:]
+    args.insert(0,python2)
+    os.execv(python2,args)
+  else:
+    sys.exit("%s requires Python Version 2 (python2 not in PATH)" % os.path.basename(__file__))
+
 """
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
