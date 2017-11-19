@@ -51,31 +51,48 @@
 ;;   Customization
 ;; ---------------------------------------------------------------------
 
+(defgroup cquery nil
+  "Customization options for the cquery client")
+
 (defcustom cquery/root-dir
   nil
   "Your local cquery root directory. Must be set"
   :type 'directory
-  :group 'lsp-mode)
+  :group 'cquery)
 
 (defface cquery/inactive-region-face
   '((t :foreground "#666666"))
   "The face used to mark inactive regions"
-  :group 'lsp-mode)
+  :group 'cquery)
 
 (defface cquery/sem-type-face
-  '((t :weight bold))
+  '((t :weight bold :inherit font-lock-type-face))
   "The face used to mark types"
-  :group 'lsp-mode)
+  :group 'cquery)
 
 (defface cquery/sem-func-face
-  '((t :slant italic))
+  '((t :slant italic :inherit font-lock-function-name-face))
   "The face used to mark functions"
-  :group 'lsp-mode)
+  :group 'cquery)
 
 (defface cquery/sem-var-face
-  '((t :underline t))
+  '((t :underline t :inherit font-lock-variable-name-face))
   "The face used to mark variables"
-  :group 'lsp-mode)
+  :group 'cquery)
+
+(defcustom cquery/enable-sem-highlight
+  t
+  "Enable semantic highlighting"
+  :type 'boolean
+  :group 'cquery)
+
+(defcustom cquery/sem-highlight-method
+  'overlay
+  "The method used to draw semantic highlighting. overlays are more
+ accurate than font-lock, but slower."
+  :group 'lsp-mode
+  :type 'symbol
+  :options '(overlay font-lock))
 
 ;; ---------------------------------------------------------------------
 ;;   Semantic highlighting
@@ -89,10 +106,14 @@
         (delete-overlay ov)))))
 
 (defun cquery//make-sem-highlight (region buffer face)
-  (let ((ov (make-overlay (car region) (cdr region) buffer)))
-    (overlay-put ov 'face face)
-    (overlay-put ov 'cquery-sem-highlight t)
-    (overlay-put ov 'cquery-sem-type 'highlight)))
+  (pcase cquery/sem-highlight-method
+    ('overlay
+     (let ((ov (make-overlay (car region) (cdr region) buffer)))
+       (overlay-put ov 'face face)
+       (overlay-put ov 'cquery-sem-highlight t)
+       (overlay-put ov 'cquery-sem-type 'highlight)))
+    ('font-lock
+     (put-text-property (car region) (cdr region) 'font-lock-face face buffer))))
 
 (defun cquery//set-inactive-regions (_workspace params)
   (save-excursion
@@ -108,23 +129,25 @@
           (overlay-put ov 'cquery-sem-type 'inactive))))))
 
 (defun cquery//publish-semantic-highlighting (_workspace params)
-  (save-excursion
-    (let* ((file (cquery//uri-to-file (gethash "uri" params)))
-           (buffer (find-file file))
-           (symbols (gethash "symbols" params)))
-      (switch-to-buffer buffer)
-      (cquery//clear-sem-highlights 'highlight)
-      (dolist (symbol symbols)
-        (let* ((type (gethash "type" symbol))
-               (is-type-member (gethash "is_type_member" symbol))
-               (ranges (mapcar 'cquery//read-range (gethash "ranges" symbol)))
-               (face
-                (pcase type
-                  ('0 'cquery/sem-type-face)
-                  ('1 (when is-type-member 'cquery/sem-func-face))
-                  ('2 (when is-type-member 'cquery/sem-var-face)))))
-          (dolist (range ranges)
-            (cquery//make-sem-highlight range buffer face)))))))
+  (when cquery/enable-sem-highlight
+    (save-excursion
+      (let* ((file (cquery//uri-to-file (gethash "uri" params)))
+             (buffer (find-file file))
+             (symbols (gethash "symbols" params)))
+        (switch-to-buffer buffer)
+        (cquery//clear-sem-highlights 'highlight)
+        (dolist (symbol symbols)
+          (let* ((type (gethash "type" symbol))
+                 (is-type-member (gethash "is_type_member" symbol))
+                 (ranges (mapcar 'cquery//read-range (gethash "ranges" symbol)))
+                 (face
+                  (pcase type
+                    ('0 'cquery/sem-type-face)
+                    ('1 (when is-type-member 'cquery/sem-func-face))
+                    ('2 (when is-type-member 'cquery/sem-var-face)))))
+            (when face
+              (dolist (range ranges)
+                (cquery//make-sem-highlight range buffer face)))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Notification handlers
