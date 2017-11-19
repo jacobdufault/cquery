@@ -9,6 +9,9 @@
 #   ./format.sh
 #
 
-FILES=$(find src -name '*.cc' -o -name '*.h')
-clang-format -style=Chromium -verbose -i $FILES
+FILES=$(find src -name '*.cc' -o -name '*.h' | grep -v '/\.')
+for FILE in $FILES; do
+  echo "Formatting $FILE"
+  clang-format -style=Chromium -i $FILE
+done
 
