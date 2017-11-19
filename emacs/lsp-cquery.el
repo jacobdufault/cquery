@@ -70,14 +70,24 @@
   "The face used to mark types"
   :group 'cquery)
 
-(defface cquery/sem-func-face
+(defface cquery/sem-member-func-face
   '((t :slant italic :inherit font-lock-function-name-face))
-  "The face used to mark functions"
+  "The face used to mark member functions"
   :group 'cquery)
 
-(defface cquery/sem-var-face
-  '((t :underline t :inherit font-lock-variable-name-face))
-  "The face used to mark variables"
+(defface cquery/sem-free-func-face
+  '((t :inherit font-lock-function-name-face))
+  "The face used to mark free functions"
+  :group 'cquery)
+
+(defface cquery/sem-member-var-face
+  '((t :slant italic :inherit font-lock-variable-name-face))
+  "The face used to mark member variables"
+  :group 'cquery)
+
+(defface cquery/sem-free-var-face
+  '((t :inherit font-lock-variable-name-face))
+  "The face used to mark local and namespace scope variables"
   :group 'cquery)
 
 (defcustom cquery/enable-sem-highlight
@@ -99,11 +109,15 @@
 ;; ---------------------------------------------------------------------
 
 (defun cquery//clear-sem-highlights (&optional type)
-  (dolist (ov (overlays-in 0 (point-max)))
-    (when (overlay-get ov 'cquery-sem-highlight)
-      (when (or (null type)
-                (eq (overlay-get ov 'cquery-sem-type) type))
-        (delete-overlay ov)))))
+  (pcase cquery/sem-highlight-method
+    ('overlay
+     (dolist (ov (overlays-in 0 (point-max)))
+       (when (overlay-get ov 'cquery-sem-highlight)
+         (when (or (null type)
+                   (eq (overlay-get ov 'cquery-sem-type) type))
+           (delete-overlay ov)))))
+    ('font-lock
+     (font-lock-ensure))))
 
 (defun cquery//make-sem-highlight (region buffer face)
   (pcase cquery/sem-highlight-method
@@ -143,8 +157,8 @@
                  (face
                   (pcase type
                     ('0 'cquery/sem-type-face)
-                    ('1 (when is-type-member 'cquery/sem-func-face))
-                    ('2 (when is-type-member 'cquery/sem-var-face)))))
+                    ('1 (if is-type-member 'cquery/sem-member-func-face 'cquery/sem-free-func-face))
+                    ('2 (if is-type-member 'cquery/sem-member-var-face 'cquery/sem-free-var-face)))))
             (when face
               (dolist (range ranges)
                 (cquery//make-sem-highlight range buffer face)))))))))
@@ -276,6 +290,7 @@
   (when (null cquery/root-dir)
     (user-error "Set cquery/root-dir to the path of your cquery directory using customize"))
   (or (expand-file-name (locate-dominating-file default-directory "compile_commands.json"))
+      (expand-file-name (locate-dominating-file default-directory "clang_args"))
       (user-error "Could not find cquery project root")))
 
 (lsp-define-stdio-client lsp-cquery "c++"
