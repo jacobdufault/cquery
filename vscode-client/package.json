@@ -312,6 +312,11 @@
           "type": "string",
           "default": "rgba(18, 18, 18, 0.3)",
           "description": "css styling to apply to the background when the code region has been disabled by the preprocessor in a dark theme."
+        },
+        "cquery.completion.enableSnippetInsertion": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, parameter declarations are inserted as snippets in function/method call arguments when completing a function/method call"
         }
       }
     }

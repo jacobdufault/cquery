@@ -143,6 +143,7 @@ function getClientConfig(context: vscode.ExtensionContext) {
     diagnosticsOnParse: config.get('diagnostics.onParse'),
     diagnosticsOnCodeCompletion: config.get('diagnostics.onCodeCompletion'),
     codeLensOnLocalVariables: config.get('codeLens.onLocalVariables'),
+    enableSnippetInsertion: config.get('completion.enableSnippetInsertion')
   }
 
   if (!clientConfig.cacheDirectory) {
