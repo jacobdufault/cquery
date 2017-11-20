@@ -22,23 +22,23 @@
 ;; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
-
+;;
 ;;; Commentary:
 
+;;
 ;; To enable, call (lsp-cquery-enable) in your c++-mode hook.
-
-;;; TODO:
-
-;;  - Toggle semantic highlighting
+;;
+;;  TODO:
+;;
 ;;  - Rainbow variables with semantic highlighting
 ;;  - Better config options
-;;  - Look into using font-lock for semantic highlighting instead of overlays
-
-;;; Style:
-
+;;
+;;  Style:
+;;
 ;;  - Internal functions and variables are prefixed cquery//
 ;;  - Interactive functions are prefixed cquery-
 ;;  - All other functions and variables are prefixed cquery/
+;;
 
 ;;; Code:
 
@@ -88,6 +88,16 @@
 (defface cquery/sem-free-var-face
   '((t :inherit font-lock-variable-name-face))
   "The face used to mark local and namespace scope variables"
+  :group 'cquery)
+
+(defface cquery/code-lens-face
+  '((t :foreground "#777777"))
+  "The face used for code lens overlays"
+  :group 'cquery)
+
+(defface cquery/code-lens-mouse-face
+  '((t :box t))
+  "The face used for code lens overlays"
   :group 'cquery)
 
 (defcustom cquery/enable-sem-highlight
@@ -180,6 +190,60 @@
     ("$cquery/progress" . (lambda (_w _p)))))
 
 ;; ---------------------------------------------------------------------
+;;   Codelens
+;;
+;;   Enable by calling `cquery-request-code-lens'
+;;   Clear them away using `cquery-clear-code-lens'
+;;
+;;   TODO:
+;;   - Find a better way to display them.
+;;
+;;   - Instead of adding multiple lenses to one symbol, append the text
+;;     of the new one to the old. This will fix flickering when moving
+;;     over lenses.
+;;
+;;   - Add per-buffer toggle command calling request/clear functions
+;;
+;;   - Add a global option to request code lenses on automatically
+;; ---------------------------------------------------------------------
+
+(defun cquery-request-code-lens ()
+  "Request code lens from cquery"
+  (interactive)
+  (lsp--cur-workspace-check)
+  (lsp--send-request-async
+   (lsp--make-request "textDocument/codeLens"
+                      `(:textDocument (:uri ,(concat "file://" buffer-file-name))))
+   'cquery//code-lens-callback))
+
+(defun cquery-clear-code-lens ()
+  "Clear all code lenses from this buffer"
+  (dolist (ov (overlays-in 0 (point-max)))
+    (when (overlay-get ov 'cquery-code-lens)
+      (delete-overlay ov))))
+
+(defun cquery//make-code-lens-string (command)
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mouse-1] (lambda () (interactive) (cquery/execute-command command)))
+    (propertize (gethash "title" command)
+                'face 'cquery/code-lens-face
+                'mouse-face 'cquery/code-lens-mouse-face
+                'local-map map)))
+
+(defun cquery//code-lens-callback (result)
+  (save-excursion
+    (cquery//clear-code-lens)
+    (goto-char 0)
+    (dolist (lens result)
+      (let* ((range (cquery//read-range (gethash "range" lens)))
+             (root (gethash "command" lens))
+             (title (gethash "title" root))
+             (command (gethash "command" root)))
+        (let ((ov (make-overlay (car range) (cdr range))))
+          (overlay-put ov 'cquery-code-lens t)
+          (overlay-put ov 'after-string (format " %s " (cquery//make-code-lens-string root))))))))
+
+;; ---------------------------------------------------------------------
 ;;   CodeAction Commands
 ;; ---------------------------------------------------------------------
 
@@ -199,33 +263,34 @@
                           (funcall name-func action))
                         lsp-code-actions)
                 :action (lambda (str)
-                          (cl-loop
-                           for action in lsp-code-actions
-                           do (when (equal (funcall name-func action) str)
-                                (cquery/execute-command action))))))))
+                          (dolist (action lsp-code-actions)
+                            (when (equal (funcall name-func action) str)
+                              (cquery/execute-command action)
+                              (lsp--text-document-code-action))))))))
 
 (defun cquery/execute-command (action)
   "Execute a cquery command"
   (let* ((command (gethash "command" action))
          (arguments (gethash "arguments" action))
          (uri (car arguments))
-         (edits (cdr arguments)))
+         (data (cdr arguments)))
     (switch-to-buffer (find-file (cquery//uri-to-file uri)))
     (pcase command
+      ;; Code actions
       ('"cquery._applyFixIt"
-       (cl-loop
-        for edit in edits
-        do (cquery//apply-textedit (car edit))))
+       (dolist (edit data)
+         (cquery//apply-textedit (car edit))))
       ('"cquery._autoImplement"
-       (cl-loop
-        for edit in edits
-        do (cquery//apply-textedit (car edit)))
+       (dolist (edit data)
+         (cquery//apply-textedit (car edit)))
        (goto-char (cquery//pos-at-hashed-pos
-                   (gethash "start" (gethash "range" (caar edits))))))
+                   (gethash "start" (gethash "range" (caar data))))))
       ('"cquery._insertInclude"
-       (cquery//select-textedit edits "Include: "))))
-  (setq lsp-code-actions nil)
-  (lsp--text-document-code-action))
+       (cquery//select-textedit data "Include: "))
+      ('"cquery.showReferences" ;; Used by code lenses
+       (let ((pos (cquery//pos-at-hashed-pos (car data))))
+         (goto-char pos)
+         (xref-find-references (xref-backend-identifier-at-point (xref-find-backend))))))))
 
 (defun cquery//select-textedit (edit-list prompt)
   "Show a list of possible textedits, and apply the selected.
