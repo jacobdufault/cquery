@@ -104,6 +104,13 @@
   :type 'symbol
   :options '(overlay font-lock))
 
+(defcustom cquery/cache-dir
+  ".vscode/cquery_cached_index"
+  "Directory in which cquery will store its index cache. Relative
+ to the project root directory."
+  :type 'string
+  :group 'cquery)
+
 ;; ---------------------------------------------------------------------
 ;;   Semantic highlighting
 ;; ---------------------------------------------------------------------
@@ -286,8 +293,7 @@
   (lsp-provide-marked-string-renderer client "c++" #'cquery//render-string))
 
 (defun cquery//get-init-params (workspace)
-  `(:cacheDirectory ,(concat (lsp--workspace-root workspace)
-                             ".vscode/cquery_cached_index")
+  `(:cacheDirectory ,(concat (lsp--workspace-root workspace) cquery/cache-dir)
      :resourceDirectory ,(concat cquery/root-dir "clang_resource_dir")))
 
 (defun cquery//get-root ()
