@@ -104,6 +104,13 @@
   :type 'symbol
   :options '(overlay font-lock))
 
+(defcustom cquery/cache-dir
+  ".vscode/cquery_cached_index"
+  "Directory in which cquery will store its index cache. Relative
+ to the project root directory."
+  :type 'string
+  :group 'cquery)
+
 ;; ---------------------------------------------------------------------
 ;;   Semantic highlighting
 ;; ---------------------------------------------------------------------
@@ -274,16 +281,20 @@
 (defun cquery//render-string (str)
   (condition-case nil
       (with-temp-buffer
-	(delay-mode-hooks (c++-mode))
-	(insert str)
-	(font-lock-ensure)
-	(buffer-string))
+	    (delay-mode-hooks (c++-mode))
+	    (insert str)
+	    (font-lock-ensure)
+	    (buffer-string))
     (error str)))
 
 (defun cquery//initialize-client (client)
   (dolist (p cquery//handlers)
     (lsp-client-on-notification client (car p) (cdr p)))
   (lsp-provide-marked-string-renderer client "c++" #'cquery//render-string))
+
+(defun cquery//get-init-params (workspace)
+  `(:cacheDirectory ,(concat (lsp--workspace-root workspace) cquery/cache-dir)
+     :resourceDirectory ,(concat cquery/root-dir "clang_resource_dir")))
 
 (defun cquery//get-root ()
   "Return the root directory of a cquery project."
@@ -293,10 +304,11 @@
       (expand-file-name (locate-dominating-file default-directory "clang_args"))
       (user-error "Could not find cquery project root")))
 
-(lsp-define-stdio-client lsp-cquery "c++"
-                         #'cquery//get-root
-                         (list (concat cquery/root-dir "build/app") "--language-server")
-                         :initialize #'cquery//initialize-client)
+(lsp-define-stdio-client
+ lsp-cquery "c++" #'cquery//get-root
+ (list (concat cquery/root-dir "build/app") "--language-server")
+ :initialize #'cquery//initialize-client
+ :extra-init-params #'cquery//get-init-params)
 
 ;; ---------------------------------------------------------------------
 ;;  lsp-mode function advices
@@ -306,11 +318,6 @@
 ;; clear the old ones
 (advice-add 'lsp--text-document-code-action-callback :around
             '(lambda (orig actions) (setq lsp-code-actions actions)))
-
-;; This one should get implemented in the upstream, so we can supply
-;; :initializationOptions in lsp-define-stdio-client
-;; It is in a separate file as it containes GPL code.
-(require 'lsp-mode-advice)
 
 (provide 'lsp-cquery)
 ;;; lsp-cquery.el ends here
