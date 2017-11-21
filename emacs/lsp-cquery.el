@@ -365,9 +365,9 @@
   "Return the root directory of a cquery project."
   (when (null cquery/root-dir)
     (user-error "Set cquery/root-dir to the path of your cquery directory using customize"))
-  (or (expand-file-name (locate-dominating-file default-directory "compile_commands.json"))
-      (expand-file-name (locate-dominating-file default-directory "clang_args"))
-      (user-error "Could not find cquery project root")))
+  (expand-file-name (or (locate-dominating-file default-directory "compile_commands.json")
+                        (locate-dominating-file default-directory "clang_args")
+                        (user-error "Could not find cquery project root"))))
 
 (lsp-define-stdio-client
  lsp-cquery "c++" #'cquery//get-root
