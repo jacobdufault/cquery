@@ -244,6 +244,11 @@
           "default": true,
           "description": "If set to false, restoring the cached index will be disabled. Only useful if there is a cached index stored on disk. You should not need to use this."
         },
+        "cquery.misc.compilationDatabaseDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "If not empty, the compilation database directory to use instead of the project root"
+        },
         "cquery.completion.include.maximumPathLength": {
           "type": "integer",
           "default": 37,
