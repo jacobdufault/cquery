@@ -125,14 +125,12 @@
 ;;   Semantic highlighting
 ;; ---------------------------------------------------------------------
 
-(defun cquery//clear-sem-highlights (&optional type)
+(defun cquery//clear-sem-highlights ()
   (pcase cquery/sem-highlight-method
     ('overlay
      (dolist (ov (overlays-in 0 (point-max)))
        (when (overlay-get ov 'cquery-sem-highlight)
-         (when (or (null type)
-                   (eq (overlay-get ov 'cquery-sem-type) type))
-           (delete-overlay ov)))))
+         (delete-overlay ov))))
     ('font-lock
      (font-lock-ensure))))
 
@@ -141,23 +139,9 @@
     ('overlay
      (let ((ov (make-overlay (car region) (cdr region) buffer)))
        (overlay-put ov 'face face)
-       (overlay-put ov 'cquery-sem-highlight t)
-       (overlay-put ov 'cquery-sem-type 'highlight)))
+       (overlay-put ov 'cquery-sem-highlight t)))
     ('font-lock
      (put-text-property (car region) (cdr region) 'font-lock-face face buffer))))
-
-(defun cquery//set-inactive-regions (_workspace params)
-  (save-excursion
-    (let* ((file (cquery//uri-to-file (gethash "uri" params)))
-           (regions (mapcar 'cquery//read-range (gethash "inactiveRegions" params)))
-           (buffer (find-file file)))
-      (switch-to-buffer buffer)
-      (cquery//clear-sem-highlights 'inactive)
-      (dolist (region regions)
-        (let ((ov (make-overlay (car region) (cdr region) buffer)))
-          (overlay-put ov 'face 'cquery/inactive-region-face)
-          (overlay-put ov 'cquery-sem-highlight t)
-          (overlay-put ov 'cquery-sem-type 'inactive))))))
 
 (defun cquery//publish-semantic-highlighting (_workspace params)
   (when cquery/enable-sem-highlight
@@ -165,20 +149,41 @@
       (let* ((file (cquery//uri-to-file (gethash "uri" params)))
              (buffer (find-file file))
              (symbols (gethash "symbols" params)))
-        (switch-to-buffer buffer)
-        (cquery//clear-sem-highlights 'highlight)
-        (dolist (symbol symbols)
-          (let* ((type (gethash "type" symbol))
-                 (is-type-member (gethash "is_type_member" symbol))
-                 (ranges (mapcar 'cquery//read-range (gethash "ranges" symbol)))
-                 (face
-                  (pcase type
-                    ('0 'cquery/sem-type-face)
-                    ('1 (if is-type-member 'cquery/sem-member-func-face 'cquery/sem-free-func-face))
-                    ('2 (if is-type-member 'cquery/sem-member-var-face 'cquery/sem-free-var-face)))))
-            (when face
-              (dolist (range ranges)
-                (cquery//make-sem-highlight range buffer face)))))))))
+        (with-current-buffer buffer
+          (cquery//clear-sem-highlights)
+          (dolist (symbol symbols)
+            (let* ((type (gethash "type" symbol))
+                   (is-type-member (gethash "is_type_member" symbol))
+                   (ranges (mapcar 'cquery//read-range (gethash "ranges" symbol)))
+                   (face
+                    (pcase type
+                      ('0 'cquery/sem-type-face)
+                      ('1 (if is-type-member 'cquery/sem-member-func-face 'cquery/sem-free-func-face))
+                      ('2 (if is-type-member 'cquery/sem-member-var-face 'cquery/sem-free-var-face)))))
+              (when face
+                (dolist (range ranges)
+                  (cquery//make-sem-highlight range buffer face))))))))))
+
+;; ---------------------------------------------------------------------
+;;   Inactive regions
+;; ---------------------------------------------------------------------
+
+(defun cquery//clear-inactive-regions ()
+  (dolist (ov (overlays-in 0 (point-max)))
+    (when (overlay-get ov 'cquery-inactive)
+      (delete-overlay ov))))
+
+(defun cquery//set-inactive-regions (_workspace params)
+  (save-excursion
+    (let* ((file (cquery//uri-to-file (gethash "uri" params)))
+           (regions (mapcar 'cquery//read-range (gethash "inactiveRegions" params)))
+           (buffer (find-file file)))
+      (with-current-buffer buffer
+        (cquery//clear-inactive-regions)
+        (dolist (region regions)
+          (let ((ov (make-overlay (car region) (cdr region) buffer)))
+            (overlay-put ov 'face 'cquery/inactive-region-face)
+            (overlay-put ov 'cquery-inactive t)))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Notification handlers
@@ -218,6 +223,7 @@
 
 (defun cquery-clear-code-lens ()
   "Clear all code lenses from this buffer"
+  (interactive)
   (dolist (ov (overlays-in 0 (point-max)))
     (when (overlay-get ov 'cquery-code-lens)
       (delete-overlay ov))))
@@ -274,23 +280,23 @@
          (arguments (gethash "arguments" action))
          (uri (car arguments))
          (data (cdr arguments)))
-    (switch-to-buffer (find-file (cquery//uri-to-file uri)))
-    (pcase command
-      ;; Code actions
-      ('"cquery._applyFixIt"
-       (dolist (edit data)
-         (cquery//apply-textedit (car edit))))
-      ('"cquery._autoImplement"
-       (dolist (edit data)
-         (cquery//apply-textedit (car edit)))
-       (goto-char (cquery//pos-at-hashed-pos
-                   (gethash "start" (gethash "range" (caar data))))))
-      ('"cquery._insertInclude"
-       (cquery//select-textedit data "Include: "))
-      ('"cquery.showReferences" ;; Used by code lenses
-       (let ((pos (cquery//pos-at-hashed-pos (car data))))
-         (goto-char pos)
-         (xref-find-references (xref-backend-identifier-at-point (xref-find-backend))))))))
+    (with-current-buffer (find-file (cquery//uri-to-file uri))
+      (pcase command
+        ;; Code actions
+        ('"cquery._applyFixIt"
+         (dolist (edit data)
+           (cquery//apply-textedit (car edit))))
+        ('"cquery._autoImplement"
+         (dolist (edit data)
+           (cquery//apply-textedit (car edit)))
+         (goto-char (cquery//pos-at-hashed-pos
+                     (gethash "start" (gethash "range" (caar data))))))
+        ('"cquery._insertInclude"
+         (cquery//select-textedit data "Include: "))
+        ('"cquery.showReferences" ;; Used by code lenses
+         (let ((pos (cquery//pos-at-hashed-pos (car data))))
+           (goto-char pos)
+           (xref-find-references (xref-backend-identifier-at-point (xref-find-backend)))))))))
 
 (defun cquery//select-textedit (edit-list prompt)
   "Show a list of possible textedits, and apply the selected.
@@ -346,10 +352,10 @@
 (defun cquery//render-string (str)
   (condition-case nil
       (with-temp-buffer
-	    (delay-mode-hooks (c++-mode))
-	    (insert str)
-	    (font-lock-ensure)
-	    (buffer-string))
+        (delay-mode-hooks (c++-mode))
+        (insert str)
+        (font-lock-ensure)
+        (buffer-string))
     (error str)))
 
 (defun cquery//initialize-client (client)
