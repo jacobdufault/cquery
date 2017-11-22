@@ -174,7 +174,7 @@ def build(bld):
   bld.program(
       source=cc_files,
       use='clang',
-      cxxflags=['-g', '-O3', '-std=c++11', '-Wall', '-Werror'],
+      cxxflags=['-g', '-O3', '-std=c++11', '-Wall', '-Wno-sign-compare', '-Werror'],
       includes=[
         'third_party/',
         'third_party/doctest/',
