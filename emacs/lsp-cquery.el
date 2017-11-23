@@ -3,6 +3,9 @@
 ;; Copyright (C) 2017 Tobias Pisani
 
 ;; Author:  Tobias Pisani
+;; Package-Version: 20171122.1
+;; Version: 0.1
+;; Package-Requires: ((emacs "24.4") (lsp-mode "3.0"))
 ;; Keywords: languages, lsp-mode, c++
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,11 +55,18 @@
 ;; ---------------------------------------------------------------------
 
 (defgroup cquery nil
-  "Customization options for the cquery client")
+  "Customization options for the cquery client"
+  :group 'tools)
 
-(defcustom cquery/root-dir
-  nil
-  "Your local cquery root directory. Must be set"
+(defcustom cquery/executable
+  "cquery"
+  "cquery executable filename"
+  :type 'file
+  :group 'cquery)
+
+(defcustom cquery/resource-dir
+  ""
+  "The clang resource directory, $(cquery_root)/clang_resource_dir/"
   :type 'directory
   :group 'cquery)
 
@@ -115,7 +125,7 @@
   :options '(overlay font-lock))
 
 (defcustom cquery/cache-dir
-  ".vscode/cquery_cached_index"
+  ".vscode/cquery_cached_index/"
   "Directory in which cquery will store its index cache. Relative
  to the project root directory."
   :type 'string
@@ -128,7 +138,7 @@
 (defun cquery//clear-sem-highlights ()
   (pcase cquery/sem-highlight-method
     ('overlay
-     (dolist (ov (overlays-in 0 (point-max)))
+     (dolist (ov (overlays-in (point-min) (point-max)))
        (when (overlay-get ov 'cquery-sem-highlight)
          (delete-overlay ov))))
     ('font-lock
@@ -169,7 +179,7 @@
 ;; ---------------------------------------------------------------------
 
 (defun cquery//clear-inactive-regions ()
-  (dolist (ov (overlays-in 0 (point-max)))
+  (dolist (ov (overlays-in (point-min) (point-max)))
     (when (overlay-get ov 'cquery-inactive)
       (delete-overlay ov))))
 
@@ -224,7 +234,7 @@
 (defun cquery-clear-code-lens ()
   "Clear all code lenses from this buffer"
   (interactive)
-  (dolist (ov (overlays-in 0 (point-max)))
+  (dolist (ov (overlays-in (point-min) (point-max)))
     (when (overlay-get ov 'cquery-code-lens)
       (delete-overlay ov))))
 
@@ -238,8 +248,8 @@
 
 (defun cquery//code-lens-callback (result)
   (save-excursion
-    (cquery//clear-code-lens)
-    (goto-char 0)
+    (cquery-clear-code-lens)
+    (goto-char (point-min))
     (dolist (lens result)
       (let* ((range (cquery//read-range (gethash "range" lens)))
              (root (gethash "command" lens))
@@ -259,7 +269,7 @@
   (let ((name-func
          (lambda (action)
            (let ((edit (caadr (gethash "arguments" action))))
-             (format "%s: %s" (cquery//pos-at-hashed-pos
+             (format "%s: %s" (lsp--position-to-point
                                (gethash "start" (gethash "range" edit)))
                      (gethash "title" action))))))
     (if (null lsp-code-actions)
@@ -289,12 +299,12 @@
         ('"cquery._autoImplement"
          (dolist (edit data)
            (cquery//apply-textedit (car edit)))
-         (goto-char (cquery//pos-at-hashed-pos
+         (goto-char (lsp--position-to-point
                      (gethash "start" (gethash "range" (caar data))))))
         ('"cquery._insertInclude"
          (cquery//select-textedit data "Include: "))
         ('"cquery.showReferences" ;; Used by code lenses
-         (let ((pos (cquery//pos-at-hashed-pos (car data))))
+         (let ((pos (lsp--position-to-point (car data))))
            (goto-char pos)
            (xref-find-references (xref-backend-identifier-at-point (xref-find-backend)))))))))
 
@@ -302,7 +312,7 @@
   "Show a list of possible textedits, and apply the selected.
   Used by cquery._insertInclude"
   (let ((name-func (lambda (edit)
-                     (concat (cquery//pos-at-hashed-pos
+                     (concat (lsp--position-to-point
                               (gethash "start" (gethash "range" edit)))
                              ": "
                              (gethash "newText" edit)))))
@@ -319,8 +329,8 @@
 
 (defun cquery//apply-textedit (edit)
   (let* ((range (gethash "range" edit))
-         (start (cquery//pos-at-hashed-pos (gethash "start" range)))
-         (end (cquery//pos-at-hashed-pos (gethash "end" range)))
+         (start (lsp--position-to-point (gethash "start" range)))
+         (end (lsp--position-to-point (gethash "end" range)))
          (newText (gethash "newText" edit)))
     (when (> end start)
       (delete-region start (- end 1)))
@@ -331,19 +341,8 @@
   (string-remove-prefix "file://" uri))
 
 (defun cquery//read-range (range)
-  `(,(cquery//pos-at-hashed-pos (gethash "start" range)) . ,(cquery//pos-at-hashed-pos (gethash "end" range))))
-
-(defun cquery//pos-at-hashed-pos (hashed)
-  (cquery//pos-at-line-col
-   (gethash "line" hashed)
-   (gethash "character" hashed)))
-
-(defun cquery//pos-at-line-col (l c)
-  (save-excursion
-    (goto-char (point-min))
-    (forward-line l)
-    (move-to-column c)
-    (point)))
+  (cons (lsp--position-to-point (gethash "start" range))
+        (lsp--position-to-point (gethash "end" range))))
 
 ;; ---------------------------------------------------------------------
 ;;  Register lsp client
@@ -364,20 +363,18 @@
   (lsp-provide-marked-string-renderer client "c++" #'cquery//render-string))
 
 (defun cquery//get-init-params (workspace)
-  `(:cacheDirectory ,(concat (lsp--workspace-root workspace) cquery/cache-dir)
-     :resourceDirectory ,(concat cquery/root-dir "clang_resource_dir")))
+  (list :cacheDirectory (concat (lsp--workspace-root workspace) cquery/cache-dir)
+        :resourceDirectory cquery/resource-dir))
 
 (defun cquery//get-root ()
   "Return the root directory of a cquery project."
-  (when (null cquery/root-dir)
-    (user-error "Set cquery/root-dir to the path of your cquery directory using customize"))
   (expand-file-name (or (locate-dominating-file default-directory "compile_commands.json")
                         (locate-dominating-file default-directory "clang_args")
                         (user-error "Could not find cquery project root"))))
 
 (lsp-define-stdio-client
  lsp-cquery "c++" #'cquery//get-root
- (list (concat cquery/root-dir "build/app") "--language-server")
+ (list cquery/executable "--language-server")
  :initialize #'cquery//initialize-client
  :extra-init-params #'cquery//get-init-params)
 
