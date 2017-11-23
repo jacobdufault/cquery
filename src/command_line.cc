@@ -231,21 +231,23 @@ optional<int> FindIncludeLine(const std::vector<std::string>& lines,
   // -1 => include line is lt content (ie, it should go before)
   int last_line_compare = 1;
 
-  for (int line = 0; line < (int)lines.size(); ++line) {
-    if (!StartsWith(lines[line], "#include")) {
+  size_t lineCount = 0;
+  for (auto &line : lines) {
+    if (!StartsWith(line, "#include")) {
       last_line_compare = 1;
       continue;
     }
 
-    last_include_line = line;
+    last_include_line = lineCount;
 
-    int current_line_compare = full_include_line.compare(lines[line]);
+    int current_line_compare = full_include_line.compare(line);
     if (current_line_compare == 0)
       return nullopt;
 
     if (last_line_compare == 1 && current_line_compare == -1)
-      best_include_line = line;
+      best_include_line = lineCount;
     last_line_compare = current_line_compare;
+    ++lineCount;
   }
 
   if (best_include_line)
@@ -1969,9 +1971,11 @@ bool QueryDbMainLoop(Config* config,
 
         // It shouldn't be possible, but sometimes vscode will send queries out
         // of order, ie, we get completion request before buffer content update.
+
+        // TODO: correct params.position.line to size_t
         std::string buffer_line;
         if (msg->params.position.line >= 0 &&
-            msg->params.position.line < file->all_buffer_lines.size())
+            msg->params.position.line < (int)file->all_buffer_lines.size())
           buffer_line = file->all_buffer_lines[msg->params.position.line];
 
         if (ShouldRunIncludeCompletion(buffer_line)) {
@@ -2092,7 +2096,7 @@ bool QueryDbMainLoop(Config* config,
         WorkingFile* file =
             working_files->GetFileByFilename(params.textDocument.uri.GetPath());
         std::string search;
-        int active_param = 0;
+        size_t active_param = 0;
         if (file) {
           lsPosition completion_position;
           search = file->FindClosestCallNameInBuffer(
@@ -2104,7 +2108,7 @@ bool QueryDbMainLoop(Config* config,
 
         ClangCompleteManager::OnComplete callback = std::bind(
             [signature_cache](BaseIpcMessage* message, std::string search,
-                              int active_param,
+                              size_t active_param,
                               const NonElidedVector<lsCompletionItem>& results,
                               bool is_cached_result) {
               auto msg = message->As<Ipc_TextDocumentSignatureHelp>();
@@ -2601,15 +2605,15 @@ bool QueryDbMainLoop(Config* config,
             std::unordered_set<std::string> include_absolute_paths;
 
             // Find include candidate strings.
-            for (int i = 0; i < db->detailed_names.size(); ++i) {
+            size_t nameCount = 0;
+            for (auto &name: db->detailed_names) {
               if (include_absolute_paths.size() > kMaxResults)
                 break;
-              if (db->detailed_names[i].find(include_query) ==
-                  std::string::npos)
+              if (name.find(include_query) == std::string::npos)
                 continue;
 
               optional<QueryFileId> decl_file_id =
-                  GetDeclarationFileForSymbol(db, db->symbols[i]);
+                  GetDeclarationFileForSymbol(db, db->symbols[nameCount]);
               if (!decl_file_id)
                 continue;
 
@@ -2618,6 +2622,7 @@ bool QueryDbMainLoop(Config* config,
                 continue;
 
               include_absolute_paths.insert(decl_file.def->path);
+              ++nameCount;
             }
 
             // Build include strings.
@@ -2855,31 +2860,35 @@ bool QueryDbMainLoop(Config* config,
         std::unordered_set<std::string> inserted_results;
         inserted_results.reserve(config->maxWorkspaceSearchResults);
 
-        for (int i = 0; i < db->detailed_names.size(); ++i) {
-          if (db->detailed_names[i].find(query) != std::string::npos) {
+        size_t nameCount = 0;
+        for (auto &name: db->detailed_names) {
+          if (name.find(query) != std::string::npos) {
             // Do not show the same entry twice.
-            if (!inserted_results.insert(db->detailed_names[i]).second)
+            if (!inserted_results.insert(name).second)
               continue;
 
-            InsertSymbolIntoResult(db, working_files, db->symbols[i],
+            InsertSymbolIntoResult(db, working_files, db->symbols[nameCount],
                                    &response.result);
             if (response.result.size() >= config->maxWorkspaceSearchResults)
               break;
           }
+          ++nameCount;
         }
 
+        nameCount = 0;
         if (response.result.size() < config->maxWorkspaceSearchResults) {
-          for (int i = 0; i < db->detailed_names.size(); ++i) {
-            if (SubstringMatch(query, db->detailed_names[i])) {
+          for (auto &name: db->detailed_names) {
+            if (SubstringMatch(query, name)) {
               // Do not show the same entry twice.
-              if (!inserted_results.insert(db->detailed_names[i]).second)
+              if (!inserted_results.insert(name).second)
                 continue;
 
-              InsertSymbolIntoResult(db, working_files, db->symbols[i],
+              InsertSymbolIntoResult(db, working_files, db->symbols[nameCount],
                                      &response.result);
               if (response.result.size() >= config->maxWorkspaceSearchResults)
                 break;
             }
+            ++nameCount;
           }
         }
 

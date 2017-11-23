@@ -174,7 +174,7 @@ struct ConstructorCache {
       // Do prefix-based match on parameter type description. This works well in
       // practice because clang appends qualifiers to the end of the type, ie,
       // |foo *&&|
-      for (int i = 0;
+      for (size_t i = 0;
            i < std::min(param_type_desc.size(), ctor.param_type_desc.size());
            ++i) {
         score += count_matching_prefix_length(param_type_desc[i].c_str(),

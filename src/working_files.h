@@ -23,10 +23,10 @@ struct WorkingFile {
   std::vector<std::string> all_buffer_lines;
   // This map goes from disk-line -> indicies+1 in index_lines.
   // Note: The items in the value entry are 1-based lines.
-  std::unordered_map<std::string, std::vector<int>> index_lines_lookup;
+  std::unordered_map<std::string, std::vector<size_t>> index_lines_lookup;
   // This map goes from buffer-line -> indices+1 in all_buffer_lines.
   // Note: The items in the value entry are 1-based liness.
-  std::unordered_map<std::string, std::vector<int>> all_buffer_lines_lookup;
+  std::unordered_map<std::string, std::vector<size_t>> all_buffer_lines_lookup;
   // A set of diagnostics that have been reported for this file.
   // NOTE: _ is appended because it must be accessed under the WorkingFiles
   // lock!
@@ -60,7 +60,7 @@ struct WorkingFile {
   // for fetching signatures.
   std::string FindClosestCallNameInBuffer(
       lsPosition position,
-      int* active_parameter,
+      size_t* active_parameter,
       lsPosition* completion_position = nullptr) const;
 
   // Returns a relatively stable completion position (it jumps back until there

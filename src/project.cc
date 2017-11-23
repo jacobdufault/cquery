@@ -306,7 +306,7 @@ int ComputeGuessScore(const std::string& a, const std::string& b) {
   const int kMatchPostfixWeight = 1;
 
   int score = 0;
-  int i = 0;
+  size_t i = 0;
 
   // Increase score based on matching prefix.
   for (i = 0; i < a.length() && i < b.length(); ++i) {
@@ -316,18 +316,18 @@ int ComputeGuessScore(const std::string& a, const std::string& b) {
   }
 
   // Reduce score based on mismatched directory distance.
-  for (int j = i; j < a.length(); ++j) {
+  for (size_t j = i; j < a.length(); ++j) {
     if (a[j] == '/')
       score -= kMismatchDirectoryWeight;
   }
-  for (int j = i; j < b.length(); ++j) {
+  for (size_t j = i; j < b.length(); ++j) {
     if (b[j] == '/')
       score -= kMismatchDirectoryWeight;
   }
 
   // Increase score based on common ending. Don't increase as much as matching
   // prefix or directory distance.
-  for (int offset = 1; offset <= a.length() && offset <= b.length(); ++offset) {
+  for (size_t offset = 1; offset <= a.length() && offset <= b.length(); ++offset) {
     if (a[a.size() - offset] != b[b.size() - offset])
       break;
     score += kMatchPostfixWeight;
@@ -364,8 +364,11 @@ void Project::Load(const std::vector<std::string>& extra_flags,
 
   // Setup project entries.
   absolute_path_to_entry_index_.resize(entries.size());
-  for (int i = 0; i < entries.size(); ++i)
-    absolute_path_to_entry_index_[entries[i].filename] = i;
+  size_t entryCount = 0;
+  for (auto &entry: entries){
+    absolute_path_to_entry_index_[entry.filename] = entryCount;
+    ++entryCount;
+  }
 }
 
 Project::Entry Project::FindCompilationEntryForFile(
@@ -398,7 +401,7 @@ void Project::ForAllFilteredFiles(
     Config* config,
     std::function<void(int i, const Entry& entry)> action) {
   GroupMatch matcher(config->indexWhitelist, config->indexBlacklist);
-  for (int i = 0; i < entries.size(); ++i) {
+  for (size_t i = 0; i < entries.size(); ++i) {
     const Project::Entry& entry = entries[i];
     std::string failure_reason;
     if (matcher.IsMatch(entry.filename, &failure_reason))
@@ -435,7 +438,7 @@ TEST_SUITE("Project") {
       std::cout << "Actual:   " << StringJoin(result.args) << std::endl;
     }
     bool printed_header = false;
-    for (int i = 0; i < std::min(result.args.size(), expected.size()); ++i) {
+    for (size_t i = 0; i < std::min(result.args.size(), expected.size()); ++i) {
       if (result.args[i] != expected[i]) {
         if (!printed_header) {
           printed_header = true;

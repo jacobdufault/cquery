@@ -9,12 +9,12 @@
 
 namespace {
 
-lsPosition GetPositionForOffset(const std::string& content, int offset) {
+lsPosition GetPositionForOffset(const std::string& content, size_t offset) {
   if (offset >= content.size())
-    offset = (int)content.size() - 1;
+    offset = content.size() - 1;
 
   lsPosition result;
-  int i = 0;
+  size_t i = 0;
   while (i < offset) {
     if (content[i] == '\n') {
       result.line += 1;
@@ -44,7 +44,7 @@ void WorkingFile::SetIndexContent(const std::string& index_content) {
   // Build lookup buffer.
   index_lines_lookup.clear();
   index_lines_lookup.reserve(index_lines.size());
-  for (int i = 0; i < index_lines.size(); ++i) {
+  for (size_t i = 0; i < index_lines.size(); ++i) {
     const std::string& index_line = index_lines[i];
 
     auto it = index_lines_lookup.find(index_line);
@@ -61,7 +61,7 @@ void WorkingFile::OnBufferContentUpdated() {
   // Build lookup buffer.
   all_buffer_lines_lookup.clear();
   all_buffer_lines_lookup.reserve(all_buffer_lines.size());
-  for (int i = 0; i < all_buffer_lines.size(); ++i) {
+  for (size_t i = 0; i < all_buffer_lines.size(); ++i) {
     const std::string& buffer_line = all_buffer_lines[i];
 
     auto it = all_buffer_lines_lookup.find(buffer_line);
@@ -176,7 +176,7 @@ optional<std::string> WorkingFile::GetBufferLineContentFromIndexLine(
 
 std::string WorkingFile::FindClosestCallNameInBuffer(
     lsPosition position,
-    int* active_parameter,
+    size_t* active_parameter,
     lsPosition* completion_position) const {
   *active_parameter = 0;
 
@@ -358,7 +358,7 @@ void WorkingFiles::OnClose(const Ipc_TextDocumentDidClose::Params& close) {
 
   std::string filename = close.textDocument.uri.GetPath();
 
-  for (int i = 0; i < files.size(); ++i) {
+  for (size_t i = 0; i < files.size(); ++i) {
     if (files[i]->filename == filename) {
       files.erase(files.begin() + i);
       return;
@@ -388,7 +388,7 @@ lsPosition CharPos(const WorkingFile& file,
 TEST_SUITE("WorkingFile") {
   TEST_CASE("simple call") {
     WorkingFile f("foo.cc", "abcd(1, 2");
-    int active_param = 0;
+    size_t active_param = 0;
     REQUIRE(f.FindClosestCallNameInBuffer(CharPos(f, '('), &active_param) ==
             "abcd");
     REQUIRE(active_param == 0);
@@ -408,7 +408,7 @@ TEST_SUITE("WorkingFile") {
 
   TEST_CASE("nested call") {
     WorkingFile f("foo.cc", "abcd(efg(), 2");
-    int active_param = 0;
+    size_t active_param = 0;
     REQUIRE(f.FindClosestCallNameInBuffer(CharPos(f, '('), &active_param) ==
             "abcd");
     REQUIRE(active_param == 0);
@@ -437,7 +437,7 @@ TEST_SUITE("WorkingFile") {
 
   TEST_CASE("auto-insert )") {
     WorkingFile f("foo.cc", "abc()");
-    int active_param = 0;
+    size_t active_param = 0;
     REQUIRE(f.FindClosestCallNameInBuffer(CharPos(f, ')'), &active_param) ==
             "abc");
     REQUIRE(active_param == 0);

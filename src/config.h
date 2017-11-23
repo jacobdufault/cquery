@@ -22,7 +22,7 @@ struct Config {
   bool logSkippedPathsForIndex = false;
 
   // Maximum workspace search results.
-  int maxWorkspaceSearchResults = 1000;
+  size_t maxWorkspaceSearchResults = 1000;
 
   // Force a certain number of indexer threads. If less than 1 a default value
   // should be used.
@@ -38,9 +38,8 @@ struct Config {
   bool showDocumentLinksOnIncludes = true;
 
   // Maximum path length to show in completion results. Paths longer than this
-  // will be elided with ".." put at the front. Set to 0 or a negative number
-  // to disable eliding.
-  int includeCompletionMaximumPathLength = 30;
+  // will be elided with ".." put at the front. Set to 0 to disable eliding.
+  size_t includeCompletionMaximumPathLength = 30;
   // Whitelist that file paths will be tested against. If a file path does not
   // end in one of these values, it will not be considered for auto-completion.
   // An example value is { ".h", ".hpp" }

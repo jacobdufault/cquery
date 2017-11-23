@@ -24,7 +24,7 @@ lsPosition CharPos(const std::string& search,
                    char character,
                    int character_offset) {
   lsPosition result;
-  int index = 0;
+  size_t index = 0;
   while (index < search.size()) {
     char c = search[index];
     if (c == character)
@@ -52,7 +52,7 @@ bool ShouldRunIncludeCompletion(const std::string& line) {
 // TODO: eliminate |line_number| param.
 optional<lsRange> ExtractQuotedRange(int line_number, const std::string& line) {
   // Find starting and ending quote.
-  int start = 0;
+  size_t start = 0;
   while (start < line.size()) {
     char c = line[start];
     ++start;
@@ -222,8 +222,8 @@ TEST_SUITE("Offset") {
 
   TEST_CASE("in middle of content") {
     std::string content = "abcdefghijk";
-    for (int i = 0; i < content.size(); ++i) {
-      int offset = GetOffsetForPosition(lsPosition(0, i), content);
+    for (size_t i = 0; i < content.size(); ++i) {
+      size_t offset = GetOffsetForPosition(lsPosition(0, i), content);
       REQUIRE(i == offset);
     }
   }
