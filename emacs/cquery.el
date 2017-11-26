@@ -1,17 +1,18 @@
-;;; lsp-cquery.el --- cquery client for lsp-mode     -*- lexical-binding: t; -*-
+;;; cquery.el --- cquery client for lsp-mode     -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Tobias Pisani
 
 ;; Author:  Tobias Pisani
 ;; Package-Version: 20171122.1
 ;; Version: 0.1
-;; Package-Requires: ((emacs "24.4") (lsp-mode "3.0"))
+;; Homepage: https://github.com/jacobdufault/cquery
+;; Package-Requires: ((emacs "25") (lsp-mode "3.0"))
 ;; Keywords: languages, lsp-mode, c++
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a copy
 ;; of this software and associated documentation files (the "Software"), to deal
 ;; in the Software without restriction, including without limitation the rights
-;; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+;; to use, copy, modify, merge, publish, distribute, sublicense, and-or sell
 ;; copies of the Software, and to permit persons to whom the Software is
 ;; furnished to do so, subject to the following conditions:
 
@@ -36,12 +37,6 @@
 ;;  - Rainbow variables with semantic highlighting
 ;;  - Better config options
 ;;
-;;  Style:
-;;
-;;  - Internal functions and variables are prefixed cquery//
-;;  - Interactive functions are prefixed cquery-
-;;  - All other functions and variables are prefixed cquery/
-;;
 
 ;;; Code:
 
@@ -58,65 +53,65 @@
   "Customization options for the cquery client"
   :group 'tools)
 
-(defcustom cquery/executable
+(defcustom cquery-executable
   "cquery"
   "cquery executable filename"
   :type 'file
   :group 'cquery)
 
-(defcustom cquery/resource-dir
+(defcustom cquery-resource-dir
   ""
   "The clang resource directory, $(cquery_root)/clang_resource_dir/"
   :type 'directory
   :group 'cquery)
 
-(defface cquery/inactive-region-face
+(defface cquery-inactive-region-face
   '((t :foreground "#666666"))
   "The face used to mark inactive regions"
   :group 'cquery)
 
-(defface cquery/sem-type-face
+(defface cquery-sem-type-face
   '((t :weight bold :inherit font-lock-type-face))
   "The face used to mark types"
   :group 'cquery)
 
-(defface cquery/sem-member-func-face
+(defface cquery-sem-member-func-face
   '((t :slant italic :inherit font-lock-function-name-face))
   "The face used to mark member functions"
   :group 'cquery)
 
-(defface cquery/sem-free-func-face
+(defface cquery-sem-free-func-face
   '((t :inherit font-lock-function-name-face))
   "The face used to mark free functions"
   :group 'cquery)
 
-(defface cquery/sem-member-var-face
+(defface cquery-sem-member-var-face
   '((t :slant italic :inherit font-lock-variable-name-face))
   "The face used to mark member variables"
   :group 'cquery)
 
-(defface cquery/sem-free-var-face
+(defface cquery-sem-free-var-face
   '((t :inherit font-lock-variable-name-face))
   "The face used to mark local and namespace scope variables"
   :group 'cquery)
 
-(defface cquery/code-lens-face
+(defface cquery-code-lens-face
   '((t :foreground "#777777"))
   "The face used for code lens overlays"
   :group 'cquery)
 
-(defface cquery/code-lens-mouse-face
+(defface cquery-code-lens-mouse-face
   '((t :box t))
   "The face used for code lens overlays"
   :group 'cquery)
 
-(defcustom cquery/enable-sem-highlight
+(defcustom cquery-enable-sem-highlight
   t
   "Enable semantic highlighting"
   :type 'boolean
   :group 'cquery)
 
-(defcustom cquery/sem-highlight-method
+(defcustom cquery-sem-highlight-method
   'overlay
   "The method used to draw semantic highlighting. overlays are more
  accurate than font-lock, but slower."
@@ -124,7 +119,7 @@
   :type 'symbol
   :options '(overlay font-lock))
 
-(defcustom cquery/cache-dir
+(defcustom cquery-cache-dir
   ".vscode/cquery_cached_index/"
   "Directory in which cquery will store its index cache. Relative
  to the project root directory."
@@ -135,8 +130,8 @@
 ;;   Semantic highlighting
 ;; ---------------------------------------------------------------------
 
-(defun cquery//clear-sem-highlights ()
-  (pcase cquery/sem-highlight-method
+(defun cquery--clear-sem-highlights ()
+  (pcase cquery-sem-highlight-method
     ('overlay
      (dolist (ov (overlays-in (point-min) (point-max)))
        (when (overlay-get ov 'cquery-sem-highlight)
@@ -144,8 +139,8 @@
     ('font-lock
      (font-lock-ensure))))
 
-(defun cquery//make-sem-highlight (region buffer face)
-  (pcase cquery/sem-highlight-method
+(defun cquery--make-sem-highlight (region buffer face)
+  (pcase cquery-sem-highlight-method
     ('overlay
      (let ((ov (make-overlay (car region) (cdr region) buffer)))
        (overlay-put ov 'face face)
@@ -153,55 +148,55 @@
     ('font-lock
      (put-text-property (car region) (cdr region) 'font-lock-face face buffer))))
 
-(defun cquery//publish-semantic-highlighting (_workspace params)
-  (when cquery/enable-sem-highlight
+(defun cquery--publish-semantic-highlighting (_workspace params)
+  (when cquery-enable-sem-highlight
     (save-excursion
-      (let* ((file (cquery//uri-to-file (gethash "uri" params)))
+      (let* ((file (cquery--uri-to-file (gethash "uri" params)))
              (buffer (find-file file))
              (symbols (gethash "symbols" params)))
         (with-current-buffer buffer
-          (cquery//clear-sem-highlights)
+          (cquery--clear-sem-highlights)
           (dolist (symbol symbols)
             (let* ((type (gethash "type" symbol))
                    (is-type-member (gethash "is_type_member" symbol))
-                   (ranges (mapcar 'cquery//read-range (gethash "ranges" symbol)))
+                   (ranges (mapcar 'cquery--read-range (gethash "ranges" symbol)))
                    (face
                     (pcase type
-                      ('0 'cquery/sem-type-face)
-                      ('1 (if is-type-member 'cquery/sem-member-func-face 'cquery/sem-free-func-face))
-                      ('2 (if is-type-member 'cquery/sem-member-var-face 'cquery/sem-free-var-face)))))
+                      ('0 'cquery-sem-type-face)
+                      ('1 (if is-type-member 'cquery-sem-member-func-face 'cquery-sem-free-func-face))
+                      ('2 (if is-type-member 'cquery-sem-member-var-face 'cquery-sem-free-var-face)))))
               (when face
                 (dolist (range ranges)
-                  (cquery//make-sem-highlight range buffer face))))))))))
+                  (cquery--make-sem-highlight range buffer face))))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Inactive regions
 ;; ---------------------------------------------------------------------
 
-(defun cquery//clear-inactive-regions ()
+(defun cquery--clear-inactive-regions ()
   (dolist (ov (overlays-in (point-min) (point-max)))
     (when (overlay-get ov 'cquery-inactive)
       (delete-overlay ov))))
 
-(defun cquery//set-inactive-regions (_workspace params)
+(defun cquery--set-inactive-regions (_workspace params)
   (save-excursion
-    (let* ((file (cquery//uri-to-file (gethash "uri" params)))
-           (regions (mapcar 'cquery//read-range (gethash "inactiveRegions" params)))
+    (let* ((file (cquery--uri-to-file (gethash "uri" params)))
+           (regions (mapcar 'cquery--read-range (gethash "inactiveRegions" params)))
            (buffer (find-file file)))
       (with-current-buffer buffer
-        (cquery//clear-inactive-regions)
+        (cquery--clear-inactive-regions)
         (dolist (region regions)
           (let ((ov (make-overlay (car region) (cdr region) buffer)))
-            (overlay-put ov 'face 'cquery/inactive-region-face)
+            (overlay-put ov 'face 'cquery-inactive-region-face)
             (overlay-put ov 'cquery-inactive t)))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Notification handlers
 ;; ---------------------------------------------------------------------
 
-(defconst cquery//handlers
-  '(("$cquery/setInactiveRegions" . (lambda (w p) (cquery//set-inactive-regions w p)))
-    ("$cquery/publishSemanticHighlighting" . (lambda (w p) (cquery//publish-semantic-highlighting w p)))
+(defconst cquery--handlers
+  '(("$cquery/setInactiveRegions" . (lambda (w p) (cquery--set-inactive-regions w p)))
+    ("$cquery/publishSemanticHighlighting" . (lambda (w p) (cquery--publish-semantic-highlighting w p)))
     ("$cquery/progress" . (lambda (_w _p)))))
 
 ;; ---------------------------------------------------------------------
@@ -229,7 +224,7 @@
   (lsp--send-request-async
    (lsp--make-request "textDocument/codeLens"
                       `(:textDocument (:uri ,(concat "file://" buffer-file-name))))
-   'cquery//code-lens-callback))
+   'cquery--code-lens-callback))
 
 (defun cquery-clear-code-lens ()
   "Clear all code lenses from this buffer"
@@ -238,26 +233,26 @@
     (when (overlay-get ov 'cquery-code-lens)
       (delete-overlay ov))))
 
-(defun cquery//make-code-lens-string (command)
+(defun cquery--make-code-lens-string (command)
   (let ((map (make-sparse-keymap)))
-    (define-key map [mouse-1] (lambda () (interactive) (cquery/execute-command command)))
+    (define-key map [mouse-1] (lambda () (interactive) (cquery-execute-command command)))
     (propertize (gethash "title" command)
-                'face 'cquery/code-lens-face
-                'mouse-face 'cquery/code-lens-mouse-face
+                'face 'cquery-code-lens-face
+                'mouse-face 'cquery-code-lens-mouse-face
                 'local-map map)))
 
-(defun cquery//code-lens-callback (result)
+(defun cquery--code-lens-callback (result)
   (save-excursion
     (cquery-clear-code-lens)
     (goto-char (point-min))
     (dolist (lens result)
-      (let* ((range (cquery//read-range (gethash "range" lens)))
+      (let* ((range (cquery--read-range (gethash "range" lens)))
              (root (gethash "command" lens))
              (title (gethash "title" root))
              (command (gethash "command" root)))
         (let ((ov (make-overlay (car range) (cdr range))))
           (overlay-put ov 'cquery-code-lens t)
-          (overlay-put ov 'after-string (format " %s " (cquery//make-code-lens-string root))))))))
+          (overlay-put ov 'after-string (format " %s " (cquery--make-code-lens-string root))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   CodeAction Commands
@@ -281,34 +276,34 @@
                 :action (lambda (str)
                           (dolist (action lsp-code-actions)
                             (when (equal (funcall name-func action) str)
-                              (cquery/execute-command action)
+                              (cquery-execute-command action)
                               (lsp--text-document-code-action))))))))
 
-(defun cquery/execute-command (action)
+(defun cquery-execute-command (action)
   "Execute a cquery command"
   (let* ((command (gethash "command" action))
          (arguments (gethash "arguments" action))
          (uri (car arguments))
          (data (cdr arguments)))
-    (with-current-buffer (find-file (cquery//uri-to-file uri))
+    (with-current-buffer (find-file (cquery--uri-to-file uri))
       (pcase command
         ;; Code actions
         ('"cquery._applyFixIt"
          (dolist (edit data)
-           (cquery//apply-textedit (car edit))))
+           (cquery--apply-textedit (car edit))))
         ('"cquery._autoImplement"
          (dolist (edit data)
-           (cquery//apply-textedit (car edit)))
+           (cquery--apply-textedit (car edit)))
          (goto-char (lsp--position-to-point
                      (gethash "start" (gethash "range" (caar data))))))
         ('"cquery._insertInclude"
-         (cquery//select-textedit data "Include: "))
+         (cquery--select-textedit data "Include: "))
         ('"cquery.showReferences" ;; Used by code lenses
          (let ((pos (lsp--position-to-point (car data))))
            (goto-char pos)
            (xref-find-references (xref-backend-identifier-at-point (xref-find-backend)))))))))
 
-(defun cquery//select-textedit (edit-list prompt)
+(defun cquery--select-textedit (edit-list prompt)
   "Show a list of possible textedits, and apply the selected.
   Used by cquery._insertInclude"
   (let ((name-func (lambda (edit)
@@ -325,9 +320,9 @@
                         (cl-loop
                          for edit in edit-list
                          do (when (equal (funcall name-func edit) str)
-                              (cquery//apply-textedit edit)))))))
+                              (cquery--apply-textedit edit)))))))
 
-(defun cquery//apply-textedit (edit)
+(defun cquery--apply-textedit (edit)
   (let* ((range (gethash "range" edit))
          (start (lsp--position-to-point (gethash "start" range)))
          (end (lsp--position-to-point (gethash "end" range)))
@@ -337,10 +332,10 @@
     (goto-char start)
     (insert newText)))
 
-(defun cquery//uri-to-file (uri)
+(defun cquery--uri-to-file (uri)
   (string-remove-prefix "file://" uri))
 
-(defun cquery//read-range (range)
+(defun cquery--read-range (range)
   (cons (lsp--position-to-point (gethash "start" range))
         (lsp--position-to-point (gethash "end" range))))
 
@@ -348,7 +343,7 @@
 ;;  Register lsp client
 ;; ---------------------------------------------------------------------
 
-(defun cquery//render-string (str)
+(defun cquery--render-string (str)
   (condition-case nil
       (with-temp-buffer
         (delay-mode-hooks (c++-mode))
@@ -357,26 +352,26 @@
         (buffer-string))
     (error str)))
 
-(defun cquery//initialize-client (client)
-  (dolist (p cquery//handlers)
+(defun cquery--initialize-client (client)
+  (dolist (p cquery--handlers)
     (lsp-client-on-notification client (car p) (cdr p)))
-  (lsp-provide-marked-string-renderer client "c++" #'cquery//render-string))
+  (lsp-provide-marked-string-renderer client "c++" #'cquery--render-string))
 
-(defun cquery//get-init-params (workspace)
-  (list :cacheDirectory (concat (lsp--workspace-root workspace) cquery/cache-dir)
-        :resourceDirectory cquery/resource-dir))
+(defun cquery--get-init-params (workspace)
+  (list :cacheDirectory (concat (lsp--workspace-root workspace) cquery-cache-dir)
+        :resourceDirectory cquery-resource-dir))
 
-(defun cquery//get-root ()
+(defun cquery--get-root ()
   "Return the root directory of a cquery project."
   (expand-file-name (or (locate-dominating-file default-directory "compile_commands.json")
                         (locate-dominating-file default-directory "clang_args")
                         (user-error "Could not find cquery project root"))))
 
 (lsp-define-stdio-client
- lsp-cquery "c++" #'cquery//get-root
- (list cquery/executable "--language-server")
- :initialize #'cquery//initialize-client
- :extra-init-params #'cquery//get-init-params)
+ lsp-cquery "c++" #'cquery--get-root
+ (list cquery-executable "--language-server")
+ :initialize #'cquery--initialize-client
+ :extra-init-params #'cquery--get-init-params)
 
 ;; ---------------------------------------------------------------------
 ;;  lsp-mode function advices
@@ -387,5 +382,5 @@
 (advice-add 'lsp--text-document-code-action-callback :around
             '(lambda (orig actions) (setq lsp-code-actions actions)))
 
-(provide 'lsp-cquery)
-;;; lsp-cquery.el ends here
+(provide 'cquery)
+;;; cquery.el ends here
