@@ -65,6 +65,13 @@
   :type 'directory
   :group 'cquery)
 
+(defcustom cquery-indexer-count
+  0
+  "Number of workers cquery will use to index each project.
+ When left at 0, cquery will computer this value automatically."
+  :type 'number
+  :group 'cquery)
+
 (defface cquery-inactive-region-face
   '((t :foreground "#666666"))
   "The face used to mark inactive regions"
@@ -358,8 +365,11 @@
   (lsp-provide-marked-string-renderer client "c++" #'cquery--render-string))
 
 (defun cquery--get-init-params (workspace)
-  (list :cacheDirectory (concat (lsp--workspace-root workspace) cquery-cache-dir)
-        :resourceDirectory cquery-resource-dir))
+  (let ((json-false :json-false))
+    (list :cacheDirectory (concat (lsp--workspace-root workspace) cquery-cache-dir)
+          :resourceDirectory cquery-resource-dir
+          :indexerCount cquery-indexer-count
+          :enableProgressReports json-false))) ; TODO: prog reports for modeline
 
 (defun cquery--get-root ()
   "Return the root directory of a cquery project."
