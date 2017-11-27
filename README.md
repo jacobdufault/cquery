@@ -65,28 +65,22 @@ If you run into issues, you can view debug output by running the
 
 ## Project setup
 
-### compile_commands.json (Best)
+### `compile_commands.json` (Best)
 
-To get the most accurate index possible, you can give cquery a compilation
-database emitted from your build system of choice. For example, here's how to
-generate one in ninja. When you sync your code you should regenerate this file.
-
-```bash
-$ ninja -C out/Release -t compdb cxx cc > compile_commands.json
-```
+See [wiki](https://github.com/jacobdufault/cquery/wiki) for how to generate `compile_commands.json` with CMake, Build EAR, Ninja, ...
 
 The `compile_commands.json` file should be in the top-level workspace directory.
 
-### cquery.index.extraClangArguments
+### `cquery.index.extraClangArguments`
 
 If for whatever reason you cannot generate a `compile_commands.json` file, you
 can add the flags to the `cquery.index.extraClangArguments` configuration
 option.
 
-### clang_args
+### `.cquery`
 
 If for whatever reason you cannot generate a `compile_commands.json` file, you
-can add the flags to a file called `clang_args` located in the top-level
+can add the flags to a file called `.cquery` located in the top-level
 workspace directory.
 
 Each argument in that file is separated by a newline. Lines starting with `#`
@@ -126,7 +120,7 @@ exclude v8, webkit, and third_party, it goes down to about 6.5gb.
 
 # Wiki
 
-There are some additional tips on the [wiki](https://github.com/jacobdufault/cquery/wiki).
+For Emacs/Vim/other editors integration and some additional tips, see [wiki](https://github.com/jacobdufault/cquery/wiki).
 
 # Chromium tips
 
