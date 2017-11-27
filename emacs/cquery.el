@@ -157,24 +157,25 @@
 
 (defun cquery--publish-semantic-highlighting (_workspace params)
   (when cquery-enable-sem-highlight
-    (save-excursion
-      (let* ((file (cquery--uri-to-file (gethash "uri" params)))
-             (buffer (find-file file))
-             (symbols (gethash "symbols" params)))
+    (let* ((file (cquery--uri-to-file (gethash "uri" params)))
+           (buffer (find-buffer-visiting file))
+           (symbols (gethash "symbols" params)))
+      (when buffer
         (with-current-buffer buffer
-          (cquery--clear-sem-highlights)
-          (dolist (symbol symbols)
-            (let* ((type (gethash "type" symbol))
-                   (is-type-member (gethash "is_type_member" symbol))
-                   (ranges (mapcar 'cquery--read-range (gethash "ranges" symbol)))
-                   (face
-                    (pcase type
-                      ('0 'cquery-sem-type-face)
-                      ('1 (if is-type-member 'cquery-sem-member-func-face 'cquery-sem-free-func-face))
-                      ('2 (if is-type-member 'cquery-sem-member-var-face 'cquery-sem-free-var-face)))))
-              (when face
-                (dolist (range ranges)
-                  (cquery--make-sem-highlight range buffer face))))))))))
+          (save-excursion
+            (cquery--clear-sem-highlights)
+            (dolist (symbol symbols)
+              (let* ((type (gethash "type" symbol))
+                     (is-type-member (gethash "is_type_member" symbol))
+                     (ranges (mapcar 'cquery--read-range (gethash "ranges" symbol)))
+                     (face
+                      (pcase type
+                        ('0 'cquery-sem-type-face)
+                        ('1 (if is-type-member 'cquery-sem-member-func-face 'cquery-sem-free-func-face))
+                        ('2 (if is-type-member 'cquery-sem-member-var-face 'cquery-sem-free-var-face)))))
+                (when face
+                  (dolist (range ranges)
+                    (cquery--make-sem-highlight range buffer face)))))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Inactive regions
@@ -186,16 +187,18 @@
       (delete-overlay ov))))
 
 (defun cquery--set-inactive-regions (_workspace params)
-  (save-excursion
-    (let* ((file (cquery--uri-to-file (gethash "uri" params)))
-           (regions (mapcar 'cquery--read-range (gethash "inactiveRegions" params)))
-           (buffer (find-file file)))
+  (let* ((file (cquery--uri-to-file (gethash "uri" params)))
+         (regions (mapcar 'cquery--read-range (gethash "inactiveRegions" params)))
+         (buffer (find-buffer-visiting file)))
+    (when buffer
       (with-current-buffer buffer
-        (cquery--clear-inactive-regions)
-        (dolist (region regions)
-          (let ((ov (make-overlay (car region) (cdr region) buffer)))
-            (overlay-put ov 'face 'cquery-inactive-region-face)
-            (overlay-put ov 'cquery-inactive t)))))))
+        (save-excursion
+          (cquery--clear-inactive-regions)
+          (overlay-recenter (point-max))
+          (dolist (region regions)
+            (let ((ov (make-overlay (car region) (cdr region) buffer)))
+              (overlay-put ov 'face 'cquery-inactive-region-face)
+              (overlay-put ov 'cquery-inactive t))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Notification handlers
@@ -249,17 +252,25 @@
                 'local-map map)))
 
 (defun cquery--code-lens-callback (result)
-  (save-excursion
-    (cquery-clear-code-lens)
-    (goto-char (point-min))
+  (overlay-recenter (point-max))
+  (cquery-clear-code-lens)
+  (let (buffers)
     (dolist (lens result)
       (let* ((range (cquery--read-range (gethash "range" lens)))
              (root (gethash "command" lens))
              (title (gethash "title" root))
-             (command (gethash "command" root)))
-        (let ((ov (make-overlay (car range) (cdr range))))
-          (overlay-put ov 'cquery-code-lens t)
-          (overlay-put ov 'after-string (format " %s " (cquery--make-code-lens-string root))))))))
+             (command (gethash "command" root))
+             (buffer (find-buffer-visiting (cquery--uri-to-file (car (gethash "arguments" root))))))
+        (when buffer
+          (with-current-buffer buffer
+            (save-excursion
+              (when (not (member buffer buffers))
+                (cquery-clear-code-lens)
+                (overlay-recenter (point-max))
+                (setq buffers (cons buffer buffers)))
+              (let ((ov (make-overlay (car range) (cdr range) buffer)))
+                (overlay-put ov 'cquery-code-lens t)
+                (overlay-put ov 'after-string (format " %s " (cquery--make-code-lens-string root)))))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   CodeAction Commands
@@ -292,7 +303,8 @@
          (arguments (gethash "arguments" action))
          (uri (car arguments))
          (data (cdr arguments)))
-    (with-current-buffer (find-file (cquery--uri-to-file uri))
+    (save-current-buffer
+      (find-file (cquery--uri-to-file uri))
       (pcase command
         ;; Code actions
         ('"cquery._applyFixIt"
