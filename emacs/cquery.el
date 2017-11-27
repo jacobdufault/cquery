@@ -386,7 +386,7 @@
 (defun cquery--get-root ()
   "Return the root directory of a cquery project."
   (expand-file-name (or (locate-dominating-file default-directory "compile_commands.json")
-                        (locate-dominating-file default-directory "clang_args")
+                        (locate-dominating-file default-directory ".cquery")
                         (user-error "Could not find cquery project root"))))
 
 (lsp-define-stdio-client

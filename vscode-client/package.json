@@ -15,7 +15,7 @@
   "activationEvents": [
     "onLanguage:cpp",
     "workspaceContains:compile_commands.json",
-    "workspaceContains:clang_args"
+    "workspaceContains:.cquery"
   ],
   "main": "./out/extension",
   "contributes": {
