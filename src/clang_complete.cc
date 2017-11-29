@@ -137,8 +137,8 @@ void BuildDetailString(CXCompletionString completion_string,
                        std::string& insert,
                        std::vector<std::string>* parameters,
                        bool include_snippets) {
-  int num_chunks = clang_getNumCompletionChunks(completion_string);
-  for (int i = 0; i < num_chunks; ++i) {
+  unsigned int num_chunks = clang_getNumCompletionChunks(completion_string);
+  for (unsigned int i = 0; i < num_chunks; ++i) {
     CXCompletionChunkKind kind =
         clang_getCompletionChunkKind(completion_string, i);
 
@@ -495,7 +495,7 @@ CompletionSession::CompletionSession(const Project::Entry& file,
 
 CompletionSession::~CompletionSession() {}
 
-LruSessionCache::LruSessionCache(int max_entries) : max_entries_(max_entries) {}
+LruSessionCache::LruSessionCache(size_t max_entries) : max_entries_(max_entries) {}
 
 std::shared_ptr<CompletionSession> LruSessionCache::TryGetEntry(
     const std::string& filename) {

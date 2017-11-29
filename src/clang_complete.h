@@ -35,9 +35,9 @@ struct CompletionSession
 
 struct LruSessionCache {
   std::vector<std::shared_ptr<CompletionSession>> entries_;
-  int max_entries_;
+  size_t max_entries_;
 
-  LruSessionCache(int max_entries);
+  LruSessionCache(size_t max_entries);
 
   // Fetches the entry for |filename| and updates it's usage so it is less
   // likely to be evicted.
