@@ -362,7 +362,16 @@
 ;;  Register lsp client
 ;; ---------------------------------------------------------------------
 
-(defun cquery--render-string (str)
+(defun cquery--render-c-string (str)
+  (condition-case nil
+      (with-temp-buffer
+        (delay-mode-hooks (c-mode))
+        (insert str)
+        (font-lock-ensure)
+        (buffer-string))
+    (error str)))
+
+(defun cquery--render-c++-string (str)
   (condition-case nil
       (with-temp-buffer
         (delay-mode-hooks (c++-mode))
@@ -371,10 +380,21 @@
         (buffer-string))
     (error str)))
 
+(defun cquery--render-objc-string (str)
+  (condition-case nil
+      (with-temp-buffer
+        (delay-mode-hooks (objc-mode))
+        (insert str)
+        (font-lock-ensure)
+        (buffer-string))
+    (error str)))
+
 (defun cquery--initialize-client (client)
   (dolist (p cquery--handlers)
     (lsp-client-on-notification client (car p) (cdr p)))
-  (lsp-provide-marked-string-renderer client "c++" #'cquery--render-string))
+  (lsp-provide-marked-string-renderer client "c" #'cquery--render-c-string)
+  (lsp-provide-marked-string-renderer client "objc" #'cquery--render-objc-string)
+  (lsp-provide-marked-string-renderer client "c++" #'cquery--render-c++-string))
 
 (defun cquery--get-init-params (workspace)
   (let ((json-false :json-false))
