@@ -362,39 +362,22 @@
 ;;  Register lsp client
 ;; ---------------------------------------------------------------------
 
-(defun cquery--render-c-string (str)
-  (condition-case nil
-      (with-temp-buffer
-        (delay-mode-hooks (c-mode))
-        (insert str)
-        (font-lock-ensure)
-        (buffer-string))
-    (error str)))
-
-(defun cquery--render-c++-string (str)
-  (condition-case nil
-      (with-temp-buffer
-        (delay-mode-hooks (c++-mode))
-        (insert str)
-        (font-lock-ensure)
-        (buffer-string))
-    (error str)))
-
-(defun cquery--render-objc-string (str)
-  (condition-case nil
-      (with-temp-buffer
-        (delay-mode-hooks (objc-mode))
-        (insert str)
-        (font-lock-ensure)
-        (buffer-string))
-    (error str)))
+(defun cquery--make-renderer (mode)
+  `(lambda (str)
+     (condition-case nil
+         (with-temp-buffer
+           (delay-mode-hooks (,(intern "%s-mode" mode)))
+           (insert str)
+           (font-lock-ensure)
+           (buffer-string))
+       (error str))))
 
 (defun cquery--initialize-client (client)
   (dolist (p cquery--handlers)
     (lsp-client-on-notification client (car p) (cdr p)))
-  (lsp-provide-marked-string-renderer client "c" #'cquery--render-c-string)
-  (lsp-provide-marked-string-renderer client "objc" #'cquery--render-objc-string)
-  (lsp-provide-marked-string-renderer client "c++" #'cquery--render-c++-string))
+  (lsp-provide-marked-string-renderer client "c" (cquery--make-renderer "c"))
+  (lsp-provide-marked-string-renderer client "cpp" (cquery--make-renderer "c++"))
+  (lsp-provide-marked-string-renderer client "objectivec" (cquery--make-renderer "objc")))
 
 (defun cquery--get-init-params (workspace)
   (let ((json-false :json-false))
@@ -410,8 +393,8 @@
                         (user-error "Could not find cquery project root"))))
 
 (lsp-define-stdio-client
- lsp-cquery "c++" #'cquery--get-root
  (list cquery-executable "--language-server")
+ lsp-cquery "cpp" #'cquery--get-root
  :initialize #'cquery--initialize-client
  :extra-init-params #'cquery--get-init-params)
 
