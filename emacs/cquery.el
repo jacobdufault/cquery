@@ -364,13 +364,11 @@
 
 (defun cquery--make-renderer (mode)
   `(lambda (str)
-     (condition-case nil
-         (with-temp-buffer
-           (delay-mode-hooks (,(intern "%s-mode" mode)))
-           (insert str)
-           (font-lock-ensure)
-           (buffer-string))
-       (error str))))
+     (with-temp-buffer
+       (delay-mode-hooks (,(intern (format "%s-mode" mode))))
+       (insert str)
+       (font-lock-ensure)
+       (buffer-string))))
 
 (defun cquery--initialize-client (client)
   (dolist (p cquery--handlers)
@@ -393,8 +391,8 @@
                         (user-error "Could not find cquery project root"))))
 
 (lsp-define-stdio-client
- (list cquery-executable "--language-server")
  lsp-cquery "cpp" #'cquery--get-root
+ (list cquery-executable "--language-server")
  :initialize #'cquery--initialize-client
  :extra-init-params #'cquery--get-init-params)
 
