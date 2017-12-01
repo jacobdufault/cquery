@@ -268,7 +268,7 @@ struct FuncDefDefinitionData {
   std::vector<FuncRef> callees;
 
   // Used for semantic highlighting
-  bool is_operator;
+  bool is_operator = false;
 
   FuncDefDefinitionData() {}  // For reflection.
   FuncDefDefinitionData(const std::string& usr) : usr(usr) {
