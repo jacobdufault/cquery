@@ -1188,6 +1188,12 @@ void indexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
       if (!is_template_specialization) {
         func->def.short_name = decl->entityInfo->name;
 
+        // Set the |is_operator| flag
+        // clang must have this information somewhere, but i've been unable to
+        // find it. Feel free to replace this hackish code if you do
+        //  - topisani
+        func->def.is_operator = func->def.short_name.compare(0, 8, "operator") == 0;
+
         // Build detailed name. The type desc looks like void (void *). We
         // insert the qualified name before the first '('.
         std::string qualified_name =
