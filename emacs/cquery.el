@@ -396,14 +396,5 @@
  :initialize #'cquery--initialize-client
  :extra-init-params #'cquery--get-init-params)
 
-;; ---------------------------------------------------------------------
-;;  lsp-mode function advices
-;; ---------------------------------------------------------------------
-
-;; For some reason this function just adds code actions in lsp-mode. We need to
-;; clear the old ones
-(advice-add 'lsp--text-document-code-action-callback :around
-            '(lambda (orig actions) (setq lsp-code-actions actions)))
-
 (provide 'cquery)
 ;;; cquery.el ends here
