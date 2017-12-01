@@ -379,7 +379,8 @@
 
 (defun cquery--get-init-params (workspace)
   (let ((json-false :json-false))
-    (list :cacheDirectory (concat (lsp--workspace-root workspace) cquery-cache-dir)
+    (list :cacheDirectory (file-name-as-directory
+                           (expand-file-name cquery-cache-dir (lsp--workspace-root workspace)))
           :resourceDirectory cquery-resource-dir
           :indexerCount cquery-indexer-count
           :enableProgressReports json-false))) ; TODO: prog reports for modeline
