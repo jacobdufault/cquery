@@ -133,7 +133,8 @@ function getClientConfig(context: vscode.ExtensionContext) {
     enableIndexing: config.get('misc.enableIndexing'),
     enableCacheWrite: config.get('misc.enableCacheWrite'),
     enableCacheRead: config.get('misc.enableCacheRead'),
-    compilationDatabaseDirectory: config.get('misc.compilationDatabaseDirectory'),
+    compilationDatabaseDirectory:
+        config.get('misc.compilationDatabaseDirectory'),
     includeCompletionMaximumPathLength:
         config.get('completion.include.maximumPathLength'),
     includeCompletionWhitelistLiteralEnding:
@@ -356,7 +357,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let serverOptions: vscodelc.ServerOptions = {
     command: clientConfig.launchCommand,
-    args: ['--language-server'],
+    args: ['--language-server' /*, '--log-stdin-stdout-to-stderr'*/],
     options: {
       cwd: clientConfig.launchWorkingDirectory
       // env: { 'MALLOC_CHECK_': '2' }
@@ -807,5 +808,17 @@ export function activate(context: vscode.ExtensionContext) {
             });
           }
         });
+  });
+
+  // Send $cquery/textDocumentDidView.
+  let lastActive: vscode.TextEditor = null;
+  vscode.window.onDidChangeActiveTextEditor((active: vscode.TextEditor) => {
+    if (active == lastActive)
+      return;
+    lastActive = active;
+
+    languageClient.sendNotification('$cquery/textDocumentDidView', {
+      textDocumentUri: vscode.window.activeTextEditor.document.uri.toString()
+    });
   });
 }
