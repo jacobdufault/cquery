@@ -69,18 +69,15 @@ function parseUri(u): vscode.Uri {
   return vscode.Uri.parse(u);
 }
 
-enum SymbolType {
+enum SemanticSymbolType {
   Type = 0,
   Function,
   Variable
 }
-class Symbol {
+class SemanticSymbol {
   constructor(
-      readonly type: SymbolType, readonly isTypeMember: boolean,
-      readonly ranges: Array<vscode.Range>) {}
-}
-function parseSymbol(u): Symbol {
-  return new Symbol(u.type, u.is_type_member, parseRanges(u.ranges));
+      readonly stableId: number, readonly type: SemanticSymbolType,
+      readonly isTypeMember: boolean, readonly ranges: Array<vscode.Range>) {}
 }
 
 function jumpToUriAtPosition(
@@ -579,7 +576,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (total == 0 && statusStyle == 'short') {
           statusIcon.text = 'cquery: idle';
         } else {
-          statusIcon.text = `cquery: ${total} jobs`;
+          statusIcon.text = `cquery: ${indexRequestCount} jobs`;
           if (statusStyle == 'detailed') {
             statusIcon.text += ` (${detailedJobString})`
           }
@@ -698,95 +695,88 @@ export function activate(context: vscode.ExtensionContext) {
   // TODO:
   //   - enable bold/italic decorators, might need change in vscode
   //   - only function call icon if the call is implicit
-  //   - get color of variable based on its USR
-  let makeSemanticDecorationType =
-      (color: Nullable<string>, underline: boolean,
-       showIcon: boolean): vscode.TextEditorDecorationType => {
+  function makeSemanticDecorationType(
+      color: Nullable<string>,
+      underline: boolean): vscode.TextEditorDecorationType {
+    return vscode.window.createTextEditorDecorationType({
+      isWholeLine: false,
+      rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+      color: color,
+      textDecoration: underline ? 'underline' : '',
+      // after: {
+      //   contentIconPath: showIcon ?
+      //       context.asAbsolutePath('resources/function_call.svg') :
+      //       '',
+      // }
+    });
+  };
 
-        return vscode.window.createTextEditorDecorationType({
-          isWholeLine: false,
-          rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
-          color: color,
-          textDecoration: underline ? 'underline' : '',
-          after: {
-            contentIconPath: showIcon ?
-                context.asAbsolutePath('resources/function_call.svg') :
-                '',
-          }
-        });
-      };
-  const typeDecorationType = makeSemanticDecorationType(
-      'red' /*color*/, false /*underline*/, false /*showIcon*/);
-  const typeFuncDecorationType = makeSemanticDecorationType(
-      null /*color*/, false /*underline*/, true /*showIcon*/);
+  function makeDecorations(type: string) {
+    let colors = config.get(`highlighting.colors.${type}`, []);
+    let underline = config.get(`highlighting.underline.${type}`, false);
+    return colors.map(c => makeSemanticDecorationType(c, underline));
+  };
+  let semanticDecorations =
+      new Map<string, vscode.TextEditorDecorationType[]>();
+  let semanticEnabled = new Map<string, boolean>();
+  for (let type of
+           ['types', 'freeStandingFunctions', 'memberFunctions',
+            'freeStandingVariables', 'memberVariables']) {
+    semanticDecorations.set(type, makeDecorations(type));
+    semanticEnabled.set(type, false);
+  }
 
-  let varColors =
-      config.get<Array<string>>('semanticHighlighting.variables.colors');
-
-  const localVarDecorationTypes = varColors.map(
-      (color) => makeSemanticDecorationType(
-          color /*color*/, false /*underline*/, false /*showIcon*/));
-  const typeVarDecorationTypes = varColors.map(
-      (color) => makeSemanticDecorationType(
-          color /*color*/, true /*underline*/, false /*showIcon*/));
-
-  let lastLocalVarDecorationType = 0;
-  let lastTypeVarDecorationType = 0;
-
-  let semanticConfig = {type: false, func: false, var : false};
-  let updateConfigValues = () => {
-    let get = (name) => config.get<boolean>(name, false);
-    semanticConfig.type = get('semanticHighlighting.types.enabled');
-    semanticConfig.func = get('semanticHighlighting.functions.enabled');
-    semanticConfig.var = get('semanticHighlighting.variables.enabled');
+  function updateConfigValues() {
+    // Fetch new config instance, since vscode will cache the previous one.
+    let config = vscode.workspace.getConfiguration('cquery');
+    for (let [name, value] of semanticEnabled) {
+      semanticEnabled.set(
+          name, config.get(`highlighting.enabled.${name}`, false));
+    }
   };
   updateConfigValues();
 
-  let tryGetDecorationType =
-      (symbol: Symbol): Nullable<vscode.TextEditorDecorationType> => {
-        switch (symbol.type) {
-          case SymbolType.Type:
-            if (!semanticConfig.type)
-              return null;
-            return typeDecorationType;
-          case SymbolType.Function:
-            if (!semanticConfig.func)
-              return null;
-            if (symbol.isTypeMember)
-              return typeFuncDecorationType;
-            return null;
-          case SymbolType.Variable:
-            if (!semanticConfig.var)
-              return null;
-            if (symbol.isTypeMember) {
-              return typeVarDecorationTypes
-                  [lastTypeVarDecorationType++ % varColors.length];
-            }
-            return localVarDecorationTypes
-                [lastLocalVarDecorationType++ % varColors.length];
-        }
-      };
+  function tryFindDecoration(symbol: SemanticSymbol):
+      Nullable<vscode.TextEditorDecorationType> {
+    function get(name: string) {
+      if (!semanticEnabled.get(name))
+        return undefined;
+      let decorations = semanticDecorations.get(name);
+      return decorations[symbol.stableId % decorations.length];
+    };
 
-  let allDecorationTypes = [
-    typeDecorationType, typeFuncDecorationType, ...localVarDecorationTypes,
-    ...typeVarDecorationTypes
-  ];
+    if (symbol.type == SemanticSymbolType.Type) {
+      return get('types');
+    } else if (symbol.type == SemanticSymbolType.Function) {
+      if (symbol.isTypeMember)
+        return get('memberFunctions');
+      return get('freeStandingFunctions');
+    } else if (symbol.type == SemanticSymbolType.Variable) {
+      if (symbol.isTypeMember)
+        return get('memberVariables');
+      return get('freeStandingVariables');
+    }
+  };
 
+  class PublishSemanticHighlightingArgs {
+    readonly uri: string;
+    readonly symbols: SemanticSymbol[];
+  }
   languageClient.onReady().then(() => {
     languageClient.onNotification(
-        '$cquery/publishSemanticHighlighting', (args) => {
+        '$cquery/publishSemanticHighlighting',
+        (args: PublishSemanticHighlightingArgs) => {
           updateConfigValues();
-          lastLocalVarDecorationType = 0;
-          lastTypeVarDecorationType = 0;
 
-          let uri = args.uri;
-          if (vscode.window.activeTextEditor.document.uri.toString() == uri) {
+          for (let visibleEditor of vscode.window.visibleTextEditors) {
+            if (args.uri != visibleEditor.document.uri.toString())
+              continue;
+
             let decorations =
                 new Map<vscode.TextEditorDecorationType, Array<vscode.Range>>();
 
-            for (let symbol0 of args.symbols) {
-              let symbol: Symbol = parseSymbol(symbol0);
-              let type = tryGetDecorationType(symbol);
+            for (let symbol of args.symbols) {
+              let type = tryFindDecoration(symbol);
               if (!type)
                 continue;
               if (decorations.has(type)) {
@@ -800,25 +790,26 @@ export function activate(context: vscode.ExtensionContext) {
 
             // Clear decorations and set new ones. We might not use all of the
             // decorations so clear before setting.
-            allDecorationTypes.forEach((type) => {
-              vscode.window.activeTextEditor.setDecorations(type, []);
-            });
+            for (let [_, decorations] of semanticDecorations) {
+              decorations.forEach((type) => {
+                visibleEditor.setDecorations(type, []);
+              });
+            }
+            // Set new decorations.
             decorations.forEach((ranges, type) => {
-              vscode.window.activeTextEditor.setDecorations(type, ranges);
+              visibleEditor.setDecorations(type, ranges);
             });
           }
         });
   });
 
-  // Send $cquery/textDocumentDidView.
-  let lastActive: vscode.TextEditor = null;
-  vscode.window.onDidChangeActiveTextEditor((active: vscode.TextEditor) => {
-    if (active == lastActive)
-      return;
-    lastActive = active;
-
-    languageClient.sendNotification('$cquery/textDocumentDidView', {
-      textDocumentUri: vscode.window.activeTextEditor.document.uri.toString()
-    });
+  // Send $cquery/textDocumentDidView. Always send a notification - this will
+  // result in some extra work, but it shouldn't be a problem in practice.
+  vscode.window.onDidChangeVisibleTextEditors(visible => {
+    for (let editor of visible) {
+      languageClient.sendNotification(
+          '$cquery/textDocumentDidView',
+          {textDocumentUri: editor.document.uri.toString()});
+    }
   });
 }

@@ -166,7 +166,7 @@
             (cquery--clear-sem-highlights)
             (dolist (symbol symbols)
               (let* ((type (gethash "type" symbol))
-                     (is-type-member (gethash "is_type_member" symbol))
+                     (is-type-member (gethash "isTypeMember" symbol))
                      (ranges (mapcar 'cquery--read-range (gethash "ranges" symbol)))
                      (face
                       (pcase type
