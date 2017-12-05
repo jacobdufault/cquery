@@ -1,73 +1,24 @@
-'use strict';
-
 import * as path from 'path';
-
-import * as vscode from 'vscode';
-import * as vscodelc from 'vscode-languageclient';
+import {commands, DecorationRangeBehavior, ExtensionContext, QuickPickItem, Range, StatusBarAlignment, TextEditor, TextEditorDecorationType, Uri, window, workspace} from 'vscode';
 import {Message} from 'vscode-jsonrpc';
+import {LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions} from 'vscode-languageclient/lib/main';
+import * as ls from 'vscode-languageserver-types';
+
+import {CallTreeNode, CallTreeProvider} from './callTree';
+import {CqueryErrorHandler} from './cqueryErrorHandler';
+import {TypeHierarchyNode, TypeHierarchyProvider} from './typeHierarchy';
+import {jumpToUriAtPosition} from './vscodeUtils';
 
 type Nullable<T> = T|null;
+
+export function parseUri(u): Uri {
+  return Uri.parse(u);
+}
 
 // Increment version number whenever we want to make sure the user updates the
 // extension. cquery will emit an error notification if this does not match its
 // internal number.
-const VERSION = 3
-
-
-function assert(condition: boolean) {
-  if (!condition)
-    throw new Error();
-}
-
-class MyErrorHandler implements vscodelc.ErrorHandler {
-  constructor(readonly config: vscode.WorkspaceConfiguration) {}
-
-  error(error: Error, message: Message, count: number): vscodelc.ErrorAction {
-    return vscodelc.ErrorAction.Continue;
-  }
-
-  closed(): vscodelc.CloseAction {
-    const restart = this.config.get('launch.autoRestart');
-
-    if (this.config.get('launch.notifyOnCrash')) {
-      if (restart)
-        vscode.window.showInformationMessage(
-            'cquery has crashed; it has been restarted.');
-      else
-        vscode.window.showInformationMessage(
-            'cquery has crashed; it has not been restarted.');
-    }
-
-    if (restart)
-      return vscodelc.CloseAction.Restart;
-    return vscodelc.CloseAction.DoNotRestart;
-  }
-}
-
-function parsePosition(p): vscode.Position {
-  return new vscode.Position(p.line, p.character);
-}
-function parseRange(r): vscode.Range {
-  return new vscode.Range(parsePosition(r.start), parsePosition(r.end));
-}
-function parseRanges(rs): Array<vscode.Range> {
-  let parsed = [];
-  for (let r of rs)
-    parsed.push(parseRange(r));
-  return parsed;
-}
-function parseLocation(l): vscode.Location {
-  return new vscode.Location(parseUri(l.uri), parseRange(l.range));
-}
-function parseLocations(ls): Array<vscode.Location> {
-  let parsed = [];
-  for (let l of ls)
-    parsed.push(parseLocation(l));
-  return parsed;
-}
-function parseUri(u): vscode.Uri {
-  return vscode.Uri.parse(u);
-}
+const VERSION = 3;
 
 enum SemanticSymbolType {
   Type = 0,
@@ -77,86 +28,76 @@ enum SemanticSymbolType {
 class SemanticSymbol {
   constructor(
       readonly stableId: number, readonly type: SemanticSymbolType,
-      readonly isTypeMember: boolean, readonly ranges: Array<vscode.Range>) {}
+      readonly isTypeMember: boolean, readonly ranges: Array<Range>) {}
 }
 
-function jumpToUriAtPosition(
-    uri: vscode.Uri, position: vscode.Position, preserveFocus: boolean) {
-  vscode.workspace.openTextDocument(uri).then(d => {
-    if (!d) {
-      vscode.window.activeTextEditor.revealRange(
-          new vscode.Range(position, position),
-          vscode.TextEditorRevealType.InCenter);
-      vscode.window.activeTextEditor.selection =
-          new vscode.Selection(position, position);
-    } else {
-      vscode.window.showTextDocument(d, undefined, preserveFocus).then(e => {
-        e.revealRange(
-            new vscode.Range(position, position),
-            vscode.TextEditorRevealType.InCenter);
-        e.selection = new vscode.Selection(position, position);
-      })
-    }
-  })
-}
+function getClientConfig(context: ExtensionContext) {
+  const kCacheDirPrefName = 'cacheDirectory';
 
-function getClientConfig(context: vscode.ExtensionContext) {
-  let config = vscode.workspace.getConfiguration('cquery');
+  // Read prefs; this map goes from `cquery/js name` => `vscode prefs name`.
+  let configMapping = [
+    ['launchWorkingDirectory', 'launch.workingDirectory'],
+    ['launchCommand', 'launch.command'],
+    ['cacheDirectory', kCacheDirPrefName],
+    ['indexWhitelist', 'index.whitelist'],
+    ['indexBlacklist', 'index.blacklist'],
+    ['extraClangArguments', 'index.extraClangArguments'],
+    ['resourceDirectory', 'misc.resourceDirectory'],
+    ['maxWorkspaceSearchResults', 'misc.maxWorkspaceSearchResults'],
+    ['indexerCount', 'misc.indexerCount'],
+    ['enableIndexing', 'misc.enableIndexing'],
+    ['enableCacheWrite', 'misc.enableCacheWrite'],
+    ['enableCacheRead', 'misc.enableCacheRead'],
+    ['compilationDatabaseDirectory', 'misc.compilationDatabaseDirectory'],
+    [
+      'includeCompletionMaximumPathLength',
+      'completion.include.maximumPathLength'
+    ],
+    [
+      'includeCompletionWhitelistLiteralEnding',
+      'completion.include.whitelistLiteralEnding'
+    ],
+    ['includeCompletionWhitelist', 'completion.include.whitelist'],
+    ['includeCompletionBlacklist', 'completion.include.blacklist'],
+    ['showDocumentLinksOnIncludes', 'showDocumentLinksOnIncludes'],
+    ['diagnosticsOnParse', 'diagnostics.onParse'],
+    ['diagnosticsOnCodeCompletion', 'diagnostics.onCodeCompletion'],
+    ['codeLensOnLocalVariables', 'codeLens.onLocalVariables'],
+    ['enableSnippetInsertion', 'completion.enableSnippetInsertion']
+  ];
+  let clientConfig = {
+    launchWorkingDirectory: '',
+    launchCommand: '',
+    cacheDirectory: ''
+  };
+  let config = workspace.getConfiguration('cquery');
+  for (let prop of configMapping)
+    clientConfig[prop[0]] = config.get(prop[1]);
 
-  if (config.get('launch.workingDirectory') == '') {
+  // Verify that there is a working directory. If not, exit.
+  if (!clientConfig.launchWorkingDirectory) {
     const kOpenSettings = 'Open Settings';
-    vscode.window
-        .showErrorMessage(
-            'Please specify the "cquery.launch.workingDirectory" setting and reload vscode',
-            kOpenSettings)
-        .then(selected => {
-          if (selected == kOpenSettings)
-            vscode.commands.executeCommand(
-                'workbench.action.openWorkspaceSettings');
-        });
+    const kErrorMessage =
+        'Please specify the "cquery.launch.workingDirectory" setting and reload vscode';
+    window.showErrorMessage(kErrorMessage, kOpenSettings).then(selected => {
+      if (selected == kOpenSettings)
+        commands.executeCommand('workbench.action.openWorkspaceSettings');
+    });
     return;
   }
 
-  let clientConfig = {
-    launchWorkingDirectory: <string>config.get('launch.workingDirectory'),
-    launchCommand: <string>config.get('launch.command'),
-    cacheDirectory: config.get('cacheDirectory'),
-    indexWhitelist: config.get('index.whitelist'),
-    indexBlacklist: config.get('index.blacklist'),
-    extraClangArguments: config.get('index.extraClangArguments'),
-    resourceDirectory: config.get('misc.resourceDirectory'),
-    maxWorkspaceSearchResults: config.get('misc.maxWorkspaceSearchResults'),
-    indexerCount: config.get('misc.indexerCount'),
-    enableIndexing: config.get('misc.enableIndexing'),
-    enableCacheWrite: config.get('misc.enableCacheWrite'),
-    enableCacheRead: config.get('misc.enableCacheRead'),
-    compilationDatabaseDirectory:
-        config.get('misc.compilationDatabaseDirectory'),
-    includeCompletionMaximumPathLength:
-        config.get('completion.include.maximumPathLength'),
-    includeCompletionWhitelistLiteralEnding:
-        config.get('completion.include.whitelistLiteralEnding'),
-    includeCompletionWhitelist: config.get('completion.include.whitelist'),
-    includeCompletionBlacklist: config.get('completion.include.blacklist'),
-    showDocumentLinksOnIncludes: config.get('showDocumentLinksOnIncludes'),
-    diagnosticsOnParse: config.get('diagnostics.onParse'),
-    diagnosticsOnCodeCompletion: config.get('diagnostics.onCodeCompletion'),
-    codeLensOnLocalVariables: config.get('codeLens.onLocalVariables'),
-    enableSnippetInsertion: config.get('completion.enableSnippetInsertion')
-  }
-
+  // Set up a cache directory if there is not one.
   if (!clientConfig.cacheDirectory) {
     if (!context.storagePath) {
       const kOpenSettings = 'Open Settings';
-      vscode.window
+      window
           .showErrorMessage(
               'Could not auto-discover cache directory. Please use "Open Folder" ' +
                   'or specify it in the |cquery.cacheDirectory| setting.',
               kOpenSettings)
           .then((selected) => {
             if (selected == kOpenSettings)
-              vscode.commands.executeCommand(
-                  'workbench.action.openWorkspaceSettings');
+              commands.executeCommand('workbench.action.openWorkspaceSettings');
           });
       return;
     }
@@ -165,14 +106,14 @@ function getClientConfig(context: vscode.ExtensionContext) {
     // the project since if the user has an SSD they most likely have their
     // source files on the SSD as well.
     const generateCacheDirectory = () => {
-      let workspaceDir = vscode.workspace.rootPath.replace(/\\/g, '/');
+      let workspaceDir = workspace.rootPath.replace(/\\/g, '/');
       if (!workspaceDir.endsWith('/'))
         workspaceDir += '/';
       return workspaceDir + '.vscode/cquery_cached_index/'
     };
     let cacheDir = generateCacheDirectory();
     clientConfig.cacheDirectory = cacheDir;
-    config.update('cacheDirectory', cacheDir, false /*global*/);
+    config.update(kCacheDirPrefName, cacheDir, false /*global*/);
   }
 
   return clientConfig;
@@ -180,636 +121,511 @@ function getClientConfig(context: vscode.ExtensionContext) {
 
 
 
-class TypeHierarchyNode {
-  constructor(
-      readonly name: string, readonly location: vscode.Location|undefined,
-      readonly children: TypeHierarchyNode[]) {}
-
-  get usr() {
-    return this.name;
-  }
-}
-
-class TypeHierarchyProvider implements
-    vscode.TreeDataProvider<TypeHierarchyNode> {
-  root: TypeHierarchyNode[] = [];
-
-  readonly onDidChangeEmitter: vscode.EventEmitter<any> =
-      new vscode.EventEmitter<any>();
-  readonly onDidChangeTreeData: vscode.Event<any> =
-      this.onDidChangeEmitter.event;
-
-  getTreeItem(element: TypeHierarchyNode): vscode.TreeItem {
-    const kBaseName = '[[Base]]'
-
-    let collapseState = vscode.TreeItemCollapsibleState.None;
-    if (element.children.length > 0)
-      collapseState = vscode.TreeItemCollapsibleState.Expanded;
-    if (element.children && element.name == kBaseName) {
-      collapseState = vscode.TreeItemCollapsibleState.Collapsed;
-    } else if (
-        element.children.length == 1 && element.children[0].name == kBaseName) {
-      assert(element.name != kBaseName);
-      collapseState = vscode.TreeItemCollapsibleState.Collapsed;
-    }
-
-    return {
-      label: element.name,
-      collapsibleState: collapseState,
-      contextValue: 'cqueryGoto',
-      command: {
-        command: '_cquery._hackGotoForTreeView',
-        title: 'Goto',
-        arguments: [element, element.children.length != 0]
-      }
-    };
-  }
-
-  getChildren(element?: TypeHierarchyNode):
-      TypeHierarchyNode[]|Thenable<TypeHierarchyNode[]> {
-    if (!element)
-      return this.root;
-    return element.children;
-  }
-}
-
-
-
-enum CallType {
-  Normal = 0,
-  Base = 1,
-  Derived = 2
-}
-class CallTreeNode {
-  // These properties come directly from the langauge server.
-  name: string
-  usr: string
-  location: vscode.Location
-  hasCallers: boolean
-  callType: CallType
-
-  // Cached state, local to just the extension.
-  _depth: number = 0
-  _cachedCallers: CallTreeNode[]|undefined
-}
-
-class CallTreeProvider implements vscode.TreeDataProvider<CallTreeNode> {
-  root: CallTreeNode[] = [];
-
-  constructor(
-      readonly languageClient: vscodelc.LanguageClient,
-      readonly derivedDark: string, readonly derivedLight: string,
-      readonly baseDark: string, readonly baseLight: string) {}
-
-  readonly onDidChangeEmitter: vscode.EventEmitter<any> =
-      new vscode.EventEmitter<any>();
-  readonly onDidChangeTreeData: vscode.Event<any> =
-      this.onDidChangeEmitter.event;
-
-  getTreeItem(element: CallTreeNode): vscode.TreeItem {
-    let collapseState = vscode.TreeItemCollapsibleState.None
-    if (element.hasCallers) {
-      if (element._depth < 2)
-        collapseState = vscode.TreeItemCollapsibleState.Expanded;
-      else
-        collapseState = vscode.TreeItemCollapsibleState.Collapsed;
-    }
-
-    let light = '';
-    let dark = '';
-    if (element.callType == CallType.Base) {
-      light = this.baseLight;
-      dark = this.baseDark;
-    } else if (element.callType == CallType.Derived) {
-      light = this.derivedLight;
-      dark = this.derivedDark;
-    }
-    return {
-      label: element.name,
-      collapsibleState: collapseState,
-      contextValue: 'cqueryGoto',
-      command: {
-        command: '_cquery._hackGotoForTreeView',
-        title: 'Goto',
-        arguments: [element, element.hasCallers]
-      },
-      iconPath: {light: light, dark: dark}
-    };
-  }
-
-  getChildren(element?: CallTreeNode): CallTreeNode[]|Thenable<CallTreeNode[]> {
-    if (!element)
-      return this.root;
-    if (element._cachedCallers !== undefined)
-      return element._cachedCallers;
-
-    return this.languageClient
-        .sendRequest('$cquery/callTreeExpand', {usr: element.usr})
-        .then((result: CallTreeNode[]) => {
-          for (let child of result)
-            child._depth = element._depth + 1;
-          element._cachedCallers = result;
-          return result;
-        });
-  }
-}
-
-
-
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
   /////////////////////////////////////
   // Setup configuration, start server.
   /////////////////////////////////////
 
-  // Load configuration. Tell user they need to restart vscode if they change
-  // configuration values.
-  let clientConfig = getClientConfig(context);
-  context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(() => {
-    let newConfig = getClientConfig(context);
-    for (let key in newConfig) {
-      if (!newConfig.hasOwnProperty(key))
-        continue;
+  // Load configuration and start the client.
+  let languageClient = (() => {
+    let clientConfig = getClientConfig(context);
+    if (!clientConfig)
+      return;
+    // Notify the user that if they change a cquery setting they need to restart
+    // vscode.
+    context.subscriptions.push(workspace.onDidChangeConfiguration(() => {
+      let newConfig = getClientConfig(context);
+      for (let key in newConfig) {
+        if (!newConfig.hasOwnProperty(key))
+          continue;
 
-      if (!clientConfig ||
-          JSON.stringify(clientConfig[key]) != JSON.stringify(newConfig[key])) {
-        const kReload = 'Reload'
-        vscode.window
-            .showInformationMessage(
-                `Please reload to apply cquery configuration change (${
-                                                                       key
-                                                                     } changed).`,
-                kReload)
-            .then((selected) => {
-              if (selected == kReload)
-                vscode.commands.executeCommand('workbench.action.reloadWindow');
-            });
-        break;
+        if (!clientConfig ||
+            JSON.stringify(clientConfig[key]) !=
+                JSON.stringify(newConfig[key])) {
+          const kReload = 'Reload'
+          const message =
+              `Please reload to apply the "cquery.${
+                                                    key
+                                                  }" configuration change.`;
+
+          window.showInformationMessage(message, kReload).then(selected => {
+            if (selected == kReload)
+              commands.executeCommand('workbench.action.reloadWindow');
+          });
+          break;
+        }
       }
+    }));
+
+    // Add version information to the config.
+    clientConfig['clientVersion'] = VERSION
+
+    let serverOptions: ServerOptions = {
+      command: clientConfig.launchCommand,
+      args: ['--language-server' /*, '--log-stdin-stdout-to-stderr'*/],
+      options: {
+        cwd: clientConfig.launchWorkingDirectory
+        // env: { 'MALLOC_CHECK_': '2' }
+      }
+    };
+    console.log(
+        `Starting ${serverOptions.command} in ${serverOptions.options.cwd}`);
+
+    // Options to control the language client
+    let clientOptions: LanguageClientOptions = {
+      documentSelector: ['c', 'cpp'],
+      // synchronize: {
+      // 	configurationSection: 'cquery',
+      // 	fileEvents: workspace.createFileSystemWatcher('**/.cc')
+      // },
+      diagnosticCollectionName: 'cquery',
+      outputChannelName: 'cquery',
+      revealOutputChannelOn: RevealOutputChannelOn.Never,
+      initializationOptions: clientConfig,
+      initializationFailedHandler: (e) => {
+        console.log(e);
+        return false;
+      },
+      errorHandler: new CqueryErrorHandler(workspace.getConfiguration('cquery'))
     }
-  }));
-  if (!clientConfig)
-    return;
 
-  clientConfig['clientVersion'] = VERSION
+    // Create the language client and start the client.
+    let languageClient =
+        new LanguageClient('cquery', 'cquery', serverOptions, clientOptions);
+    let disposable = languageClient.start();
+    context.subscriptions.push(disposable);
 
-  let serverOptions: vscodelc.ServerOptions = {
-    command: clientConfig.launchCommand,
-    args: ['--language-server' /*, '--log-stdin-stdout-to-stderr'*/],
-    options: {
-      cwd: clientConfig.launchWorkingDirectory
-      // env: { 'MALLOC_CHECK_': '2' }
-    }
-  };
-  console.log(
-      `Starting ${serverOptions.command} in ${serverOptions.options.cwd}`);
-
-  // Options to control the language client
-  let clientOptions: vscodelc.LanguageClientOptions = {
-    documentSelector: ['c', 'cpp'],
-    // synchronize: {
-    // 	configurationSection: 'cquery',
-    // 	fileEvents: workspace.createFileSystemWatcher('**/.cc')
-    // },
-    diagnosticCollectionName: 'cquery',
-    outputChannelName: 'cquery',
-    revealOutputChannelOn: vscodelc.RevealOutputChannelOn.Never,
-    initializationOptions: clientConfig,
-    initializationFailedHandler: (e) => {
-      console.log(e);
-      return false;
-    },
-    errorHandler:
-        new MyErrorHandler(vscode.workspace.getConfiguration('cquery'))
-  }
-
-  // Create the language client and start the client.
-  let languageClient = new vscodelc.LanguageClient(
-      'cquery', 'cquery', serverOptions, clientOptions);
-  let disposable = languageClient.start();
-  context.subscriptions.push(disposable);
+    return languageClient;
+  })();
 
   let p2c = languageClient.protocol2CodeConverter;
 
-  /////////////////////
-  // Register commands.
-  /////////////////////
+  // General commands.
+  (() => {
+    commands.registerCommand('cquery.freshenIndex', () => {
+      languageClient.sendNotification('$cquery/freshenIndex');
+    });
 
-  vscode.commands.registerCommand('cquery.freshenIndex', () => {
-    languageClient.sendNotification('$cquery/freshenIndex');
-  });
+    function makeRefHandler(methodName, autoGotoIfSingle = false) {
+      return () => {
+        let position = window.activeTextEditor.selection.active;
+        let uri = window.activeTextEditor.document.uri;
+        languageClient
+            .sendRequest(methodName, {
+              textDocument: {
+                uri: uri.toString(),
+              },
+              position: position
+            })
+            .then((locations: Array<ls.Location>) => {
+              if (autoGotoIfSingle && locations.length == 1) {
+                let location = p2c.asLocation(locations[0]);
+                commands.executeCommand(
+                    'cquery.goto', location.uri, location.range.start, []);
+              } else {
+                commands.executeCommand(
+                    'editor.action.showReferences', uri, position,
+                    locations.map(p2c.asLocation));
+              }
+            })
+      }
+    }
+    commands.registerCommand('cquery.vars', makeRefHandler('$cquery/vars'));
+    commands.registerCommand(
+        'cquery.callers', makeRefHandler('$cquery/callers'));
+    commands.registerCommand(
+        'cquery.base', makeRefHandler('$cquery/base', true));
+    commands.registerCommand(
+        'cquery.derived', makeRefHandler('$cquery/derived'));
+  })();
 
-  function makeRefHandler(methodName, autoGotoIfSingle = false) {
-    return () => {
-      let position = vscode.window.activeTextEditor.selection.active;
-      let uri = vscode.window.activeTextEditor.document.uri;
+  // The language client does not correctly deserialize arguments, so we have a
+  // wrapper command that does it for us.
+  (() => {
+    commands.registerCommand(
+        'cquery.showReferences',
+        (uri: string, position: ls.Position, locations: ls.Location[]) => {
+          commands.executeCommand(
+              'editor.action.showReferences', p2c.asUri(uri),
+              p2c.asPosition(position), locations.map(p2c.asLocation));
+        });
+
+
+    commands.registerCommand(
+        'cquery.goto',
+        (uri: string, position: ls.Position, locations: ls.Location[]) => {
+          jumpToUriAtPosition(
+              p2c.asUri(uri), p2c.asPosition(position),
+              false /*preserveFocus*/);
+        });
+  })();
+
+  // FixIt support
+  (() => {
+    commands.registerCommand('cquery._applyFixIt', (uri, pTextEdits) => {
+      const textEdits = p2c.asTextEdits(pTextEdits);
+
+      function applyEdits(e: TextEditor) {
+        e.edit(editBuilder => {
+           for (const edit of textEdits)
+             editBuilder.replace(edit.range, edit.newText);
+         }).then(success => {
+          if (!success)
+            window.showErrorMessage('Failed to apply FixIt');
+        });
+      }
+
+      // Find existing open document.
+      for (const textEditor of window.visibleTextEditors) {
+        if (textEditor.document.uri.toString() == uri) {
+          applyEdits(textEditor);
+          return;
+        }
+      }
+
+      // Failed, open new document.
+      workspace.openTextDocument(parseUri(uri))
+          .then(d => {window.showTextDocument(d).then(e => {
+                  if (!e)
+                    window.showErrorMessage(
+                        'Failed to to get editor for FixIt');
+
+                  applyEdits(e);
+                })});
+    });
+  })();
+
+  // AutoImplement
+  (() => {
+    commands.registerCommand('cquery._autoImplement', (uri, pTextEdits) => {
+      commands.executeCommand('cquery._applyFixIt', uri, pTextEdits)
+          .then(() => {
+            commands.executeCommand(
+                'cquery.goto', uri, pTextEdits[0].range.start);
+          });
+    });
+  })();
+
+  // Insert include.
+  (() => {
+    commands.registerCommand('cquery._insertInclude', (uri, pTextEdits) => {
+      if (pTextEdits.length == 1)
+        commands.executeCommand('cquery._applyFixIt', uri, pTextEdits);
+      else {
+        let items: Array<QuickPickItem> = [];
+        class MyQuickPick implements QuickPickItem {
+          constructor(
+              public label: string, public description: string,
+              public edit: any) {}
+        }
+        for (let edit of pTextEdits) {
+          items.push(new MyQuickPick(edit.newText, '', edit));
+        }
+        window.showQuickPick(items).then((selected: MyQuickPick) => {
+          commands.executeCommand('cquery._applyFixIt', uri, [selected.edit]);
+        });
+      }
+    });
+  })();
+
+  // Inactive regions.
+  (() => {
+    let config = workspace.getConfiguration('cquery');
+    const inactiveRegionDecorationType = window.createTextEditorDecorationType({
+      isWholeLine: true,
+      light: {
+        color: config.get('theme.light.inactiveRegion.textColor'),
+        backgroundColor:
+            config.get('theme.light.inactiveRegion.backgroundColor'),
+      },
+      dark: {
+        color: config.get('theme.dark.inactiveRegion.textColor'),
+        backgroundColor:
+            config.get('theme.dark.inactiveRegion.backgroundColor'),
+      }
+    });
+    languageClient.onReady().then(() => {
+      languageClient.onNotification('$cquery/setInactiveRegions', (args) => {
+        let uri = args.uri;
+        let ranges: Range[] = args.inactiveRegions.map(p2c.asRange);
+        for (const textEditor of window.visibleTextEditors) {
+          if (textEditor.document.uri.toString() == uri) {
+            window.activeTextEditor.setDecorations(
+                inactiveRegionDecorationType, ranges);
+            break;
+          }
+        }
+      });
+    });
+  })();
+
+  // Progress
+  (() => {
+    let config = workspace.getConfiguration('cquery');
+    let statusStyle = config.get('misc.status');
+    if (statusStyle == 'short' || statusStyle == 'detailed') {
+      let statusIcon = window.createStatusBarItem(StatusBarAlignment.Right);
+      statusIcon.text = 'cquery: loading';
+      statusIcon.tooltip =
+          'cquery is loading project metadata (ie, compile_commands.json)';
+      statusIcon.show();
+      languageClient.onReady().then(() => {
+        languageClient.onNotification('$cquery/progress', (args) => {
+          let indexRequestCount = args.indexRequestCount;
+          let doIdMapCount = args.doIdMapCount;
+          let loadPreviousIndexCount = args.loadPreviousIndexCount;
+          let onIdMappedCount = args.onIdMappedCount;
+          let onIndexedCount = args.onIndexedCount;
+          let total = indexRequestCount + doIdMapCount +
+              loadPreviousIndexCount + onIdMappedCount + onIndexedCount;
+
+          let detailedJobString = `indexRequest: ${indexRequestCount}, ` +
+              `doIdMap: ${doIdMapCount}, ` +
+              `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
+              `onIdMapped: ${onIdMappedCount}, ` +
+              `onIndexed: ${onIndexedCount}`;
+
+          if (total == 0 && statusStyle == 'short') {
+            statusIcon.text = 'cquery: idle';
+          } else {
+            statusIcon.text = `cquery: ${indexRequestCount} jobs`;
+            if (statusStyle == 'detailed') {
+              statusIcon.text += ` (${detailedJobString})`
+            }
+          }
+          statusIcon.tooltip = 'cquery jobs: ' + detailedJobString;
+        });
+      });
+    }
+  })();
+
+  // Type hierarchy.
+  (() => {
+    const typeHierarchyProvider = new TypeHierarchyProvider();
+    window.registerTreeDataProvider(
+        'cquery.typeHierarchy', typeHierarchyProvider);
+    commands.registerCommand('cquery.typeHierarchyTree', () => {
+      let position = window.activeTextEditor.selection.active;
+      let uri = window.activeTextEditor.document.uri;
       languageClient
-          .sendRequest(methodName, {
+          .sendRequest('$cquery/typeHierarchyTree', {
             textDocument: {
               uri: uri.toString(),
             },
             position: position
           })
-          .then((locations: Array<object>) => {
-            if (autoGotoIfSingle && locations.length == 1) {
-              let location = parseLocation(locations[0])
-              vscode.commands.executeCommand(
-                  'cquery.goto', location.uri, location.range.start, []);
-            } else {
-              vscode.commands.executeCommand(
-                  'editor.action.showReferences', uri, position,
-                  parseLocations(locations));
+          .then((typeEntry: TypeHierarchyNode | undefined) => {
+            if (typeEntry) {
+              typeHierarchyProvider.root = [typeEntry];
+              typeHierarchyProvider.onDidChangeEmitter.fire();
             }
           })
-    }
-  }
-  vscode.commands.registerCommand(
-      'cquery.vars', makeRefHandler('$cquery/vars'));
-  vscode.commands.registerCommand(
-      'cquery.callers', makeRefHandler('$cquery/callers'));
-  vscode.commands.registerCommand(
-      'cquery.base', makeRefHandler('$cquery/base', true));
-  vscode.commands.registerCommand(
-      'cquery.derived', makeRefHandler('$cquery/derived'));
-
-  // The language client does not correctly deserialize arguments, so we have a
-  // wrapper command that does it for us.
-  vscode.commands.registerCommand(
-      'cquery.showReferences', (uri, position, locations) => {
-        vscode.commands.executeCommand(
-            'editor.action.showReferences', parseUri(uri),
-            parsePosition(position), parseLocations(locations));
-      });
-
-
-  vscode.commands.registerCommand('cquery.goto', (uri, position, locations) => {
-    let parsedPosition = parsePosition(position);
-    let parsedUri = parseUri(uri);
-    jumpToUriAtPosition(parsedUri, parsedPosition, false /*preserveFocus*/);
-  });
-
-
-  // FixIt support
-  vscode.commands.registerCommand('cquery._applyFixIt', (uri, pTextEdits) => {
-    const textEdits = p2c.asTextEdits(pTextEdits);
-
-    function applyEdits(e: vscode.TextEditor) {
-      e.edit(editBuilder => {
-         for (const edit of textEdits)
-           editBuilder.replace(edit.range, edit.newText);
-       }).then(success => {
-        if (!success)
-          vscode.window.showErrorMessage('Failed to apply FixIt');
-      });
-    }
-
-    // Find existing open document.
-    for (const textEditor of vscode.window.visibleTextEditors) {
-      if (textEditor.document.uri.toString() == uri) {
-        applyEdits(textEditor);
-        return;
-      }
-    }
-
-    // Failed, open new document.
-    vscode.workspace.openTextDocument(parseUri(uri))
-        .then(d => {vscode.window.showTextDocument(d).then(e => {
-                if (!e)
-                  vscode.window.showErrorMessage(
-                      'Failed to to get editor for FixIt');
-
-                applyEdits(e);
-              })});
-  });
-
-
-  // AutoImplement
-  vscode.commands.registerCommand(
-      'cquery._autoImplement', (uri, pTextEdits) => {
-        vscode.commands.executeCommand('cquery._applyFixIt', uri, pTextEdits)
-            .then(() => {
-              vscode.commands.executeCommand(
-                  'cquery.goto', uri, pTextEdits[0].range.start);
-            });
-      });
-
-
-  // Insert include.
-  vscode.commands.registerCommand(
-      'cquery._insertInclude', (uri, pTextEdits) => {
-        if (pTextEdits.length == 1)
-          vscode.commands.executeCommand('cquery._applyFixIt', uri, pTextEdits);
-        else {
-          let items: Array<vscode.QuickPickItem> = [];
-          class MyQuickPick implements vscode.QuickPickItem {
-            constructor(
-                public label: string, public description: string,
-                public edit: any) {}
-          }
-          for (let edit of pTextEdits) {
-            items.push(new MyQuickPick(edit.newText, '', edit));
-          }
-          vscode.window.showQuickPick(items).then((selected: MyQuickPick) => {
-            vscode.commands.executeCommand(
-                'cquery._applyFixIt', uri, [selected.edit]);
-          });
-        }
-      });
-
-
-  // Inactive regions.
-  let config = vscode.workspace.getConfiguration('cquery');
-  const inactiveRegionDecorationType =
-      vscode.window.createTextEditorDecorationType({
-        isWholeLine: true,
-        light: {
-          color: <string>config.get('theme.light.inactiveRegion.textColor'),
-          backgroundColor:
-              <string>config.get('theme.light.inactiveRegion.backgroundColor'),
-        },
-        dark: {
-          color: <string>config.get('theme.dark.inactiveRegion.textColor'),
-          backgroundColor:
-              <string>config.get('theme.dark.inactiveRegion.backgroundColor'),
-        }
-      });
-  languageClient.onReady().then(() => {
-    languageClient.onNotification('$cquery/setInactiveRegions', (args) => {
-      let uri = args.uri;
-      let ranges = parseRanges(args.inactiveRegions);
-      for (const textEditor of vscode.window.visibleTextEditors) {
-        if (textEditor.document.uri.toString() == uri) {
-          vscode.window.activeTextEditor.setDecorations(
-              inactiveRegionDecorationType, ranges);
-          break;
-        }
-      }
     });
-  });
-
-
-  // Progress
-  let statusStyle = config.get('misc.status');
-  if (statusStyle == 'short' || statusStyle == 'detailed') {
-    let statusIcon =
-        vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-    statusIcon.text = 'cquery: loading';
-    statusIcon.tooltip =
-        'cquery is loading project metadata (ie, compile_commands.json)';
-    statusIcon.show();
-    languageClient.onReady().then(() => {
-      languageClient.onNotification('$cquery/progress', (args) => {
-        let indexRequestCount = args.indexRequestCount;
-        let doIdMapCount = args.doIdMapCount;
-        let loadPreviousIndexCount = args.loadPreviousIndexCount;
-        let onIdMappedCount = args.onIdMappedCount;
-        let onIndexedCount = args.onIndexedCount;
-        let total = indexRequestCount + doIdMapCount + loadPreviousIndexCount +
-            onIdMappedCount + onIndexedCount;
-
-
-        let detailedJobString = `indexRequest: ${indexRequestCount}, ` +
-            `doIdMap: ${doIdMapCount}, ` +
-            `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
-            `onIdMapped: ${onIdMappedCount}, ` +
-            `onIndexed: ${onIndexedCount}`;
-
-        if (total == 0 && statusStyle == 'short') {
-          statusIcon.text = 'cquery: idle';
-        } else {
-          statusIcon.text = `cquery: ${indexRequestCount} jobs`;
-          if (statusStyle == 'detailed') {
-            statusIcon.text += ` (${detailedJobString})`
-          }
-        }
-        statusIcon.tooltip = 'cquery jobs: ' + detailedJobString;
-      });
+    commands.registerCommand('cquery.clearTypeHierarchyTree', () => {
+      typeHierarchyProvider.root = [];
+      typeHierarchyProvider.onDidChangeEmitter.fire();
     });
-  }
-
-  // Type hierarchy.
-  const typeHierarchyProvider = new TypeHierarchyProvider();
-  vscode.window.registerTreeDataProvider(
-      'cquery.typeHierarchy', typeHierarchyProvider);
-  // TODO: support showing base types, evaluate them on demand though as it may
-  // result in cyclic graphics.
-  vscode.commands.registerCommand('cquery.typeHierarchyTree', () => {
-    let position = vscode.window.activeTextEditor.selection.active;
-    let uri = vscode.window.activeTextEditor.document.uri;
-    languageClient
-        .sendRequest('$cquery/typeHierarchyTree', {
-          textDocument: {
-            uri: uri.toString(),
-          },
-          position: position
-        })
-        .then((typeEntry: TypeHierarchyNode | undefined) => {
-          if (typeEntry) {
-            typeHierarchyProvider.root = [];
-            typeHierarchyProvider.root.push(typeEntry);
-            typeHierarchyProvider.onDidChangeEmitter.fire();
-          }
-        })
-  });
-  vscode.commands.registerCommand('cquery.clearTypeHierarchyTree', () => {
-    typeHierarchyProvider.root = [];
-    typeHierarchyProvider.onDidChangeEmitter.fire();
-  });
-
+  })();
 
   // Call tree
-  let derivedDark =
-      context.asAbsolutePath(path.join('resources', 'derived-dark.svg'));
-  let derivedLight =
-      context.asAbsolutePath(path.join('resources', 'derived-light.svg'));
-  let baseDark =
-      context.asAbsolutePath(path.join('resources', 'base-dark.svg'));
-  let baseLight =
-      context.asAbsolutePath(path.join('resources', 'base-light.svg'));
-  const callTreeProvider = new CallTreeProvider(
-      languageClient, derivedDark, derivedLight, baseDark, baseLight);
-  vscode.window.registerTreeDataProvider('cquery.callTree', callTreeProvider);
-  vscode.commands.registerCommand('cquery.callTree', () => {
-    let position = vscode.window.activeTextEditor.selection.active;
-    let uri = vscode.window.activeTextEditor.document.uri;
-    languageClient
-        .sendRequest('$cquery/callTreeInitial', {
-          textDocument: {
-            uri: uri.toString(),
-          },
-          position: position
-        })
-        .then((callNodes: CallTreeNode[]) => {
-          callTreeProvider.root = [];
-          for (let callNode of callNodes) {
-            callNode._depth = 0
-            callTreeProvider.root.push(callNode);
-          }
-          if (callNodes)
-            callTreeProvider.onDidChangeEmitter.fire();
+  (() => {
+    let derivedDark =
+        context.asAbsolutePath(path.join('resources', 'derived-dark.svg'));
+    let derivedLight =
+        context.asAbsolutePath(path.join('resources', 'derived-light.svg'));
+    let baseDark =
+        context.asAbsolutePath(path.join('resources', 'base-dark.svg'));
+    let baseLight =
+        context.asAbsolutePath(path.join('resources', 'base-light.svg'));
+    const callTreeProvider = new CallTreeProvider(
+        languageClient, derivedDark, derivedLight, baseDark, baseLight);
+    window.registerTreeDataProvider('cquery.callTree', callTreeProvider);
+    commands.registerCommand('cquery.callTree', () => {
+      let position = window.activeTextEditor.selection.active;
+      let uri = window.activeTextEditor.document.uri;
+      languageClient
+          .sendRequest('$cquery/callTreeInitial', {
+            textDocument: {
+              uri: uri.toString(),
+            },
+            position: position
+          })
+          .then((callNodes: CallTreeNode[]) => {
+            callTreeProvider.root = [];
+            for (let callNode of callNodes) {
+              callNode._depth = 0
+              callTreeProvider.root.push(callNode);
+            }
+            if (callNodes)
+              callTreeProvider.onDidChangeEmitter.fire();
+          });
+    });
+    commands.registerCommand('cquery.clearCallTree', () => {
+      callTreeProvider.root = [];
+      callTreeProvider.onDidChangeEmitter.fire();
+    });
+  })();
+
+  // Common between tree views.
+  (() => {
+    commands.registerCommand(
+        '_cquery._gotoForTreeView',
+        (node: TypeHierarchyNode | CallTreeNode) => {
+          if (!node.location)
+            return;
+
+          let parsedUri = parseUri(node.location.uri);
+          let parsedPosition = p2c.asPosition(node.location.range.start);
+
+          jumpToUriAtPosition(parsedUri, parsedPosition, true /*preserveFocus*/)
         });
-  });
-  vscode.commands.registerCommand('cquery.clearCallTree', () => {
-    callTreeProvider.root = [];
-    callTreeProvider.onDidChangeEmitter.fire();
-  });
 
-  vscode.commands.registerCommand(
-      '_cquery._gotoForTreeView', (node: TypeHierarchyNode | CallTreeNode) => {
-        if (!node.location)
-          return;
+    let lastGotoNodeUsr: string
+    let lastGotoClickTime: number
+    commands.registerCommand(
+        '_cquery._hackGotoForTreeView',
+        (node: TypeHierarchyNode | CallTreeNode, hasChildren: boolean) => {
+          if (!node.location)
+            return;
 
-        let parsedUri = parseUri(node.location.uri);
-        let parsedPosition = parsePosition(node.location.range.start);
+          if (!hasChildren) {
+            commands.executeCommand('_cquery._gotoForTreeView', node);
+            return;
+          }
 
-        jumpToUriAtPosition(parsedUri, parsedPosition, true /*preserveFocus*/)
-      });
+          if (lastGotoNodeUsr != node.usr) {
+            lastGotoNodeUsr = node.usr;
+            lastGotoClickTime = Date.now();
+            return;
+          }
 
-  let lastGotoNodeUsr: string
-  let lastGotoClickTime: number
-  vscode.commands.registerCommand(
-      '_cquery._hackGotoForTreeView',
-      (node: TypeHierarchyNode | CallTreeNode, hasChildren: boolean) => {
-        if (!node.location)
-          return;
-
-        if (!hasChildren) {
-          vscode.commands.executeCommand('_cquery._gotoForTreeView', node);
-          return;
-        }
-
-        if (lastGotoNodeUsr != node.usr) {
-          lastGotoNodeUsr = node.usr;
+          let config = workspace.getConfiguration('cquery');
+          const kDoubleClickTimeMs =
+              config.get('treeViews.doubleClickTimeoutMs');
+          const elapsed = Date.now() - lastGotoClickTime;
           lastGotoClickTime = Date.now();
-          return;
-        }
-
-        const kDoubleClickTimeMs = config.get('treeViews.doubleClickTimeoutMs');
-        const elapsed = Date.now() - lastGotoClickTime;
-        lastGotoClickTime = Date.now();
-        if (elapsed < kDoubleClickTimeMs)
-          vscode.commands.executeCommand('_cquery._gotoForTreeView', node);
-      });
-
+          if (elapsed < kDoubleClickTimeMs)
+            commands.executeCommand('_cquery._gotoForTreeView', node);
+        });
+  })();
 
   // Semantic highlighting
   // TODO:
   //   - enable bold/italic decorators, might need change in vscode
   //   - only function call icon if the call is implicit
-  function makeSemanticDecorationType(
-      color: Nullable<string>,
-      underline: boolean): vscode.TextEditorDecorationType {
-    return vscode.window.createTextEditorDecorationType({
-      isWholeLine: false,
-      rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-      color: color,
-      textDecoration: underline ? 'underline' : '',
-      // after: {
-      //   contentIconPath: showIcon ?
-      //       context.asAbsolutePath('resources/function_call.svg') :
-      //       '',
-      // }
-    });
-  };
-
-  function makeDecorations(type: string) {
-    let colors = config.get(`highlighting.colors.${type}`, []);
-    let underline = config.get(`highlighting.underline.${type}`, false);
-    return colors.map(c => makeSemanticDecorationType(c, underline));
-  };
-  let semanticDecorations =
-      new Map<string, vscode.TextEditorDecorationType[]>();
-  let semanticEnabled = new Map<string, boolean>();
-  for (let type of
-           ['types', 'freeStandingFunctions', 'memberFunctions',
-            'freeStandingVariables', 'memberVariables']) {
-    semanticDecorations.set(type, makeDecorations(type));
-    semanticEnabled.set(type, false);
-  }
-
-  function updateConfigValues() {
-    // Fetch new config instance, since vscode will cache the previous one.
-    let config = vscode.workspace.getConfiguration('cquery');
-    for (let [name, value] of semanticEnabled) {
-      semanticEnabled.set(
-          name, config.get(`highlighting.enabled.${name}`, false));
-    }
-  };
-  updateConfigValues();
-
-  function tryFindDecoration(symbol: SemanticSymbol):
-      Nullable<vscode.TextEditorDecorationType> {
-    function get(name: string) {
-      if (!semanticEnabled.get(name))
-        return undefined;
-      let decorations = semanticDecorations.get(name);
-      return decorations[symbol.stableId % decorations.length];
+  (() => {
+    function makeSemanticDecorationType(
+        color: Nullable<string>, underline: boolean): TextEditorDecorationType {
+      return window.createTextEditorDecorationType({
+        isWholeLine: false,
+        rangeBehavior: DecorationRangeBehavior.ClosedClosed,
+        color: color,
+        textDecoration: underline ? 'underline' : '',
+      });
     };
 
-    if (symbol.type == SemanticSymbolType.Type) {
-      return get('types');
-    } else if (symbol.type == SemanticSymbolType.Function) {
-      if (symbol.isTypeMember)
-        return get('memberFunctions');
-      return get('freeStandingFunctions');
-    } else if (symbol.type == SemanticSymbolType.Variable) {
-      if (symbol.isTypeMember)
-        return get('memberVariables');
-      return get('freeStandingVariables');
+    function makeDecorations(type: string) {
+      let config = workspace.getConfiguration('cquery');
+      let colors = config.get(`highlighting.colors.${type}`, []);
+      let underline = config.get(`highlighting.underline.${type}`, false);
+      return colors.map(c => makeSemanticDecorationType(c, underline));
+    };
+    let semanticDecorations = new Map<string, TextEditorDecorationType[]>();
+    let semanticEnabled = new Map<string, boolean>();
+    for (let type of
+             ['types', 'freeStandingFunctions', 'memberFunctions',
+              'freeStandingVariables', 'memberVariables']) {
+      semanticDecorations.set(type, makeDecorations(type));
+      semanticEnabled.set(type, false);
     }
-  };
 
-  class PublishSemanticHighlightingArgs {
-    readonly uri: string;
-    readonly symbols: SemanticSymbol[];
-  }
-  languageClient.onReady().then(() => {
-    languageClient.onNotification(
-        '$cquery/publishSemanticHighlighting',
-        (args: PublishSemanticHighlightingArgs) => {
-          updateConfigValues();
+    function updateConfigValues() {
+      // Fetch new config instance, since vscode will cache the previous one.
+      let config = workspace.getConfiguration('cquery');
+      for (let [name, value] of semanticEnabled) {
+        semanticEnabled.set(
+            name, config.get(`highlighting.enabled.${name}`, false));
+      }
+    };
+    updateConfigValues();
 
-          for (let visibleEditor of vscode.window.visibleTextEditors) {
-            if (args.uri != visibleEditor.document.uri.toString())
-              continue;
+    function tryFindDecoration(symbol: SemanticSymbol):
+        Nullable<TextEditorDecorationType> {
+      function get(name: string) {
+        if (!semanticEnabled.get(name))
+          return undefined;
+        let decorations = semanticDecorations.get(name);
+        return decorations[symbol.stableId % decorations.length];
+      };
 
-            let decorations =
-                new Map<vscode.TextEditorDecorationType, Array<vscode.Range>>();
+      if (symbol.type == SemanticSymbolType.Type) {
+        return get('types');
+      } else if (symbol.type == SemanticSymbolType.Function) {
+        if (symbol.isTypeMember)
+          return get('memberFunctions');
+        return get('freeStandingFunctions');
+      } else if (symbol.type == SemanticSymbolType.Variable) {
+        if (symbol.isTypeMember)
+          return get('memberVariables');
+        return get('freeStandingVariables');
+      }
+    };
 
-            for (let symbol of args.symbols) {
-              let type = tryFindDecoration(symbol);
-              if (!type)
+    class PublishSemanticHighlightingArgs {
+      readonly uri: string;
+      readonly symbols: SemanticSymbol[];
+    }
+    languageClient.onReady().then(() => {
+      languageClient.onNotification(
+          '$cquery/publishSemanticHighlighting',
+          (args: PublishSemanticHighlightingArgs) => {
+            updateConfigValues();
+
+            for (let visibleEditor of window.visibleTextEditors) {
+              if (args.uri != visibleEditor.document.uri.toString())
                 continue;
-              if (decorations.has(type)) {
-                let existing = decorations.get(type);
-                for (let range of symbol.ranges)
-                  existing.push(range);
-              } else {
-                decorations.set(type, symbol.ranges);
-              }
-            }
 
-            // Clear decorations and set new ones. We might not use all of the
-            // decorations so clear before setting.
-            for (let [_, decorations] of semanticDecorations) {
-              decorations.forEach((type) => {
-                visibleEditor.setDecorations(type, []);
+              let decorations =
+                  new Map<TextEditorDecorationType, Array<Range>>();
+
+              for (let symbol of args.symbols) {
+                let type = tryFindDecoration(symbol);
+                if (!type)
+                  continue;
+                if (decorations.has(type)) {
+                  let existing = decorations.get(type);
+                  for (let range of symbol.ranges)
+                    existing.push(range);
+                } else {
+                  decorations.set(type, symbol.ranges);
+                }
+              }
+
+              // Clear decorations and set new ones. We might not use all of the
+              // decorations so clear before setting.
+              for (let [_, decorations] of semanticDecorations) {
+                decorations.forEach((type) => {
+                  visibleEditor.setDecorations(type, []);
+                });
+              }
+              // Set new decorations.
+              decorations.forEach((ranges, type) => {
+                visibleEditor.setDecorations(type, ranges);
               });
             }
-            // Set new decorations.
-            decorations.forEach((ranges, type) => {
-              visibleEditor.setDecorations(type, ranges);
-            });
-          }
-        });
-  });
+          });
+    });
+  })();
 
   // Send $cquery/textDocumentDidView. Always send a notification - this will
   // result in some extra work, but it shouldn't be a problem in practice.
-  vscode.window.onDidChangeVisibleTextEditors(visible => {
-    for (let editor of visible) {
-      languageClient.sendNotification(
-          '$cquery/textDocumentDidView',
-          {textDocumentUri: editor.document.uri.toString()});
-    }
-  });
+  (() => {
+    window.onDidChangeVisibleTextEditors(visible => {
+      for (let editor of visible) {
+        languageClient.sendNotification(
+            '$cquery/textDocumentDidView',
+            {textDocumentUri: editor.document.uri.toString()});
+      }
+    });
+  })();
 }
