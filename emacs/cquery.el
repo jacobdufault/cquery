@@ -210,6 +210,24 @@
     ("$cquery/progress" . (lambda (_w _p)))))
 
 ;; ---------------------------------------------------------------------
+;;   Other cquery-specific methods
+;; ---------------------------------------------------------------------
+
+(defun cquery-xref-find-locations-with-position (method &optional display-action)
+  "Find cquery-specific cross references.
+Choices of METHOD include \"$cquery/base\", \"$cquery/callers\",
+\"$cquery/derived\", \"$cquery/vars\".
+Read document for all choices."
+  (lsp--cur-workspace-check)
+  (let ((xrefs (lsp--locations-to-xref-items
+                (lsp--send-request
+                 (lsp--make-request method
+                                    (lsp--text-document-position-params))))))
+    (unless xrefs
+      (user-error "No %s found" method))
+    (xref--show-xrefs xrefs display-action)))
+
+;; ---------------------------------------------------------------------
 ;;   Codelens
 ;;
 ;;   Enable by calling `cquery-request-code-lens'
