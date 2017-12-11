@@ -240,8 +240,6 @@ Read document for all choices."
 ;;     of the new one to the old. This will fix flickering when moving
 ;;     over lenses.
 ;;
-;;   - Add per-buffer toggle command calling request/clear functions
-;;
 ;;   - Add a global option to request code lenses on automatically
 ;; ---------------------------------------------------------------------
 
