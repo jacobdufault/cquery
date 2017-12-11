@@ -398,6 +398,7 @@
     "typescript": "^2.1.5"
   },
   "dependencies": {
+    "vscode": "^1.1.10",
     "vscode-languageclient": "^3.0.3"
   },
   "false": {}
