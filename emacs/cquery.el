@@ -261,6 +261,16 @@ Read document for all choices."
     (when (overlay-get ov 'cquery-code-lens)
       (delete-overlay ov))))
 
+(define-minor-mode cquery-code-lens-mode
+  "toggle code-lens overlays"
+  :group 'cquery
+  :global nil
+  :init-value nil
+  :lighter "Lens"
+  (if cquery-code-lens-mode
+      (cquery-request-code-lens)
+    (cquery-clear-code-lens)))
+
 (defun cquery--make-code-lens-string (command)
   (let ((map (make-sparse-keymap)))
     (define-key map [mouse-1] (lambda () (interactive) (cquery-execute-command command)))
