@@ -7,7 +7,7 @@
   "publisher": "jacobdufault",
   "preview": true,
   "engines": {
-    "vscode": "^1.19.0"
+    "vscode": "^1.18.0"
   },
   "categories": [
     "Languages"
