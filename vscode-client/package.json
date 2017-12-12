@@ -102,8 +102,8 @@
         },
         "cquery.launch.command": {
           "type": "string",
-          "default": "bin/cquery",
-          "description": "Command to start the cquery binary (on Linux bin/cquery, on Windows bin/indexer.exe)"
+          "default": "release/bin/cquery",
+          "description": "Command to start the cquery binary (ie, on Linux release/bin/cquery)."
         },
         "cquery.launch.autoRestart": {
           "type": "boolean",
