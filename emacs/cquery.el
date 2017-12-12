@@ -240,8 +240,6 @@ Read document for all choices."
 ;;     of the new one to the old. This will fix flickering when moving
 ;;     over lenses.
 ;;
-;;   - Add per-buffer toggle command calling request/clear functions
-;;
 ;;   - Add a global option to request code lenses on automatically
 ;; ---------------------------------------------------------------------
 
@@ -260,6 +258,16 @@ Read document for all choices."
   (dolist (ov (overlays-in (point-min) (point-max)))
     (when (overlay-get ov 'cquery-code-lens)
       (delete-overlay ov))))
+
+(define-minor-mode cquery-code-lens-mode
+  "toggle code-lens overlays"
+  :group 'cquery
+  :global nil
+  :init-value nil
+  :lighter "Lens"
+  (if cquery-code-lens-mode
+      (cquery-request-code-lens)
+    (cquery-clear-code-lens)))
 
 (defun cquery--make-code-lens-string (command)
   (let ((map (make-sparse-keymap)))
