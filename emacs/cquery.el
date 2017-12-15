@@ -413,12 +413,10 @@ Read document for all choices."
 
 (defun cquery--get-init-params (workspace)
   (let ((json-false :json-false))
-    `(list :cacheDirectory ,(file-name-as-directory
-                             (expand-file-name cquery-cache-dir (lsp--workspace-root workspace)))
-           ,@(when cquery-resource-dir
-               `(:resourceDirectory ,(expand-file-name cquery-resource-dir)))
-           :indexerCount ,cquery-indexer-count
-           :enableProgressReports ,json-false))) ; TODO: prog reports for modeline
+    `(:cacheDirectory ,(file-name-as-directory
+                        (expand-file-name cquery-cache-dir (lsp--workspace-root workspace)))
+                      :indexerCount ,cquery-indexer-count
+                      :enableProgressReports ,json-false))) ; TODO: prog reports for modeline
 
 (defun cquery--get-root ()
   "Return the root directory of a cquery project."
