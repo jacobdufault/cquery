@@ -415,6 +415,8 @@ Read document for all choices."
   (let ((json-false :json-false))
     `(:cacheDirectory ,(file-name-as-directory
                         (expand-file-name cquery-cache-dir (lsp--workspace-root workspace)))
+                      ,@(when cquery-resource-dir
+                          `(:resourceDirectory ,(expand-file-name cquery-resource-dir)))
                       :indexerCount ,cquery-indexer-count
                       :enableProgressReports ,json-false))) ; TODO: prog reports for modeline
 
