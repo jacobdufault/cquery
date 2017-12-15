@@ -60,9 +60,11 @@
   :group 'cquery)
 
 (defcustom cquery-resource-dir
-  ""
-  "The clang resource directory, $(cquery_root)/clang_resource_dir/"
-  :type 'directory
+  nil
+  "The clang resource directory."
+  :type '(choice
+          (const :tag "Use default resource directory" :value nil)
+          (directory :tag "Custom resource directory"))
   :group 'cquery)
 
 (defcustom cquery-indexer-count
@@ -70,6 +72,12 @@
   "Number of workers cquery will use to index each project.
  When left at 0, cquery will computer this value automatically."
   :type 'number
+  :group 'cquery)
+
+(defcustom cquery-additional-arguments
+  nil
+  "Additional arguments passed to cquery."
+  :type 'list
   :group 'cquery)
 
 (defface cquery-inactive-region-face
@@ -405,11 +413,12 @@ Read document for all choices."
 
 (defun cquery--get-init-params (workspace)
   (let ((json-false :json-false))
-    (list :cacheDirectory (file-name-as-directory
-                           (expand-file-name cquery-cache-dir (lsp--workspace-root workspace)))
-          :resourceDirectory (expand-file-name cquery-resource-dir)
-          :indexerCount cquery-indexer-count
-          :enableProgressReports json-false))) ; TODO: prog reports for modeline
+    `(list :cacheDirectory ,(file-name-as-directory
+                             (expand-file-name cquery-cache-dir (lsp--workspace-root workspace)))
+           ,@(when cquery-resource-dir
+               `(:resourceDirectory ,(expand-file-name cquery-resource-dir)))
+           :indexerCount ,cquery-indexer-count
+           :enableProgressReports ,json-false))) ; TODO: prog reports for modeline
 
 (defun cquery--get-root ()
   "Return the root directory of a cquery project."
@@ -419,7 +428,7 @@ Read document for all choices."
 
 (lsp-define-stdio-client
  lsp-cquery "cpp" #'cquery--get-root
- (list cquery-executable "--language-server")
+ `(,cquery-executable "--language-server" ,@cquery-additional-arguments)
  :initialize #'cquery--initialize-client
  :extra-init-params #'cquery--get-init-params)
 
