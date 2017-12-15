@@ -106,16 +106,12 @@ function getClientConfig(context: ExtensionContext) {
     // Provide a default cache directory if it is not present. Insert next to
     // the project since if the user has an SSD they most likely have their
     // source files on the SSD as well.
-    const generateCacheDirectory = () => {
-      let workspaceDir = workspace.rootPath.replace(/\\/g, '/');
-      if (!workspaceDir.endsWith('/'))
-        workspaceDir += '/';
-      return workspaceDir + '.vscode/cquery_cached_index/'
-    };
-    let cacheDir = generateCacheDirectory();
+    let cacheDir = '${workspaceFolder}/.vscode/cquery_cached_index/';
     clientConfig.cacheDirectory = cacheDir;
     config.update(kCacheDirPrefName, cacheDir, false /*global*/);
   }
+  clientConfig.cacheDirectory = clientConfig.cacheDirectory.replace(
+      '${workspaceFolder}', workspace.rootPath);
 
   return clientConfig;
 }
