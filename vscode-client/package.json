@@ -105,6 +105,11 @@
           "default": "release/bin/cquery",
           "description": "Command to start the cquery binary (on Linux release/bin/cquery, on Windows bin/indexer.exe)"
         },
+        "cquery.launch.args": {
+          "type": "array",
+          "default": [],
+          "description": "Array containing extra arguments to pass to the cquery binary"
+        },
         "cquery.launch.autoRestart": {
           "type": "boolean",
           "default": true,

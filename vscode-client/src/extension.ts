@@ -38,6 +38,7 @@ function getClientConfig(context: ExtensionContext) {
   let configMapping = [
     ['launchWorkingDirectory', 'launch.workingDirectory'],
     ['launchCommand', 'launch.command'],
+    ['launchArgs', 'launch.args'],
     ['cacheDirectory', kCacheDirPrefName],
     ['indexWhitelist', 'index.whitelist'],
     ['indexBlacklist', 'index.blacklist'],
@@ -159,10 +160,11 @@ export function activate(context: ExtensionContext) {
 
     // Add version information to the config.
     clientConfig['clientVersion'] = VERSION
+    let args = ['--language-server'].concat(clientConfig['launchArgs'])
 
     let serverOptions: ServerOptions = {
       command: clientConfig.launchCommand,
-      args: ['--language-server' /*, '--log-stdin-stdout-to-stderr'*/],
+      args: args,
       options: {
         cwd: clientConfig.launchWorkingDirectory
         // env: { 'MALLOC_CHECK_': '2' }
