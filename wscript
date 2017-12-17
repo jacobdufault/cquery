@@ -232,11 +232,12 @@ def build(bld):
 
   clang_tarball_name = None
   # Fallback for windows
-  default_resource_directory = os.path.join(os.getcwd(), 'resource_dir')
+  default_resource_directory = os.path.join(os.getcwd(), 'clang_resource_dir')
   if bld.env['use_system_clang']:
     rpath = []
 
-    output = subprocess.check_output(['clang', '-###', '-xc', '/dev/null'], stderr=subprocess.STDOUT).decode()
+    devnull = '/dev/null' if sys.platform != 'win32' else 'NUL'
+    output = subprocess.check_output(['clang', '-###', '-xc', devnull], stderr=subprocess.STDOUT).decode()
     match = re.search(r'"-resource-dir" "([^"]*)"', output, re.M | re.I)
     if match:
         default_resource_directory = match.group(1)
