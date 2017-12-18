@@ -123,7 +123,7 @@
         "cquery.cacheDirectory": {
           "type": "string",
           "default": "",
-          "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\nCache directories are project-wide, so this should be configured in the workspace settings so multiple indexes do not clash.\n\nExample value: \"/work/cquery-cache/chrome/\""
+          "description": "Absolute path to the directory that the cached index will be stored in. Try to have this directory on an SSD. If not explicitly set, this will be automatically populated with the extension cache directory.\n\n${workspaceFolder} will be replaced by the folder where .vscode/settings.json resides.\n\nCache directories are project-wide, so this should be configured in the workspace settings so multiple indexes do not clash.\n\nExample value: \"/work/cquery-cache/chrome/\""
         },
         "cquery.highlighting.enabled.types": {
           "type": "boolean",
