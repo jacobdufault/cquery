@@ -171,19 +171,20 @@
       (when buffer
         (with-current-buffer buffer
           (save-excursion
-            (cquery--clear-sem-highlights)
-            (dolist (symbol symbols)
-              (let* ((type (gethash "type" symbol))
-                     (is-type-member (gethash "isTypeMember" symbol))
-                     (ranges (mapcar 'cquery--read-range (gethash "ranges" symbol)))
-                     (face
-                      (pcase type
-                        ('0 'cquery-sem-type-face)
-                        ('1 (if is-type-member 'cquery-sem-member-func-face 'cquery-sem-free-func-face))
-                        ('2 (if is-type-member 'cquery-sem-member-var-face 'cquery-sem-free-var-face)))))
-                (when face
-                  (dolist (range ranges)
-                    (cquery--make-sem-highlight range buffer face)))))))))))
+           (with-silent-modifications
+             (cquery--clear-sem-highlights)
+             (dolist (symbol symbols)
+               (let* ((type (gethash "type" symbol))
+                      (is-type-member (gethash "isTypeMember" symbol))
+                      (ranges (mapcar 'cquery--read-range (gethash "ranges" symbol)))
+                      (face
+                       (pcase type
+                         ('0 'cquery-sem-type-face)
+                         ('1 (if is-type-member 'cquery-sem-member-func-face 'cquery-sem-free-func-face))
+                         ('2 (if is-type-member 'cquery-sem-member-var-face 'cquery-sem-free-var-face)))))
+                 (when face
+                   (dolist (range ranges)
+                     (cquery--make-sem-highlight range buffer face))))))))))))
 
 ;; ---------------------------------------------------------------------
 ;;   Inactive regions
