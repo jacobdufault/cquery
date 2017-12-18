@@ -248,7 +248,47 @@
         },
         "cquery.highlighting.underline.memberVariables": {
           "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.types": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.freeStandingFunctions": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.memberFunctions": {
+          "type": "boolean",
           "default": true
+        },
+        "cquery.highlighting.italic.freeStandingVariables": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.memberVariables": {
+          "type": "boolean",
+          "default": true
+        },
+        "cquery.highlighting.bold.types": {
+          "type": "boolean",
+          "default": true
+        },
+        "cquery.highlighting.bold.freeStandingFunctions": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.memberFunctions": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.freeStandingVariables": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.memberVariables": {
+          "type": "boolean",
+          "default": false
         },
         "cquery.index.extraClangArguments": {
           "type": "array",

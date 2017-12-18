@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {commands, DecorationRangeBehavior, ExtensionContext, QuickPickItem, Range, StatusBarAlignment, TextEditor, TextEditorDecorationType, Uri, window, workspace} from 'vscode';
+import {commands, DecorationRangeBehavior, DecorationRenderOptions, ExtensionContext, QuickPickItem, Range, StatusBarAlignment, TextEditor, TextEditorDecorationType, Uri, window, workspace} from 'vscode';
 import {Message} from 'vscode-jsonrpc';
 import {LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions} from 'vscode-languageclient/lib/main';
 import * as ls from 'vscode-languageserver-types';
@@ -140,10 +140,8 @@ export function activate(context: ExtensionContext) {
             JSON.stringify(clientConfig[key]) !=
                 JSON.stringify(newConfig[key])) {
           const kReload = 'Reload'
-          const message =
-              `Please reload to apply the "cquery.${
-                                                    key
-                                                  }" configuration change.`;
+          const message = `Please reload to apply the "cquery.${
+              key}" configuration change.`;
 
           window.showInformationMessage(message, kReload).then(selected => {
             if (selected == kReload)
@@ -412,7 +410,7 @@ export function activate(context: ExtensionContext) {
             },
             position: position
           })
-          .then((typeEntry: TypeHierarchyNode | undefined) => {
+          .then((typeEntry: TypeHierarchyNode|undefined) => {
             if (typeEntry) {
               typeHierarchyProvider.root = [typeEntry];
               typeHierarchyProvider.onDidChangeEmitter.fire();
@@ -467,8 +465,7 @@ export function activate(context: ExtensionContext) {
   // Common between tree views.
   (() => {
     commands.registerCommand(
-        '_cquery._gotoForTreeView',
-        (node: TypeHierarchyNode | CallTreeNode) => {
+        '_cquery._gotoForTreeView', (node: TypeHierarchyNode|CallTreeNode) => {
           if (!node.location)
             return;
 
@@ -482,7 +479,7 @@ export function activate(context: ExtensionContext) {
     let lastGotoClickTime: number
     commands.registerCommand(
         '_cquery._hackGotoForTreeView',
-        (node: TypeHierarchyNode | CallTreeNode, hasChildren: boolean) => {
+        (node: TypeHierarchyNode|CallTreeNode, hasChildren: boolean) => {
           if (!node.location)
             return;
 
@@ -513,20 +510,29 @@ export function activate(context: ExtensionContext) {
   //   - only function call icon if the call is implicit
   (() => {
     function makeSemanticDecorationType(
-        color: Nullable<string>, underline: boolean): TextEditorDecorationType {
-      return window.createTextEditorDecorationType({
-        isWholeLine: false,
-        rangeBehavior: DecorationRangeBehavior.ClosedClosed,
-        color: color,
-        textDecoration: underline ? 'underline' : '',
-      });
+        color: Nullable<string>, underline: boolean, italic: boolean,
+        bold: boolean): TextEditorDecorationType {
+      let opts: any = {};
+      opts.rangeBehavior = DecorationRangeBehavior.ClosedClosed;
+      opts.color = color;
+      if (underline == true)
+        opts.textDecoration = 'underline';
+      if (italic == true)
+        opts.fontStyle = 'italic';
+      if (bold == true)
+        opts.fontWeight = 'bold';
+      console.log(JSON.stringify(opts));
+      return window.createTextEditorDecorationType(
+          <DecorationRenderOptions>opts);
     };
 
     function makeDecorations(type: string) {
       let config = workspace.getConfiguration('cquery');
       let colors = config.get(`highlighting.colors.${type}`, []);
-      let underline = config.get(`highlighting.underline.${type}`, false);
-      return colors.map(c => makeSemanticDecorationType(c, underline));
+      let u = config.get(`highlighting.underline.${type}`, false);
+      let i = config.get(`highlighting.italic.${type}`, false);
+      let b = config.get(`highlighting.bold.${type}`, false);
+      return colors.map(c => makeSemanticDecorationType(c, u, i, b));
     };
     let semanticDecorations = new Map<string, TextEditorDecorationType[]>();
     let semanticEnabled = new Map<string, boolean>();
