@@ -13,7 +13,10 @@
     "Languages"
   ],
   "activationEvents": [
+    "onLanguage:c",
     "onLanguage:cpp",
+    "onLanguage:objective-c",
+    "onLanguage:objective-cpp",
     "workspaceContains:compile_commands.json",
     "workspaceContains:.cquery"
   ],
