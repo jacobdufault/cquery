@@ -1,4 +1,5 @@
-import {Event, EventEmitter, Location, TreeDataProvider, TreeItem, TreeItemCollapsibleState} from 'vscode';
+import {Event, EventEmitter, Location, TreeDataProvider, TreeItem, TreeItemCollapsibleState, Uri} from 'vscode';
+import {parseUri} from './extension';
 
 export class TypeHierarchyNode {
   constructor(
@@ -10,7 +11,8 @@ export class TypeHierarchyNode {
   }
 }
 
-export class TypeHierarchyProvider implements TreeDataProvider<TypeHierarchyNode> {
+export class TypeHierarchyProvider implements
+    TreeDataProvider<TypeHierarchyNode> {
   root: TypeHierarchyNode[] = [];
 
   readonly onDidChangeEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -29,8 +31,15 @@ export class TypeHierarchyProvider implements TreeDataProvider<TypeHierarchyNode
       collapseState = TreeItemCollapsibleState.Collapsed;
     }
 
+    let label = element.name;
+    if (element.name != kBaseName && element.location) {
+      let path = parseUri(element.location.uri).path;
+      let name = path.substr(path.lastIndexOf('/') + 1);
+      label += ` (${name}:${element.location.range.start.line + 1})`;
+    }
+
     return {
-      label: element.name,
+      label: label,
       collapsibleState: collapseState,
       contextValue: 'cqueryGoto',
       command: {
