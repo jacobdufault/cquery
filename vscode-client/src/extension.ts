@@ -169,7 +169,7 @@ export function activate(context: ExtensionContext) {
 
     // Options to control the language client
     let clientOptions: LanguageClientOptions = {
-      documentSelector: ['c', 'cpp'],
+      documentSelector: [ 'c', 'cpp', 'objective-c', 'objective-cpp'],
       // synchronize: {
       // 	configurationSection: 'cquery',
       // 	fileEvents: workspace.createFileSystemWatcher('**/.cc')
@@ -521,7 +521,6 @@ export function activate(context: ExtensionContext) {
         opts.fontStyle = 'italic';
       if (bold == true)
         opts.fontWeight = 'bold';
-      console.log(JSON.stringify(opts));
       return window.createTextEditorDecorationType(
           <DecorationRenderOptions>opts);
     };
