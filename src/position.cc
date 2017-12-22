@@ -23,7 +23,7 @@ Position::Position(const char* encoded) {
   column = (int16_t)atoi(encoded);
 }
 
-std::string Position::ToString() {
+std::string Position::ToString() const {
   // Output looks like this:
   //
   //  1:2
@@ -106,7 +106,7 @@ bool Range::Contains(int line, int column) const {
   return false;
 }
 
-std::string Range::ToString() {
+std::string Range::ToString() const {
   // Output looks like this:
   //
   //  *1:2-3:4
