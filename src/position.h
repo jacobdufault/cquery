@@ -15,7 +15,7 @@ struct Position {
   Position(int16_t line, int16_t column);
   explicit Position(const char* encoded);
 
-  std::string ToString();
+  std::string ToString() const;
   std::string ToPrettyString(const std::string& filename);
 
   // Compare two Positions and check if they are equal. Ignores the value of
@@ -40,7 +40,7 @@ struct Range {
 
   bool Contains(int line, int column) const;
 
-  std::string ToString();
+  std::string ToString() const;
 
   bool operator==(const Range& that) const;
   bool operator!=(const Range& that) const;
