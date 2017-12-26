@@ -318,7 +318,6 @@ static void collect_comment_sections(const std::vector<std::string>& lines,
           // If the last line of the last seen section is not an empty/new line,
           // then just add this line to it.
           auto& last_line = sections.back().description.back();
-          assert(!last_line.empty());
           if (last_line != "\n" && last_line != "\n\n") {
             sections.back().description.push_back(
                 current_section.description[0]);
