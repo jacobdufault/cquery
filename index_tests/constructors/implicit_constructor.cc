@@ -59,7 +59,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:implicit_constructor.cc@51@F@Make#@foo0",
+      "usr": "c:implicit_constructor.cc@46@F@Make#@foo0",
       "short_name": "foo0",
       "detailed_name": "Type foo0",
       "definition_spelling": "6:8-6:12",
@@ -69,7 +69,7 @@ OUTPUT:
       "uses": ["6:8-6:12"]
     }, {
       "id": 1,
-      "usr": "c:implicit_constructor.cc@65@F@Make#@foo1",
+      "usr": "c:implicit_constructor.cc@59@F@Make#@foo1",
       "short_name": "foo1",
       "detailed_name": "Type foo1",
       "definition_spelling": "7:8-7:12",

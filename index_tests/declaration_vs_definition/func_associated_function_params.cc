@@ -42,7 +42,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_associated_function_params.cc@91@F@foo#I#I#@a",
+      "usr": "c:func_associated_function_params.cc@87@F@foo#I#I#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "5:13-5:14",
@@ -51,7 +51,7 @@ OUTPUT:
       "uses": ["5:13-5:14"]
     }, {
       "id": 1,
-      "usr": "c:func_associated_function_params.cc@98@F@foo#I#I#@b",
+      "usr": "c:func_associated_function_params.cc@94@F@foo#I#I#@b",
       "short_name": "b",
       "detailed_name": "int b",
       "definition_spelling": "5:20-5:21",

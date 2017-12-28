@@ -108,7 +108,7 @@ OUTPUT:
       "uses": ["4:7-4:8", "17:12-17:13"]
     }, {
       "id": 2,
-      "usr": "c:var_usage_class_member.cc@105@F@foo#@f",
+      "usr": "c:var_usage_class_member.cc@95@F@foo#@f",
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "11:7-11:8",

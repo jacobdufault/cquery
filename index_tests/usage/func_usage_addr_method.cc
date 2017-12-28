@@ -62,7 +62,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_usage_addr_method.cc@53@F@user#@x",
+      "usr": "c:func_usage_addr_method.cc@48@F@user#@x",
       "short_name": "x",
       "detailed_name": "void (Foo::*)() x",
       "definition_spelling": "6:8-6:9",

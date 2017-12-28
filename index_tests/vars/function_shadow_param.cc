@@ -33,7 +33,7 @@ OUTPUT:
       "uses": ["1:14-1:15"]
     }, {
       "id": 1,
-      "usr": "c:function_shadow_param.cc@23@F@foo#I#@p",
+      "usr": "c:function_shadow_param.cc@22@F@foo#I#@p",
       "short_name": "p",
       "detailed_name": "int p",
       "definition_spelling": "2:9-2:10",

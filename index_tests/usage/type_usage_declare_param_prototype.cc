@@ -48,7 +48,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_param_prototype.cc@49@F@foo#*$@S@Foo#S0_#@f",
+      "usr": "c:type_usage_declare_param_prototype.cc@46@F@foo#*$@S@Foo#S0_#@f",
       "short_name": "f",
       "detailed_name": "Foo * f",
       "definition_spelling": "4:15-4:16",

@@ -45,7 +45,7 @@ OUTPUT:
       "uses": ["4:18-4:21", "12:26-12:29", "13:16-13:19"]
     }, {
       "id": 1,
-      "usr": "c:namespace_alias.cc@167@F@func#@a",
+      "usr": "c:namespace_alias.cc@156@F@func#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "12:7-12:8",
@@ -54,7 +54,7 @@ OUTPUT:
       "uses": ["12:7-12:8"]
     }, {
       "id": 2,
-      "usr": "c:namespace_alias.cc@198@F@func#@b",
+      "usr": "c:namespace_alias.cc@186@F@func#@b",
       "short_name": "b",
       "detailed_name": "int b",
       "definition_spelling": "13:7-13:8",
