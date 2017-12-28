@@ -59,7 +59,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_instance_on_using_type.cc@44@F@Foo#@a",
+      "usr": "c:type_instance_on_using_type.cc@41@F@Foo#@a",
       "short_name": "a",
       "detailed_name": "F a",
       "definition_spelling": "4:5-4:6",

@@ -75,9 +75,11 @@ OUTPUT:
       "uses": ["11:7-11:15", "13:56-13:64"]
     }, {
       "id": 4,
-      "usr": "c:class_inherit_templated_parent.cc@154",
-      "short_name": "",
-      "detailed_name": "",
+      "usr": "c:class_inherit_templated_parent.cc@145",
+      "short_name": "T",
+      "detailed_name": "T",
+      "definition_spelling": "10:19-10:20",
+      "definition_extent": "10:10-10:20",
       "parents": [],
       "derived": [],
       "types": [],
@@ -101,6 +103,15 @@ OUTPUT:
       "uses": ["13:7-13:14", "13:33-13:40", "13:65-13:72"]
     }],
   "funcs": [],
-  "vars": []
+  "vars": [{
+      "id": 0,
+      "usr": "c:class_inherit_templated_parent.cc@89",
+      "short_name": "T",
+      "detailed_name": "T",
+      "definition_spelling": "7:23-7:24",
+      "definition_extent": "7:10-7:24",
+      "cls": 0,
+      "uses": ["8:24-8:25"]
+    }]
 }
 */

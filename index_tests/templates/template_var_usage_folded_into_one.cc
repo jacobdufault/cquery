@@ -65,7 +65,7 @@ OUTPUT:
       "uses": ["2:6-2:7", "8:1-8:2", "8:11-8:12"]
     }, {
       "id": 2,
-      "usr": "c:template_var_usage_folded_into_one.cc@35",
+      "usr": "c:template_var_usage_folded_into_one.cc@32",
       "short_name": "",
       "detailed_name": "",
       "parents": [],

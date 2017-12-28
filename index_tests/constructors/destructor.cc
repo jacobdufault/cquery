@@ -80,7 +80,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:destructor.cc@70@F@foo#@f",
+      "usr": "c:destructor.cc@63@F@foo#@f",
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "8:7-8:8",

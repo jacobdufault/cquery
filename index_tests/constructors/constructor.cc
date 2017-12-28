@@ -60,7 +60,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:constructor.cc@56@F@foo#@f",
+      "usr": "c:constructor.cc@50@F@foo#@f",
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "7:7-7:8",
@@ -70,7 +70,7 @@ OUTPUT:
       "uses": ["7:7-7:8"]
     }, {
       "id": 1,
-      "usr": "c:constructor.cc@66@F@foo#@f2",
+      "usr": "c:constructor.cc@59@F@foo#@f2",
       "short_name": "f2",
       "detailed_name": "Foo * f2",
       "definition_spelling": "8:8-8:10",

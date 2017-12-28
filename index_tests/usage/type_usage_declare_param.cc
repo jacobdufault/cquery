@@ -52,7 +52,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_param.cc@60@F@foo#*$@S@ForwardType#$@S@ImplementedType#@f",
+      "usr": "c:type_usage_declare_param.cc@57@F@foo#*$@S@ForwardType#$@S@ImplementedType#@f",
       "short_name": "f",
       "detailed_name": "ForwardType * f",
       "definition_spelling": "4:23-4:24",
@@ -62,7 +62,7 @@ OUTPUT:
       "uses": ["4:23-4:24"]
     }, {
       "id": 1,
-      "usr": "c:type_usage_declare_param.cc@76@F@foo#*$@S@ForwardType#$@S@ImplementedType#@a",
+      "usr": "c:type_usage_declare_param.cc@73@F@foo#*$@S@ForwardType#$@S@ImplementedType#@a",
       "short_name": "a",
       "detailed_name": "ImplementedType a",
       "definition_spelling": "4:42-4:43",

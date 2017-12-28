@@ -129,7 +129,7 @@ OUTPUT: make_functions.cc
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:make_functions.cc@41",
+      "usr": "c:make_functions.cc@39",
       "short_name": "T",
       "detailed_name": "T",
       "definition_spelling": "3:20-3:21",
@@ -143,7 +143,7 @@ OUTPUT: make_functions.cc
       "uses": ["4:1-4:2"]
     }, {
       "id": 1,
-      "usr": "c:make_functions.cc@53",
+      "usr": "c:make_functions.cc@51",
       "short_name": "Args",
       "detailed_name": "Args",
       "definition_spelling": "3:35-3:39",
@@ -157,7 +157,7 @@ OUTPUT: make_functions.cc
       "uses": ["4:15-4:19"]
     }, {
       "id": 2,
-      "usr": "c:make_functions.cc@139",
+      "usr": "c:make_functions.cc@132",
       "short_name": "T",
       "detailed_name": "T",
       "definition_spelling": "8:20-8:21",
@@ -171,7 +171,7 @@ OUTPUT: make_functions.cc
       "uses": ["9:1-9:2"]
     }, {
       "id": 3,
-      "usr": "c:make_functions.cc@151",
+      "usr": "c:make_functions.cc@144",
       "short_name": "Args",
       "detailed_name": "Args",
       "definition_spelling": "8:35-8:39",
@@ -301,7 +301,7 @@ OUTPUT: make_functions.cc
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:make_functions.cc@86@FT@>2#T#pTMakeUnique#P&&t0.1#*t0.0#@args",
+      "usr": "c:make_functions.cc@83@FT@>2#T#pTMakeUnique#P&&t0.1#*t0.0#@args",
       "short_name": "args",
       "detailed_name": "Args &&... args",
       "definition_spelling": "4:25-4:29",
@@ -310,7 +310,7 @@ OUTPUT: make_functions.cc
       "uses": ["4:25-4:29"]
     }, {
       "id": 1,
-      "usr": "c:make_functions.cc@185@FT@>2#T#pTmaKE_NoRefs#Pt0.1#*t0.0#@args",
+      "usr": "c:make_functions.cc@177@FT@>2#T#pTmaKE_NoRefs#Pt0.1#*t0.0#@args",
       "short_name": "args",
       "detailed_name": "Args... args",
       "definition_spelling": "9:24-9:28",

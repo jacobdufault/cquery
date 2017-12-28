@@ -52,7 +52,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_various.cc@57@S@Foo@F@make#@f",
+      "usr": "c:type_usage_various.cc@52@S@Foo@F@make#@f",
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "6:7-6:8",

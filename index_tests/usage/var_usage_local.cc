@@ -25,7 +25,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:var_usage_local.cc@16@F@foo#@x",
+      "usr": "c:var_usage_local.cc@15@F@foo#@x",
       "short_name": "x",
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",
