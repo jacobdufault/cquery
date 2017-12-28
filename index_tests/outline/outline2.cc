@@ -42,7 +42,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1, 2],
       "instances": [],
-      "uses": ["6:8-6:24", "12:13-12:29"]
+      "uses": ["6:8-6:24"]
     }, {
       "id": 1,
       "usr": "c:@N@std@N@__1@T@string",
@@ -54,26 +54,14 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [0, 1],
-      "uses": ["7:8-7:14", "8:8-8:14", "9:20-9:26", "12:78-12:84"]
-    }, {
-      "id": 2,
-      "usr": "c:@N@std@N@__1@ST>2#T#T@vector",
-      "short_name": "",
-      "detailed_name": "",
-      "parents": [],
-      "derived": [],
-      "types": [],
-      "funcs": [],
-      "vars": [],
-      "instances": [2],
-      "uses": ["9:8-9:14", "12:6-12:12"]
+      "uses": ["7:8-7:14", "8:8-8:14"]
     }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
       "usr": "c:@F@LoadCompilationEntriesFromDirectory#&1$@N@std@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#",
       "short_name": "LoadCompilationEntriesFromDirectory",
-      "detailed_name": "std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::string &project_directory)",
+      "detailed_name": "int LoadCompilationEntriesFromDirectory(const std::string &project_directory)",
       "declarations": [{
           "spelling": "12:31-12:66",
           "extent": "12:1-12:104",
@@ -112,10 +100,9 @@ OUTPUT:
       "id": 2,
       "usr": "c:@S@CompilationEntry@FI@args",
       "short_name": "args",
-      "detailed_name": "std::vector<std::string> CompilationEntry::args",
+      "detailed_name": "int CompilationEntry::args",
       "definition_spelling": "9:28-9:32",
       "definition_extent": "9:3-9:32",
-      "variable_type": 2,
       "declaring_type": 0,
       "cls": 4,
       "uses": ["9:28-9:32"]
