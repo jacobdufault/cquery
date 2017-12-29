@@ -8,9 +8,34 @@ namespace {
 /// Trim the spaces and special comment markup at the beginning of the string.
 static std::string ltrim(std::string s) {
   auto it = s.begin();
+  for (; it != s.end() && isspace(*it); ++it) {
+  }
+
+  // Is it a // comment? Then do not strip anything right after it except for
+  // spaces.
+  if (std::distance(it, s.end()) >= 1 && *it == '/' && *std::next(it) == '/') {
+    ++it;
+    ++it;
+    for (; it != s.end() && *it == '/'; ++it) {
+    }
+
+    // for (; it != s.end() && isspace(*it); ++it) {
+    //}
+
+    if (it == s.end())
+      return "";
+    return std::string(it, s.end());
+  }
+
+  bool star_or_excl_was_seen = false;
   for (; it != s.end() &&
          (isspace(*it) || *it == '*' || *it == '/' || *it == '!');
        ++it) {
+    if (*it == '*' || *it == '!')
+      star_or_excl_was_seen = true;
+    // Do not allow for / after stars or exclamation marks.
+    if (*it == '/' && star_or_excl_was_seen)
+      break;
   }
 
   if (it == s.end())
@@ -59,18 +84,54 @@ static std::string join(std::vector<std::string> strings,
     // Skip leading empty lines.
     if (s.empty())
       continue;
+    // Check if current string starts with space*[-|*|digit],
+    // because it is a special markup.
+    auto it = s.begin();
+    for (; it != s.end() && isspace(*it); ++it) {
+    }
+    bool is_markdown = false;
+    if (it != s.end() && (*it == '-' || *it == '*' || isdigit(*it)))
+      is_markdown = true;
     // Do not use a delimiter after newlines.
-    if (!first && last != "\n\n") {
+    if (!first && last != "\n\n" && !is_markdown) {
       os << delimiter;
     }
     // Do not produce sequences of multiple newlines.
     if (last == "\n\n" && s == "\n\n")
       continue;
+    if (is_markdown && !last.empty() && last.back() != '\n')
+      os << "\n";
     os << s;
     last = s;
     first = false;
   }
   return os.str();
+}
+
+void replace_all(std::string& line,
+                 const std::string& oldString,
+                 const std::string& newString) {
+  const size_t oldSize = oldString.length();
+
+  // do nothing if line is shorter than the string to find
+  if (oldSize > line.length())
+    return;
+
+  const size_t newSize = newString.length();
+  for (size_t pos = 0;; pos += newSize) {
+    // Locate the substring to replace
+    pos = line.find(oldString, pos);
+    if (pos == std::string::npos)
+      return;
+    if (oldSize == newSize) {
+      // if they're same size, use std::string::replace
+      line.replace(pos, oldSize, newString);
+    } else {
+      // if not same size, replace by erasing and inserting
+      line.erase(pos, oldSize);
+      line.insert(pos, newString);
+    }
+  }
 }
 
 /// Represents a section in the comment. This section may be a named section
@@ -246,6 +307,9 @@ static void format_comment_sections(CommentSections& sections) {
         ((*unnamed_sections_combined.rbegin() == '\n') ? "\n" : "\n\n") +
         section.description[0];
   }
+  // For Markdown replace all \n with space space as it means a new line in
+  // Markdown.
+  replace_all(unnamed_sections_combined, "\n", "  \n");
   formatted_sections.push_back(CommentSection(unnamed_sections_combined));
 
   // Merge all named sections together.
@@ -328,11 +392,12 @@ static void collect_comment_sections(const std::vector<std::string>& lines,
         // This is a named section.
         // Create a line for this section. This line has the following format:
         // section_name [in|out|inout] [name] the reset of the description.
-        auto prefix = current_section.section_name + " ";
+        std::string prefix =
+            std::string{"  * "} + "**" + current_section.section_name + "** ";
         if (!current_section.mode.empty())
           prefix += "[" + current_section.mode + "] ";
         if (!current_section.name.empty())
-          prefix += current_section.name + " ";
+          prefix += "**" + current_section.name + "** ";
         // Format a description for a named section.
         auto description = current_section.description.back();
         current_section.description.clear();
@@ -528,6 +593,10 @@ struct TextDocumentHoverHandler : BaseMessageHandler<Ipc_TextDocumentHover> {
       out.result->range = *ls_range;
       break;
     }
+
+    // std::ostringstream sstream;
+    // out.Write(sstream);
+    // LOG_S(INFO) << sstream.str() << "\n";
 
     QueueManager::WriteStdout(IpcId::TextDocumentHover, out);
   }
