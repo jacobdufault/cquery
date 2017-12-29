@@ -86,6 +86,8 @@ OUTPUT:
           "content": "aProp",
           "param_spellings": []
         }],
+      "definition_spelling": "0:0-0:0",
+      "definition_extent": "4:29-4:34",
       "base": [],
       "derived": [],
       "locals": [],
@@ -103,6 +105,8 @@ OUTPUT:
           "content": "aProp",
           "param_spellings": ["4:29-4:34"]
         }],
+      "definition_spelling": "0:0-0:0",
+      "definition_extent": "4:29-4:34",
       "base": [],
       "derived": [],
       "locals": [],
