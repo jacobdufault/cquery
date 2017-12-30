@@ -210,7 +210,7 @@ OUTPUT:
       "id": 1,
       "usr": "c:type_usage_as_template_parameter_complex.cc@1009@F@empty#@local",
       "short_name": "local",
-      "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> * local",
+      "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *local",
       "definition_spelling": "54:39-54:44",
       "definition_extent": "54:3-54:44",
       "variable_type": 0,

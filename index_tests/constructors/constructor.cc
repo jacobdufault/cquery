@@ -72,7 +72,7 @@ OUTPUT:
       "id": 1,
       "usr": "c:constructor.cc@59@F@foo#@f2",
       "short_name": "f2",
-      "detailed_name": "Foo * f2",
+      "detailed_name": "Foo *f2",
       "definition_spelling": "8:8-8:10",
       "definition_extent": "8:3-8:22",
       "variable_type": 0,
