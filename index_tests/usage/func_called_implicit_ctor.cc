@@ -44,7 +44,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["~2@8:10-8:16"],
+      "callers": ["~2@8:10-8:18"],
       "callees": []
     }, {
       "id": 1,
@@ -73,7 +73,7 @@ OUTPUT:
       "derived": [],
       "locals": [],
       "callers": [],
-      "callees": ["~0@8:10-8:16", "1@8:10-8:16"]
+      "callees": ["~0@8:10-8:18", "1@8:10-8:16"]
     }],
   "vars": []
 }
