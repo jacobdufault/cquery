@@ -63,7 +63,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:func_usage_forward_decl_method.cc@48@F@usage#@f",
       "short_name": "f",
-      "detailed_name": "Foo * f",
+      "detailed_name": "Foo *f",
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,

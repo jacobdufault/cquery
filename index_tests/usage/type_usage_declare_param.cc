@@ -54,7 +54,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:type_usage_declare_param.cc@57@F@foo#*$@S@ForwardType#$@S@ImplementedType#@f",
       "short_name": "f",
-      "detailed_name": "ForwardType * f",
+      "detailed_name": "ForwardType *f",
       "definition_spelling": "4:23-4:24",
       "definition_extent": "4:10-4:24",
       "variable_type": 0,

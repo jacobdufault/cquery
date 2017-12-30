@@ -26,7 +26,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:@S@Foo@FI@member",
       "short_name": "member",
-      "detailed_name": "Foo * Foo::member",
+      "detailed_name": "Foo *Foo::member",
       "definition_spelling": "2:8-2:14",
       "definition_extent": "2:3-2:14",
       "variable_type": 0,

@@ -50,7 +50,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:type_usage_declare_param_prototype.cc@46@F@foo#*$@S@Foo#S0_#@f",
       "short_name": "f",
-      "detailed_name": "Foo * f",
+      "detailed_name": "Foo *f",
       "definition_spelling": "4:15-4:16",
       "definition_extent": "4:10-4:16",
       "variable_type": 0,

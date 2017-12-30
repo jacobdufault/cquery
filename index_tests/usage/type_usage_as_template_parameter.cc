@@ -83,7 +83,7 @@ OUTPUT:
       "id": 2,
       "usr": "c:type_usage_as_template_parameter.cc@144@F@return_type#@local",
       "short_name": "local",
-      "detailed_name": "unique_ptr<S> * local",
+      "detailed_name": "unique_ptr<S> *local",
       "definition_spelling": "10:18-10:23",
       "definition_extent": "10:3-10:23",
       "variable_type": 0,

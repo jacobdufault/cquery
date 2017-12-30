@@ -57,7 +57,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:@S@Foo@FI@a",
       "short_name": "a",
-      "detailed_name": "ForwardType * Foo::a",
+      "detailed_name": "ForwardType *Foo::a",
       "definition_spelling": "5:16-5:17",
       "definition_extent": "5:3-5:17",
       "variable_type": 0,

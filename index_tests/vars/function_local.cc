@@ -41,7 +41,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:function_local.cc@28@F@foo#@a",
       "short_name": "a",
-      "detailed_name": "Foo * a",
+      "detailed_name": "Foo *a",
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:9",
       "variable_type": 0,

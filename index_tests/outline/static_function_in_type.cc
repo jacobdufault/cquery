@@ -111,7 +111,7 @@ OUTPUT: static_function_in_type.cc
       "id": 0,
       "usr": "c:static_function_in_type.cc@82@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S@m",
       "short_name": "m",
-      "detailed_name": "ns::Manager * m",
+      "detailed_name": "ns::Manager *m",
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",
       "variable_type": 1,
