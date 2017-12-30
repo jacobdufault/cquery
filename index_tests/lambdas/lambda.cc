@@ -82,7 +82,7 @@ OUTPUT:
       "detailed_name": "int y",
       "definition_spelling": "4:31-4:32",
       "definition_extent": "4:27-4:32",
-      "cls": 4,
+      "cls": 1,
       "uses": ["4:31-4:32", "6:7-6:8"]
     }]
 }
