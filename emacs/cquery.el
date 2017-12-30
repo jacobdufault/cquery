@@ -258,7 +258,7 @@ Read document for all choices."
   (lsp--cur-workspace-check)
   (lsp--send-request-async
    (lsp--make-request "textDocument/codeLens"
-                      `(:textDocument (:uri ,(concat "file://" buffer-file-name))))
+                      `(:textDocument (:uri ,(concat lsp--uri-file-prefix buffer-file-name))))
    'cquery--code-lens-callback))
 
 (defun cquery-clear-code-lens ()
@@ -387,7 +387,7 @@ Read document for all choices."
     (insert newText)))
 
 (defun cquery--uri-to-file (uri)
-  (string-remove-prefix "file://" uri))
+  (string-remove-prefix lsp--uri-file-prefix uri))
 
 (defun cquery--read-range (range)
   (cons (lsp--position-to-point (gethash "start" range))
