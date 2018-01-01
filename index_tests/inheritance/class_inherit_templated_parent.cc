@@ -86,7 +86,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["11:24-11:25"]
+      "uses": ["10:19-10:20", "11:24-11:25"]
     }, {
       "id": 5,
       "usr": "c:@S@Derived",
@@ -111,7 +111,7 @@ OUTPUT:
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
       "cls": 0,
-      "uses": ["8:24-8:25"]
+      "uses": ["7:23-7:24", "8:24-8:25"]
     }]
 }
 */

@@ -140,7 +140,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["4:1-4:2"]
+      "uses": ["4:1-4:2", "3:20-3:21"]
     }, {
       "id": 1,
       "usr": "c:make_functions.cc@51",
@@ -154,7 +154,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["4:15-4:19"]
+      "uses": ["3:35-3:39", "4:15-4:19"]
     }, {
       "id": 2,
       "usr": "c:make_functions.cc@132",
@@ -168,7 +168,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["9:1-9:2"]
+      "uses": ["9:1-9:2", "8:20-8:21"]
     }, {
       "id": 3,
       "usr": "c:make_functions.cc@144",
@@ -182,7 +182,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["9:16-9:20"]
+      "uses": ["8:35-8:39", "9:16-9:20"]
     }, {
       "id": 4,
       "usr": "c:@S@Foobar",
