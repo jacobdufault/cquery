@@ -199,8 +199,7 @@ void RunQueryDbThread(const std::string& bin_name,
 
     if (!did_work) {
       auto* queue = QueueManager::instance();
-      waiter->Wait({&QueueManager::instance()->for_querydb, &queue->do_id_map,
-                    &queue->on_indexed});
+      waiter->Wait({&queue->for_querydb, &queue->do_id_map, &queue->on_indexed});
     }
   }
 }

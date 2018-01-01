@@ -36,16 +36,16 @@ struct MultiQueueWaiter {
     // notify. After it is notified we check to see if any of the queues have
     // data; if they do, we return.
     //
-    // We repoll every 5 seconds because it's not possible to atomically check
+    // We repoll every N seconds because it's not possible to atomically check
     // the state of every queue and then setup the condition variable. So, if
     // Wait() is called, HasState() returns false, and then in the time after
     // HasState() is called data gets posted but before we begin waiting for
-    // the condition variable, we will miss the notification. The timeout of 5
-    // means that if this happens we will delay operation for 5 seconds.
+    // the condition variable, we will miss the notification. The timeout of N
+    // means that if this happens we will delay operation for N seconds.
 
     while (!HasState(queues)) {
       std::unique_lock<std::mutex> l(m);
-      cv.wait_for(l, std::chrono::seconds(5));
+      cv.wait_for(l, std::chrono::seconds(1));
     }
   }
 };
