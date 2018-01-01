@@ -41,7 +41,7 @@ OUTPUT:
       "is_operator": false,
       "usr": "c:objc(cs)AClass(cm)test",
       "short_name": "test",
-      "detailed_name": " AClass::test",
+      "detailed_name": "AClass::test",
       "declarations": [{
           "spelling": "2:11-2:15",
           "extent": "2:3-2:16",
@@ -60,7 +60,7 @@ OUTPUT:
       "is_operator": false,
       "usr": "c:objc(cs)AClass(im)anInstanceMethod",
       "short_name": "anInstanceMethod",
-      "detailed_name": " AClass::anInstanceMethod",
+      "detailed_name": "AClass::anInstanceMethod",
       "declarations": [{
           "spelling": "3:11-3:27",
           "extent": "3:3-3:28",
@@ -79,7 +79,7 @@ OUTPUT:
       "is_operator": false,
       "usr": "c:objc(cs)AClass(im)aProp",
       "short_name": "aProp",
-      "detailed_name": " AClass::aProp",
+      "detailed_name": "AClass::aProp",
       "declarations": [{
           "spelling": "0:0-0:0",
           "extent": "4:29-4:34",
@@ -98,7 +98,7 @@ OUTPUT:
       "is_operator": false,
       "usr": "c:objc(cs)AClass(im)setAProp:",
       "short_name": "setAProp:",
-      "detailed_name": " AClass::setAProp:",
+      "detailed_name": "AClass::setAProp:",
       "declarations": [{
           "spelling": "0:0-0:0",
           "extent": "4:29-4:34",
