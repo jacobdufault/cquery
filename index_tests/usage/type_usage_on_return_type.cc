@@ -2,20 +2,20 @@ struct Type;
 
 Type* foo();
 Type* foo();
-Type* foo() {}
+Type* foo() { return nullptr; }
 
 class Foo {
   Type* Get(int);
   void Empty();
 };
 
-Type* Foo::Get(int) {}
+Type* Foo::Get(int) { return nullptr; }
 void Foo::Empty() {}
 
 extern const Type& external();
 
 static Type* bar();
-static Type* bar() {}
+static Type* bar() { return nullptr; }
 
 /*
 OUTPUT:
@@ -67,7 +67,7 @@ OUTPUT:
           "param_spellings": []
         }],
       "definition_spelling": "5:7-5:10",
-      "definition_extent": "5:1-5:15",
+      "definition_extent": "5:1-5:32",
       "base": [],
       "derived": [],
       "locals": [],
@@ -86,7 +86,7 @@ OUTPUT:
           "param_spellings": ["8:16-8:16"]
         }],
       "definition_spelling": "12:12-12:15",
-      "definition_extent": "12:1-12:23",
+      "definition_extent": "12:1-12:40",
       "declaring_type": 1,
       "base": [],
       "derived": [],
@@ -143,7 +143,7 @@ OUTPUT:
           "param_spellings": []
         }],
       "definition_spelling": "18:14-18:17",
-      "definition_extent": "18:1-18:22",
+      "definition_extent": "18:1-18:39",
       "base": [],
       "derived": [],
       "locals": [],
