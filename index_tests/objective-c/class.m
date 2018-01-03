@@ -63,6 +63,7 @@ OUTPUT:
       "usr": "c:objc(cs)AClass(im)anInstanceMethod",
       "short_name": "anInstanceMethod",
       "detailed_name": "AClass::anInstanceMethod",
+      "kind": 16,
       "declarations": [{
           "spelling": "3:11-3:27",
           "extent": "3:3-3:28",
@@ -82,6 +83,7 @@ OUTPUT:
       "usr": "c:objc(cs)AClass(im)aProp",
       "short_name": "aProp",
       "detailed_name": "AClass::aProp",
+      "kind": 16,
       "declarations": [{
           "spelling": "0:0-0:0",
           "extent": "4:29-4:34",
@@ -101,6 +103,7 @@ OUTPUT:
       "usr": "c:objc(cs)AClass(im)setAProp:",
       "short_name": "setAProp:",
       "detailed_name": "AClass::setAProp:",
+      "kind": 16,
       "declarations": [{
           "spelling": "0:0-0:0",
           "extent": "4:29-4:34",
@@ -120,6 +123,7 @@ OUTPUT:
       "usr": "c:@F@main#",
       "short_name": "main",
       "detailed_name": "int main()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "12:5-12:9",
       "definition_extent": "12:1-17:2",
@@ -135,7 +139,7 @@ OUTPUT:
       "short_name": "aProp",
       "detailed_name": "int AClass::aProp",
       "declaration": "4:29-4:34",
-      "kind": 13,
+      "kind": 19,
       "uses": ["4:29-4:34", "16:12-16:17"]
     }, {
       "id": 1,
@@ -144,7 +148,7 @@ OUTPUT:
       "detailed_name": "int AClass::_aProp",
       "definition_spelling": "4:29-4:34",
       "definition_extent": "4:29-4:34",
-      "kind": 13,
+      "kind": 14,
       "uses": ["4:29-4:34"]
     }, {
       "id": 2,
