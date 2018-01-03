@@ -107,7 +107,7 @@ OUTPUT:
       "id": 0,
       "usr": "c:class_inherit_templated_parent.cc@89",
       "short_name": "T",
-      "detailed_name": "T",
+      "detailed_name": "unsigned int T",
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
       "cls": 0,
