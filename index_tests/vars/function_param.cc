@@ -37,7 +37,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:function_param.cc@22@F@foo#*$@S@Foo#S0_#@p0",
+      "usr": "c:function_param.cc@24@F@foo#*$@S@Foo#S0_#@p0",
       "short_name": "p0",
       "detailed_name": "Foo *p0",
       "definition_spelling": "3:15-3:17",
@@ -47,7 +47,7 @@ OUTPUT:
       "uses": ["3:15-3:17"]
     }, {
       "id": 1,
-      "usr": "c:function_param.cc@31@F@foo#*$@S@Foo#S0_#@p1",
+      "usr": "c:function_param.cc@33@F@foo#*$@S@Foo#S0_#@p1",
       "short_name": "p1",
       "detailed_name": "Foo *p1",
       "definition_spelling": "3:24-3:26",

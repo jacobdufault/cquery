@@ -55,7 +55,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_local.cc@63@F@Foo#@a",
+      "usr": "c:type_usage_declare_local.cc@67@F@Foo#@a",
       "short_name": "a",
       "detailed_name": "ForwardType *a",
       "definition_spelling": "5:16-5:17",
@@ -65,7 +65,7 @@ OUTPUT:
       "uses": ["5:16-5:17"]
     }, {
       "id": 1,
-      "usr": "c:type_usage_declare_local.cc@81@F@Foo#@b",
+      "usr": "c:type_usage_declare_local.cc@86@F@Foo#@b",
       "short_name": "b",
       "detailed_name": "ImplementedType b",
       "definition_spelling": "6:19-6:20",

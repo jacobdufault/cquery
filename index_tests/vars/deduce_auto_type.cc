@@ -41,7 +41,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:deduce_auto_type.cc@27@F@f#@x",
+      "usr": "c:deduce_auto_type.cc@29@F@f#@x",
       "short_name": "x",
       "detailed_name": "Foo *x",
       "definition_spelling": "3:8-3:9",
@@ -51,7 +51,7 @@ OUTPUT:
       "uses": ["3:8-3:9"]
     }, {
       "id": 1,
-      "usr": "c:deduce_auto_type.cc@49@F@f#@y",
+      "usr": "c:deduce_auto_type.cc@52@F@f#@y",
       "short_name": "y",
       "detailed_name": "Foo *y",
       "definition_spelling": "4:9-4:10",

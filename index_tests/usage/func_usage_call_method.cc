@@ -62,7 +62,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_usage_call_method.cc@48@F@user#@f",
+      "usr": "c:func_usage_call_method.cc@53@F@user#@f",
       "short_name": "f",
       "detailed_name": "Foo *f",
       "definition_spelling": "6:8-6:9",

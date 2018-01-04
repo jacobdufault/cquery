@@ -39,7 +39,7 @@ OUTPUT:
       "uses": ["1:14-1:15", "2:3-2:4", "7:3-7:4"]
     }, {
       "id": 1,
-      "usr": "c:var_usage_shadowed_parameter.cc@35@F@foo#I#@a",
+      "usr": "c:var_usage_shadowed_parameter.cc@38@F@foo#I#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "4:9-4:10",

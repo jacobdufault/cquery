@@ -30,7 +30,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:function_shadow_local.cc@15@F@foo#@a",
+      "usr": "c:function_shadow_local.cc@16@F@foo#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "2:7-2:8",
@@ -39,7 +39,7 @@ OUTPUT:
       "uses": ["2:7-2:8", "3:3-3:4", "8:3-8:4"]
     }, {
       "id": 1,
-      "usr": "c:function_shadow_local.cc@39@F@foo#@a",
+      "usr": "c:function_shadow_local.cc@43@F@foo#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "5:9-5:10",

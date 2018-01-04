@@ -55,7 +55,7 @@ OUTPUT:
       "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
     }, {
       "id": 1,
-      "usr": "c:namespace_reference.cc@40@N@ns@F@Accept#I#@a",
+      "usr": "c:namespace_reference.cc@42@N@ns@F@Accept#I#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "3:19-3:20",

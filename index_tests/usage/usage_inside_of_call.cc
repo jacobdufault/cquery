@@ -106,7 +106,7 @@ OUTPUT:
       "uses": ["7:7-7:16", "14:28-14:37"]
     }, {
       "id": 2,
-      "usr": "c:usage_inside_of_call.cc@133@F@foo#@a",
+      "usr": "c:usage_inside_of_call.cc@145@F@foo#@a",
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "13:7-13:8",

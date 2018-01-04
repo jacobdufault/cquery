@@ -109,7 +109,7 @@ OUTPUT: static_function_in_type.cc
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:static_function_in_type.cc@82@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S@m",
+      "usr": "c:static_function_in_type.cc@86@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S@m",
       "short_name": "m",
       "detailed_name": "ns::Manager *m",
       "definition_spelling": "5:29-5:30",

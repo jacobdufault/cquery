@@ -39,7 +39,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:function_local.cc@28@F@foo#@a",
+      "usr": "c:function_local.cc@31@F@foo#@a",
       "short_name": "a",
       "detailed_name": "Foo *a",
       "definition_spelling": "4:8-4:9",

@@ -75,7 +75,7 @@ OUTPUT:
       "uses": ["11:7-11:15", "13:56-13:64"]
     }, {
       "id": 4,
-      "usr": "c:class_inherit_templated_parent.cc@145",
+      "usr": "c:class_inherit_templated_parent.cc@154",
       "short_name": "T",
       "detailed_name": "T",
       "definition_spelling": "10:19-10:20",
@@ -105,7 +105,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:class_inherit_templated_parent.cc@89",
+      "usr": "c:class_inherit_templated_parent.cc@95",
       "short_name": "T",
       "detailed_name": "unsigned int T",
       "definition_spelling": "7:23-7:24",

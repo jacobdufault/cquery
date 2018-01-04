@@ -44,7 +44,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:var_usage_call_function.cc@36@F@caller#@x",
+      "usr": "c:var_usage_call_function.cc@39@F@caller#@x",
       "short_name": "x",
       "detailed_name": "void (*)() x",
       "definition_spelling": "4:8-4:9",

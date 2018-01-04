@@ -64,7 +64,7 @@ OUTPUT:
       "uses": ["1:9-1:10", "8:9-8:10"]
     }, {
       "id": 2,
-      "usr": "c:foo.cc@20@macro@DISALLOW",
+      "usr": "c:foo.cc@21@macro@DISALLOW",
       "short_name": "DISALLOW",
       "detailed_name": "DISALLOW",
       "hover": "#define DISALLOW(type) type(type&&) = delete;",

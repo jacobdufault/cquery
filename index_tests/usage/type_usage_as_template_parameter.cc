@@ -81,7 +81,7 @@ OUTPUT:
       "uses": ["7:22-7:24"]
     }, {
       "id": 2,
-      "usr": "c:type_usage_as_template_parameter.cc@144@F@return_type#@local",
+      "usr": "c:type_usage_as_template_parameter.cc@153@F@return_type#@local",
       "short_name": "local",
       "detailed_name": "unique_ptr<S> *local",
       "definition_spelling": "10:18-10:23",
