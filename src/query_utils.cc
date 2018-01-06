@@ -107,22 +107,22 @@ optional<QueryFileId> GetDeclarationFileForSymbol(QueryDatabase* db,
   switch (symbol.kind) {
     case SymbolKind::Type: {
       QueryType& type = db->types[symbol.idx];
-      if (type.def && type.def->definition_spelling)
-        return type.def->definition_spelling->path;
+      if (type.def && type.def->definition_spelling.IsValid())
+        return type.def->definition_spelling.path;
       break;
     }
     case SymbolKind::Func: {
       QueryFunc& func = db->funcs[symbol.idx];
       if (!func.declarations.empty())
         return func.declarations[0].path;
-      if (func.def && func.def->definition_spelling)
-        return func.def->definition_spelling->path;
+      if (func.def && func.def->definition_spelling.IsValid())
+        return func.def->definition_spelling.path;
       break;
     }
     case SymbolKind::Var: {
       QueryVar& var = db->vars[symbol.idx];
-      if (var.def && var.def->definition_spelling)
-        return var.def->definition_spelling->path;
+      if (var.def && var.def->definition_spelling.IsValid())
+        return var.def->definition_spelling.path;
       break;
     }
     case SymbolKind::File: {
@@ -193,8 +193,8 @@ std::vector<QueryLocation> GetUsesOfSymbol(QueryDatabase* db,
       QueryFunc& func = db->funcs[symbol.idx];
       std::vector<QueryLocation> result = ToQueryLocation(db, func.callers);
       AddRange(&result, func.declarations);
-      if (func.def && func.def->definition_spelling)
-        result.push_back(*func.def->definition_spelling);
+      if (func.def && func.def->definition_spelling.IsValid())
+        result.push_back(func.def->definition_spelling);
       return result;
     }
     case SymbolKind::Var: {
@@ -221,9 +221,9 @@ std::vector<QueryLocation> GetDeclarationsOfSymbolForGotoDefinition(
       // type from within the type definition.
       QueryType& type = db->types[symbol.idx];
       if (type.def) {
-        optional<QueryLocation> declaration = type.def->definition_spelling;
-        if (declaration)
-          return {*declaration};
+        QueryLocation declaration = type.def->definition_spelling;
+        if (declaration.IsValid())
+          return {declaration};
       }
       break;
     }

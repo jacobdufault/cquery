@@ -18,6 +18,8 @@ OUTPUT:
           "content": "void foo(int a, int b)",
           "param_spellings": ["1:14-1:15", "1:21-1:22"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

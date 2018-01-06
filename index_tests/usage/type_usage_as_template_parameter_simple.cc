@@ -29,6 +29,8 @@ OUTPUT:
       "usr": "c:@S@S",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],

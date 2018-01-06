@@ -40,6 +40,8 @@ OUTPUT:
           "content": "void accept(int)",
           "param_spellings": ["5:16-5:16"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],
@@ -66,6 +68,8 @@ OUTPUT:
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "declaration": "2:14-2:15",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "cls": 4,
       "uses": ["2:14-2:15", "8:15-8:16"]
     }]

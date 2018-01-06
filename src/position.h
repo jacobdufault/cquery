@@ -23,6 +23,7 @@ struct Position {
   bool operator==(const Position& that) const;
   bool operator!=(const Position& that) const;
   bool operator<(const Position& that) const;
+  bool IsValid() const { return line > 0; }
 };
 static_assert(
     sizeof(Position) == 4,
@@ -39,6 +40,7 @@ struct Range {
   explicit Range(const char* encoded);
 
   bool Contains(int line, int column) const;
+  bool IsValid() const { return start.IsValid() && end.IsValid(); }
 
   std::string ToString();
 

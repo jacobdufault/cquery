@@ -21,6 +21,8 @@ OUTPUT:
           "content": "void foo()",
           "param_spellings": []
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

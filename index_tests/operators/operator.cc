@@ -53,6 +53,8 @@ OUTPUT:
           "content": "void operator()(bool)",
           "param_spellings": ["3:23-3:23"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "declaring_type": 0,
       "base": [],
       "derived": [],
@@ -71,6 +73,8 @@ OUTPUT:
           "content": "int operator()(int a, int b)",
           "param_spellings": ["4:22-4:23", "4:29-4:30"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "declaring_type": 0,
       "base": [],
       "derived": [],
@@ -89,6 +93,8 @@ OUTPUT:
           "content": "Foo &operator += (const Foo&, const int&)",
           "param_spellings": ["7:29-7:29", "7:41-7:41"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

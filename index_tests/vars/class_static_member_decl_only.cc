@@ -28,6 +28,8 @@ OUTPUT:
       "short_name": "member",
       "detailed_name": "int Foo::member",
       "declaration": "2:14-2:20",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "cls": 4,
       "uses": ["2:14-2:20"]
     }]

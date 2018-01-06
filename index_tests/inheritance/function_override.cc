@@ -51,6 +51,8 @@ OUTPUT:
           "content": "virtual void foo()",
           "param_spellings": []
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "declaring_type": 0,
       "base": [],
       "derived": [1],

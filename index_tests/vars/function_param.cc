@@ -12,6 +12,8 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],

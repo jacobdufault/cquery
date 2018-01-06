@@ -27,6 +27,8 @@ OUTPUT:
       "usr": "c:@S@Type",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],
@@ -125,6 +127,8 @@ OUTPUT:
           "content": "extern const Type& external()",
           "param_spellings": []
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

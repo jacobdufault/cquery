@@ -49,6 +49,8 @@ OUTPUT:
           "content": "void accept(int)",
           "param_spellings": ["7:16-7:16"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],
@@ -66,6 +68,8 @@ OUTPUT:
           "content": "void accept(int*)",
           "param_spellings": ["8:17-8:17"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

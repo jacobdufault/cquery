@@ -34,6 +34,8 @@ OUTPUT:
           "content": "static func g",
           "param_spellings": ["2:13-2:13", "2:13-2:13"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],
