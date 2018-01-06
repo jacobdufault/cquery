@@ -68,6 +68,8 @@ OUTPUT:
       "usr": "c:template_var_usage_folded_into_one.cc@35",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],

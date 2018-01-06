@@ -66,6 +66,8 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "Foo foo",
       "declaration": "10:12-10:15",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "variable_type": 0,
       "cls": 3,
       "uses": ["10:12-10:15"]

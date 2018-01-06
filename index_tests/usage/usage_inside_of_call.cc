@@ -46,6 +46,8 @@ OUTPUT:
           "content": "void called(int a)",
           "param_spellings": ["1:17-1:18"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],
@@ -63,6 +65,8 @@ OUTPUT:
           "content": "int gen()",
           "param_spellings": []
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

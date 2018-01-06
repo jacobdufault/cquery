@@ -210,20 +210,20 @@ QueryFile::Def BuildFileDef(const IdMap& id_map, const IndexFile& indexed) {
   };
 
   for (const IndexType& type : indexed.types) {
-    if (type.def.definition_spelling.has_value())
+    if (type.def.definition_spelling.IsValid())
       add_all_symbols(id_map.ToSymbol(type.id),
-                      type.def.definition_spelling.value());
-    if (type.def.definition_extent.has_value())
-      add_outline(id_map.ToSymbol(type.id), type.def.definition_extent.value());
+                      type.def.definition_spelling);
+    if (type.def.definition_extent.IsValid())
+      add_outline(id_map.ToSymbol(type.id), type.def.definition_extent);
     for (const Range& use : type.uses)
       add_all_symbols(id_map.ToSymbol(type.id), use);
   }
   for (const IndexFunc& func : indexed.funcs) {
-    if (func.def.definition_spelling.has_value())
+    if (func.def.definition_spelling.IsValid())
       add_all_symbols(id_map.ToSymbol(func.id),
-                      func.def.definition_spelling.value());
-    if (func.def.definition_extent.has_value())
-      add_outline(id_map.ToSymbol(func.id), func.def.definition_extent.value());
+                      func.def.definition_spelling);
+    if (func.def.definition_extent.IsValid())
+      add_outline(id_map.ToSymbol(func.id), func.def.definition_extent);
     for (const IndexFunc::Declaration& decl : func.declarations) {
       // TODO: add more outline info?
       add_all_symbols(id_map.ToSymbol(func.id), decl.spelling);
@@ -244,11 +244,11 @@ QueryFile::Def BuildFileDef(const IdMap& id_map, const IndexFile& indexed) {
     }
   }
   for (const IndexVar& var : indexed.vars) {
-    if (var.def.definition_spelling.has_value())
+    if (var.def.definition_spelling.IsValid())
       add_all_symbols(id_map.ToSymbol(var.id),
-                      var.def.definition_spelling.value());
-    if (var.def.definition_extent.has_value())
-      add_outline(id_map.ToSymbol(var.id), var.def.definition_extent.value());
+                      var.def.definition_spelling);
+    if (var.def.definition_extent.IsValid())
+      add_outline(id_map.ToSymbol(var.id), var.def.definition_extent);
     for (const Range& use : var.uses)
       add_all_symbols(id_map.ToSymbol(var.id), use);
   }
@@ -482,7 +482,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
       previous_file.types, current_file.types,
       /*onRemoved:*/
       [this, &previous_id_map](IndexType* type) {
-        if (type->def.definition_spelling)
+        if (type->def.definition_spelling.IsValid())
           types_removed.push_back(type->usr);
         else {
           if (!type->derived.empty())
@@ -544,7 +544,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
       previous_file.funcs, current_file.funcs,
       /*onRemoved:*/
       [this, &previous_id_map](IndexFunc* func) {
-        if (func->def.definition_spelling) {
+        if (func->def.definition_spelling.IsValid()) {
           funcs_removed.push_back(func->usr);
         } else {
           if (!func->declarations.empty())
@@ -606,7 +606,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
       previous_file.vars, current_file.vars,
       /*onRemoved:*/
       [this, &previous_id_map](IndexVar* var) {
-        if (var->def.definition_spelling) {
+        if (var->def.definition_spelling.IsValid()) {
           vars_removed.push_back(var->usr);
         } else {
           if (!var->uses.empty())
@@ -792,8 +792,8 @@ void QueryDatabase::ImportOrUpdate(
     QueryType& existing = types[it->second.id];
 
     // Keep the existing definition if it is higher quality.
-    if (existing.def && existing.def->definition_spelling &&
-        !def.value.definition_spelling)
+    if (existing.def && existing.def->definition_spelling.IsValid() &&
+        !def.value.definition_spelling.IsValid())
       continue;
 
     existing.def = def.value;
@@ -817,8 +817,8 @@ void QueryDatabase::ImportOrUpdate(
     QueryFunc& existing = funcs[it->second.id];
 
     // Keep the existing definition if it is higher quality.
-    if (existing.def && existing.def->definition_spelling &&
-        !def.value.definition_spelling)
+    if (existing.def && existing.def->definition_spelling.IsValid() &&
+        !def.value.definition_spelling.IsValid())
       continue;
 
     existing.def = def.value;
@@ -842,8 +842,8 @@ void QueryDatabase::ImportOrUpdate(
     QueryVar& existing = vars[it->second.id];
 
     // Keep the existing definition if it is higher quality.
-    if (existing.def && existing.def->definition_spelling &&
-        !def.value.definition_spelling)
+    if (existing.def && existing.def->definition_spelling.IsValid() &&
+        !def.value.definition_spelling.IsValid())
       continue;
 
     existing.def = def.value;

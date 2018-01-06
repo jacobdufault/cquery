@@ -30,6 +30,8 @@ OUTPUT:
       "short_name": "a",
       "detailed_name": "int a",
       "declaration": "1:12-1:13",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "cls": 3,
       "uses": ["1:12-1:13", "4:3-4:4"]
     }]

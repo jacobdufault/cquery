@@ -47,6 +47,7 @@ struct QueryLocation {
       return true;
     return path == o.path && range < o.range;
   }
+  bool IsValid() const { return range.IsValid(); }
 };
 MAKE_REFLECT_STRUCT(QueryLocation, path, range);
 MAKE_HASHABLE(QueryLocation, t.path, t.range);

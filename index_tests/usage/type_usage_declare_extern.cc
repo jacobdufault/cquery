@@ -28,6 +28,8 @@ OUTPUT:
       "short_name": "t",
       "detailed_name": "T t",
       "declaration": "3:10-3:11",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "variable_type": 0,
       "cls": 3,
       "uses": ["3:10-3:11"]

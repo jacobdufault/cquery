@@ -14,6 +14,8 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],

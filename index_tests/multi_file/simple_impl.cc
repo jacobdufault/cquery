@@ -22,6 +22,8 @@ OUTPUT: simple_header.h
           "content": "void header()",
           "param_spellings": []
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],
@@ -59,6 +61,8 @@ OUTPUT: simple_impl.cc
       "short_name": "",
       "detailed_name": "",
       "declarations": [],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

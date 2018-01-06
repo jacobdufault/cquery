@@ -38,6 +38,8 @@ OUTPUT:
           "content": "void accept(T)",
           "param_spellings": ["2:14-2:14"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],

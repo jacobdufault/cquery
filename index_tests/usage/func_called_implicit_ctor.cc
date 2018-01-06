@@ -40,6 +40,8 @@ OUTPUT:
           "content": "Wrapper(int i)",
           "param_spellings": ["2:15-2:16"]
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "declaring_type": 0,
       "base": [],
       "derived": [],

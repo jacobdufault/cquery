@@ -33,6 +33,8 @@ OUTPUT:
       "short_name": "var",
       "detailed_name": "const int Foo::var",
       "declaration": "3:24-3:27",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "cls": 4,
       "uses": ["3:24-3:27", "6:19-6:22", "7:20-7:23"]
     }, {

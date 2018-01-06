@@ -46,9 +46,9 @@ BuildParentInheritanceHierarchyForType(QueryDatabase* db,
 
     Out_CqueryTypeHierarchyTree::TypeEntry parent_entry;
     parent_entry.name = parent_type.def->detailed_name;
-    if (parent_type.def->definition_spelling)
+    if (parent_type.def->definition_spelling.IsValid())
       parent_entry.location = GetLsLocation(
-          db, working_files, *parent_type.def->definition_spelling);
+          db, working_files, parent_type.def->definition_spelling);
     parent_entry.children =
         BuildParentInheritanceHierarchyForType(db, working_files, parent_id);
 
@@ -70,9 +70,9 @@ BuildInheritanceHierarchyForType(QueryDatabase* db,
 
   // Name and location.
   entry.name = root_type.def->detailed_name;
-  if (root_type.def->definition_spelling)
+  if (root_type.def->definition_spelling.IsValid())
     entry.location =
-        GetLsLocation(db, working_files, *root_type.def->definition_spelling);
+        GetLsLocation(db, working_files, root_type.def->definition_spelling);
 
   entry.children.reserve(root_type.derived.size());
 
@@ -113,9 +113,9 @@ BuildParentInheritanceHierarchyForFunc(QueryDatabase* db,
 
     Out_CqueryTypeHierarchyTree::TypeEntry parent_entry;
     parent_entry.name = parent_func.def->detailed_name;
-    if (parent_func.def->definition_spelling)
+    if (parent_func.def->definition_spelling.IsValid())
       parent_entry.location = GetLsLocation(
-          db, working_files, *parent_func.def->definition_spelling);
+          db, working_files, parent_func.def->definition_spelling);
     parent_entry.children =
         BuildParentInheritanceHierarchyForFunc(db, working_files, parent_id);
 
@@ -137,9 +137,9 @@ BuildInheritanceHierarchyForFunc(QueryDatabase* db,
 
   // Name and location.
   entry.name = root_func.def->detailed_name;
-  if (root_func.def->definition_spelling)
+  if (root_func.def->definition_spelling.IsValid())
     entry.location =
-        GetLsLocation(db, working_files, *root_func.def->definition_spelling);
+        GetLsLocation(db, working_files, root_func.def->definition_spelling);
 
   entry.children.reserve(root_func.derived.size());
 

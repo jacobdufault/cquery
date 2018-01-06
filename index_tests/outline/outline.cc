@@ -36,6 +36,8 @@ OUTPUT:
       "usr": "c:@N@std@N@__1@ST>2#T#T@vector",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],

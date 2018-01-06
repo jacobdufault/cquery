@@ -34,6 +34,8 @@ OUTPUT: static.h
           "content": "static void CreateSharedBuffer()",
           "param_spellings": []
         }],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "declaring_type": 0,
       "base": [],
       "derived": [],
@@ -55,6 +57,8 @@ OUTPUT: static.cc
       "usr": "c:@S@Buffer",
       "short_name": "",
       "detailed_name": "",
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "parents": [],
       "derived": [],
       "types": [],

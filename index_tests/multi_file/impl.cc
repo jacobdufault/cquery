@@ -179,6 +179,8 @@ OUTPUT: impl.cc
       "short_name": "",
       "detailed_name": "",
       "declarations": [],
+      "definition_spelling": "-1:-1--1:-1",
+      "definition_extent": "-1:-1--1:-1",
       "base": [],
       "derived": [],
       "locals": [],
