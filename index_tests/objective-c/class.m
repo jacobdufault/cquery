@@ -133,7 +133,7 @@ OUTPUT:
       "short_name": "aProp",
       "detailed_name": "int AClass::aProp",
       "declaration": "4:29-4:34",
-      "cls": 1,
+      "kind": 13,
       "uses": ["4:29-4:34", "16:12-16:17"]
     }, {
       "id": 1,
@@ -142,7 +142,7 @@ OUTPUT:
       "detailed_name": "int AClass::_aProp",
       "definition_spelling": "4:29-4:34",
       "definition_extent": "4:29-4:34",
-      "cls": 1,
+      "kind": 13,
       "uses": ["4:29-4:34"]
     }, {
       "id": 2,
@@ -151,7 +151,7 @@ OUTPUT:
       "detailed_name": "AClass *instance",
       "definition_spelling": "14:11-14:19",
       "definition_extent": "14:3-14:35",
-      "cls": 1,
+      "kind": 13,
       "uses": ["14:11-14:19", "15:4-15:12", "16:3-16:11"]
     }]
 }
