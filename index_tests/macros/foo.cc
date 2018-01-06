@@ -50,7 +50,7 @@ OUTPUT:
       "detailed_name": "int x",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
-      "cls": 3,
+      "kind": 1,
       "uses": ["8:5-8:6"]
     }, {
       "id": 1,
@@ -60,7 +60,7 @@ OUTPUT:
       "hover": "#define A 5",
       "definition_spelling": "1:9-1:10",
       "definition_extent": "1:9-1:12",
-      "cls": 2,
+      "kind": 4,
       "uses": ["1:9-1:10", "8:9-8:10"]
     }, {
       "id": 2,
@@ -70,7 +70,7 @@ OUTPUT:
       "hover": "#define DISALLOW(type) type(type&&) = delete;",
       "definition_spelling": "2:9-2:17",
       "definition_extent": "2:9-2:46",
-      "cls": 2,
+      "kind": 4,
       "uses": ["2:9-2:17", "5:3-5:11"]
     }]
 }

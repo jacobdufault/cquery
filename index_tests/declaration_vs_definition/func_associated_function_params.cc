@@ -47,7 +47,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "5:13-5:14",
       "definition_extent": "5:9-5:14",
-      "cls": 1,
+      "kind": 13,
       "uses": ["5:13-5:14"]
     }, {
       "id": 1,
@@ -56,7 +56,7 @@ OUTPUT:
       "detailed_name": "int b",
       "definition_spelling": "5:20-5:21",
       "definition_extent": "5:16-5:21",
-      "cls": 1,
+      "kind": 13,
       "uses": ["5:20-5:21"]
     }]
 }

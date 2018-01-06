@@ -98,7 +98,7 @@ OUTPUT:
       "definition_spelling": "9:15-9:16",
       "definition_extent": "9:1-9:16",
       "variable_type": 3,
-      "cls": 3,
+      "kind": 1,
       "uses": ["9:15-9:16"]
     }, {
       "id": 1,
@@ -108,7 +108,7 @@ OUTPUT:
       "definition_spelling": "10:15-10:16",
       "definition_extent": "10:1-10:16",
       "variable_type": 3,
-      "cls": 3,
+      "kind": 1,
       "uses": ["10:15-10:16"]
     }]
 }

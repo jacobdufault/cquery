@@ -49,7 +49,7 @@ OUTPUT:
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:19",
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["6:7-6:8"]
     }]
 }

@@ -35,7 +35,7 @@ OUTPUT:
       "definition_extent": "2:3-2:4",
       "variable_type": 0,
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["2:3-2:4", "6:14-6:15"]
     }, {
       "id": 1,
@@ -46,7 +46,7 @@ OUTPUT:
       "definition_extent": "3:3-3:9",
       "variable_type": 0,
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["3:3-3:4"]
     }, {
       "id": 2,
@@ -56,7 +56,7 @@ OUTPUT:
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:15",
       "variable_type": 0,
-      "cls": 3,
+      "kind": 1,
       "uses": ["6:5-6:6"]
     }]
 }

@@ -29,7 +29,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "1:14-1:15",
       "definition_extent": "1:10-1:15",
-      "cls": 1,
+      "kind": 13,
       "uses": ["1:14-1:15", "2:3-2:4"]
     }]
 }

@@ -306,7 +306,7 @@ OUTPUT: make_functions.cc
       "detailed_name": "Args &&... args",
       "definition_spelling": "4:25-4:29",
       "definition_extent": "4:15-4:29",
-      "cls": 1,
+      "kind": 13,
       "uses": ["4:25-4:29"]
     }, {
       "id": 1,
@@ -315,7 +315,7 @@ OUTPUT: make_functions.cc
       "detailed_name": "Args... args",
       "definition_spelling": "9:24-9:28",
       "definition_extent": "9:16-9:28",
-      "cls": 1,
+      "kind": 13,
       "uses": ["9:24-9:28"]
     }]
 }

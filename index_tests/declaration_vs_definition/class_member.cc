@@ -31,7 +31,7 @@ OUTPUT:
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["2:7-2:10"]
     }]
 }

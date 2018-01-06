@@ -65,7 +65,7 @@ OUTPUT:
       "definition_spelling": "4:5-4:6",
       "definition_extent": "4:3-4:6",
       "variable_type": 1,
-      "cls": 1,
+      "kind": 13,
       "uses": ["4:5-4:6"]
     }]
 }

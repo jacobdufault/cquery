@@ -52,7 +52,7 @@ OUTPUT:
       "hover": "#define MACRO_CALL(e) e",
       "definition_spelling": "1:9-1:19",
       "definition_extent": "1:9-1:24",
-      "cls": 2,
+      "kind": 4,
       "uses": ["1:9-1:19", "6:3-6:13"]
     }]
 }

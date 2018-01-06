@@ -29,7 +29,7 @@ OUTPUT:
       "detailed_name": "T t",
       "declaration": "3:10-3:11",
       "variable_type": 0,
-      "cls": 3,
+      "kind": 1,
       "uses": ["3:10-3:11"]
     }]
 }

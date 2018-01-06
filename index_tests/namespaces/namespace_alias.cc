@@ -41,7 +41,7 @@ OUTPUT:
       "detailed_name": "int foo::bar::baz::qux",
       "definition_spelling": "4:18-4:21",
       "definition_extent": "4:14-4:26",
-      "cls": 3,
+      "kind": 1,
       "uses": ["4:18-4:21", "12:26-12:29", "13:16-13:19"]
     }, {
       "id": 1,
@@ -50,7 +50,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "12:7-12:8",
       "definition_extent": "12:3-12:29",
-      "cls": 1,
+      "kind": 13,
       "uses": ["12:7-12:8"]
     }, {
       "id": 2,
@@ -59,7 +59,7 @@ OUTPUT:
       "detailed_name": "int b",
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:19",
-      "cls": 1,
+      "kind": 13,
       "uses": ["13:7-13:8"]
     }]
 }

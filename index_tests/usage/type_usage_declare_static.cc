@@ -29,7 +29,7 @@ OUTPUT:
       "definition_spelling": "2:13-2:14",
       "definition_extent": "2:1-2:14",
       "variable_type": 0,
-      "cls": 3,
+      "kind": 1,
       "uses": ["2:13-2:14"]
     }]
 }

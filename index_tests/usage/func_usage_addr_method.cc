@@ -67,7 +67,7 @@ OUTPUT:
       "detailed_name": "void (Foo::*)() x",
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:22",
-      "cls": 1,
+      "kind": 13,
       "uses": ["6:8-6:9"]
     }]
 }

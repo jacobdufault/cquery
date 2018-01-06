@@ -84,7 +84,7 @@ OUTPUT:
       "detailed_name": "T var",
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
-      "cls": 3,
+      "kind": 1,
       "uses": ["5:3-5:6", "7:7-7:10", "8:7-8:10"]
     }, {
       "id": 1,
@@ -94,7 +94,7 @@ OUTPUT:
       "definition_spelling": "7:3-7:4",
       "definition_extent": "7:1-7:13",
       "variable_type": 0,
-      "cls": 3,
+      "kind": 1,
       "uses": ["7:3-7:4"]
     }, {
       "id": 2,
@@ -104,7 +104,7 @@ OUTPUT:
       "definition_spelling": "8:3-8:4",
       "definition_extent": "8:1-8:13",
       "variable_type": 1,
-      "cls": 3,
+      "kind": 1,
       "uses": ["8:3-8:4"]
     }]
 }

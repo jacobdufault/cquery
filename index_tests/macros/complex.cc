@@ -58,7 +58,7 @@ OUTPUT:
       "detailed_name": "const int make2",
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
-      "cls": 3,
+      "kind": 1,
       "uses": ["9:11-9:16", "12:14-12:19"]
     }, {
       "id": 1,
@@ -68,7 +68,7 @@ OUTPUT:
       "hover": "#define FOO(aaa, bbb)\n   int a();\n   int a() { return aaa + bbb; }",
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
-      "cls": 2,
+      "kind": 4,
       "uses": ["1:9-1:12", "12:1-12:4"]
     }]
 }

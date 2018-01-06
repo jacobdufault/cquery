@@ -58,7 +58,7 @@ OUTPUT:
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:8",
       "variable_type": 0,
-      "cls": 1,
+      "kind": 13,
       "uses": ["6:7-6:8"]
     }, {
       "id": 1,
@@ -67,7 +67,7 @@ OUTPUT:
       "detailed_name": "Foo foo",
       "declaration": "10:12-10:15",
       "variable_type": 0,
-      "cls": 3,
+      "kind": 1,
       "uses": ["10:12-10:15"]
     }]
 }

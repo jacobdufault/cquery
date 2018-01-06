@@ -31,7 +31,7 @@ OUTPUT:
       "definition_extent": "2:3-2:14",
       "variable_type": 0,
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["2:8-2:14"]
     }]
 }

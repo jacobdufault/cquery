@@ -45,7 +45,7 @@ OUTPUT:
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:9",
       "variable_type": 0,
-      "cls": 1,
+      "kind": 13,
       "uses": ["4:8-4:9"]
     }]
 }

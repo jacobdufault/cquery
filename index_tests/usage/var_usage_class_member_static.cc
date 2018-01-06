@@ -66,7 +66,7 @@ OUTPUT:
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "declaration": "2:14-2:15",
-      "cls": 4,
+      "kind": 14,
       "uses": ["2:14-2:15", "8:15-8:16"]
     }]
 }

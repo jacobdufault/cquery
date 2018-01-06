@@ -52,7 +52,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "9:5-9:6",
       "definition_extent": "9:1-9:31",
-      "cls": 3,
+      "kind": 1,
       "uses": ["9:5-9:6"]
     }, {
       "id": 1,
@@ -61,7 +61,7 @@ OUTPUT:
       "detailed_name": "int b",
       "definition_spelling": "10:5-10:6",
       "definition_extent": "10:1-10:33",
-      "cls": 3,
+      "kind": 1,
       "uses": ["10:5-10:6"]
     }]
 }

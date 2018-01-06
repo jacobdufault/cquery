@@ -62,7 +62,7 @@ OUTPUT:
       "definition_extent": "5:3-5:17",
       "variable_type": 0,
       "declaring_type": 2,
-      "cls": 4,
+      "kind": 14,
       "uses": ["5:16-5:17"]
     }, {
       "id": 1,
@@ -73,7 +73,7 @@ OUTPUT:
       "definition_extent": "6:3-6:20",
       "variable_type": 1,
       "declaring_type": 2,
-      "cls": 4,
+      "kind": 14,
       "uses": ["6:19-6:20"]
     }]
 }

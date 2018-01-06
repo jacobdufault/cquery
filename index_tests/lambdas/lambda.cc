@@ -63,7 +63,7 @@ OUTPUT:
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
-      "cls": 1,
+      "kind": 13,
       "uses": ["2:7-2:8", "5:7-5:8", "4:24-4:25"]
     }, {
       "id": 1,
@@ -73,7 +73,7 @@ OUTPUT:
       "definition_spelling": "4:8-4:19",
       "definition_extent": "4:3-7:4",
       "variable_type": 0,
-      "cls": 1,
+      "kind": 13,
       "uses": ["4:8-4:19", "9:3-9:14", "10:3-10:14", "11:3-11:14"]
     }, {
       "id": 2,
@@ -82,7 +82,7 @@ OUTPUT:
       "detailed_name": "int y",
       "definition_spelling": "4:31-4:32",
       "definition_extent": "4:27-4:32",
-      "cls": 1,
+      "kind": 25,
       "uses": ["4:31-4:32", "6:7-6:8"]
     }]
 }

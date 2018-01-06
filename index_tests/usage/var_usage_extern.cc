@@ -30,7 +30,7 @@ OUTPUT:
       "short_name": "a",
       "detailed_name": "int a",
       "declaration": "1:12-1:13",
-      "cls": 3,
+      "kind": 1,
       "uses": ["1:12-1:13", "4:3-4:4"]
     }]
 }

@@ -29,7 +29,7 @@ OUTPUT:
       "detailed_name": "int p",
       "definition_spelling": "1:14-1:15",
       "definition_extent": "1:10-1:15",
-      "cls": 1,
+      "kind": 13,
       "uses": ["1:14-1:15"]
     }, {
       "id": 1,
@@ -38,7 +38,7 @@ OUTPUT:
       "detailed_name": "int p",
       "definition_spelling": "2:9-2:10",
       "definition_extent": "2:5-2:14",
-      "cls": 1,
+      "kind": 13,
       "uses": ["2:9-2:10"]
     }]
 }

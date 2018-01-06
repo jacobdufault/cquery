@@ -33,7 +33,7 @@ OUTPUT: funky_enum.h
       "definition_extent": "4:1-4:2",
       "variable_type": 0,
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["4:1-4:2"]
     }, {
       "id": 1,
@@ -44,7 +44,7 @@ OUTPUT: funky_enum.h
       "definition_extent": "5:1-5:2",
       "variable_type": 0,
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["5:1-5:2"]
     }, {
       "id": 2,
@@ -55,7 +55,7 @@ OUTPUT: funky_enum.h
       "definition_extent": "6:1-6:2",
       "variable_type": 0,
       "declaring_type": 0,
-      "cls": 4,
+      "kind": 14,
       "uses": ["6:1-6:2"]
     }]
 }

@@ -30,7 +30,7 @@ OUTPUT:
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
-      "cls": 1,
+      "kind": 13,
       "uses": ["2:7-2:8", "3:3-3:4"]
     }]
 }

@@ -110,7 +110,7 @@ OUTPUT:
       "detailed_name": "unsigned int T",
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
-      "cls": 0,
+      "kind": 0,
       "uses": ["7:23-7:24", "8:24-8:25"]
     }]
 }

@@ -28,7 +28,7 @@ OUTPUT:
       "short_name": "member",
       "detailed_name": "int Foo::member",
       "declaration": "2:14-2:20",
-      "cls": 4,
+      "kind": 14,
       "uses": ["2:14-2:20"]
     }]
 }

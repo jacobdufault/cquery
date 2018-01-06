@@ -59,7 +59,7 @@ OUTPUT:
       "definition_extent": "9:3-10:47",
       "variable_type": 0,
       "declaring_type": 1,
-      "cls": 4,
+      "kind": 14,
       "uses": ["6:30-6:40", "10:37-10:47", "13:26-13:36", "14:27-14:37"]
     }, {
       "id": 1,
@@ -68,7 +68,7 @@ OUTPUT:
       "detailed_name": "int ns::Foo",
       "definition_spelling": "13:7-13:10",
       "definition_extent": "13:3-13:36",
-      "cls": 3,
+      "kind": 1,
       "uses": ["13:7-13:10"]
     }, {
       "id": 2,
@@ -77,7 +77,7 @@ OUTPUT:
       "detailed_name": "int ns::Foo2",
       "definition_spelling": "14:7-14:11",
       "definition_extent": "14:3-14:37",
-      "cls": 3,
+      "kind": 1,
       "uses": ["14:7-14:11"]
     }]
 }

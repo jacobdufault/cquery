@@ -63,7 +63,7 @@ OUTPUT:
       "detailed_name": "void (*)() x",
       "definition_spelling": "6:10-6:11",
       "definition_extent": "6:3-6:22",
-      "cls": 1,
+      "kind": 13,
       "uses": ["6:10-6:11"]
     }]
 }
