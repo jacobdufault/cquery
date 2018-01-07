@@ -474,7 +474,7 @@ export function activate(context: ExtensionContext) {
     const typeHierarchyProvider = new TypeHierarchyProvider();
     window.registerTreeDataProvider(
         'cquery.typeHierarchy', typeHierarchyProvider);
-    commands.registerTextEditorCommand('cquery.typeHierarchyTree', (editor) => {
+    commands.registerTextEditorCommand('cquery.typeHierarchy', (editor) => {
       commands.executeCommand('setContext', 'extension.cquery.typeHierarchyVisible', true);
 
       let position = editor.selection.active;
