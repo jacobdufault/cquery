@@ -1,5 +1,6 @@
 import {Event, EventEmitter, Location, TreeDataProvider, TreeItem, TreeItemCollapsibleState} from 'vscode';
 import {LanguageClient} from 'vscode-languageclient/lib/main';
+import {parseUri} from './extension';
 
 
 enum CallType {
@@ -49,8 +50,16 @@ export class CallTreeProvider implements TreeDataProvider<CallTreeNode> {
       light = this.derivedLight;
       dark = this.derivedDark;
     }
+
+    let label = element.name;
+    if (element.location) {
+      let path = parseUri(element.location.uri).path;
+      let name = path.substr(path.lastIndexOf('/') + 1);
+      label += ` **(${name}:${element.location.range.start.line + 1})`;
+    }
+
     return {
-      label: element.name,
+      label: label,
       collapsibleState: collapseState,
       contextValue: 'cqueryGoto',
       command: {
