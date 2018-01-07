@@ -80,6 +80,12 @@
   :type 'list
   :group 'cquery)
 
+(defcustom cquery-extra-init-params
+  nil
+  "Additional initializationOptions passed to cquery."
+  :type '(repeat string)
+  :group 'cquery)
+
 (defface cquery-inactive-region-face
   '((t :foreground "#666666"))
   "The face used to mark inactive regions"
@@ -419,7 +425,8 @@ Read document for all choices."
                       ,@(when cquery-resource-dir
                           `(:resourceDirectory ,(expand-file-name cquery-resource-dir)))
                       :indexerCount ,cquery-indexer-count
-                      :enableProgressReports ,json-false))) ; TODO: prog reports for modeline
+                      :enableProgressReports ,json-false
+                      ,@cquery-extra-init-params))) ; TODO: prog reports for modeline
 
 (defun cquery--get-root ()
   "Return the root directory of a cquery project."
