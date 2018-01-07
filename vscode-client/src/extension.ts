@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {commands, DecorationRangeBehavior, DecorationRenderOptions, ExtensionContext, QuickPickItem, Range, StatusBarAlignment, TextEditor, TextEditorDecorationType, Uri, window, workspace} from 'vscode';
+import {commands, DecorationRangeBehavior, DecorationRenderOptions, ExtensionContext, QuickPickItem, Range, StatusBarAlignment, TextEditor, TextEditorDecorationType, Uri, window, workspace, ProgressLocation, Progress} from 'vscode';
 import {Message} from 'vscode-jsonrpc';
 import {LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions} from 'vscode-languageclient/lib/main';
 import * as ls from 'vscode-languageserver-types';
@@ -69,11 +69,15 @@ function getClientConfig(context: ExtensionContext) {
   let clientConfig = {
     launchWorkingDirectory: '',
     launchCommand: '',
-    cacheDirectory: ''
+    cacheDirectory: '',
+    sortWorkspaceSearchResults: false
   };
   let config = workspace.getConfiguration('cquery');
-  for (let prop of configMapping)
-    clientConfig[prop[0]] = config.get(prop[1]);
+  for (let prop of configMapping) {
+    let value = config.get(prop[1]);
+    if (value != null)
+      clientConfig[prop[0]] = value;
+  }
 
   // Verify that there is a working directory. If not, exit.
   if (!clientConfig.launchWorkingDirectory) {
@@ -357,6 +361,73 @@ export function activate(context: ExtensionContext) {
 
   // Progress
   (() => {
+    /* Implementation using progress API.
+    let progressReporter: (s: string) => void;
+    let progressResolver: () => void = () => {};
+
+    // TODO: use progress API
+    function ensuredReport(s: string) {
+      if (progressReporter && progressResolver) {
+        progressReporter(s);
+        return;
+      }
+
+      window.withProgress({
+        location: ProgressLocation.Window,
+        title: 'cquery'
+      }, (p) => {
+        progressReporter = (s: string) => p.report({ message: s });
+        progressReporter(s);
+        return new Promise(resolve => {
+          function ourResolve() {
+            progressReporter = undefined;
+            progressResolver = () => {};
+            resolve();
+          }
+          progressResolver = ourResolve;
+        });
+      });
+    }
+
+    let config = workspace.getConfiguration('cquery');
+    let statusStyle = config.get('misc.status');
+    if (statusStyle == 'short' || statusStyle == 'detailed') {
+      // let statusIcon = window.createStatusBarItem(StatusBarAlignment.Right);
+      // statusIcon.text = 'cquery: loading';
+      // statusIcon.tooltip =
+      //     'cquery is loading project metadata (ie, compile_commands.json)';
+      // statusIcon.show();
+      languageClient.onReady().then(() => {
+        languageClient.onNotification('$cquery/progress', (args) => {
+          let indexRequestCount = args.indexRequestCount;
+          let doIdMapCount = args.doIdMapCount;
+          let loadPreviousIndexCount = args.loadPreviousIndexCount;
+          let onIdMappedCount = args.onIdMappedCount;
+          let onIndexedCount = args.onIndexedCount;
+          let activeThreads = args.activeThreads;
+          let total = indexRequestCount + doIdMapCount +
+              loadPreviousIndexCount + onIdMappedCount + onIndexedCount +
+              activeThreads;
+
+          let detailedJobString = `indexRequest: ${indexRequestCount}, ` +
+              `doIdMap: ${doIdMapCount}, ` +
+              `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
+              `onIdMapped: ${onIdMappedCount}, ` +
+              `onIndexed: ${onIndexedCount}, ` +
+              `activeThreads: ${activeThreads}`;
+
+          if (total == 0) {
+            progressResolver();
+          } else if (statusStyle == 'detailed') {
+            ensuredReport(`cquery: ${indexRequestCount} jobs (${detailedJobString})`);
+          } else {
+            ensuredReport(`cquery: ${indexRequestCount}|${total} jobs`);
+          }
+        });
+      });
+    }
+    */
+
     let config = workspace.getConfiguration('cquery');
     let statusStyle = config.get('misc.status');
     if (statusStyle == 'short' || statusStyle == 'detailed') {

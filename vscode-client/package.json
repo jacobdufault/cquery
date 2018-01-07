@@ -329,9 +329,9 @@
           "description": "Default value to use for clang -resource-dir argument. This will be automatically supplied by cquery if not provided."
         },
         "cquery.misc.maxWorkspaceSearchResults": {
-          "type": "number",
-          "default": 1000,
-          "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays."
+          "type": ["number", "null"],
+          "default": null,
+          "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays. null means use the default value provided by the cquery language server."
         },
         "cquery.misc.indexerCount": {
           "type": "number",
