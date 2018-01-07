@@ -25,6 +25,7 @@ OUTPUT:
       "usr": "c:@F@func#",
       "short_name": "func",
       "detailed_name": "void func()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "11:6-11:10",
       "definition_extent": "11:1-14:2",
@@ -41,7 +42,7 @@ OUTPUT:
       "detailed_name": "int foo::bar::baz::qux",
       "definition_spelling": "4:18-4:21",
       "definition_extent": "4:14-4:26",
-      "kind": 1,
+      "kind": 13,
       "uses": ["4:18-4:21", "12:26-12:29", "13:16-13:19"]
     }, {
       "id": 1,

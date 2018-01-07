@@ -18,6 +18,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 6,
       "definition_spelling": "1:8-1:11",
       "definition_extent": "1:1-3:2",
       "parents": [],
@@ -34,6 +35,7 @@ OUTPUT:
       "usr": "c:@F@accept#I#",
       "short_name": "accept",
       "detailed_name": "void accept(int)",
+      "kind": 12,
       "declarations": [{
           "spelling": "5:6-5:12",
           "extent": "5:1-5:17",
@@ -51,6 +53,7 @@ OUTPUT:
       "usr": "c:@F@foo#",
       "short_name": "foo",
       "detailed_name": "void foo()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "7:6-7:9",
       "definition_extent": "7:1-9:2",
@@ -66,7 +69,7 @@ OUTPUT:
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "declaration": "2:14-2:15",
-      "kind": 14,
+      "kind": 21,
       "uses": ["2:14-2:15", "8:15-8:16"]
     }]
 }

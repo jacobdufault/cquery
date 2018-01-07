@@ -14,6 +14,7 @@ OUTPUT:
       "usr": "c:@F@foo#",
       "short_name": "foo",
       "detailed_name": "void foo()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "1:6-1:9",
       "definition_extent": "1:1-4:2",

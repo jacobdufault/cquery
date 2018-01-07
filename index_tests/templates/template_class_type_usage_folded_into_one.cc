@@ -37,6 +37,7 @@ OUTPUT:
       "usr": "c:@E@A",
       "short_name": "A",
       "detailed_name": "A",
+      "kind": 5,
       "definition_spelling": "1:6-1:7",
       "definition_extent": "1:1-1:10",
       "parents": [],
@@ -51,6 +52,7 @@ OUTPUT:
       "usr": "c:@E@B",
       "short_name": "B",
       "detailed_name": "B",
+      "kind": 5,
       "definition_spelling": "2:6-2:7",
       "definition_extent": "2:1-2:10",
       "parents": [],
@@ -65,6 +67,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "5:8-5:11",
       "definition_extent": "5:1-7:2",
       "parents": [],
@@ -79,6 +82,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo@S@Inner",
       "short_name": "Inner",
       "detailed_name": "Foo::Inner",
+      "kind": 6,
       "definition_spelling": "6:10-6:15",
       "definition_extent": "6:3-6:18",
       "parents": [],
@@ -98,7 +102,7 @@ OUTPUT:
       "definition_spelling": "9:15-9:16",
       "definition_extent": "9:1-9:16",
       "variable_type": 3,
-      "kind": 1,
+      "kind": 13,
       "uses": ["9:15-9:16"]
     }, {
       "id": 1,
@@ -108,7 +112,7 @@ OUTPUT:
       "definition_spelling": "10:15-10:16",
       "definition_extent": "10:1-10:16",
       "variable_type": 3,
-      "kind": 1,
+      "kind": 13,
       "uses": ["10:15-10:16"]
     }]
 }

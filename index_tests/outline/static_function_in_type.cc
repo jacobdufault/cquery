@@ -16,6 +16,7 @@ OUTPUT: static_function_in_type.h
       "usr": "c:@N@ns@S@Manager",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -28,6 +29,7 @@ OUTPUT: static_function_in_type.h
       "usr": "c:@N@ns@S@Foo",
       "short_name": "Foo",
       "detailed_name": "ns::Foo",
+      "kind": 6,
       "definition_spelling": "5:8-5:11",
       "definition_extent": "5:1-7:2",
       "parents": [],
@@ -44,6 +46,7 @@ OUTPUT: static_function_in_type.h
       "usr": "c:@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S",
       "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *)",
+      "kind": 18,
       "declarations": [{
           "spelling": "6:15-6:23",
           "extent": "6:3-6:33",
@@ -71,6 +74,7 @@ OUTPUT: static_function_in_type.cc
       "usr": "c:@N@ns@S@Foo",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -83,6 +87,7 @@ OUTPUT: static_function_in_type.cc
       "usr": "c:@N@ns@S@Manager",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -97,6 +102,7 @@ OUTPUT: static_function_in_type.cc
       "usr": "c:@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S",
       "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *m)",
+      "kind": 18,
       "declarations": [],
       "definition_spelling": "5:11-5:19",
       "definition_extent": "5:1-6:2",
@@ -115,7 +121,7 @@ OUTPUT: static_function_in_type.cc
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",
       "variable_type": 1,
-      "kind": 13,
+      "kind": 25,
       "uses": ["5:29-5:30"]
     }]
 }

@@ -16,6 +16,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "1:7-1:10",
       "definition_extent": "1:1-3:2",
       "parents": [],
@@ -32,6 +33,7 @@ OUTPUT:
       "usr": "c:@S@Foo@F@foo#",
       "short_name": "foo",
       "detailed_name": "void Foo::foo()",
+      "kind": 16,
       "declarations": [{
           "spelling": "2:8-2:11",
           "extent": "2:3-2:13",

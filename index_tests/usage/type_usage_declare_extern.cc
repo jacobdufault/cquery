@@ -11,6 +11,7 @@ OUTPUT:
       "usr": "c:@S@T",
       "short_name": "T",
       "detailed_name": "T",
+      "kind": 6,
       "definition_spelling": "1:8-1:9",
       "definition_extent": "1:1-1:12",
       "parents": [],
@@ -29,7 +30,7 @@ OUTPUT:
       "detailed_name": "T t",
       "declaration": "3:10-3:11",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["3:10-3:11"]
     }]
 }

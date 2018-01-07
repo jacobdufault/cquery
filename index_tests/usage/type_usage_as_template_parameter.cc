@@ -20,6 +20,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@unique_ptr",
       "short_name": "unique_ptr",
       "detailed_name": "unique_ptr",
+      "kind": 7,
       "definition_spelling": "2:7-2:17",
       "definition_extent": "2:1-2:20",
       "parents": [],
@@ -34,6 +35,7 @@ OUTPUT:
       "usr": "c:@S@S",
       "short_name": "S",
       "detailed_name": "S",
+      "kind": 6,
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:1-4:12",
       "parents": [],
@@ -50,6 +52,7 @@ OUTPUT:
       "usr": "c:@F@return_type#",
       "short_name": "return_type",
       "detailed_name": "unique_ptr<S> *return_type()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "9:16-9:27",
       "definition_extent": "9:1-12:2",
@@ -67,7 +70,7 @@ OUTPUT:
       "definition_spelling": "6:25-6:27",
       "definition_extent": "6:1-6:27",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["6:25-6:27"]
     }, {
       "id": 1,
@@ -77,7 +80,7 @@ OUTPUT:
       "definition_spelling": "7:22-7:24",
       "definition_extent": "7:1-7:24",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["7:22-7:24"]
     }, {
       "id": 2,

@@ -23,6 +23,7 @@ OUTPUT:
       "usr": "c:@F@make1#",
       "short_name": "make1",
       "detailed_name": "int make1()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "6:5-6:10",
       "definition_extent": "6:1-8:2",
@@ -37,6 +38,7 @@ OUTPUT:
       "usr": "c:@F@a#",
       "short_name": "a",
       "detailed_name": "int a()",
+      "kind": 12,
       "declarations": [{
           "spelling": "12:1-12:20",
           "extent": "12:1-12:20",
@@ -58,7 +60,7 @@ OUTPUT:
       "detailed_name": "const int make2",
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
-      "kind": 1,
+      "kind": 13,
       "uses": ["9:11-9:16", "12:14-12:19"]
     }, {
       "id": 1,

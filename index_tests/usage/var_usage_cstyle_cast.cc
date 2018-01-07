@@ -17,6 +17,7 @@ OUTPUT:
       "usr": "c:@E@VarType",
       "short_name": "VarType",
       "detailed_name": "VarType",
+      "kind": 5,
       "definition_spelling": "1:6-1:13",
       "definition_extent": "1:1-1:16",
       "parents": [],
@@ -31,6 +32,7 @@ OUTPUT:
       "usr": "c:@S@Holder",
       "short_name": "Holder",
       "detailed_name": "Holder",
+      "kind": 6,
       "definition_spelling": "3:8-3:14",
       "definition_extent": "3:1-5:2",
       "parents": [],
@@ -52,7 +54,7 @@ OUTPUT:
       "definition_extent": "7:1-7:33",
       "variable_type": 0,
       "declaring_type": 1,
-      "kind": 14,
+      "kind": 21,
       "uses": ["4:28-4:38", "7:23-7:33"]
     }]
 }

@@ -14,6 +14,7 @@ OUTPUT: header.h
       "usr": "c:@S@Base",
       "short_name": "Base",
       "detailed_name": "Base",
+      "kind": 6,
       "definition_spelling": "3:8-3:12",
       "definition_extent": "3:1-3:15",
       "parents": [],
@@ -28,6 +29,7 @@ OUTPUT: header.h
       "usr": "c:@S@SameFileDerived",
       "short_name": "SameFileDerived",
       "detailed_name": "SameFileDerived",
+      "kind": 6,
       "definition_spelling": "5:8-5:23",
       "definition_extent": "5:1-5:33",
       "parents": [0],
@@ -42,6 +44,7 @@ OUTPUT: header.h
       "usr": "c:@Foo0",
       "short_name": "Foo0",
       "detailed_name": "Foo0",
+      "kind": 11,
       "hover": "using Foo0 = SameFileDerived",
       "definition_spelling": "7:7-7:11",
       "definition_extent": "7:1-7:29",
@@ -58,6 +61,7 @@ OUTPUT: header.h
       "usr": "c:@ST>1#T@Foo2",
       "short_name": "Foo2",
       "detailed_name": "Foo2",
+      "kind": 7,
       "definition_spelling": "13:8-13:12",
       "definition_extent": "13:1-13:15",
       "parents": [],
@@ -72,6 +76,7 @@ OUTPUT: header.h
       "usr": "c:@E@Foo3",
       "short_name": "Foo3",
       "detailed_name": "Foo3",
+      "kind": 5,
       "definition_spelling": "15:6-15:10",
       "definition_extent": "15:1-15:22",
       "parents": [],
@@ -88,6 +93,7 @@ OUTPUT: header.h
       "usr": "c:@FT@>1#TFoo1#v#",
       "short_name": "Foo1",
       "detailed_name": "void Foo1()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "10:6-10:10",
       "definition_extent": "10:1-10:15",
@@ -106,7 +112,7 @@ OUTPUT: header.h
       "definition_extent": "15:13-15:14",
       "variable_type": 4,
       "declaring_type": 4,
-      "kind": 14,
+      "kind": 15,
       "uses": ["15:13-15:14"]
     }, {
       "id": 1,
@@ -117,7 +123,7 @@ OUTPUT: header.h
       "definition_extent": "15:16-15:17",
       "variable_type": 4,
       "declaring_type": 4,
-      "kind": 14,
+      "kind": 15,
       "uses": ["15:16-15:17"]
     }, {
       "id": 2,
@@ -128,7 +134,7 @@ OUTPUT: header.h
       "definition_extent": "15:19-15:20",
       "variable_type": 4,
       "declaring_type": 4,
-      "kind": 14,
+      "kind": 15,
       "uses": ["15:19-15:20"]
     }, {
       "id": 3,
@@ -137,7 +143,7 @@ OUTPUT: header.h
       "detailed_name": "int Foo4",
       "definition_spelling": "17:5-17:9",
       "definition_extent": "17:1-17:9",
-      "kind": 1,
+      "kind": 13,
       "uses": ["17:5-17:9"]
     }, {
       "id": 4,
@@ -146,7 +152,7 @@ OUTPUT: header.h
       "detailed_name": "int Foo5",
       "definition_spelling": "18:12-18:16",
       "definition_extent": "18:1-18:16",
-      "kind": 1,
+      "kind": 13,
       "uses": ["18:12-18:16"]
     }]
 }
@@ -164,6 +170,7 @@ OUTPUT: impl.cc
       "usr": "c:@F@Impl#",
       "short_name": "Impl",
       "detailed_name": "void Impl()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "3:6-3:10",
       "definition_extent": "3:1-5:2",
@@ -178,6 +185,7 @@ OUTPUT: impl.cc
       "usr": "c:@FT@>1#TFoo1#v#",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "declarations": [],
       "base": [],
       "derived": [],

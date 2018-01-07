@@ -13,6 +13,7 @@ OUTPUT:
       "usr": "c:@S@ForwardType",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -25,6 +26,7 @@ OUTPUT:
       "usr": "c:@S@ImplementedType",
       "short_name": "ImplementedType",
       "detailed_name": "ImplementedType",
+      "kind": 6,
       "definition_spelling": "2:8-2:23",
       "definition_extent": "2:1-2:26",
       "parents": [],
@@ -41,6 +43,7 @@ OUTPUT:
       "usr": "c:@F@foo#*$@S@ForwardType#$@S@ImplementedType#",
       "short_name": "foo",
       "detailed_name": "void foo(ForwardType *f, ImplementedType a)",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "4:6-4:9",
       "definition_extent": "4:1-4:47",
@@ -58,7 +61,7 @@ OUTPUT:
       "definition_spelling": "4:23-4:24",
       "definition_extent": "4:10-4:24",
       "variable_type": 0,
-      "kind": 13,
+      "kind": 25,
       "uses": ["4:23-4:24"]
     }, {
       "id": 1,
@@ -68,7 +71,7 @@ OUTPUT:
       "definition_spelling": "4:42-4:43",
       "definition_extent": "4:26-4:43",
       "variable_type": 1,
-      "kind": 13,
+      "kind": 25,
       "uses": ["4:42-4:43"]
     }]
 }

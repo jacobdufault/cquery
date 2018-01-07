@@ -26,6 +26,7 @@ OUTPUT:
       "usr": "c:objc(cs)AClass",
       "short_name": "AClass",
       "detailed_name": "AClass",
+      "kind": 7,
       "definition_spelling": "7:17-7:23",
       "definition_extent": "7:1-10:2",
       "parents": [],
@@ -42,6 +43,7 @@ OUTPUT:
       "usr": "c:objc(cs)AClass(cm)test",
       "short_name": "test",
       "detailed_name": "AClass::test",
+      "kind": 17,
       "declarations": [{
           "spelling": "2:11-2:15",
           "extent": "2:3-2:16",

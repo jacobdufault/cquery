@@ -21,6 +21,7 @@ OUTPUT:
       "usr": "c:@N@ns@F@Accept#I#",
       "short_name": "Accept",
       "detailed_name": "void ns::Accept(int a)",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "3:8-3:14",
       "definition_extent": "3:3-3:24",
@@ -35,6 +36,7 @@ OUTPUT:
       "usr": "c:@F@Runner#",
       "short_name": "Runner",
       "detailed_name": "void Runner()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "6:6-6:12",
       "definition_extent": "6:1-10:2",
@@ -51,7 +53,7 @@ OUTPUT:
       "detailed_name": "int ns::Foo",
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
-      "kind": 1,
+      "kind": 13,
       "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
     }, {
       "id": 1,
@@ -60,7 +62,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "3:19-3:20",
       "definition_extent": "3:15-3:20",
-      "kind": 13,
+      "kind": 25,
       "uses": ["3:19-3:20"]
     }]
 }

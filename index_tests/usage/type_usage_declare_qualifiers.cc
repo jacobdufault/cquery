@@ -16,6 +16,7 @@ OUTPUT:
       "usr": "c:@S@Type",
       "short_name": "Type",
       "detailed_name": "Type",
+      "kind": 6,
       "definition_spelling": "1:8-1:12",
       "definition_extent": "1:1-1:15",
       "parents": [],
@@ -32,6 +33,7 @@ OUTPUT:
       "usr": "c:@F@foo#&$@S@Type#&1S1_#",
       "short_name": "foo",
       "detailed_name": "void foo(Type &a0, const Type &a1)",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "3:6-3:9",
       "definition_extent": "3:1-8:2",
@@ -49,7 +51,7 @@ OUTPUT:
       "definition_spelling": "3:16-3:18",
       "definition_extent": "3:10-3:18",
       "variable_type": 0,
-      "kind": 13,
+      "kind": 25,
       "uses": ["3:16-3:18"]
     }, {
       "id": 1,
@@ -59,7 +61,7 @@ OUTPUT:
       "definition_spelling": "3:32-3:34",
       "definition_extent": "3:20-3:34",
       "variable_type": 0,
-      "kind": 13,
+      "kind": 25,
       "uses": ["3:32-3:34"]
     }, {
       "id": 2,

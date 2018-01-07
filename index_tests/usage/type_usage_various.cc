@@ -19,6 +19,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "1:7-1:10",
       "definition_extent": "1:1-3:2",
       "parents": [],
@@ -35,6 +36,7 @@ OUTPUT:
       "usr": "c:@S@Foo@F@make#",
       "short_name": "make",
       "detailed_name": "Foo *Foo::make()",
+      "kind": 16,
       "declarations": [{
           "spelling": "2:8-2:12",
           "extent": "2:3-2:14",
@@ -67,7 +69,7 @@ OUTPUT:
       "detailed_name": "Foo foo",
       "declaration": "10:12-10:15",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["10:12-10:15"]
     }]
 }

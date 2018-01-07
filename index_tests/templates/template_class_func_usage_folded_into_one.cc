@@ -18,6 +18,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "2:8-2:11",
       "definition_extent": "2:1-6:2",
       "parents": [],
@@ -34,6 +35,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo@F@foo#S",
       "short_name": "foo",
       "detailed_name": "int Foo::foo()",
+      "kind": 18,
       "declarations": [],
       "definition_spelling": "3:14-3:17",
       "definition_extent": "3:3-5:4",
@@ -51,7 +53,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:24",
-      "kind": 1,
+      "kind": 13,
       "uses": ["8:5-8:6"]
     }, {
       "id": 1,
@@ -60,7 +62,7 @@ OUTPUT:
       "detailed_name": "int b",
       "definition_spelling": "9:5-9:6",
       "definition_extent": "9:1-9:25",
-      "kind": 1,
+      "kind": 13,
       "uses": ["9:5-9:6"]
     }]
 }

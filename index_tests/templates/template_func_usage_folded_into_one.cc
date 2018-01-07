@@ -21,6 +21,7 @@ OUTPUT:
       "usr": "c:template_func_usage_folded_into_one.cc@FT@>1#Tfoo#I#",
       "short_name": "foo",
       "detailed_name": "int foo()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "2:12-2:15",
       "definition_extent": "2:1-4:2",
@@ -37,7 +38,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:19",
-      "kind": 1,
+      "kind": 13,
       "uses": ["6:5-6:6"]
     }, {
       "id": 1,
@@ -46,7 +47,7 @@ OUTPUT:
       "detailed_name": "int b",
       "definition_spelling": "7:5-7:6",
       "definition_extent": "7:1-7:20",
-      "kind": 1,
+      "kind": 13,
       "uses": ["7:5-7:6"]
     }]
 }

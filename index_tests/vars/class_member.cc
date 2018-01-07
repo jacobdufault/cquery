@@ -11,6 +11,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "1:7-1:10",
       "definition_extent": "1:1-3:2",
       "parents": [],

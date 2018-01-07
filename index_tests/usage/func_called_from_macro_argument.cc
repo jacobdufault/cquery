@@ -18,6 +18,7 @@ OUTPUT:
       "usr": "c:@F@called#b#b#",
       "short_name": "called",
       "detailed_name": "bool called(bool a, bool b)",
+      "kind": 12,
       "declarations": [{
           "spelling": "3:6-3:12",
           "extent": "3:1-3:28",
@@ -35,6 +36,7 @@ OUTPUT:
       "usr": "c:@F@caller#",
       "short_name": "caller",
       "detailed_name": "void caller()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "5:6-5:12",
       "definition_extent": "5:1-7:2",

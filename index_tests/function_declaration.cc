@@ -12,6 +12,7 @@ OUTPUT:
       "usr": "c:@F@foo#I#I#",
       "short_name": "foo",
       "detailed_name": "void foo(int a, int b)",
+      "kind": 12,
       "declarations": [{
           "spelling": "1:6-1:9",
           "extent": "1:1-1:23",

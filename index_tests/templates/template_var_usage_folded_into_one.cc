@@ -40,6 +40,7 @@ OUTPUT:
       "usr": "c:@E@A",
       "short_name": "A",
       "detailed_name": "A",
+      "kind": 5,
       "definition_spelling": "1:6-1:7",
       "definition_extent": "1:1-1:10",
       "parents": [],
@@ -54,6 +55,7 @@ OUTPUT:
       "usr": "c:@E@B",
       "short_name": "B",
       "detailed_name": "B",
+      "kind": 5,
       "definition_spelling": "2:6-2:7",
       "definition_extent": "2:1-2:10",
       "parents": [],
@@ -68,6 +70,7 @@ OUTPUT:
       "usr": "c:template_var_usage_folded_into_one.cc@35",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -84,7 +87,7 @@ OUTPUT:
       "detailed_name": "T var",
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
-      "kind": 1,
+      "kind": 13,
       "uses": ["5:3-5:6", "7:7-7:10", "8:7-8:10"]
     }, {
       "id": 1,
@@ -94,7 +97,7 @@ OUTPUT:
       "definition_spelling": "7:3-7:4",
       "definition_extent": "7:1-7:13",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["7:3-7:4"]
     }, {
       "id": 2,
@@ -104,7 +107,7 @@ OUTPUT:
       "definition_spelling": "8:3-8:4",
       "definition_extent": "8:1-8:13",
       "variable_type": 1,
-      "kind": 1,
+      "kind": 13,
       "uses": ["8:3-8:4"]
     }]
 }

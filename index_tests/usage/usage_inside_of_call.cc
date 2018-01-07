@@ -24,6 +24,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 6,
       "definition_spelling": "5:8-5:11",
       "definition_extent": "5:1-8:2",
       "parents": [],
@@ -40,6 +41,7 @@ OUTPUT:
       "usr": "c:@F@called#I#",
       "short_name": "called",
       "detailed_name": "void called(int a)",
+      "kind": 12,
       "declarations": [{
           "spelling": "1:6-1:12",
           "extent": "1:1-1:19",
@@ -57,6 +59,7 @@ OUTPUT:
       "usr": "c:@F@gen#",
       "short_name": "gen",
       "detailed_name": "int gen()",
+      "kind": 12,
       "declarations": [{
           "spelling": "3:5-3:8",
           "extent": "3:1-3:10",
@@ -74,6 +77,7 @@ OUTPUT:
       "usr": "c:@F@foo#",
       "short_name": "foo",
       "detailed_name": "void foo()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "12:6-12:9",
       "definition_extent": "12:1-15:2",
@@ -92,7 +96,7 @@ OUTPUT:
       "definition_spelling": "10:10-10:20",
       "definition_extent": "10:1-10:24",
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 21,
       "uses": ["6:14-6:24", "10:10-10:20", "14:45-14:55"]
     }, {
       "id": 1,

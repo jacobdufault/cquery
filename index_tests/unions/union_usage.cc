@@ -21,6 +21,7 @@ OUTPUT:
       "usr": "c:@U@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 10,
       "definition_spelling": "1:7-1:10",
       "definition_extent": "1:1-4:2",
       "parents": [],
@@ -37,6 +38,7 @@ OUTPUT:
       "usr": "c:@F@act#*$@U@Foo#",
       "short_name": "act",
       "detailed_name": "void act(Foo *)",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "8:6-8:9",
       "definition_extent": "8:1-10:2",
@@ -74,7 +76,7 @@ OUTPUT:
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:6",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["6:5-6:6", "9:3-9:4"]
     }]
 }

@@ -13,6 +13,7 @@ OUTPUT:
       "usr": "c:@E@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 5,
       "definition_spelling": "1:12-1:15",
       "definition_extent": "1:1-4:2",
       "parents": [],
@@ -33,7 +34,7 @@ OUTPUT:
       "definition_extent": "2:3-2:4",
       "variable_type": 0,
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 15,
       "uses": ["2:3-2:4"]
     }, {
       "id": 1,
@@ -44,7 +45,7 @@ OUTPUT:
       "definition_extent": "3:3-3:9",
       "variable_type": 0,
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 15,
       "uses": ["3:3-3:4"]
     }]
 }

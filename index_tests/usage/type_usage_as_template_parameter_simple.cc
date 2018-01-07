@@ -15,6 +15,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@unique_ptr",
       "short_name": "unique_ptr",
       "detailed_name": "unique_ptr",
+      "kind": 7,
       "definition_spelling": "2:7-2:17",
       "definition_extent": "2:1-2:20",
       "parents": [],
@@ -29,6 +30,7 @@ OUTPUT:
       "usr": "c:@S@S",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -46,7 +48,7 @@ OUTPUT:
       "definition_spelling": "6:22-6:25",
       "definition_extent": "6:1-6:25",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["6:22-6:25"]
     }]
 }

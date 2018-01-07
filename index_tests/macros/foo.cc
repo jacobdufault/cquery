@@ -17,6 +17,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 6,
       "definition_spelling": "4:8-4:11",
       "definition_extent": "4:1-6:2",
       "parents": [],
@@ -33,6 +34,7 @@ OUTPUT:
       "usr": "c:@S@Foo@F@Foo#&&$@S@Foo#",
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo(Foo &&)",
+      "kind": 22,
       "declarations": [],
       "definition_spelling": "5:12-5:15",
       "definition_extent": "5:12-5:16",
@@ -50,7 +52,7 @@ OUTPUT:
       "detailed_name": "int x",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
-      "kind": 1,
+      "kind": 13,
       "uses": ["8:5-8:6"]
     }, {
       "id": 1,

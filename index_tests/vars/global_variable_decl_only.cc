@@ -12,7 +12,7 @@ OUTPUT:
       "short_name": "global",
       "detailed_name": "int global",
       "declaration": "1:12-1:18",
-      "kind": 1,
+      "kind": 13,
       "uses": ["1:12-1:18"]
     }]
 }

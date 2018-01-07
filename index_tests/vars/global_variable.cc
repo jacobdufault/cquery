@@ -13,7 +13,7 @@ OUTPUT:
       "detailed_name": "int global",
       "definition_spelling": "1:12-1:18",
       "definition_extent": "1:1-1:22",
-      "kind": 1,
+      "kind": 13,
       "uses": ["1:12-1:18"]
     }]
 }

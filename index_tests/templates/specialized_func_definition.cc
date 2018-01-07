@@ -27,6 +27,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Template",
       "short_name": "Template",
       "detailed_name": "Template",
+      "kind": 7,
       "definition_spelling": "2:7-2:15",
       "definition_extent": "2:1-4:2",
       "parents": [],
@@ -43,6 +44,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Template@F@Foo#",
       "short_name": "Foo",
       "detailed_name": "void Template::Foo()",
+      "kind": 16,
       "declarations": [{
           "spelling": "3:8-3:11",
           "extent": "3:3-3:13",

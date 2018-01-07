@@ -10,6 +10,7 @@ OUTPUT:
       "usr": "c:@S@Type",
       "short_name": "Type",
       "detailed_name": "Type",
+      "kind": 6,
       "definition_spelling": "1:8-1:12",
       "definition_extent": "1:1-1:15",
       "parents": [],
@@ -29,7 +30,7 @@ OUTPUT:
       "definition_spelling": "2:13-2:14",
       "definition_extent": "2:1-2:14",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["2:13-2:14"]
     }]
 }

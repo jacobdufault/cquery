@@ -14,6 +14,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "1:7-1:10",
       "definition_extent": "1:1-3:2",
       "parents": [],
@@ -34,7 +35,7 @@ OUTPUT:
       "definition_spelling": "5:10-5:13",
       "definition_extent": "5:1-5:13",
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 21,
       "uses": ["2:14-2:17", "5:10-5:13"]
     }]
 }

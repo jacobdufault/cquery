@@ -24,6 +24,7 @@ OUTPUT:
       "usr": "c:@N@ns@E@VarType",
       "short_name": "VarType",
       "detailed_name": "ns::VarType",
+      "kind": 5,
       "definition_spelling": "2:8-2:15",
       "definition_extent": "2:3-2:18",
       "parents": [],
@@ -38,6 +39,7 @@ OUTPUT:
       "usr": "c:@N@ns@ST>1#T@Holder",
       "short_name": "Holder",
       "detailed_name": "ns::Holder",
+      "kind": 7,
       "definition_spelling": "5:10-5:16",
       "definition_extent": "5:3-7:4",
       "parents": [],
@@ -59,7 +61,7 @@ OUTPUT:
       "definition_extent": "9:3-10:47",
       "variable_type": 0,
       "declaring_type": 1,
-      "kind": 14,
+      "kind": 21,
       "uses": ["6:30-6:40", "10:37-10:47", "13:26-13:36", "14:27-14:37"]
     }, {
       "id": 1,
@@ -68,7 +70,7 @@ OUTPUT:
       "detailed_name": "int ns::Foo",
       "definition_spelling": "13:7-13:10",
       "definition_extent": "13:3-13:36",
-      "kind": 1,
+      "kind": 13,
       "uses": ["13:7-13:10"]
     }, {
       "id": 2,
@@ -77,7 +79,7 @@ OUTPUT:
       "detailed_name": "int ns::Foo2",
       "definition_spelling": "14:7-14:11",
       "definition_extent": "14:3-14:37",
-      "kind": 1,
+      "kind": 13,
       "uses": ["14:7-14:11"]
     }]
 }

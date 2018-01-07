@@ -14,6 +14,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:1-2:13",
       "parents": [],
@@ -33,7 +34,7 @@ OUTPUT:
       "definition_spelling": "4:10-4:11",
       "definition_extent": "4:1-4:11",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["4:10-4:11"]
     }, {
       "id": 1,
@@ -43,7 +44,7 @@ OUTPUT:
       "definition_spelling": "5:11-5:12",
       "definition_extent": "5:1-5:12",
       "variable_type": 0,
-      "kind": 1,
+      "kind": 13,
       "uses": ["5:11-5:12"]
     }]
 }

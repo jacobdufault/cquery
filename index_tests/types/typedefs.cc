@@ -11,6 +11,7 @@ OUTPUT:
       "usr": "c:typedefs.cc@T@func",
       "short_name": "func",
       "detailed_name": "func",
+      "kind": 11,
       "hover": "typedef int (func)(const int *a, const int *b)",
       "definition_spelling": "1:14-1:18",
       "definition_extent": "1:1-1:47",
@@ -28,6 +29,7 @@ OUTPUT:
       "usr": "c:typedefs.cc@F@g#*1I#S0_#",
       "short_name": "g",
       "detailed_name": "func g",
+      "kind": 12,
       "declarations": [{
           "spelling": "2:13-2:14",
           "extent": "2:1-2:14",

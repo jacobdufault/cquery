@@ -19,6 +19,7 @@ OUTPUT:
       "usr": "c:@F@foo#I#",
       "short_name": "foo",
       "detailed_name": "void foo(int a)",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "1:6-1:9",
       "definition_extent": "1:1-8:2",
@@ -35,7 +36,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "1:14-1:15",
       "definition_extent": "1:10-1:15",
-      "kind": 13,
+      "kind": 25,
       "uses": ["1:14-1:15", "2:3-2:4", "7:3-7:4"]
     }, {
       "id": 1,

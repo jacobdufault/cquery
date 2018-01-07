@@ -16,6 +16,7 @@ OUTPUT:
       "usr": "c:@S@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 7,
       "definition_spelling": "1:7-1:10",
       "definition_extent": "1:1-5:2",
       "parents": [],
@@ -32,6 +33,7 @@ OUTPUT:
       "usr": "c:@S@Foo@F@operator()#I#",
       "short_name": "operator()",
       "detailed_name": "void Foo::operator()(int)",
+      "kind": 16,
       "declarations": [],
       "definition_spelling": "2:8-2:18",
       "definition_extent": "2:3-2:27",
@@ -47,6 +49,7 @@ OUTPUT:
       "usr": "c:@S@Foo@F@operator()#b#",
       "short_name": "operator()",
       "detailed_name": "void Foo::operator()(bool)",
+      "kind": 16,
       "declarations": [{
           "spelling": "3:8-3:18",
           "extent": "3:3-3:24",
@@ -65,6 +68,7 @@ OUTPUT:
       "usr": "c:@S@Foo@F@operator()#I#I#",
       "short_name": "operator()",
       "detailed_name": "int Foo::operator()(int a, int b)",
+      "kind": 16,
       "declarations": [{
           "spelling": "4:7-4:17",
           "extent": "4:3-4:31",
@@ -83,6 +87,7 @@ OUTPUT:
       "usr": "c:@F@operator+=#&1$@S@Foo#&1I#",
       "short_name": "operator+=",
       "detailed_name": "Foo &operator+=(const Foo &, const int &)",
+      "kind": 12,
       "declarations": [{
           "spelling": "7:6-7:17",
           "extent": "7:1-7:42",

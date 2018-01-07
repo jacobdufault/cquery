@@ -15,6 +15,7 @@ OUTPUT: funky_enum.h
       "usr": "c:@E@Foo",
       "short_name": "",
       "detailed_name": "",
+      "kind": 0,
       "parents": [],
       "derived": [],
       "types": [],
@@ -33,7 +34,7 @@ OUTPUT: funky_enum.h
       "definition_extent": "4:1-4:2",
       "variable_type": 0,
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 15,
       "uses": ["4:1-4:2"]
     }, {
       "id": 1,
@@ -44,7 +45,7 @@ OUTPUT: funky_enum.h
       "definition_extent": "5:1-5:2",
       "variable_type": 0,
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 15,
       "uses": ["5:1-5:2"]
     }, {
       "id": 2,
@@ -55,7 +56,7 @@ OUTPUT: funky_enum.h
       "definition_extent": "6:1-6:2",
       "variable_type": 0,
       "declaring_type": 0,
-      "kind": 14,
+      "kind": 15,
       "uses": ["6:1-6:2"]
     }]
 }
@@ -71,6 +72,7 @@ OUTPUT: funky_enum.cc
       "usr": "c:@E@Foo",
       "short_name": "Foo",
       "detailed_name": "Foo",
+      "kind": 5,
       "definition_spelling": "1:6-1:9",
       "definition_extent": "1:1-3:2",
       "parents": [],

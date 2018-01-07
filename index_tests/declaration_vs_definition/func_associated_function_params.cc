@@ -16,6 +16,7 @@ OUTPUT:
       "usr": "c:@F@foo#I#I#",
       "short_name": "foo",
       "detailed_name": "int foo(int a, int b)",
+      "kind": 12,
       "declarations": [{
           "spelling": "1:5-1:8",
           "extent": "1:1-1:18",
@@ -47,7 +48,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "5:13-5:14",
       "definition_extent": "5:9-5:14",
-      "kind": 13,
+      "kind": 25,
       "uses": ["5:13-5:14"]
     }, {
       "id": 1,
@@ -56,7 +57,7 @@ OUTPUT:
       "detailed_name": "int b",
       "definition_spelling": "5:20-5:21",
       "definition_extent": "5:16-5:21",
-      "kind": 13,
+      "kind": 25,
       "uses": ["5:20-5:21"]
     }]
 }

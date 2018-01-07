@@ -16,6 +16,7 @@ OUTPUT:
       "usr": "c:func_usage_template_func.cc@9",
       "short_name": "T",
       "detailed_name": "T",
+      "kind": 0,
       "definition_spelling": "1:19-1:20",
       "definition_extent": "1:10-1:20",
       "parents": [],
@@ -32,6 +33,7 @@ OUTPUT:
       "usr": "c:@FT@>1#Taccept#t0.0#v#",
       "short_name": "accept",
       "detailed_name": "void accept(T)",
+      "kind": 12,
       "declarations": [{
           "spelling": "2:6-2:12",
           "extent": "2:1-2:15",
@@ -49,6 +51,7 @@ OUTPUT:
       "usr": "c:@F@foo#",
       "short_name": "foo",
       "detailed_name": "void foo()",
+      "kind": 12,
       "declarations": [],
       "definition_spelling": "4:6-4:9",
       "definition_extent": "4:1-7:2",
