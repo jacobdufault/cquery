@@ -43,7 +43,7 @@ export class TypeHierarchyProvider implements
       collapsibleState: collapseState,
       contextValue: 'cqueryGoto',
       command: {
-        command: '_cquery._hackGotoForTreeView',
+        command: 'cquery.hackGotoForTreeView',
         title: 'Goto',
         arguments: [element, element.children.length != 0]
       }

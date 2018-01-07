@@ -55,7 +55,7 @@ export class CallTreeProvider implements TreeDataProvider<CallTreeNode> {
     if (element.location) {
       let path = parseUri(element.location.uri).path;
       let name = path.substr(path.lastIndexOf('/') + 1);
-      label += ` **(${name}:${element.location.range.start.line + 1})`;
+      label += ` (${name}:${element.location.range.start.line + 1})`;
     }
 
     return {
@@ -63,7 +63,7 @@ export class CallTreeProvider implements TreeDataProvider<CallTreeNode> {
       collapsibleState: collapseState,
       contextValue: 'cqueryGoto',
       command: {
-        command: '_cquery._hackGotoForTreeView',
+        command: 'cquery.hackGotoForTreeView',
         title: 'Goto',
         arguments: [element, element.hasCallers]
       },

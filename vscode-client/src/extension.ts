@@ -474,9 +474,11 @@ export function activate(context: ExtensionContext) {
     const typeHierarchyProvider = new TypeHierarchyProvider();
     window.registerTreeDataProvider(
         'cquery.typeHierarchy', typeHierarchyProvider);
-    commands.registerCommand('cquery.typeHierarchyTree', () => {
-      let position = window.activeTextEditor.selection.active;
-      let uri = window.activeTextEditor.document.uri;
+    commands.registerTextEditorCommand('cquery.typeHierarchyTree', (editor) => {
+      commands.executeCommand('setContext', 'extension.cquery.typeHierarchyVisible', true);
+
+      let position = editor.selection.active;
+      let uri = editor.document.uri;
       languageClient
           .sendRequest('$cquery/typeHierarchyTree', {
             textDocument: {
@@ -491,7 +493,8 @@ export function activate(context: ExtensionContext) {
             }
           })
     });
-    commands.registerCommand('cquery.clearTypeHierarchyTree', () => {
+    commands.registerCommand('cquery.closeTypeHierarchy', () => {
+      commands.executeCommand('setContext', 'extension.cquery.typeHierarchyVisible', false);
       typeHierarchyProvider.root = [];
       typeHierarchyProvider.onDidChangeEmitter.fire();
     });
@@ -510,9 +513,11 @@ export function activate(context: ExtensionContext) {
     const callTreeProvider = new CallTreeProvider(
         languageClient, derivedDark, derivedLight, baseDark, baseLight);
     window.registerTreeDataProvider('cquery.callTree', callTreeProvider);
-    commands.registerCommand('cquery.callTree', () => {
-      let position = window.activeTextEditor.selection.active;
-      let uri = window.activeTextEditor.document.uri;
+    commands.registerTextEditorCommand('cquery.callTree', (editor) => {
+      commands.executeCommand('setContext', 'extension.cquery.callTreeVisible', true);
+
+      let position = editor.selection.active;
+      let uri = editor.document.uri;
       languageClient
           .sendRequest('$cquery/callTreeInitial', {
             textDocument: {
@@ -530,7 +535,8 @@ export function activate(context: ExtensionContext) {
               callTreeProvider.onDidChangeEmitter.fire();
           });
     });
-    commands.registerCommand('cquery.clearCallTree', () => {
+    commands.registerCommand('cquery.closeCallTree', (e) => {
+      commands.executeCommand('setContext', 'extension.cquery.callTreeVisible', false);
       callTreeProvider.root = [];
       callTreeProvider.onDidChangeEmitter.fire();
     });
@@ -539,7 +545,7 @@ export function activate(context: ExtensionContext) {
   // Common between tree views.
   (() => {
     commands.registerCommand(
-        '_cquery._gotoForTreeView', (node: TypeHierarchyNode|CallTreeNode) => {
+        'cquery.gotoForTreeView', (node: TypeHierarchyNode|CallTreeNode) => {
           if (!node.location)
             return;
 
@@ -552,13 +558,13 @@ export function activate(context: ExtensionContext) {
     let lastGotoNodeUsr: string
     let lastGotoClickTime: number
     commands.registerCommand(
-        '_cquery._hackGotoForTreeView',
+        'cquery.hackGotoForTreeView',
         (node: TypeHierarchyNode|CallTreeNode, hasChildren: boolean) => {
           if (!node.location)
             return;
 
           if (!hasChildren) {
-            commands.executeCommand('_cquery._gotoForTreeView', node);
+            commands.executeCommand('cquery.gotoForTreeView', node);
             return;
           }
 
@@ -574,7 +580,7 @@ export function activate(context: ExtensionContext) {
           const elapsed = Date.now() - lastGotoClickTime;
           lastGotoClickTime = Date.now();
           if (elapsed < kDoubleClickTimeMs)
-            commands.executeCommand('_cquery._gotoForTreeView', node);
+            commands.executeCommand('cquery.gotoForTreeView', node);
         });
   })();
 
