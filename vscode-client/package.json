@@ -329,7 +329,10 @@
           "description": "Default value to use for clang -resource-dir argument. This will be automatically supplied by cquery if not provided."
         },
         "cquery.misc.maxWorkspaceSearchResults": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "default": null,
           "description": "The maximum number of global search (ie, Ctrl+P + #foo) search results to report. For small search strings on large projects there can be a massive number of results (ie, over 1,000,000) so this limit is important to avoid extremely long delays. null means use the default value provided by the cquery language server."
         },
@@ -442,12 +445,12 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "@types/node": "^6.0.52",
-    "typescript": "^2.1.5"
+    "@types/node": "^6.0.96",
+    "typescript": "^2.6.2"
   },
   "dependencies": {
     "vscode": "^1.1.10",
-    "vscode-languageclient": "^3.5.0"
+    "vscode-languageclient": "^4.0.0-next"
   },
   "false": {}
 }
