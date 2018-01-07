@@ -372,19 +372,22 @@ export function activate(context: ExtensionContext) {
           let loadPreviousIndexCount = args.loadPreviousIndexCount;
           let onIdMappedCount = args.onIdMappedCount;
           let onIndexedCount = args.onIndexedCount;
+          let activeThreads = args.activeThreads;
           let total = indexRequestCount + doIdMapCount +
-              loadPreviousIndexCount + onIdMappedCount + onIndexedCount;
+              loadPreviousIndexCount + onIdMappedCount + onIndexedCount +
+              activeThreads;
 
           let detailedJobString = `indexRequest: ${indexRequestCount}, ` +
               `doIdMap: ${doIdMapCount}, ` +
               `loadPreviousIndex: ${loadPreviousIndexCount}, ` +
               `onIdMapped: ${onIdMappedCount}, ` +
-              `onIndexed: ${onIndexedCount}`;
+              `onIndexed: ${onIndexedCount}, ` +
+              `activeThreads: ${activeThreads}`;
 
           if (total == 0 && statusStyle == 'short') {
             statusIcon.text = 'cquery: idle';
           } else {
-            statusIcon.text = `cquery: ${indexRequestCount} jobs`;
+            statusIcon.text = `cquery: ${indexRequestCount}|${total} jobs`;
             if (statusStyle == 'detailed') {
               statusIcon.text += ` (${detailedJobString})`
             }
