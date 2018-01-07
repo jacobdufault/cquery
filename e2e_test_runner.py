@@ -18,6 +18,10 @@ CACHE_DIR = 'e2e_cache'
 # global environment and start with `Test_`.
 
 
+# If found in json output with quotes surrounding this value it will be replaced
+# with null, ie, "~~null~~" -> null
+NULL_MAGIC_VALUE = "~~null~~"
+
 class TestBuilder:
   def __init__(self):
     self.sent = []
@@ -67,7 +71,8 @@ class TestBuilder:
     """
     Send the given message to the language server.
     """
-    stdin['jsonrpc'] = '2.0'
+    if not isinstance(stdin, str):
+      stdin['jsonrpc'] = '2.0'
     self.sent.append(stdin)
     return self
 
@@ -89,7 +94,11 @@ class TestBuilder:
         'params': {
             'processId': 123,
             'rootUri': 'cquery',
-            'capabilities': {},
+            'capabilities': {
+              'textDocument': {
+                'codeLens': NULL_MAGIC_VALUE
+              }
+            },
             'trace': 'off',
             'initializationOptions': {
                 'cacheDirectory': CACHE_DIR
@@ -152,7 +161,10 @@ def _ExecuteTest(name, func):
   # Convert messages to a stdin byte array.
   stdin = ''
   for message in test_builder.sent:
-    payload = json.dumps(message)
+    payload = message
+    if not isinstance(payload, str):
+      payload = json.dumps(message)
+      payload = payload.replace('"' + NULL_MAGIC_VALUE + '"', 'null')
     wrapped = 'Content-Length: %s\r\n\r\n%s' % (len(payload), payload)
     stdin += wrapped
   stdin_bytes = stdin.encode(encoding='UTF-8')
@@ -192,7 +204,7 @@ def _ExecuteTest(name, func):
 
   # Check if test succeeded.
   actual = GetMessages(stdout.decode('utf8'))
-  success = actual == test_builder.expected
+  success = exit_code == 0 and actual == test_builder.expected
 
   # Print failure messages.
   if success:
