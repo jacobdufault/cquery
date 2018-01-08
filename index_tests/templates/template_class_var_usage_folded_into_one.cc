@@ -33,6 +33,7 @@ OUTPUT:
       "usr": "c:@ST>1#T@Foo@var",
       "short_name": "var",
       "detailed_name": "const int Foo::var",
+      "hover": "static constexpr int var = 3",
       "declaration": "3:24-3:27",
       "kind": 21,
       "uses": ["3:24-3:27", "6:19-6:22", "7:20-7:23"]

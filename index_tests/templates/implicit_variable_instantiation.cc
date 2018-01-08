@@ -56,6 +56,7 @@ OUTPUT:
       "usr": "c:@N@ns@ST>1#T@Holder@static_var",
       "short_name": "static_var",
       "detailed_name": "const ns::VarType ns::Holder::static_var",
+      "hover": "template<typename _>\n   const typename VarType Holder<_>::static_var",
       "declaration": "6:30-6:40",
       "definition_spelling": "10:37-10:47",
       "definition_extent": "9:3-10:47",

@@ -98,6 +98,7 @@ OUTPUT:
       "usr": "c:type_usage_declare_qualifiers.cc@103@F@foo#&$@S@Type#&1S1_#@a5",
       "short_name": "a5",
       "detailed_name": "const Type *const a5",
+      "hover": "const Type* const a5 = nullptr",
       "definition_spelling": "7:21-7:23",
       "definition_extent": "7:3-7:33",
       "variable_type": 0,
