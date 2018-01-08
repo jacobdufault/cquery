@@ -16,6 +16,11 @@ void foo() {
 }
 
 /*
+EXTRA_FLAGS:
+-fms-extensions
+-fms-compatibility
+-fdelayed-template-parsing
+
 OUTPUT:
 {
   "includes": [],
@@ -33,8 +38,8 @@ OUTPUT:
       "types": [],
       "funcs": [0],
       "vars": [0],
-      "instances": [1],
-      "uses": ["2:8-2:9", "9:3-9:4", "13:16-13:17"]
+      "instances": [],
+      "uses": ["2:8-2:9"]
     }, {
       "id": 1,
       "usr": "c:member_ref_in_template.cc@10",
@@ -50,21 +55,6 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["1:17-1:18", "3:3-3:4"]
-    }, {
-      "id": 2,
-      "usr": "c:member_ref_in_template.cc@71",
-      "short_name": "T",
-      "detailed_name": "T",
-      "kind": 0,
-      "definition_spelling": "7:17-7:18",
-      "definition_extent": "7:11-7:18",
-      "parents": [],
-      "derived": [],
-      "types": [],
-      "funcs": [],
-      "vars": [],
-      "instances": [],
-      "uses": ["7:17-7:18", "9:5-9:6", "13:18-13:19"]
     }],
   "funcs": [{
       "id": 0,
@@ -83,7 +73,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@11:3-11:8"],
+      "callers": [],
       "callees": []
     }, {
       "id": 1,
@@ -94,12 +84,12 @@ OUTPUT:
       "kind": 12,
       "declarations": [],
       "definition_spelling": "8:6-8:9",
-      "definition_extent": "8:1-16:2",
+      "definition_extent": "8:1-8:11",
       "base": [],
       "derived": [],
       "locals": [],
       "callers": [],
-      "callees": ["0@11:3-11:8"]
+      "callees": []
     }],
   "vars": [{
       "id": 0,
@@ -110,26 +100,7 @@ OUTPUT:
       "definition_extent": "3:3-3:6",
       "declaring_type": 0,
       "kind": 14,
-      "uses": ["3:5-3:6", "10:3-10:6"]
-    }, {
-      "id": 1,
-      "usr": "c:member_ref_in_template.cc@97@FT@>1#Tfoo#v#@d",
-      "short_name": "d",
-      "detailed_name": "C<T> d",
-      "definition_spelling": "9:8-9:9",
-      "definition_extent": "9:3-9:9",
-      "variable_type": 0,
-      "kind": 13,
-      "uses": ["9:8-9:9", "10:3-10:4", "11:3-11:4"]
-    }, {
-      "id": 2,
-      "usr": "c:member_ref_in_template.cc@244@FT@>1#Tfoo#v#@e",
-      "short_name": "e",
-      "detailed_name": "auto e",
-      "definition_spelling": "13:8-13:9",
-      "definition_extent": "13:3-13:20",
-      "kind": 13,
-      "uses": ["13:8-13:9", "14:3-14:4", "15:3-15:4"]
+      "uses": ["3:5-3:6"]
     }]
 }
 */
