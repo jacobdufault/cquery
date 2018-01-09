@@ -2,6 +2,7 @@
 #include "variant.hpp"
 namespace std {
 using mpark::get;
+using mpark::monostate;
 using mpark::variant;
 }
 #else
