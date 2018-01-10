@@ -265,7 +265,7 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* initOpts, ProjectCo
   std::vector<std::string> files = GetFilesInFolder(
       config->project_dir, true /*recursive*/, true /*add_folder_to_path*/);
   for (const std::string& file : files) {
-    if (SourceFileType(file)) {
+    if (file.find('.') != std::string::npos && SourceFileType(file)) {
       CompileCommandsEntry e;
       e.directory = config->project_dir;
       e.file = file;
