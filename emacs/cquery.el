@@ -335,14 +335,12 @@ Read document for all choices."
                 :action (lambda (str)
                           (dolist (action lsp-code-actions)
                             (when (equal (funcall name-func action) str)
-                              (cquery-execute-command action)
+                              (cquery--execute-command (gethash "command" action) (gethash "arguments" action))
                               (lsp--text-document-code-action))))))))
 
-(defun cquery-execute-command (action)
+(defun cquery--execute-command (command &optional arguments)
   "Execute a cquery command"
-  (let* ((command (gethash "command" action))
-         (arguments (gethash "arguments" action))
-         (uri (car arguments))
+  (let* ((uri (car arguments))
          (data (cdr arguments)))
     (save-current-buffer
       (find-file (cquery--uri-to-file uri))
@@ -433,6 +431,21 @@ Read document for all choices."
   (expand-file-name (or (locate-dominating-file default-directory "compile_commands.json")
                         (locate-dominating-file default-directory ".cquery")
                         (user-error "Could not find cquery project root"))))
+
+(defun cquery--is-cquery-buffer(&optional buffer)
+  "Return non-nil if current buffer is using the cquery client"
+  (with-current-buffer (or buffer (current-buffer))
+    (and lsp--cur-workspace
+         (eq (lsp--client-get-root (lsp--workspace-client lsp--cur-workspace)) 'cquery--get-root))))
+
+(defun cquery--execute-command-locally-advice (orig-func command args)
+  "Cquery currently doesn't support `workspace/executeCommand', so execute those locally.
+Keep an eye on https://github.com/jacobdufault/cquery/issues/283"
+  (if (cquery--is-cquery-buffer)
+      (cquery--execute-command command args)
+    (orig-func args)))
+
+(advice-add 'lsp--send-execute-command :around #'cquery--execute-command-locally-advice)
 
 (lsp-define-stdio-client
  lsp-cquery "cpp" #'cquery--get-root
