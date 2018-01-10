@@ -11,6 +11,8 @@
 #include <variant.h>
 
 #include <algorithm>
+#include <iostream>
+#include <sstream>
 #include <unordered_map>
 #include <unordered_set>
 
