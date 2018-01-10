@@ -136,6 +136,17 @@ void EmitSemanticHighlighting(QueryDatabase* db,
           continue;  // applies to for loop
         is_type_member = func->def->declaring_type.has_value();
         detailed_name = func->def->short_name;
+        // shrink location region
+        auto concise_name = detailed_name.substr(0, detailed_name.find('<'));
+        std::string& line =
+            working_file->index_lines[sym.loc.range.start.line - 1];
+        auto pos = line.find(concise_name);
+        sym.loc.range.end.line = sym.loc.range.start.line;
+        if (pos == std::string::npos)
+          sym.loc.range.end.column = sym.loc.range.start.column;
+        else
+          sym.loc.range.end.column =
+              sym.loc.range.start.column + concise_name.size();
         break;
       }
       case SymbolKind::Var: {
