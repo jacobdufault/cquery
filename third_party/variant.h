@@ -1,6 +1,7 @@
 #if __cplusplus < 201703L
 #include "variant.hpp"
 namespace std {
+using mpark::holds_alternative;
 using mpark::get;
 using mpark::monostate;
 using mpark::variant;
