@@ -4,7 +4,8 @@
 
 # FIXME: use clang-format from build/ directory.
 
-$files=Get-ChildItem -Recurse src -Include *.h,*.cc
+$files=Get-ChildItem -Recurse src -Include *.h,*.cc |
+    ? { $_.FullName -inotmatch '.vscode' }
 foreach ($file in $files) {
   Write-Host "Formatting" $file.FullName
   clang-format.exe -style=Chromium -i $file.FullName
