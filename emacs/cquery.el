@@ -228,7 +228,7 @@
 ;;   Other cquery-specific methods
 ;; ---------------------------------------------------------------------
 
-(defun cquery-xref-find-locations-with-position (method &optional display-action)
+(defun cquery-xref-find-custom (method &optional display-action)
   "Find cquery-specific cross references.
 Choices of METHOD include \"$cquery/base\", \"$cquery/callers\",
 \"$cquery/derived\", \"$cquery/vars\".
