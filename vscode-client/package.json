@@ -296,7 +296,7 @@
         },
         "cquery.highlighting.underline.memberFunctions": {
           "type": "boolean",
-          "default": true
+          "default": false
         },
         "cquery.highlighting.underline.freeStandingVariables": {
           "type": "boolean",
