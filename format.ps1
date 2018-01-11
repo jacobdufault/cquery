@@ -2,6 +2,8 @@
 # This script formats all *.h and *.cc files in the "src/" directory.
 #
 
+# FIXME: use clang-format from build/ directory.
+
 $files=Get-ChildItem -Recurse src -Include *.h,*.cc
 foreach ($file in $files) {
   Write-Host "Formatting" $file.FullName
