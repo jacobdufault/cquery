@@ -359,7 +359,8 @@ def build(bld):
     else:
       rpath = bld.env['LIBPATH_clang']
 
-  bld.objects(name='siphash', source='third_party/siphash.c')
+  # FIXME Figure out how to mix C and C++ source files and change it back to .c
+  bld.objects(name='siphash', source='third_party/siphash.cc')
 
   # https://waf.io/apidocs/tools/c_aliases.html#waflib.Tools.c_aliases.program
   bld.program(
