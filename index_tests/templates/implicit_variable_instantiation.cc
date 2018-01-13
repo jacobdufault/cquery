@@ -21,7 +21,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@N@ns@E@VarType",
+      "usr": 1532099849728741556,
       "short_name": "VarType",
       "detailed_name": "ns::VarType",
       "kind": 5,
@@ -36,7 +36,7 @@ OUTPUT:
       "uses": ["2:8-2:15", "6:22-6:29", "6:44-6:51", "10:18-10:25"]
     }, {
       "id": 1,
-      "usr": "c:@N@ns@ST>1#T@Holder",
+      "usr": 12688716854043726585,
       "short_name": "Holder",
       "detailed_name": "ns::Holder",
       "kind": 7,
@@ -53,7 +53,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@N@ns@ST>1#T@Holder@static_var",
+      "usr": 4731849186641714451,
       "short_name": "static_var",
       "detailed_name": "const ns::VarType ns::Holder::static_var",
       "hover": "template<typename _>\n   const typename VarType Holder<_>::static_var",
@@ -66,7 +66,7 @@ OUTPUT:
       "uses": ["6:30-6:40", "10:37-10:47", "13:26-13:36", "14:27-14:37"]
     }, {
       "id": 1,
-      "usr": "c:@N@ns@Foo",
+      "usr": 12898699035586282159,
       "short_name": "Foo",
       "detailed_name": "int ns::Foo",
       "definition_spelling": "13:7-13:10",
@@ -75,7 +75,7 @@ OUTPUT:
       "uses": ["13:7-13:10"]
     }, {
       "id": 2,
-      "usr": "c:@N@ns@Foo2",
+      "usr": 9008550860229740818,
       "short_name": "Foo2",
       "detailed_name": "int ns::Foo2",
       "definition_spelling": "14:7-14:11",

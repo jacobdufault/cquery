@@ -20,7 +20,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@called#",
+      "usr": 468307235068920063,
       "short_name": "called",
       "detailed_name": "void called()",
       "kind": 12,
@@ -38,7 +38,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@FT@>1#Tcaller#v#",
+      "usr": 10177235824697315808,
       "short_name": "caller",
       "detailed_name": "void caller()",
       "kind": 12,
@@ -53,7 +53,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,

@@ -15,7 +15,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -30,7 +30,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#*$@S@Foo#S0_#",
+      "usr": 8908726657907936744,
       "short_name": "foo",
       "detailed_name": "void foo(Foo *f, Foo *)",
       "kind": 12,
@@ -50,7 +50,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_param_prototype.cc@49@F@foo#*$@S@Foo#S0_#@f",
+      "usr": 2161866804398917919,
       "short_name": "f",
       "detailed_name": "Foo *f",
       "definition_spelling": "4:15-4:16",

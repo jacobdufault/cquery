@@ -10,7 +10,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#I#",
+      "usr": 11998306017310352355,
       "short_name": "foo",
       "detailed_name": "void foo(int p)",
       "kind": 12,
@@ -25,7 +25,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:function_shadow_param.cc@9@F@foo#I#@p",
+      "usr": 5875271969926422921,
       "short_name": "p",
       "detailed_name": "int p",
       "definition_spelling": "1:14-1:15",
@@ -34,7 +34,7 @@ OUTPUT:
       "uses": ["1:14-1:15"]
     }, {
       "id": 1,
-      "usr": "c:function_shadow_param.cc@23@F@foo#I#@p",
+      "usr": 2147918703972955240,
       "short_name": "p",
       "detailed_name": "int p",
       "definition_spelling": "2:9-2:10",

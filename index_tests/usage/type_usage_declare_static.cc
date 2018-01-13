@@ -7,7 +7,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Type",
+      "usr": 13487927231218873822,
       "short_name": "Type",
       "detailed_name": "Type",
       "kind": 6,
@@ -24,7 +24,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_static.cc@t",
+      "usr": 6601831367240627080,
       "short_name": "t",
       "detailed_name": "Type t",
       "definition_spelling": "2:13-2:14",

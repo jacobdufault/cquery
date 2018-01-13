@@ -11,7 +11,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@Foo",
+      "usr": 10528472276654770367,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -28,7 +28,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@a",
+      "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "Foo<int> a",
       "definition_spelling": "4:10-4:11",
@@ -38,7 +38,7 @@ OUTPUT:
       "uses": ["4:10-4:11"]
     }, {
       "id": 1,
-      "usr": "c:@b",
+      "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "Foo<bool> b",
       "definition_spelling": "5:11-5:12",

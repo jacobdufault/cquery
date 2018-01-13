@@ -24,7 +24,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -41,7 +41,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@accept#I#",
+      "usr": 17175780305784503374,
       "short_name": "accept",
       "detailed_name": "void accept(int)",
       "kind": 12,
@@ -59,7 +59,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@accept#*I#",
+      "usr": 12086644540399881766,
       "short_name": "accept",
       "detailed_name": "void accept(int *)",
       "kind": 12,
@@ -77,7 +77,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -92,7 +92,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@Foo@FI@x",
+      "usr": 4220150017963593039,
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "definition_spelling": "3:7-3:8",
@@ -102,7 +102,7 @@ OUTPUT:
       "uses": ["3:7-3:8", "12:5-12:6", "13:5-13:6", "14:12-14:13", "15:12-15:13", "16:13-16:14"]
     }, {
       "id": 1,
-      "usr": "c:@S@Foo@FI@y",
+      "usr": 3873837747174060388,
       "short_name": "y",
       "detailed_name": "int Foo::y",
       "definition_spelling": "4:7-4:8",
@@ -112,7 +112,7 @@ OUTPUT:
       "uses": ["4:7-4:8", "17:12-17:13"]
     }, {
       "id": 2,
-      "usr": "c:var_usage_class_member.cc@105@F@foo#@f",
+      "usr": 16303259148898744165,
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "11:7-11:8",

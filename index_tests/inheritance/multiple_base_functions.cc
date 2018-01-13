@@ -15,7 +15,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Base0",
+      "usr": 11628904180681204356,
       "short_name": "Base0",
       "detailed_name": "Base0",
       "kind": 6,
@@ -30,7 +30,7 @@ OUTPUT:
       "uses": ["1:8-1:13", "2:12-2:17", "7:18-7:23"]
     }, {
       "id": 1,
-      "usr": "c:@S@Base1",
+      "usr": 15826803741381445676,
       "short_name": "Base1",
       "detailed_name": "Base1",
       "kind": 6,
@@ -45,7 +45,7 @@ OUTPUT:
       "uses": ["4:8-4:13", "5:12-5:17", "7:25-7:30"]
     }, {
       "id": 2,
-      "usr": "c:@S@Derived",
+      "usr": 10963370434658308541,
       "short_name": "Derived",
       "detailed_name": "Derived",
       "kind": 6,
@@ -62,7 +62,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Base0@F@~Base0#",
+      "usr": 16347272523198263017,
       "short_name": "~Base0",
       "detailed_name": "void Base0::~Base0() noexcept",
       "kind": 23,
@@ -78,7 +78,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Base1@F@~Base1#",
+      "usr": 8401779086123965305,
       "short_name": "~Base1",
       "detailed_name": "void Base1::~Base1() noexcept",
       "kind": 23,
@@ -94,7 +94,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@S@Derived@F@~Derived#",
+      "usr": 13164726294460837993,
       "short_name": "~Derived",
       "detailed_name": "void Derived::~Derived() noexcept",
       "kind": 23,

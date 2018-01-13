@@ -12,7 +12,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@unique_ptr",
+      "usr": 3286534761799572592,
       "short_name": "unique_ptr",
       "detailed_name": "unique_ptr",
       "kind": 7,
@@ -27,7 +27,7 @@ OUTPUT:
       "uses": ["2:7-2:17", "6:8-6:18"]
     }, {
       "id": 1,
-      "usr": "c:@S@S",
+      "usr": 4750332761459066907,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -42,7 +42,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_as_template_parameter_simple.cc@foo",
+      "usr": 3398408600781120939,
       "short_name": "foo",
       "detailed_name": "unique_ptr<S> foo",
       "definition_spelling": "6:22-6:25",

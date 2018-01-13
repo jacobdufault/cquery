@@ -9,7 +9,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -24,7 +24,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#*$@S@Foo#S0_#",
+      "usr": 8908726657907936744,
       "short_name": "foo",
       "detailed_name": "void foo(Foo *p0, Foo *p1)",
       "kind": 12,
@@ -39,7 +39,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:function_param.cc@24@F@foo#*$@S@Foo#S0_#@p0",
+      "usr": 4580260577538694711,
       "short_name": "p0",
       "detailed_name": "Foo *p0",
       "definition_spelling": "3:15-3:17",
@@ -49,7 +49,7 @@ OUTPUT:
       "uses": ["3:15-3:17"]
     }, {
       "id": 1,
-      "usr": "c:function_param.cc@33@F@foo#*$@S@Foo#S0_#@p1",
+      "usr": 12071725611268840435,
       "short_name": "p1",
       "detailed_name": "Foo *p1",
       "definition_spelling": "3:24-3:26",

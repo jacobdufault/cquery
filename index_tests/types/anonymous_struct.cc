@@ -10,7 +10,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@U@vector3",
+      "usr": 17937907487590875128,
       "short_name": "vector3",
       "detailed_name": "vector3",
       "kind": 10,
@@ -25,7 +25,7 @@ OUTPUT:
       "uses": ["1:7-1:14"]
     }, {
       "id": 1,
-      "usr": "c:@U@vector3@Sa",
+      "usr": 1428566502523368801,
       "short_name": "<anonymous>",
       "detailed_name": "vector3::<anonymous>",
       "kind": 6,
@@ -42,7 +42,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@U@vector3@Sa@FI@x",
+      "usr": 3348817847649945564,
       "short_name": "x",
       "detailed_name": "float vector3::(anon struct)::x",
       "definition_spelling": "2:18-2:19",
@@ -52,7 +52,7 @@ OUTPUT:
       "uses": ["2:18-2:19"]
     }, {
       "id": 1,
-      "usr": "c:@U@vector3@Sa@FI@y",
+      "usr": 4821094820988543895,
       "short_name": "y",
       "detailed_name": "float vector3::(anon struct)::y",
       "definition_spelling": "2:21-2:22",
@@ -62,7 +62,7 @@ OUTPUT:
       "uses": ["2:21-2:22"]
     }, {
       "id": 2,
-      "usr": "c:@U@vector3@Sa@FI@z",
+      "usr": 15292551660437765731,
       "short_name": "z",
       "detailed_name": "float vector3::(anon struct)::z",
       "definition_spelling": "2:24-2:25",
@@ -72,7 +72,7 @@ OUTPUT:
       "uses": ["2:24-2:25"]
     }, {
       "id": 3,
-      "usr": "c:@U@vector3@FI@v",
+      "usr": 1963212417280098348,
       "short_name": "v",
       "detailed_name": "float [3] vector3::v",
       "definition_spelling": "3:9-3:10",

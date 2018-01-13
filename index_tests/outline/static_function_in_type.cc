@@ -13,7 +13,7 @@ OUTPUT: static_function_in_type.h
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@N@ns@S@Manager",
+      "usr": 1972401196751872203,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -26,7 +26,7 @@ OUTPUT: static_function_in_type.h
       "uses": ["3:7-3:14", "6:24-6:31"]
     }, {
       "id": 1,
-      "usr": "c:@N@ns@S@Foo",
+      "usr": 17262466801709381811,
       "short_name": "Foo",
       "detailed_name": "ns::Foo",
       "kind": 6,
@@ -43,7 +43,7 @@ OUTPUT: static_function_in_type.h
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S",
+      "usr": 17019747379608639279,
       "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *)",
       "kind": 18,
@@ -71,7 +71,7 @@ OUTPUT: static_function_in_type.cc
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@N@ns@S@Foo",
+      "usr": 17262466801709381811,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -84,7 +84,7 @@ OUTPUT: static_function_in_type.cc
       "uses": ["5:6-5:9"]
     }, {
       "id": 1,
-      "usr": "c:@N@ns@S@Manager",
+      "usr": 1972401196751872203,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -99,7 +99,7 @@ OUTPUT: static_function_in_type.cc
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S",
+      "usr": 17019747379608639279,
       "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *m)",
       "kind": 18,
@@ -115,7 +115,7 @@ OUTPUT: static_function_in_type.cc
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:static_function_in_type.cc@86@N@ns@S@Foo@F@Register#*$@N@ns@S@Manager#S@m",
+      "usr": 9285345059965948351,
       "short_name": "m",
       "detailed_name": "ns::Manager *m",
       "definition_spelling": "5:29-5:30",

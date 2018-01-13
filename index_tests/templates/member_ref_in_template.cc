@@ -27,7 +27,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@C",
+      "usr": 8402783583255987702,
       "short_name": "C",
       "detailed_name": "C",
       "kind": 7,
@@ -42,7 +42,7 @@ OUTPUT:
       "uses": ["2:8-2:9"]
     }, {
       "id": 1,
-      "usr": "c:member_ref_in_template.cc@10",
+      "usr": 14750650276757822712,
       "short_name": "T",
       "detailed_name": "T",
       "kind": 0,
@@ -59,7 +59,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@ST>1#T@C@F@bar#",
+      "usr": 8905286151237717330,
       "short_name": "bar",
       "detailed_name": "void C::bar()",
       "kind": 16,
@@ -78,7 +78,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@FT@>1#Tfoo#v#",
+      "usr": 6875364467121018690,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -93,7 +93,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@ST>1#T@C@FI@x",
+      "usr": 5866801090710377175,
       "short_name": "x",
       "detailed_name": "T C::x",
       "definition_spelling": "3:5-3:6",

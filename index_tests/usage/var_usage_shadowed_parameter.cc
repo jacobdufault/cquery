@@ -16,7 +16,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#I#",
+      "usr": 11998306017310352355,
       "short_name": "foo",
       "detailed_name": "void foo(int a)",
       "kind": 12,
@@ -31,7 +31,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:var_usage_shadowed_parameter.cc@9@F@foo#I#@a",
+      "usr": 11608231465452906059,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "1:14-1:15",
@@ -40,7 +40,7 @@ OUTPUT:
       "uses": ["1:14-1:15", "2:3-2:4", "7:3-7:4"]
     }, {
       "id": 1,
-      "usr": "c:var_usage_shadowed_parameter.cc@38@F@foo#I#@a",
+      "usr": 8011559936501990179,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "4:9-4:10",

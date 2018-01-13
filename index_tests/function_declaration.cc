@@ -9,7 +9,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#I#I#",
+      "usr": 2747674671862363334,
       "short_name": "foo",
       "detailed_name": "void foo(int a, int b)",
       "kind": 12,

@@ -15,7 +15,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@called#b#b#",
+      "usr": 3787803219955606747,
       "short_name": "called",
       "detailed_name": "bool called(bool a, bool b)",
       "kind": 12,
@@ -33,7 +33,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@caller#",
+      "usr": 11404881820527069090,
       "short_name": "caller",
       "detailed_name": "void caller()",
       "kind": 12,
@@ -48,7 +48,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_called_from_macro_argument.cc@8@macro@MACRO_CALL",
+      "usr": 1290746656694198202,
       "short_name": "MACRO_CALL",
       "detailed_name": "MACRO_CALL",
       "hover": "#define MACRO_CALL(e) e",

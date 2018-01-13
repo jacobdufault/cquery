@@ -15,7 +15,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 6,
@@ -32,7 +32,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@accept#I#",
+      "usr": 17175780305784503374,
       "short_name": "accept",
       "detailed_name": "void accept(int)",
       "kind": 12,
@@ -50,7 +50,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -65,7 +65,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@Foo@x",
+      "usr": 8599782646965457351,
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "declaration": "2:14-2:15",

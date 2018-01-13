@@ -12,7 +12,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@E@Foo",
+      "usr": 16985894625255407295,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 5,
@@ -29,7 +29,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@E@Foo@A",
+      "usr": 439339022761937396,
       "short_name": "A",
       "detailed_name": "Foo::A",
       "definition_spelling": "2:3-2:4",
@@ -40,7 +40,7 @@ OUTPUT:
       "uses": ["2:3-2:4", "6:14-6:15"]
     }, {
       "id": 1,
-      "usr": "c:@E@Foo@B",
+      "usr": 15962370213938840720,
       "short_name": "B",
       "detailed_name": "Foo::B",
       "definition_spelling": "3:3-3:4",
@@ -51,7 +51,7 @@ OUTPUT:
       "uses": ["3:3-3:4"]
     }, {
       "id": 2,
-      "usr": "c:@x",
+      "usr": 10677751717622394455,
       "short_name": "x",
       "detailed_name": "Foo x",
       "definition_spelling": "6:5-6:6",

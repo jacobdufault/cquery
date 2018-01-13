@@ -14,7 +14,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 6,
@@ -31,7 +31,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Foo#&&$@S@Foo#",
+      "usr": 13788753348312146871,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo(Foo &&)",
       "kind": 22,
@@ -47,7 +47,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@x",
+      "usr": 10677751717622394455,
       "short_name": "x",
       "detailed_name": "int x",
       "definition_spelling": "8:5-8:6",
@@ -56,7 +56,7 @@ OUTPUT:
       "uses": ["8:5-8:6"]
     }, {
       "id": 1,
-      "usr": "c:foo.cc@8@macro@A",
+      "usr": 7651988378939587454,
       "short_name": "A",
       "detailed_name": "A",
       "hover": "#define A 5",
@@ -66,7 +66,7 @@ OUTPUT:
       "uses": ["1:9-1:10", "8:9-8:10"]
     }, {
       "id": 2,
-      "usr": "c:foo.cc@21@macro@DISALLOW",
+      "usr": 14946041066794678724,
       "short_name": "DISALLOW",
       "detailed_name": "DISALLOW",
       "hover": "#define DISALLOW(type) type(type&&) = delete;",

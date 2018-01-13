@@ -11,7 +11,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@Foo",
+      "usr": 10528472276654770367,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -24,7 +24,7 @@ OUTPUT:
       "uses": ["2:8-2:11", "4:14-4:17", "5:9-5:12"]
     }, {
       "id": 1,
-      "usr": "c:@Foo1",
+      "usr": 1544499294580512394,
       "short_name": "Foo1",
       "detailed_name": "Foo1",
       "kind": 11,
@@ -41,7 +41,7 @@ OUTPUT:
       "uses": ["4:7-4:11", "5:13-5:17"]
     }, {
       "id": 2,
-      "usr": "c:type_usage_typedef_and_using_template.cc@T@Foo2",
+      "usr": 15933698173231330933,
       "short_name": "Foo2",
       "detailed_name": "Foo2",
       "kind": 11,

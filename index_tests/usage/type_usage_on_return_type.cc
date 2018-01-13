@@ -24,7 +24,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Type",
+      "usr": 13487927231218873822,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -37,7 +37,7 @@ OUTPUT:
       "uses": ["1:8-1:12", "3:1-3:5", "4:1-4:5", "5:1-5:5", "8:3-8:7", "12:1-12:5", "15:14-15:18", "17:8-17:12", "18:8-18:12"]
     }, {
       "id": 1,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -54,7 +54,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "Type *foo()",
       "kind": 12,
@@ -79,7 +79,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Get#I#",
+      "usr": 13402221340333431092,
       "short_name": "Get",
       "detailed_name": "Type *Foo::Get(int)",
       "kind": 16,
@@ -100,7 +100,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Empty#",
+      "usr": 4240751906910175539,
       "short_name": "Empty",
       "detailed_name": "void Foo::Empty()",
       "kind": 16,
@@ -121,7 +121,7 @@ OUTPUT:
     }, {
       "id": 3,
       "is_operator": false,
-      "usr": "c:@F@external#",
+      "usr": 7746867874366499515,
       "short_name": "external",
       "detailed_name": "const Type &external()",
       "kind": 12,
@@ -139,7 +139,7 @@ OUTPUT:
     }, {
       "id": 4,
       "is_operator": false,
-      "usr": "c:type_usage_on_return_type.cc@F@bar#",
+      "usr": 18408440185620243373,
       "short_name": "bar",
       "detailed_name": "Type *bar()",
       "kind": 12,

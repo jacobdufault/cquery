@@ -11,7 +11,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -28,7 +28,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@Foo@foo",
+      "usr": 8942920329766232482,
       "short_name": "foo",
       "detailed_name": "int Foo::foo",
       "declaration": "2:14-2:17",

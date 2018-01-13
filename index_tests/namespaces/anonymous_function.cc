@@ -11,7 +11,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:anonymous_function.cc@aN@F@foo#",
+      "usr": 5010253035933134245,
       "short_name": "foo",
       "detailed_name": "void (anon)::foo()",
       "kind": 12,

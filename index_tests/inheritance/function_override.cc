@@ -12,7 +12,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Root",
+      "usr": 3897841498936210886,
       "short_name": "Root",
       "detailed_name": "Root",
       "kind": 7,
@@ -27,7 +27,7 @@ OUTPUT:
       "uses": ["1:7-1:11", "4:24-4:28"]
     }, {
       "id": 1,
-      "usr": "c:@S@Derived",
+      "usr": 10963370434658308541,
       "short_name": "Derived",
       "detailed_name": "Derived",
       "kind": 7,
@@ -44,7 +44,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Root@F@foo#",
+      "usr": 9948027785633571339,
       "short_name": "foo",
       "detailed_name": "void Root::foo()",
       "kind": 16,
@@ -63,7 +63,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Derived@F@foo#",
+      "usr": 6666242542855173890,
       "short_name": "foo",
       "detailed_name": "void Derived::foo()",
       "kind": 16,

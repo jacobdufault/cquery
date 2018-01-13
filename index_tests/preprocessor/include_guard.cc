@@ -12,7 +12,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:include_guard.cc@21@macro@FOO",
+      "usr": 13076155634261037336,
       "short_name": "FOO",
       "detailed_name": "FOO",
       "hover": "#define FOO",

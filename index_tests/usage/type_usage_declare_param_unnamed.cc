@@ -7,7 +7,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@ForwardType",
+      "usr": 13749354388332789217,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -22,7 +22,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#*$@S@ForwardType#",
+      "usr": 15327735280790448926,
       "short_name": "foo",
       "detailed_name": "void foo(ForwardType *)",
       "kind": 12,

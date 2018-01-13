@@ -18,7 +18,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:lambda.cc@47@F@foo#@Sa",
+      "usr": 1287417953265234030,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -33,7 +33,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -48,7 +48,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:lambda.cc@57@F@foo#@Sa@F@operator()#I#1",
+      "usr": 1328781044864682611,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -61,7 +61,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:lambda.cc@16@F@foo#@x",
+      "usr": 17270098654620601683,
       "short_name": "x",
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",
@@ -70,7 +70,7 @@ OUTPUT:
       "uses": ["2:7-2:8", "5:7-5:8", "4:24-4:25"]
     }, {
       "id": 1,
-      "usr": "c:lambda.cc@28@F@foo#@dosomething",
+      "usr": 16806544259835773270,
       "short_name": "dosomething",
       "detailed_name": "lambda dosomething",
       "definition_spelling": "4:8-4:19",
@@ -80,7 +80,7 @@ OUTPUT:
       "uses": ["4:8-4:19", "9:3-9:14", "10:3-10:14", "11:3-11:14"]
     }, {
       "id": 2,
-      "usr": "c:lambda.cc@52@F@foo#@Sa@F@operator()#I#1@y",
+      "usr": 2034725908368218782,
       "short_name": "y",
       "detailed_name": "int y",
       "definition_spelling": "4:31-4:32",

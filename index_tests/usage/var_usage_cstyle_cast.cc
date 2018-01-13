@@ -14,7 +14,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@E@VarType",
+      "usr": 5792006888140599735,
       "short_name": "VarType",
       "detailed_name": "VarType",
       "kind": 5,
@@ -29,7 +29,7 @@ OUTPUT:
       "uses": ["1:6-1:13", "4:20-4:27", "4:42-4:49", "7:7-7:14"]
     }, {
       "id": 1,
-      "usr": "c:@S@Holder",
+      "usr": 10028537921178202800,
       "short_name": "Holder",
       "detailed_name": "Holder",
       "kind": 6,
@@ -46,7 +46,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@Holder@static_var",
+      "usr": 7057400933868440116,
       "short_name": "static_var",
       "detailed_name": "const VarType Holder::static_var",
       "hover": "const VarType Holder::static_var",

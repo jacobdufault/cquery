@@ -85,7 +85,7 @@ OUTPUT:
   "skipped_by_preprocessor": ["7:1-14:7", "17:1-32:7", "35:1-39:7", "42:1-52:7", "57:1-63:7", "68:1-78:7"],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>2#T#T@unique_ptr",
+      "usr": 14209198335088845323,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -98,7 +98,7 @@ OUTPUT:
       "uses": ["2:7-2:17", "15:8-15:18", "15:19-15:29", "33:1-33:11", "33:12-33:22", "33:52-33:62", "54:3-54:13", "54:14-54:24", "65:3-65:13", "79:1-79:11"]
     }, {
       "id": 1,
-      "usr": "c:@S@S1",
+      "usr": 4310164820010458371,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -111,7 +111,7 @@ OUTPUT:
       "uses": ["4:8-4:10", "15:30-15:32", "33:23-33:25", "33:63-33:65", "54:25-54:27", "65:14-65:16", "79:12-79:14"]
     }, {
       "id": 2,
-      "usr": "c:@S@S2",
+      "usr": 12728490517004312484,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -124,7 +124,7 @@ OUTPUT:
       "uses": ["5:8-5:10", "15:34-15:36", "15:39-15:41", "33:27-33:29", "33:32-33:34", "33:67-33:69", "54:29-54:31", "54:34-54:36", "65:18-65:20", "79:16-79:18"]
     }, {
       "id": 3,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -141,7 +141,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@as_return_type#*$@S@unique_ptr>#$@S@S1#$@S@S2#",
+      "usr": 1246637699196435450,
       "short_name": "as_return_type",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *as_return_type(unique_ptr<S1, S2> *)",
       "kind": 12,
@@ -156,7 +156,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@no_return_type#I#",
+      "usr": 13067214284561914253,
       "short_name": "no_return_type",
       "detailed_name": "void no_return_type(int)",
       "kind": 12,
@@ -171,7 +171,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@empty#",
+      "usr": 18320186404467436976,
       "short_name": "empty",
       "detailed_name": "void empty()",
       "kind": 12,
@@ -186,7 +186,7 @@ OUTPUT:
     }, {
       "id": 3,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@foo#",
+      "usr": 17922201480358737771,
       "short_name": "foo",
       "detailed_name": "unique_ptr<S1, S2> *Foo::foo()",
       "kind": 16,
@@ -207,7 +207,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@f",
+      "usr": 2933643612409209903,
       "short_name": "f",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
       "declaration": "15:43-15:44",
@@ -216,7 +216,7 @@ OUTPUT:
       "uses": ["15:43-15:44"]
     }, {
       "id": 1,
-      "usr": "c:type_usage_as_template_parameter_complex.cc@1062@F@empty#@local",
+      "usr": 11547294959889394856,
       "short_name": "local",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *local",
       "definition_spelling": "54:39-54:44",

@@ -18,7 +18,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@N@ns@ST>1#T@Foo",
+      "usr": 14042997404480181958,
       "short_name": "Foo",
       "detailed_name": "ns::Foo",
       "kind": 7,
@@ -35,7 +35,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@N@ns@ST>1#T@Foo@FT@>1#Tfoo#I#S",
+      "usr": 8221803074608342407,
       "short_name": "foo",
       "detailed_name": "int ns::Foo::foo()",
       "kind": 18,
@@ -51,7 +51,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@N@ns@a",
+      "usr": 15768138241775955040,
       "short_name": "a",
       "detailed_name": "int ns::a",
       "definition_spelling": "10:7-10:8",
@@ -60,7 +60,7 @@ OUTPUT:
       "uses": ["10:7-10:8"]
     }, {
       "id": 1,
-      "usr": "c:@N@ns@b",
+      "usr": 3182917058194750998,
       "short_name": "b",
       "detailed_name": "int ns::b",
       "definition_spelling": "11:7-11:8",

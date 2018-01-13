@@ -32,7 +32,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@CompilationEntry",
+      "usr": 4992269036372211530,
       "short_name": "CompilationEntry",
       "detailed_name": "CompilationEntry",
       "kind": 6,
@@ -47,7 +47,7 @@ OUTPUT:
       "uses": ["6:8-6:24", "12:13-12:29"]
     }, {
       "id": 1,
-      "usr": "c:@N@std@N@__1@T@string",
+      "usr": 4160338041907786,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -60,7 +60,7 @@ OUTPUT:
       "uses": ["7:8-7:14", "8:8-8:14", "9:20-9:26", "12:78-12:84"]
     }, {
       "id": 2,
-      "usr": "c:@N@std@N@__1@ST>2#T#T@vector",
+      "usr": 10956461108384510180,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -75,7 +75,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@LoadCompilationEntriesFromDirectory#&1$@N@std@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#",
+      "usr": 9802818309312685221,
       "short_name": "LoadCompilationEntriesFromDirectory",
       "detailed_name": "std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::string &project_directory)",
       "kind": 12,
@@ -93,7 +93,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@CompilationEntry@FI@directory",
+      "usr": 1153224798516629792,
       "short_name": "directory",
       "detailed_name": "std::string CompilationEntry::directory",
       "definition_spelling": "7:15-7:24",
@@ -104,7 +104,7 @@ OUTPUT:
       "uses": ["7:15-7:24"]
     }, {
       "id": 1,
-      "usr": "c:@S@CompilationEntry@FI@filename",
+      "usr": 2255668374222866345,
       "short_name": "filename",
       "detailed_name": "std::string CompilationEntry::filename",
       "definition_spelling": "8:15-8:23",
@@ -115,7 +115,7 @@ OUTPUT:
       "uses": ["8:15-8:23"]
     }, {
       "id": 2,
-      "usr": "c:@S@CompilationEntry@FI@args",
+      "usr": 12616880765274259414,
       "short_name": "args",
       "detailed_name": "std::vector<std::string> CompilationEntry::args",
       "definition_spelling": "9:28-9:32",

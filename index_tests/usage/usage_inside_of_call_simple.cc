@@ -15,7 +15,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@called#I#",
+      "usr": 18319417758892371313,
       "short_name": "called",
       "detailed_name": "void called(int a)",
       "kind": 12,
@@ -33,7 +33,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@gen#",
+      "usr": 11404602816585117695,
       "short_name": "gen",
       "detailed_name": "int gen()",
       "kind": 12,
@@ -48,7 +48,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,

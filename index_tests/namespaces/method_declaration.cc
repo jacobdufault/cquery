@@ -11,7 +11,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@N@hello@S@Foo",
+      "usr": 4508214972876735896,
       "short_name": "Foo",
       "detailed_name": "hello::Foo",
       "kind": 7,
@@ -28,7 +28,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@N@hello@S@Foo@F@foo#",
+      "usr": 10487325150128053272,
       "short_name": "foo",
       "detailed_name": "void hello::Foo::foo()",
       "kind": 16,

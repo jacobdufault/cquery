@@ -13,7 +13,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:func_usage_template_func.cc@9",
+      "usr": 13420564603121289209,
       "short_name": "T",
       "detailed_name": "T",
       "kind": 0,
@@ -30,7 +30,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@FT@>1#Taccept#t0.0#v#",
+      "usr": 10585861037135727329,
       "short_name": "accept",
       "detailed_name": "void accept(T)",
       "kind": 12,
@@ -48,7 +48,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,

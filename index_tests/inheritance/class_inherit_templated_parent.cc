@@ -19,7 +19,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#Ni@Base1",
+      "usr": 11930058224338108382,
       "short_name": "Base1",
       "detailed_name": "Base1",
       "kind": 7,
@@ -34,7 +34,7 @@ OUTPUT:
       "uses": ["2:7-2:12", "8:18-8:23", "13:17-13:22"]
     }, {
       "id": 1,
-      "usr": "c:@ST>1#T@Base2",
+      "usr": 11118288764693061434,
       "short_name": "Base2",
       "detailed_name": "Base2",
       "kind": 7,
@@ -49,7 +49,7 @@ OUTPUT:
       "uses": ["5:7-5:12", "11:18-11:23", "13:27-13:32"]
     }, {
       "id": 2,
-      "usr": "c:@ST>1#Ni@Derived1",
+      "usr": 5863733211528032190,
       "short_name": "Derived1",
       "detailed_name": "Derived1",
       "kind": 7,
@@ -64,7 +64,7 @@ OUTPUT:
       "uses": ["8:7-8:15", "13:43-13:51"]
     }, {
       "id": 3,
-      "usr": "c:@ST>1#T@Derived2",
+      "usr": 10651399730831737929,
       "short_name": "Derived2",
       "detailed_name": "Derived2",
       "kind": 7,
@@ -79,7 +79,7 @@ OUTPUT:
       "uses": ["11:7-11:15", "13:56-13:64"]
     }, {
       "id": 4,
-      "usr": "c:class_inherit_templated_parent.cc@154",
+      "usr": 780719166805015998,
       "short_name": "T",
       "detailed_name": "T",
       "kind": 0,
@@ -94,7 +94,7 @@ OUTPUT:
       "uses": ["10:19-10:20", "11:24-11:25"]
     }, {
       "id": 5,
-      "usr": "c:@S@Derived",
+      "usr": 10963370434658308541,
       "short_name": "Derived",
       "detailed_name": "Derived",
       "kind": 7,
@@ -111,7 +111,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:class_inherit_templated_parent.cc@95",
+      "usr": 3880651725784125791,
       "short_name": "T",
       "detailed_name": "unsigned int T",
       "definition_spelling": "7:23-7:24",

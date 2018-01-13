@@ -13,7 +13,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@Foo",
+      "usr": 10528472276654770367,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -30,7 +30,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@ST>1#T@Foo@var",
+      "usr": 13545144895171991916,
       "short_name": "var",
       "detailed_name": "const int Foo::var",
       "hover": "static constexpr int var = 3",
@@ -39,7 +39,7 @@ OUTPUT:
       "uses": ["3:24-3:27", "6:19-6:22", "7:20-7:23"]
     }, {
       "id": 1,
-      "usr": "c:@a",
+      "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "6:5-6:6",
@@ -48,7 +48,7 @@ OUTPUT:
       "uses": ["6:5-6:6"]
     }, {
       "id": 2,
-      "usr": "c:@b",
+      "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "int b",
       "definition_spelling": "7:5-7:6",

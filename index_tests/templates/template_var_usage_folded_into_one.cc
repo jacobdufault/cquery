@@ -37,7 +37,7 @@ OUTPUT:
   "skipped_by_preprocessor": ["12:1-28:7"],
   "types": [{
       "id": 0,
-      "usr": "c:@E@A",
+      "usr": 6697181287623958829,
       "short_name": "A",
       "detailed_name": "A",
       "kind": 5,
@@ -52,7 +52,7 @@ OUTPUT:
       "uses": ["1:6-1:7", "7:1-7:2", "7:11-7:12"]
     }, {
       "id": 1,
-      "usr": "c:@E@B",
+      "usr": 13892793056005362145,
       "short_name": "B",
       "detailed_name": "B",
       "kind": 5,
@@ -67,7 +67,7 @@ OUTPUT:
       "uses": ["2:6-2:7", "8:1-8:2", "8:11-8:12"]
     }, {
       "id": 2,
-      "usr": "c:template_var_usage_folded_into_one.cc@35",
+      "usr": 8864163146308556810,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -82,7 +82,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@VT>1#T@var",
+      "usr": 8096973118640070624,
       "short_name": "var",
       "detailed_name": "T var",
       "definition_spelling": "5:3-5:6",
@@ -91,7 +91,7 @@ OUTPUT:
       "uses": ["5:3-5:6", "7:7-7:10", "8:7-8:10"]
     }, {
       "id": 1,
-      "usr": "c:@a",
+      "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "A a",
       "definition_spelling": "7:3-7:4",
@@ -101,7 +101,7 @@ OUTPUT:
       "uses": ["7:3-7:4"]
     }, {
       "id": 2,
-      "usr": "c:@b",
+      "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "B b",
       "definition_spelling": "8:3-8:4",

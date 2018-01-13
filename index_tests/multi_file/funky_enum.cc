@@ -12,7 +12,7 @@ OUTPUT: funky_enum.h
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@E@Foo",
+      "usr": 16985894625255407295,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -27,7 +27,7 @@ OUTPUT: funky_enum.h
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@E@Foo@A",
+      "usr": 439339022761937396,
       "short_name": "A",
       "detailed_name": "Foo::A",
       "definition_spelling": "4:1-4:2",
@@ -38,7 +38,7 @@ OUTPUT: funky_enum.h
       "uses": ["4:1-4:2"]
     }, {
       "id": 1,
-      "usr": "c:@E@Foo@B",
+      "usr": 15962370213938840720,
       "short_name": "B",
       "detailed_name": "Foo::B",
       "definition_spelling": "5:1-5:2",
@@ -49,7 +49,7 @@ OUTPUT: funky_enum.h
       "uses": ["5:1-5:2"]
     }, {
       "id": 2,
-      "usr": "c:@E@Foo@C",
+      "usr": 8524995777615948802,
       "short_name": "C",
       "detailed_name": "Foo::C",
       "definition_spelling": "6:1-6:2",
@@ -69,7 +69,7 @@ OUTPUT: funky_enum.cc
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@E@Foo",
+      "usr": 16985894625255407295,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 5,

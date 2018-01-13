@@ -13,7 +13,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -30,7 +30,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:func_usage_class_inline_var_def.cc@F@helper#",
+      "usr": 9630503130605430498,
       "short_name": "helper",
       "detailed_name": "int helper()",
       "kind": 12,
@@ -45,7 +45,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@Foo@FI@x",
+      "usr": 4220150017963593039,
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "definition_spelling": "6:7-6:8",

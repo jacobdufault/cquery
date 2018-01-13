@@ -9,7 +9,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@IFoo",
+      "usr": 9949214233977131946,
       "short_name": "IFoo",
       "detailed_name": "IFoo",
       "kind": 7,
@@ -26,7 +26,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@IFoo@F@foo#",
+      "usr": 3277829753446788562,
       "short_name": "foo",
       "detailed_name": "void IFoo::foo()",
       "kind": 16,

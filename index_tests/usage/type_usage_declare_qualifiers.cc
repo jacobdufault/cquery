@@ -13,7 +13,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Type",
+      "usr": 13487927231218873822,
       "short_name": "Type",
       "detailed_name": "Type",
       "kind": 6,
@@ -30,7 +30,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#&$@S@Type#&1S1_#",
+      "usr": 16858540520096802573,
       "short_name": "foo",
       "detailed_name": "void foo(Type &a0, const Type &a1)",
       "kind": 12,
@@ -45,7 +45,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_qualifiers.cc@28@F@foo#&$@S@Type#&1S1_#@a0",
+      "usr": 16414210592877294238,
       "short_name": "a0",
       "detailed_name": "Type &a0",
       "definition_spelling": "3:16-3:18",
@@ -55,7 +55,7 @@ OUTPUT:
       "uses": ["3:16-3:18"]
     }, {
       "id": 1,
-      "usr": "c:type_usage_declare_qualifiers.cc@38@F@foo#&$@S@Type#&1S1_#@a1",
+      "usr": 11558141642862804306,
       "short_name": "a1",
       "detailed_name": "const Type &a1",
       "definition_spelling": "3:32-3:34",
@@ -65,7 +65,7 @@ OUTPUT:
       "uses": ["3:32-3:34"]
     }, {
       "id": 2,
-      "usr": "c:type_usage_declare_qualifiers.cc@59@F@foo#&$@S@Type#&1S1_#@a2",
+      "usr": 1536316608590232194,
       "short_name": "a2",
       "detailed_name": "Type a2",
       "definition_spelling": "4:8-4:10",
@@ -75,7 +75,7 @@ OUTPUT:
       "uses": ["4:8-4:10"]
     }, {
       "id": 3,
-      "usr": "c:type_usage_declare_qualifiers.cc@71@F@foo#&$@S@Type#&1S1_#@a3",
+      "usr": 316760354845869406,
       "short_name": "a3",
       "detailed_name": "Type *a3",
       "definition_spelling": "5:9-5:11",
@@ -85,7 +85,7 @@ OUTPUT:
       "uses": ["5:9-5:11"]
     }, {
       "id": 4,
-      "usr": "c:type_usage_declare_qualifiers.cc@84@F@foo#&$@S@Type#&1S1_#@a4",
+      "usr": 12321730890779907974,
       "short_name": "a4",
       "detailed_name": "const Type *a4",
       "definition_spelling": "6:15-6:17",
@@ -95,7 +95,7 @@ OUTPUT:
       "uses": ["6:15-6:17"]
     }, {
       "id": 5,
-      "usr": "c:type_usage_declare_qualifiers.cc@103@F@foo#&$@S@Type#&1S1_#@a5",
+      "usr": 4771437488905761633,
       "short_name": "a5",
       "detailed_name": "const Type *const a5",
       "hover": "const Type* const a5 = nullptr",

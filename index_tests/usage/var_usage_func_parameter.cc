@@ -10,7 +10,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#I#",
+      "usr": 11998306017310352355,
       "short_name": "foo",
       "detailed_name": "void foo(int a)",
       "kind": 12,
@@ -25,7 +25,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:var_usage_func_parameter.cc@9@F@foo#I#@a",
+      "usr": 10063793875496522529,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "1:14-1:15",

@@ -8,7 +8,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:typedefs.cc@T@func",
+      "usr": 10383876566159302459,
       "short_name": "func",
       "detailed_name": "func",
       "kind": 11,
@@ -26,7 +26,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:typedefs.cc@F@g#*1I#S0_#",
+      "usr": 8105378401105136463,
       "short_name": "g",
       "detailed_name": "func g",
       "kind": 12,

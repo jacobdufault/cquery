@@ -18,7 +18,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:template_func_usage_folded_into_one.cc@FT@>1#Tfoo#I#",
+      "usr": 326583651986177228,
       "short_name": "foo",
       "detailed_name": "int foo()",
       "kind": 12,
@@ -33,7 +33,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@a",
+      "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "6:5-6:6",
@@ -42,7 +42,7 @@ OUTPUT:
       "uses": ["6:5-6:6"]
     }, {
       "id": 1,
-      "usr": "c:@b",
+      "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "int b",
       "definition_spelling": "7:5-7:6",

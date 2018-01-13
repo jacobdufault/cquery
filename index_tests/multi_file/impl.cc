@@ -11,7 +11,7 @@ OUTPUT: header.h
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Base",
+      "usr": 8420119006782424779,
       "short_name": "Base",
       "detailed_name": "Base",
       "kind": 6,
@@ -26,7 +26,7 @@ OUTPUT: header.h
       "uses": ["3:8-3:12", "5:26-5:30"]
     }, {
       "id": 1,
-      "usr": "c:@S@SameFileDerived",
+      "usr": 16750616846959666305,
       "short_name": "SameFileDerived",
       "detailed_name": "SameFileDerived",
       "kind": 6,
@@ -41,7 +41,7 @@ OUTPUT: header.h
       "uses": ["5:8-5:23", "7:14-7:29"]
     }, {
       "id": 2,
-      "usr": "c:@Foo0",
+      "usr": 619345544228965342,
       "short_name": "Foo0",
       "detailed_name": "Foo0",
       "kind": 11,
@@ -58,7 +58,7 @@ OUTPUT: header.h
       "uses": ["7:7-7:11"]
     }, {
       "id": 3,
-      "usr": "c:@ST>1#T@Foo2",
+      "usr": 529393482671181129,
       "short_name": "Foo2",
       "detailed_name": "Foo2",
       "kind": 7,
@@ -73,7 +73,7 @@ OUTPUT: header.h
       "uses": ["13:8-13:12"]
     }, {
       "id": 4,
-      "usr": "c:@E@Foo3",
+      "usr": 4481210672785600703,
       "short_name": "Foo3",
       "detailed_name": "Foo3",
       "kind": 5,
@@ -90,7 +90,7 @@ OUTPUT: header.h
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@FT@>1#TFoo1#v#",
+      "usr": 11650481237659640387,
       "short_name": "Foo1",
       "detailed_name": "void Foo1()",
       "kind": 12,
@@ -105,7 +105,7 @@ OUTPUT: header.h
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@E@Foo3@A",
+      "usr": 6141718166919284735,
       "short_name": "A",
       "detailed_name": "Foo3::A",
       "definition_spelling": "15:13-15:14",
@@ -116,7 +116,7 @@ OUTPUT: header.h
       "uses": ["15:13-15:14"]
     }, {
       "id": 1,
-      "usr": "c:@E@Foo3@B",
+      "usr": 17716334512218775320,
       "short_name": "B",
       "detailed_name": "Foo3::B",
       "definition_spelling": "15:16-15:17",
@@ -127,7 +127,7 @@ OUTPUT: header.h
       "uses": ["15:16-15:17"]
     }, {
       "id": 2,
-      "usr": "c:@E@Foo3@C",
+      "usr": 7285646116511901840,
       "short_name": "C",
       "detailed_name": "Foo3::C",
       "definition_spelling": "15:19-15:20",
@@ -138,7 +138,7 @@ OUTPUT: header.h
       "uses": ["15:19-15:20"]
     }, {
       "id": 3,
-      "usr": "c:@Foo4",
+      "usr": 2638219001294786365,
       "short_name": "Foo4",
       "detailed_name": "int Foo4",
       "definition_spelling": "17:5-17:9",
@@ -147,7 +147,7 @@ OUTPUT: header.h
       "uses": ["17:5-17:9"]
     }, {
       "id": 4,
-      "usr": "c:header.h@Foo5",
+      "usr": 8395885290297540138,
       "short_name": "Foo5",
       "detailed_name": "int Foo5",
       "definition_spelling": "18:12-18:16",
@@ -167,7 +167,7 @@ OUTPUT: impl.cc
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@Impl#",
+      "usr": 5817708529036841195,
       "short_name": "Impl",
       "detailed_name": "void Impl()",
       "kind": 12,
@@ -182,7 +182,7 @@ OUTPUT: impl.cc
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@FT@>1#TFoo1#v#",
+      "usr": 11650481237659640387,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,

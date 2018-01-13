@@ -8,7 +8,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@T",
+      "usr": 5673439900521455039,
       "short_name": "T",
       "detailed_name": "T",
       "kind": 6,
@@ -25,7 +25,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@t",
+      "usr": 1346710425945444872,
       "short_name": "t",
       "detailed_name": "T t",
       "declaration": "3:10-3:11",

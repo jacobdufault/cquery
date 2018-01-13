@@ -11,7 +11,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@N@hello@F@foo#I#I#",
+      "usr": 18343102288837190527,
       "short_name": "foo",
       "detailed_name": "void hello::foo(int a, int b)",
       "kind": 12,

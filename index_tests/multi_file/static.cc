@@ -9,7 +9,7 @@ OUTPUT: static.h
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Buffer",
+      "usr": 9411323049603567600,
       "short_name": "Buffer",
       "detailed_name": "Buffer",
       "kind": 6,
@@ -26,7 +26,7 @@ OUTPUT: static.h
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Buffer@F@CreateSharedBuffer#S",
+      "usr": 14576076421851654759,
       "short_name": "CreateSharedBuffer",
       "detailed_name": "void Buffer::CreateSharedBuffer()",
       "kind": 18,
@@ -54,7 +54,7 @@ OUTPUT: static.cc
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Buffer",
+      "usr": 9411323049603567600,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -69,7 +69,7 @@ OUTPUT: static.cc
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Buffer@F@CreateSharedBuffer#S",
+      "usr": 14576076421851654759,
       "short_name": "CreateSharedBuffer",
       "detailed_name": "void Buffer::CreateSharedBuffer()",
       "kind": 18,

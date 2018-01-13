@@ -30,7 +30,7 @@ OUTPUT: make_functions.h
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Bar",
+      "usr": 12993848456528750350,
       "short_name": "Bar",
       "detailed_name": "Bar",
       "kind": 6,
@@ -45,7 +45,7 @@ OUTPUT: make_functions.h
       "uses": ["1:8-1:11", "7:17-7:20", "8:15-8:18"]
     }, {
       "id": 1,
-      "usr": "c:@S@Foobar",
+      "usr": 14935975554338052500,
       "short_name": "Foobar",
       "detailed_name": "Foobar",
       "kind": 7,
@@ -62,7 +62,7 @@ OUTPUT: make_functions.h
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#",
+      "usr": 13131778807733950299,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar()",
       "kind": 22,
@@ -78,7 +78,7 @@ OUTPUT: make_functions.h
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#I#",
+      "usr": 13028995015627606181,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar(int)",
       "kind": 22,
@@ -94,7 +94,7 @@ OUTPUT: make_functions.h
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#&&I#*$@S@Bar#*b#",
+      "usr": 3765833212244435302,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar(int &&, Bar *, bool *)",
       "kind": 22,
@@ -110,7 +110,7 @@ OUTPUT: make_functions.h
     }, {
       "id": 3,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#I#*$@S@Bar#*b#",
+      "usr": 17321436359755983845,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar(int, Bar *, bool *)",
       "kind": 22,
@@ -135,7 +135,7 @@ OUTPUT: make_functions.cc
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:make_functions.cc@41",
+      "usr": 7902098450755788854,
       "short_name": "T",
       "detailed_name": "T",
       "kind": 0,
@@ -150,7 +150,7 @@ OUTPUT: make_functions.cc
       "uses": ["4:1-4:2", "3:20-3:21"]
     }, {
       "id": 1,
-      "usr": "c:make_functions.cc@53",
+      "usr": 12533159752419999454,
       "short_name": "Args",
       "detailed_name": "Args",
       "kind": 0,
@@ -165,7 +165,7 @@ OUTPUT: make_functions.cc
       "uses": ["3:35-3:39", "4:15-4:19"]
     }, {
       "id": 2,
-      "usr": "c:make_functions.cc@139",
+      "usr": 18441628706991062891,
       "short_name": "T",
       "detailed_name": "T",
       "kind": 0,
@@ -180,7 +180,7 @@ OUTPUT: make_functions.cc
       "uses": ["9:1-9:2", "8:20-8:21"]
     }, {
       "id": 3,
-      "usr": "c:make_functions.cc@151",
+      "usr": 9441341235704820385,
       "short_name": "Args",
       "detailed_name": "Args",
       "kind": 0,
@@ -195,7 +195,7 @@ OUTPUT: make_functions.cc
       "uses": ["8:35-8:39", "9:16-9:20"]
     }, {
       "id": 4,
-      "usr": "c:@S@Foobar",
+      "usr": 14935975554338052500,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -208,7 +208,7 @@ OUTPUT: make_functions.cc
       "uses": ["14:14-14:20", "15:14-15:20", "16:14-16:20", "17:15-17:21"]
     }, {
       "id": 5,
-      "usr": "c:@S@Bar",
+      "usr": 12993848456528750350,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -223,7 +223,7 @@ OUTPUT: make_functions.cc
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@FT@>2#T#pTMakeUnique#P&&t0.1#*t0.0#",
+      "usr": 15793662558620604611,
       "short_name": "MakeUnique",
       "detailed_name": "T *MakeUnique(Args &&... args)",
       "kind": 12,
@@ -238,7 +238,7 @@ OUTPUT: make_functions.cc
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@FT@>2#T#pTmaKE_NoRefs#Pt0.1#*t0.0#",
+      "usr": 2532818908869373467,
       "short_name": "maKE_NoRefs",
       "detailed_name": "T *maKE_NoRefs(Args... args)",
       "kind": 12,
@@ -253,7 +253,7 @@ OUTPUT: make_functions.cc
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@caller22#",
+      "usr": 2816883305867289955,
       "short_name": "caller22",
       "detailed_name": "void caller22()",
       "kind": 12,
@@ -268,7 +268,7 @@ OUTPUT: make_functions.cc
     }, {
       "id": 3,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#",
+      "usr": 13131778807733950299,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -281,7 +281,7 @@ OUTPUT: make_functions.cc
     }, {
       "id": 4,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#I#",
+      "usr": 13028995015627606181,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -294,7 +294,7 @@ OUTPUT: make_functions.cc
     }, {
       "id": 5,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#&&I#*$@S@Bar#*b#",
+      "usr": 3765833212244435302,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -307,7 +307,7 @@ OUTPUT: make_functions.cc
     }, {
       "id": 6,
       "is_operator": false,
-      "usr": "c:@S@Foobar@F@Foobar#I#*$@S@Bar#*b#",
+      "usr": 17321436359755983845,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -320,7 +320,7 @@ OUTPUT: make_functions.cc
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:make_functions.cc@86@FT@>2#T#pTMakeUnique#P&&t0.1#*t0.0#@args",
+      "usr": 15288691366352169805,
       "short_name": "args",
       "detailed_name": "Args &&... args",
       "definition_spelling": "4:25-4:29",
@@ -329,7 +329,7 @@ OUTPUT: make_functions.cc
       "uses": ["4:25-4:29"]
     }, {
       "id": 1,
-      "usr": "c:make_functions.cc@185@FT@>2#T#pTmaKE_NoRefs#Pt0.1#*t0.0#@args",
+      "usr": 12338908251430965107,
       "short_name": "args",
       "detailed_name": "Args... args",
       "definition_spelling": "9:24-9:28",

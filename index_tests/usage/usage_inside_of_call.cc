@@ -21,7 +21,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 6,
@@ -38,7 +38,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@called#I#",
+      "usr": 18319417758892371313,
       "short_name": "called",
       "detailed_name": "void called(int a)",
       "kind": 12,
@@ -56,7 +56,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@gen#",
+      "usr": 11404602816585117695,
       "short_name": "gen",
       "detailed_name": "int gen()",
       "kind": 12,
@@ -74,7 +74,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -89,7 +89,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@Foo@static_var",
+      "usr": 11489549839875479478,
       "short_name": "static_var",
       "detailed_name": "int Foo::static_var",
       "declaration": "6:14-6:24",
@@ -100,7 +100,7 @@ OUTPUT:
       "uses": ["6:14-6:24", "10:10-10:20", "14:45-14:55"]
     }, {
       "id": 1,
-      "usr": "c:@S@Foo@FI@field_var",
+      "usr": 9648311402855509901,
       "short_name": "field_var",
       "detailed_name": "int Foo::field_var",
       "definition_spelling": "7:7-7:16",
@@ -110,7 +110,7 @@ OUTPUT:
       "uses": ["7:7-7:16", "14:28-14:37"]
     }, {
       "id": 2,
-      "usr": "c:usage_inside_of_call.cc@145@F@foo#@a",
+      "usr": 13284113377394221067,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "13:7-13:8",

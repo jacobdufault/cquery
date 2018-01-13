@@ -20,7 +20,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@make1#",
+      "usr": 14400399977994209582,
       "short_name": "make1",
       "detailed_name": "int make1()",
       "kind": 12,
@@ -35,7 +35,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@a#",
+      "usr": 9720930732776154610,
       "short_name": "a",
       "detailed_name": "int a()",
       "kind": 12,
@@ -55,7 +55,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:complex.cc@make2",
+      "usr": 2878407290385495202,
       "short_name": "make2",
       "detailed_name": "const int make2",
       "hover": "const int make2 = 5",
@@ -65,7 +65,7 @@ OUTPUT:
       "uses": ["9:11-9:16", "12:14-12:19"]
     }, {
       "id": 1,
-      "usr": "c:complex.cc@8@macro@FOO",
+      "usr": 4261071340275951718,
       "short_name": "FOO",
       "detailed_name": "FOO",
       "hover": "#define FOO(aaa, bbb)\n   int a();\n   int a() { return aaa + bbb; }",

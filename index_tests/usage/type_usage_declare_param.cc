@@ -10,7 +10,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@ForwardType",
+      "usr": 13749354388332789217,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -23,7 +23,7 @@ OUTPUT:
       "uses": ["1:8-1:19", "4:10-4:21"]
     }, {
       "id": 1,
-      "usr": "c:@S@ImplementedType",
+      "usr": 8508299082070213750,
       "short_name": "ImplementedType",
       "detailed_name": "ImplementedType",
       "kind": 6,
@@ -40,7 +40,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#*$@S@ForwardType#$@S@ImplementedType#",
+      "usr": 1699390678058422036,
       "short_name": "foo",
       "detailed_name": "void foo(ForwardType *f, ImplementedType a)",
       "kind": 12,
@@ -55,7 +55,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_declare_param.cc@60@F@foo#*$@S@ForwardType#$@S@ImplementedType#@f",
+      "usr": 2584795197111552890,
       "short_name": "f",
       "detailed_name": "ForwardType *f",
       "definition_spelling": "4:23-4:24",
@@ -65,7 +65,7 @@ OUTPUT:
       "uses": ["4:23-4:24"]
     }, {
       "id": 1,
-      "usr": "c:type_usage_declare_param.cc@76@F@foo#*$@S@ForwardType#$@S@ImplementedType#@a",
+      "usr": 5136230284979460117,
       "short_name": "a",
       "detailed_name": "ImplementedType a",
       "definition_spelling": "4:42-4:43",

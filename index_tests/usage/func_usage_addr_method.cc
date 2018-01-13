@@ -14,7 +14,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 6,
@@ -31,7 +31,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Used#",
+      "usr": 18417145003926999463,
       "short_name": "Used",
       "detailed_name": "void Foo::Used()",
       "kind": 16,
@@ -50,7 +50,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@user#",
+      "usr": 9376923949268137283,
       "short_name": "user",
       "detailed_name": "void user()",
       "kind": 12,
@@ -65,7 +65,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_usage_addr_method.cc@53@F@user#@x",
+      "usr": 8436636043513449412,
       "short_name": "x",
       "detailed_name": "void (Foo::*)() x",
       "definition_spelling": "6:8-6:9",

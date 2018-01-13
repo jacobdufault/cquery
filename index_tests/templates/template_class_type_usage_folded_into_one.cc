@@ -34,7 +34,7 @@ OUTPUT:
   "skipped_by_preprocessor": ["12:1-28:7"],
   "types": [{
       "id": 0,
-      "usr": "c:@E@A",
+      "usr": 6697181287623958829,
       "short_name": "A",
       "detailed_name": "A",
       "kind": 5,
@@ -49,7 +49,7 @@ OUTPUT:
       "uses": ["1:6-1:7", "9:5-9:6"]
     }, {
       "id": 1,
-      "usr": "c:@E@B",
+      "usr": 13892793056005362145,
       "short_name": "B",
       "detailed_name": "B",
       "kind": 5,
@@ -64,7 +64,7 @@ OUTPUT:
       "uses": ["2:6-2:7", "10:5-10:6"]
     }, {
       "id": 2,
-      "usr": "c:@ST>1#T@Foo",
+      "usr": 10528472276654770367,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -79,7 +79,7 @@ OUTPUT:
       "uses": ["5:8-5:11", "9:1-9:4", "10:1-10:4"]
     }, {
       "id": 3,
-      "usr": "c:@ST>1#T@Foo@S@Inner",
+      "usr": 13938528237873543349,
       "short_name": "Inner",
       "detailed_name": "Foo::Inner",
       "kind": 6,
@@ -96,7 +96,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@a",
+      "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "Foo<A>::Inner a",
       "definition_spelling": "9:15-9:16",
@@ -106,7 +106,7 @@ OUTPUT:
       "uses": ["9:15-9:16"]
     }, {
       "id": 1,
-      "usr": "c:@b",
+      "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "Foo<B>::Inner b",
       "definition_spelling": "10:15-10:16",

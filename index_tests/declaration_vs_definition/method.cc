@@ -13,7 +13,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -30,7 +30,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@declonly#",
+      "usr": 4012226004228259562,
       "short_name": "declonly",
       "detailed_name": "void Foo::declonly()",
       "kind": 16,
@@ -49,7 +49,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@purevirtual#",
+      "usr": 10939323144126021546,
       "short_name": "purevirtual",
       "detailed_name": "void Foo::purevirtual()",
       "kind": 16,
@@ -68,7 +68,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@def#",
+      "usr": 15416083548883122431,
       "short_name": "def",
       "detailed_name": "void Foo::def()",
       "kind": 16,

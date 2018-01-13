@@ -18,7 +18,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@N@ns@F@Accept#I#",
+      "usr": 17328473273923617489,
       "short_name": "Accept",
       "detailed_name": "void ns::Accept(int a)",
       "kind": 12,
@@ -33,7 +33,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@Runner#",
+      "usr": 631910859630953711,
       "short_name": "Runner",
       "detailed_name": "void Runner()",
       "kind": 12,
@@ -48,7 +48,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@N@ns@Foo",
+      "usr": 12898699035586282159,
       "short_name": "Foo",
       "detailed_name": "int ns::Foo",
       "definition_spelling": "2:7-2:10",
@@ -57,7 +57,7 @@ OUTPUT:
       "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
     }, {
       "id": 1,
-      "usr": "c:namespace_reference.cc@42@N@ns@F@Accept#I#@a",
+      "usr": 7976909968919750794,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "3:19-3:20",

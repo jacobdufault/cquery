@@ -16,7 +16,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -33,7 +33,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@make#",
+      "usr": 9488177941273031343,
       "short_name": "make",
       "detailed_name": "Foo *Foo::make()",
       "kind": 16,
@@ -54,7 +54,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:type_usage_various.cc@57@S@Foo@F@make#@f",
+      "usr": 14873619387499024780,
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "6:7-6:8",
@@ -64,7 +64,7 @@ OUTPUT:
       "uses": ["6:7-6:8"]
     }, {
       "id": 1,
-      "usr": "c:@foo",
+      "usr": 14455976355866885943,
       "short_name": "foo",
       "detailed_name": "Foo foo",
       "declaration": "10:12-10:15",

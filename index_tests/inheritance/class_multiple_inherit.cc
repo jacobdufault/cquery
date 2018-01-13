@@ -10,7 +10,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Root",
+      "usr": 3897841498936210886,
       "short_name": "Root",
       "detailed_name": "Root",
       "kind": 7,
@@ -25,7 +25,7 @@ OUTPUT:
       "uses": ["1:7-1:11", "2:24-2:28", "3:24-3:28"]
     }, {
       "id": 1,
-      "usr": "c:@S@MiddleA",
+      "usr": 11863524815063131483,
       "short_name": "MiddleA",
       "detailed_name": "MiddleA",
       "kind": 7,
@@ -40,7 +40,7 @@ OUTPUT:
       "uses": ["2:7-2:14", "4:24-4:31"]
     }, {
       "id": 2,
-      "usr": "c:@S@MiddleB",
+      "usr": 14022569716337624303,
       "short_name": "MiddleB",
       "detailed_name": "MiddleB",
       "kind": 7,
@@ -55,7 +55,7 @@ OUTPUT:
       "uses": ["3:7-3:14", "4:40-4:47"]
     }, {
       "id": 3,
-      "usr": "c:@S@Derived",
+      "usr": 10963370434658308541,
       "short_name": "Derived",
       "detailed_name": "Derived",
       "kind": 7,

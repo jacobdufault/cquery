@@ -15,7 +15,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 6,
@@ -32,7 +32,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@called#",
+      "usr": 468307235068920063,
       "short_name": "called",
       "detailed_name": "void called()",
       "kind": 12,
@@ -47,7 +47,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Foo#",
+      "usr": 3385168158331140247,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",
       "kind": 22,

@@ -24,7 +24,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@Template",
+      "usr": 17107291254533526269,
       "short_name": "Template",
       "detailed_name": "Template",
       "kind": 7,
@@ -41,7 +41,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@ST>1#T@Template@F@Foo#",
+      "usr": 11994188353303124840,
       "short_name": "Foo",
       "detailed_name": "void Template::Foo()",
       "kind": 16,

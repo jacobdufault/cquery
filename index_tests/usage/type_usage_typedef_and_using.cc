@@ -16,7 +16,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -29,7 +29,7 @@ OUTPUT:
       "uses": ["1:8-1:11", "2:14-2:17", "3:9-3:12", "7:13-7:16"]
     }, {
       "id": 1,
-      "usr": "c:@Foo1",
+      "usr": 1544499294580512394,
       "short_name": "Foo1",
       "detailed_name": "Foo1",
       "kind": 11,
@@ -46,7 +46,7 @@ OUTPUT:
       "uses": ["2:7-2:11", "4:14-4:18", "8:14-8:18"]
     }, {
       "id": 2,
-      "usr": "c:type_usage_typedef_and_using.cc@T@Foo2",
+      "usr": 15466821155413653804,
       "short_name": "Foo2",
       "detailed_name": "Foo2",
       "kind": 11,
@@ -63,7 +63,7 @@ OUTPUT:
       "uses": ["3:13-3:17", "9:14-9:18"]
     }, {
       "id": 3,
-      "usr": "c:@Foo3",
+      "usr": 17897026942631673064,
       "short_name": "Foo3",
       "detailed_name": "Foo3",
       "kind": 11,
@@ -80,7 +80,7 @@ OUTPUT:
       "uses": ["4:7-4:11", "10:14-10:18"]
     }, {
       "id": 4,
-      "usr": "c:@Foo4",
+      "usr": 2638219001294786365,
       "short_name": "Foo4",
       "detailed_name": "Foo4",
       "kind": 11,
@@ -98,7 +98,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@accept#*$@S@Foo#",
+      "usr": 9119341505144503905,
       "short_name": "accept",
       "detailed_name": "void accept(Foo *)",
       "kind": 12,
@@ -113,7 +113,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@accept1#**$@S@Foo#",
+      "usr": 558620830317390922,
       "short_name": "accept1",
       "detailed_name": "void accept1(Foo1 *)",
       "kind": 12,
@@ -128,7 +128,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@accept2#*$@S@Foo#",
+      "usr": 10523262907746124479,
       "short_name": "accept2",
       "detailed_name": "void accept2(Foo2 *)",
       "kind": 12,
@@ -143,7 +143,7 @@ OUTPUT:
     }, {
       "id": 3,
       "is_operator": false,
-      "usr": "c:@F@accept3#**$@S@Foo#",
+      "usr": 14986366321326974406,
       "short_name": "accept3",
       "detailed_name": "void accept3(Foo3 *)",
       "kind": 12,

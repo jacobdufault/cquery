@@ -11,7 +11,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -26,7 +26,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:var_usage_local.cc@16@F@foo#@x",
+      "usr": 8534460107894911680,
       "short_name": "x",
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",

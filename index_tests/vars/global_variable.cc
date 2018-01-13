@@ -8,7 +8,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:global_variable.cc@global",
+      "usr": 6834525061342585382,
       "short_name": "global",
       "detailed_name": "int global",
       "definition_spelling": "1:12-1:18",

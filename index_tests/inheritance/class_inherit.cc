@@ -8,7 +8,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Parent",
+      "usr": 3866412049634585509,
       "short_name": "Parent",
       "detailed_name": "Parent",
       "kind": 7,
@@ -23,7 +23,7 @@ OUTPUT:
       "uses": ["1:7-1:13", "2:24-2:30"]
     }, {
       "id": 1,
-      "usr": "c:@S@Derived",
+      "usr": 10963370434658308541,
       "short_name": "Derived",
       "detailed_name": "Derived",
       "kind": 7,

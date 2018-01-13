@@ -22,7 +22,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@func#",
+      "usr": 10818727483146447186,
       "short_name": "func",
       "detailed_name": "void func()",
       "kind": 12,
@@ -37,7 +37,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:@N@foo@N@bar@N@baz@qux",
+      "usr": 15042442838933090518,
       "short_name": "qux",
       "detailed_name": "int foo::bar::baz::qux",
       "definition_spelling": "4:18-4:21",
@@ -46,7 +46,7 @@ OUTPUT:
       "uses": ["4:18-4:21", "12:26-12:29", "13:16-13:19"]
     }, {
       "id": 1,
-      "usr": "c:namespace_alias.cc@167@F@func#@a",
+      "usr": 107714981785063096,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "12:7-12:8",
@@ -55,7 +55,7 @@ OUTPUT:
       "uses": ["12:7-12:8"]
     }, {
       "id": 2,
-      "usr": "c:namespace_alias.cc@198@F@func#@b",
+      "usr": 1200087780658383286,
       "short_name": "b",
       "detailed_name": "int b",
       "definition_spelling": "13:7-13:8",

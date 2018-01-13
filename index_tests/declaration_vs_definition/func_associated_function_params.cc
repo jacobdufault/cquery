@@ -13,7 +13,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#I#I#",
+      "usr": 2747674671862363334,
       "short_name": "foo",
       "detailed_name": "int foo(int a, int b)",
       "kind": 12,
@@ -43,7 +43,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_associated_function_params.cc@91@F@foo#I#I#@a",
+      "usr": 10480417713467708012,
       "short_name": "a",
       "detailed_name": "int a",
       "definition_spelling": "5:13-5:14",
@@ -52,7 +52,7 @@ OUTPUT:
       "uses": ["5:13-5:14"]
     }, {
       "id": 1,
-      "usr": "c:func_associated_function_params.cc@98@F@foo#I#I#@b",
+      "usr": 18099600680625658464,
       "short_name": "b",
       "detailed_name": "int b",
       "definition_spelling": "5:20-5:21",

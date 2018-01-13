@@ -14,7 +14,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@ST>1#T@Template",
+      "usr": 17107291254533526269,
       "short_name": "Template",
       "detailed_name": "Template",
       "kind": 7,
@@ -29,7 +29,7 @@ OUTPUT:
       "uses": ["2:7-2:15", "5:12-5:20", "8:15-8:23"]
     }, {
       "id": 1,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 6,
@@ -46,7 +46,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Bar#&$@S@Template>#d#",
+      "usr": 8412238651648388423,
       "short_name": "Bar",
       "detailed_name": "void Foo::Bar(Template<double> &)",
       "kind": 16,

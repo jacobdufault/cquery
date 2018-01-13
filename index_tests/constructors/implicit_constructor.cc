@@ -14,7 +14,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Type",
+      "usr": 13487927231218873822,
       "short_name": "Type",
       "detailed_name": "Type",
       "kind": 6,
@@ -31,7 +31,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Type@F@Type#",
+      "usr": 10530961286677896857,
       "short_name": "Type",
       "detailed_name": "void Type::Type()",
       "kind": 22,
@@ -47,7 +47,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@Make#",
+      "usr": 3957104924306079513,
       "short_name": "Make",
       "detailed_name": "void Make()",
       "kind": 12,
@@ -62,7 +62,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:implicit_constructor.cc@51@F@Make#@foo0",
+      "usr": 17348451315735351657,
       "short_name": "foo0",
       "detailed_name": "Type foo0",
       "definition_spelling": "6:8-6:12",
@@ -72,7 +72,7 @@ OUTPUT:
       "uses": ["6:8-6:12"]
     }, {
       "id": 1,
-      "usr": "c:implicit_constructor.cc@65@F@Make#@foo1",
+      "usr": 3757978174345638825,
       "short_name": "foo1",
       "detailed_name": "Type foo1",
       "definition_spelling": "7:8-7:12",

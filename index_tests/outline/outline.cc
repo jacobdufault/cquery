@@ -19,7 +19,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@MergeableUpdate",
+      "usr": 14399919566014425846,
       "short_name": "MergeableUpdate",
       "detailed_name": "MergeableUpdate",
       "kind": 6,
@@ -34,7 +34,7 @@ OUTPUT:
       "uses": ["3:8-3:23"]
     }, {
       "id": 1,
-      "usr": "c:@N@std@N@__1@ST>2#T#T@vector",
+      "usr": 10956461108384510180,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -49,7 +49,7 @@ OUTPUT:
   "funcs": [],
   "vars": [{
       "id": 0,
-      "usr": "c:@S@MergeableUpdate@FI@a",
+      "usr": 11633578660978286467,
       "short_name": "a",
       "detailed_name": "int MergeableUpdate::a",
       "definition_spelling": "4:7-4:8",
@@ -59,7 +59,7 @@ OUTPUT:
       "uses": ["4:7-4:8"]
     }, {
       "id": 1,
-      "usr": "c:@S@MergeableUpdate@FI@b",
+      "usr": 14949552147532317793,
       "short_name": "b",
       "detailed_name": "int MergeableUpdate::b",
       "definition_spelling": "5:7-5:8",
@@ -69,7 +69,7 @@ OUTPUT:
       "uses": ["5:7-5:8"]
     }, {
       "id": 2,
-      "usr": "c:@S@MergeableUpdate@FI@to_add",
+      "usr": 9003350345237582363,
       "short_name": "to_add",
       "detailed_name": "std::vector<int> MergeableUpdate::to_add",
       "definition_spelling": "6:20-6:26",

@@ -12,7 +12,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@called#",
+      "usr": 468307235068920063,
       "short_name": "called",
       "detailed_name": "void called()",
       "kind": 12,
@@ -27,7 +27,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@caller#",
+      "usr": 11404881820527069090,
       "short_name": "caller",
       "detailed_name": "void caller()",
       "kind": 12,

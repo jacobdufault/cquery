@@ -15,7 +15,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Wrapper",
+      "usr": 13611487872560323389,
       "short_name": "Wrapper",
       "detailed_name": "Wrapper",
       "kind": 6,
@@ -32,7 +32,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Wrapper@F@Wrapper#I#",
+      "usr": 10544127002917214589,
       "short_name": "Wrapper",
       "detailed_name": "void Wrapper::Wrapper(int i)",
       "kind": 22,
@@ -51,7 +51,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@called#",
+      "usr": 468307235068920063,
       "short_name": "called",
       "detailed_name": "int called()",
       "kind": 12,
@@ -66,7 +66,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@caller#",
+      "usr": 11404881820527069090,
       "short_name": "caller",
       "detailed_name": "Wrapper caller()",
       "kind": 12,

@@ -20,7 +20,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:@S@Foo",
+      "usr": 15041163540773201510,
       "short_name": "Foo",
       "detailed_name": "Foo",
       "kind": 7,
@@ -37,7 +37,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@Foo#",
+      "usr": 3385168158331140247,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",
       "kind": 22,
@@ -53,7 +53,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@S@Foo@F@~Foo#",
+      "usr": 7440261702884428359,
       "short_name": "~Foo",
       "detailed_name": "void Foo::~Foo() noexcept",
       "kind": 23,
@@ -69,7 +69,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -84,7 +84,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:destructor.cc@70@F@foo#@f",
+      "usr": 9954632887635271906,
       "short_name": "f",
       "detailed_name": "Foo f",
       "definition_spelling": "8:7-8:8",

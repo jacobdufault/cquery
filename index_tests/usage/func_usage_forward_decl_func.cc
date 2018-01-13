@@ -12,7 +12,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@foo#",
+      "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
@@ -30,7 +30,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@usage#",
+      "usr": 6767773193109753523,
       "short_name": "usage",
       "detailed_name": "void usage()",
       "kind": 12,

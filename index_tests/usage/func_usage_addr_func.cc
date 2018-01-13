@@ -16,7 +16,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:@F@consume#*Fv#",
+      "usr": 3223559731210506952,
       "short_name": "consume",
       "detailed_name": "void consume(void (*)())",
       "kind": 12,
@@ -31,7 +31,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:@F@used#",
+      "usr": 5264867802674151787,
       "short_name": "used",
       "detailed_name": "void used()",
       "kind": 12,
@@ -46,7 +46,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:@F@user#",
+      "usr": 9376923949268137283,
       "short_name": "user",
       "detailed_name": "void user()",
       "kind": 12,
@@ -61,7 +61,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:func_usage_addr_func.cc@66@F@user#@x",
+      "usr": 13681544683892648258,
       "short_name": "x",
       "detailed_name": "void (*)() x",
       "definition_spelling": "6:10-6:11",
