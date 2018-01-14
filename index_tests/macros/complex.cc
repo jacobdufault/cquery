@@ -42,7 +42,7 @@ OUTPUT:
       "declarations": [{
           "spelling": "12:1-12:20",
           "extent": "12:1-12:20",
-          "content": "int a();\n   int a() { return aaa + bbb; }\n\n\n int make1() {\n   return 3;\n }\n const int make2 = 5;\n\n\n FOO(make1(), make2)",
+          "content": "int a();\n  int a() { return aaa + bbb; }\n\n\nint make1() {\n  return 3;\n}\nconst int make2 = 5;\n\n\nFOO(make1(), make2)",
           "param_spellings": []
         }],
       "definition_spelling": "12:1-12:20",
@@ -68,7 +68,7 @@ OUTPUT:
       "usr": 4261071340275951718,
       "short_name": "FOO",
       "detailed_name": "FOO",
-      "hover": "#define FOO(aaa, bbb)\n   int a();\n   int a() { return aaa + bbb; }",
+      "hover": "#define FOO(aaa, bbb)\n  int a();\n  int a() { return aaa + bbb; }",
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
       "kind": 4,

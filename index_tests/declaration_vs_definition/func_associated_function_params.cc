@@ -25,7 +25,7 @@ OUTPUT:
         }, {
           "spelling": "2:5-2:8",
           "extent": "2:1-3:16",
-          "content": "int foo(int aa,\n         int bb)",
+          "content": "int foo(int aa,\n        int bb)",
           "param_spellings": ["2:13-2:15", "3:13-3:15"]
         }, {
           "spelling": "4:5-4:8",
