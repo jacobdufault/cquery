@@ -23,7 +23,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": "c:objc(cs)AClass",
+      "usr": 11832280568361305387,
       "short_name": "AClass",
       "detailed_name": "AClass",
       "kind": 7,
@@ -40,7 +40,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": "c:objc(cs)AClass(cm)test",
+      "usr": 12775970426728664910,
       "short_name": "test",
       "detailed_name": "AClass::test",
       "kind": 17,
@@ -60,7 +60,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": "c:objc(cs)AClass(im)anInstanceMethod",
+      "usr": 4096877434426330804,
       "short_name": "anInstanceMethod",
       "detailed_name": "AClass::anInstanceMethod",
       "kind": 16,
@@ -80,7 +80,7 @@ OUTPUT:
     }, {
       "id": 2,
       "is_operator": false,
-      "usr": "c:objc(cs)AClass(im)aProp",
+      "usr": 12774569141855220778,
       "short_name": "aProp",
       "detailed_name": "AClass::aProp",
       "kind": 16,
@@ -100,7 +100,7 @@ OUTPUT:
     }, {
       "id": 3,
       "is_operator": false,
-      "usr": "c:objc(cs)AClass(im)setAProp:",
+      "usr": 17992064398538597892,
       "short_name": "setAProp:",
       "detailed_name": "AClass::setAProp:",
       "kind": 16,
@@ -120,7 +120,7 @@ OUTPUT:
     }, {
       "id": 4,
       "is_operator": false,
-      "usr": "c:@F@main#",
+      "usr": 7033269674615638282,
       "short_name": "main",
       "detailed_name": "int main()",
       "kind": 12,
@@ -135,7 +135,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": "c:objc(cs)AClass(py)aProp",
+      "usr": 14842397373703114213,
       "short_name": "aProp",
       "detailed_name": "int AClass::aProp",
       "declaration": "4:29-4:34",
@@ -143,7 +143,7 @@ OUTPUT:
       "uses": ["4:29-4:34", "16:12-16:17"]
     }, {
       "id": 1,
-      "usr": "c:objc(cs)AClass@_aProp",
+      "usr": 17112602610366149042,
       "short_name": "_aProp",
       "detailed_name": "int AClass::_aProp",
       "definition_spelling": "4:29-4:34",
@@ -152,7 +152,7 @@ OUTPUT:
       "uses": ["4:29-4:34"]
     }, {
       "id": 2,
-      "usr": "c:class.m@208@F@main#@instance",
+      "usr": 6849095699869081177,
       "short_name": "instance",
       "detailed_name": "AClass *instance",
       "definition_spelling": "14:11-14:19",
