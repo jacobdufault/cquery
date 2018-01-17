@@ -75,7 +75,6 @@ OUTPUT:
       "usr": 1963212417280098348,
       "short_name": "v",
       "detailed_name": "float [3] vector3::v",
-      "hover": "float [3] vector3::v[3]",
       "definition_spelling": "3:9-3:10",
       "definition_extent": "3:3-3:13",
       "declaring_type": 0,

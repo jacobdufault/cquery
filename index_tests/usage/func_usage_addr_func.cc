@@ -64,7 +64,6 @@ OUTPUT:
       "usr": 13681544683892648258,
       "short_name": "x",
       "detailed_name": "void (*)() x",
-      "hover": "void (*)() x)() = &used",
       "definition_spelling": "6:10-6:11",
       "definition_extent": "6:3-6:22",
       "kind": 13,
