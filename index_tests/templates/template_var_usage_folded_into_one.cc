@@ -85,7 +85,6 @@ OUTPUT:
       "usr": 8096973118640070624,
       "short_name": "var",
       "detailed_name": "T var",
-      "hover": "T var = T()",
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
       "kind": 13,
