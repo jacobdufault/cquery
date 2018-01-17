@@ -37,6 +37,7 @@ OUTPUT:
       "usr": 2147918703972955240,
       "short_name": "p",
       "detailed_name": "int p",
+      "hover": "int p = 0",
       "definition_spelling": "2:9-2:10",
       "definition_extent": "2:5-2:14",
       "kind": 13,

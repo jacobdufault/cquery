@@ -50,6 +50,7 @@ OUTPUT:
       "usr": 10677751717622394455,
       "short_name": "x",
       "detailed_name": "int x",
+      "hover": "int x = A",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
       "kind": 13,

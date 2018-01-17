@@ -48,6 +48,7 @@ OUTPUT:
       "usr": 4220150017963593039,
       "short_name": "x",
       "detailed_name": "int Foo::x",
+      "hover": "int Foo::x = helper()",
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:19",
       "declaring_type": 0,

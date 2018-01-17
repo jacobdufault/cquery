@@ -56,6 +56,7 @@ OUTPUT:
       "usr": 10677751717622394455,
       "short_name": "x",
       "detailed_name": "Foo x",
+      "hover": "Foo x = Foo::A",
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:15",
       "variable_type": 0,

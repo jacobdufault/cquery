@@ -73,6 +73,7 @@ OUTPUT:
       "usr": 16806544259835773270,
       "short_name": "dosomething",
       "detailed_name": "lambda dosomething",
+      "hover": "lambda dosomething = [&x](int y) {\r\n    ++x;\r\n    ++y;\r\n  }",
       "definition_spelling": "4:8-4:19",
       "definition_extent": "4:3-7:4",
       "variable_type": 0,

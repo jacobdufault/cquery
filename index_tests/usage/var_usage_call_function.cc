@@ -49,6 +49,7 @@ OUTPUT:
       "usr": 3510529098767253033,
       "short_name": "x",
       "detailed_name": "void (*)() x",
+      "hover": "void (*)() x = &called",
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:19",
       "kind": 13,

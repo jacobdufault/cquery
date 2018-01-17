@@ -75,6 +75,7 @@ OUTPUT:
       "usr": 3757978174345638825,
       "short_name": "foo1",
       "detailed_name": "Type foo1",
+      "hover": "Type foo1 = Type()",
       "definition_spelling": "7:8-7:12",
       "definition_extent": "7:3-7:21",
       "variable_type": 0,

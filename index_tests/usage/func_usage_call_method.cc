@@ -68,6 +68,7 @@ OUTPUT:
       "usr": 3014406561587537195,
       "short_name": "f",
       "detailed_name": "Foo *f",
+      "hover": "Foo *f = nullptr",
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,

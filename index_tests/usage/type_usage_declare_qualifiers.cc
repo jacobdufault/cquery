@@ -98,7 +98,7 @@ OUTPUT:
       "usr": 4771437488905761633,
       "short_name": "a5",
       "detailed_name": "const Type *const a5",
-      "hover": "const Type* const a5 = nullptr",
+      "hover": "const Type *const a5 = nullptr",
       "definition_spelling": "7:21-7:23",
       "definition_extent": "7:3-7:33",
       "variable_type": 0,
