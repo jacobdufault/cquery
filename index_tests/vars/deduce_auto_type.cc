@@ -43,7 +43,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": 10601729374837386290,
+      "usr": 9275666070987716270,
       "short_name": "x",
       "detailed_name": "Foo *x",
       "definition_spelling": "3:8-3:9",
@@ -53,7 +53,7 @@ OUTPUT:
       "uses": ["3:8-3:9"]
     }, {
       "id": 1,
-      "usr": 18422884837902130475,
+      "usr": 16202433437488621027,
       "short_name": "y",
       "detailed_name": "Foo *y",
       "definition_spelling": "4:9-4:10",

@@ -65,7 +65,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": 4636142131003982569,
+      "usr": 8436636043513449412,
       "short_name": "x",
       "detailed_name": "void (Foo::*)() x",
       "definition_spelling": "6:8-6:9",
