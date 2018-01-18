@@ -43,10 +43,9 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": 9275666070987716270,
+      "usr": 10601729374837386290,
       "short_name": "x",
       "detailed_name": "Foo *x",
-      "hover": "Foo *x = new Foo()",
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:21",
       "variable_type": 0,
@@ -54,10 +53,9 @@ OUTPUT:
       "uses": ["3:8-3:9"]
     }, {
       "id": 1,
-      "usr": 16202433437488621027,
+      "usr": 18422884837902130475,
       "short_name": "y",
       "detailed_name": "Foo *y",
-      "hover": "Foo *y = new Foo()",
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:3-4:22",
       "variable_type": 0,

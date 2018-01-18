@@ -62,7 +62,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": 17348451315735351657,
+      "usr": 449111627548814328,
       "short_name": "foo0",
       "detailed_name": "Type foo0",
       "definition_spelling": "6:8-6:12",
@@ -72,10 +72,9 @@ OUTPUT:
       "uses": ["6:8-6:12"]
     }, {
       "id": 1,
-      "usr": 3757978174345638825,
+      "usr": 17097499197730163115,
       "short_name": "foo1",
       "detailed_name": "Type foo1",
-      "hover": "Type foo1 = Type()",
       "definition_spelling": "7:8-7:12",
       "definition_extent": "7:3-7:21",
       "variable_type": 0,

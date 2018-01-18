@@ -65,10 +65,9 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": 8436636043513449412,
+      "usr": 4636142131003982569,
       "short_name": "x",
       "detailed_name": "void (Foo::*)() x",
-      "hover": "void (Foo::*)() x = &Foo::Used",
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:22",
       "kind": 13,

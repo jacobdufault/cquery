@@ -18,7 +18,7 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
-      "usr": 1287417953265234030,
+      "usr": 14635009347499519042,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -48,7 +48,7 @@ OUTPUT:
     }, {
       "id": 1,
       "is_operator": false,
-      "usr": 1328781044864682611,
+      "usr": 17926497908620168464,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -61,7 +61,7 @@ OUTPUT:
     }],
   "vars": [{
       "id": 0,
-      "usr": 17270098654620601683,
+      "usr": 12666114896600231317,
       "short_name": "x",
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",
@@ -70,10 +70,9 @@ OUTPUT:
       "uses": ["2:7-2:8", "5:7-5:8", "4:24-4:25"]
     }, {
       "id": 1,
-      "usr": 16806544259835773270,
+      "usr": 2981279427664991319,
       "short_name": "dosomething",
       "detailed_name": "lambda dosomething",
-      "hover": "lambda dosomething = [&x](int y) {\r\n    ++x;\r\n    ++y;\r\n  }",
       "definition_spelling": "4:8-4:19",
       "definition_extent": "4:3-7:4",
       "variable_type": 0,
@@ -81,7 +80,7 @@ OUTPUT:
       "uses": ["4:8-4:19", "9:3-9:14", "10:3-10:14", "11:3-11:14"]
     }, {
       "id": 2,
-      "usr": 2034725908368218782,
+      "usr": 12879188959314906706,
       "short_name": "y",
       "detailed_name": "int y",
       "definition_spelling": "4:31-4:32",
