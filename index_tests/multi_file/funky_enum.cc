@@ -66,7 +66,7 @@ OUTPUT: funky_enum.h
 OUTPUT: funky_enum.cc
 {
   "includes": [{
-      "line": 2,
+      "line": 1,
       "resolved_path": "&funky_enum.h"
     }],
   "skipped_by_preprocessor": [],

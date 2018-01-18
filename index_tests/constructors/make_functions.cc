@@ -129,7 +129,7 @@ OUTPUT: make_functions.h
 OUTPUT: make_functions.cc
 {
   "includes": [{
-      "line": 1,
+      "line": 0,
       "resolved_path": "&make_functions.h"
     }],
   "skipped_by_preprocessor": [],

@@ -65,7 +65,7 @@ OUTPUT: static_function_in_type.h
 OUTPUT: static_function_in_type.cc
 {
   "includes": [{
-      "line": 1,
+      "line": 0,
       "resolved_path": "&static_function_in_type.h"
     }],
   "skipped_by_preprocessor": [],

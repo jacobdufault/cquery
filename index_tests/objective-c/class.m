@@ -155,6 +155,7 @@ OUTPUT:
       "usr": 6849095699869081177,
       "short_name": "instance",
       "detailed_name": "AClass *instance",
+      "hover": "AClass *instance = [AClass init]",
       "definition_spelling": "14:11-14:19",
       "definition_extent": "14:3-14:35",
       "kind": 13,

@@ -14,7 +14,7 @@ c:@N@std@ST>2#T#T@vector <===> c:@N@std@N@__1@ST>2#T#T@vector
 OUTPUT:
 {
   "includes": [{
-      "line": 1,
+      "line": 0,
       "resolved_path": "&vector"
     }],
   "skipped_by_preprocessor": [],

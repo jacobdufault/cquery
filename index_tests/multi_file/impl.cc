@@ -162,7 +162,7 @@ OUTPUT: header.h
 OUTPUT: impl.cc
 {
   "includes": [{
-      "line": 1,
+      "line": 0,
       "resolved_path": "&header.h"
     }],
   "skipped_by_preprocessor": [],

@@ -48,7 +48,7 @@ OUTPUT: static.h
 OUTPUT: static.cc
 {
   "includes": [{
-      "line": 1,
+      "line": 0,
       "resolved_path": "&static.h"
     }],
   "skipped_by_preprocessor": [],

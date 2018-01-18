@@ -34,7 +34,7 @@ OUTPUT: simple_header.h
 OUTPUT: simple_impl.cc
 {
   "includes": [{
-      "line": 1,
+      "line": 0,
       "resolved_path": "&simple_header.h"
     }],
   "skipped_by_preprocessor": [],
