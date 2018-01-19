@@ -3,6 +3,7 @@
 namespace std {
 using mpark::holds_alternative;
 using mpark::get;
+using mpark::get_if;
 using mpark::monostate;
 using mpark::variant;
 }
