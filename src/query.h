@@ -373,7 +373,7 @@ struct QueryDatabase {
   optional<QueryFileId> GetQueryFileIdFromPath(const std::string& path);
   optional<QueryTypeId> GetQueryTypeIdFromUsr(Usr usr);
   optional<QueryFuncId> GetQueryFuncIdFromUsr(Usr usr);
-  optional<QueryVarId> GetQueryVarIdFromUsr(const Usr& usr);
+  optional<QueryVarId> GetQueryVarIdFromUsr(Usr usr);
 };
 
 struct IdMap {

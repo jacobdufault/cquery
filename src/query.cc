@@ -325,7 +325,7 @@ optional<QueryFuncId> GetQueryFuncIdFromUsr(QueryDatabase* query_db,
 }
 
 optional<QueryVarId> GetQueryVarIdFromUsr(QueryDatabase* query_db,
-                                          const Usr& usr,
+                                          Usr usr,
                                           bool create_if_missing) {
   auto it = query_db->usr_to_var.find(usr);
   if (it != query_db->usr_to_var.end())
@@ -352,7 +352,7 @@ optional<QueryFuncId> QueryDatabase::GetQueryFuncIdFromUsr(Usr usr) {
   return ::GetQueryFuncIdFromUsr(this, usr, false);
 }
 
-optional<QueryVarId> QueryDatabase::GetQueryVarIdFromUsr(const Usr& usr) {
+optional<QueryVarId> QueryDatabase::GetQueryVarIdFromUsr(Usr usr) {
   return ::GetQueryVarIdFromUsr(this, usr, false);
 }
 
