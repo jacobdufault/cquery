@@ -184,7 +184,7 @@
         "cquery.highlighting.enabled.types": {
           "type": "boolean",
           "default": false,
-          "description": "If semantic highlighting for types is enabled/disabled."
+          "description": "If semantic highlighting for classes, structs, and unions is enabled/disabled."
         },
         "cquery.highlighting.enabled.freeStandingFunctions": {
           "type": "boolean",
@@ -205,6 +205,41 @@
           "type": "boolean",
           "default": false,
           "description": "If semantic highlighting for member variables is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.namespaces": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for namespaces is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.macros": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for macros is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.enums": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for enumerations is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.typeAliases": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for type aliases is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.enumConstants": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for enumerators is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.staticMemberFunctions": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for static member functions is enabled/disabled."
+        },
+        "cquery.highlighting.enabled.parameters": {
+          "type": "boolean",
+          "default": false,
+          "description": "If semantic highlighting for parameters is enabled/disabled."
         },
         "cquery.highlighting.colors.types": {
           "type": "array",
@@ -286,6 +321,118 @@
           ],
           "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
         },
+        "cquery.highlighting.colors.namespaces": {
+          "type": "array",
+          "default": [
+            "#429921",
+            "#58c1a4",
+            "#5ec648",
+            "#36815b",
+            "#83c65d",
+            "#417b2f",
+            "#43cc71",
+            "#7eb769",
+            "#58bf89",
+            "#3e9f4a"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
+        "cquery.highlighting.colors.macros": {
+          "type": "array",
+          "default": [
+            "#e79528",
+            "#c5373d",
+            "#e8a272",
+            "#d84f2b",
+            "#a67245",
+            "#e27a33",
+            "#9b4a31",
+            "#b66a1e",
+            "#e27a71",
+            "#cf6d49"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
+        "cquery.highlighting.colors.enums": {
+          "type": "array",
+          "default": [
+            "#e1afc3",
+            "#d533bb",
+            "#9b677f",
+            "#e350b6",
+            "#a04360",
+            "#dd82bc",
+            "#de3864",
+            "#ad3f87",
+            "#dd7a90",
+            "#e0438a"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
+        "cquery.highlighting.colors.typeAliases": {
+          "type": "array",
+          "default": [
+            "#e1afc3",
+            "#d533bb",
+            "#9b677f",
+            "#e350b6",
+            "#a04360",
+            "#dd82bc",
+            "#de3864",
+            "#ad3f87",
+            "#dd7a90",
+            "#e0438a"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
+        "cquery.highlighting.colors.staticMemberFunctions": {
+          "type": "array",
+          "default": [
+            "#e5b124",
+            "#927754",
+            "#eb992c",
+            "#e2bf8f",
+            "#d67c17",
+            "#88651e",
+            "#e4b953",
+            "#a36526",
+            "#b28927",
+            "#d69855"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
+        "cquery.highlighting.colors.enumConstants": {
+          "type": "array",
+          "default": [
+            "#587d87",
+            "#26cdca",
+            "#397797",
+            "#57c2cc",
+            "#306b72",
+            "#6cbcdf",
+            "#368896",
+            "#3ea0d2",
+            "#48a5af",
+            "#7ca6b7"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
+        "cquery.highlighting.colors.parameters": {
+          "type": "array",
+          "default": [
+            "#587d87",
+            "#26cdca",
+            "#397797",
+            "#57c2cc",
+            "#306b72",
+            "#6cbcdf",
+            "#368896",
+            "#3ea0d2",
+            "#48a5af",
+            "#7ca6b7"
+          ],
+          "description": "Colors to use for semantic highlighting. A good generator is http://tools.medialab.sciences-po.fr/iwanthue/. If multiple colors are specified, semantic highlighting will cycle through them for successive symbols."
+        },
         "cquery.highlighting.underline.types": {
           "type": "boolean",
           "default": false
@@ -303,6 +450,34 @@
           "default": false
         },
         "cquery.highlighting.underline.memberVariables": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.namespaces": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.macros": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.enums": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.typeAliases": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.enumConstants": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.staticMemberFunctions": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.underline.parameters": {
           "type": "boolean",
           "default": false
         },
@@ -326,6 +501,34 @@
           "type": "boolean",
           "default": true
         },
+        "cquery.highlighting.italic.namespaces": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.macros": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.enums": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.typeAliases": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.enumConstants": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.staticMemberFunctions": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.italic.parameters": {
+          "type": "boolean",
+          "default": false
+        },
         "cquery.highlighting.bold.types": {
           "type": "boolean",
           "default": true
@@ -343,6 +546,34 @@
           "default": false
         },
         "cquery.highlighting.bold.memberVariables": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.namespaces": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.macros": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.enums": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.typeAliases": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.enumConstants": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.staticMemberFunctions": {
+          "type": "boolean",
+          "default": false
+        },
+        "cquery.highlighting.bold.parameters": {
           "type": "boolean",
           "default": false
         },
