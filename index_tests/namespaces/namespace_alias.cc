@@ -18,7 +18,20 @@ OUTPUT:
 {
   "includes": [],
   "skipped_by_preprocessor": [],
-  "types": [],
+  "types": [{
+      "id": 0,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1, 2],
+      "uses": []
+    }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
@@ -43,6 +56,7 @@ OUTPUT:
       "hover": "int foo::bar::baz::qux = 42",
       "definition_spelling": "4:18-4:21",
       "definition_extent": "4:14-4:26",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["4:18-4:21", "12:26-12:29", "13:16-13:19"]
     }, {
@@ -53,6 +67,7 @@ OUTPUT:
       "hover": "int a = foo::bar::baz::qux",
       "definition_spelling": "12:7-12:8",
       "definition_extent": "12:3-12:29",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["12:7-12:8"]
     }, {
@@ -63,6 +78,7 @@ OUTPUT:
       "hover": "int b = fbz::qux",
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:19",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["13:7-13:8"]
     }]

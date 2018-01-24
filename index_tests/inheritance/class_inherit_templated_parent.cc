@@ -26,7 +26,7 @@ OUTPUT:
       "definition_spelling": "2:7-2:12",
       "definition_extent": "2:1-2:15",
       "parents": [],
-      "derived": [2, 5],
+      "derived": [2, 6],
       "types": [],
       "funcs": [],
       "vars": [],
@@ -41,7 +41,7 @@ OUTPUT:
       "definition_spelling": "5:7-5:12",
       "definition_extent": "5:1-5:15",
       "parents": [],
-      "derived": [3, 5],
+      "derived": [4, 6],
       "types": [],
       "funcs": [],
       "vars": [],
@@ -56,7 +56,7 @@ OUTPUT:
       "definition_spelling": "8:7-8:15",
       "definition_extent": "8:1-8:29",
       "parents": [0],
-      "derived": [5],
+      "derived": [6],
       "types": [],
       "funcs": [],
       "vars": [],
@@ -64,6 +64,19 @@ OUTPUT:
       "uses": ["8:7-8:15", "13:43-13:51"]
     }, {
       "id": 3,
+      "usr": 9,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
+    }, {
+      "id": 4,
       "usr": 10651399730831737929,
       "short_name": "Derived2",
       "detailed_name": "Derived2",
@@ -71,14 +84,14 @@ OUTPUT:
       "definition_spelling": "11:7-11:15",
       "definition_extent": "11:1-11:29",
       "parents": [1],
-      "derived": [5],
+      "derived": [6],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [],
       "uses": ["11:7-11:15", "13:56-13:64"]
     }, {
-      "id": 4,
+      "id": 5,
       "usr": 780719166805015998,
       "short_name": "T",
       "detailed_name": "T",
@@ -93,14 +106,14 @@ OUTPUT:
       "instances": [],
       "uses": ["10:19-10:20", "11:24-11:25"]
     }, {
-      "id": 5,
+      "id": 6,
       "usr": 10963370434658308541,
       "short_name": "Derived",
       "detailed_name": "Derived",
       "kind": 7,
       "definition_spelling": "13:7-13:14",
       "definition_extent": "13:1-13:76",
-      "parents": [0, 1, 2, 3],
+      "parents": [0, 1, 2, 4],
       "derived": [],
       "types": [],
       "funcs": [],
@@ -116,6 +129,7 @@ OUTPUT:
       "detailed_name": "unsigned int T",
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
+      "variable_type": 3,
       "kind": 0,
       "uses": ["7:23-7:24", "8:24-8:25"]
     }]

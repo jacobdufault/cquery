@@ -26,6 +26,19 @@ OUTPUT:
       "vars": [0],
       "instances": [],
       "uses": ["5:7-5:10"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -51,6 +64,7 @@ OUTPUT:
       "hover": "int Foo::x = helper()",
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:19",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["6:7-6:8"]

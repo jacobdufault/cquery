@@ -21,6 +21,19 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["1:7-1:10"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -29,6 +42,7 @@ OUTPUT:
       "short_name": "member",
       "detailed_name": "int Foo::member",
       "declaration": "2:14-2:20",
+      "variable_type": 1,
       "kind": 21,
       "uses": ["2:14-2:20"]
     }]

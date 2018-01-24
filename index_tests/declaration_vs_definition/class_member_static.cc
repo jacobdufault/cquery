@@ -24,6 +24,19 @@ OUTPUT:
       "vars": [0],
       "instances": [],
       "uses": ["1:7-1:10", "5:5-5:8"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -34,6 +47,7 @@ OUTPUT:
       "declaration": "2:14-2:17",
       "definition_spelling": "5:10-5:13",
       "definition_extent": "5:1-5:13",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 21,
       "uses": ["2:14-2:17", "5:10-5:13"]

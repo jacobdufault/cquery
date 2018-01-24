@@ -14,7 +14,20 @@ OUTPUT:
 {
   "includes": [],
   "skipped_by_preprocessor": [],
-  "types": [],
+  "types": [{
+      "id": 0,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1],
+      "uses": []
+    }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
@@ -39,6 +52,7 @@ OUTPUT:
       "hover": "int a = foo<int>()",
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:19",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["6:5-6:6"]
     }, {
@@ -49,6 +63,7 @@ OUTPUT:
       "hover": "int b = foo<bool>()",
       "definition_spelling": "7:5-7:6",
       "definition_extent": "7:1-7:20",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["7:5-7:6"]
     }]

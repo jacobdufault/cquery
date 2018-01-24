@@ -49,6 +49,19 @@ OUTPUT:
       "vars": [0],
       "instances": [],
       "uses": ["5:10-5:16", "10:26-10:32", "13:13-13:19", "14:14-14:20"]
+    }, {
+      "id": 2,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [1, 2],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -72,6 +85,7 @@ OUTPUT:
       "hover": "int ns::Foo = Holder<int>::static_var",
       "definition_spelling": "13:7-13:10",
       "definition_extent": "13:3-13:36",
+      "variable_type": 2,
       "kind": 13,
       "uses": ["13:7-13:10"]
     }, {
@@ -82,6 +96,7 @@ OUTPUT:
       "hover": "int ns::Foo2 = Holder<int>::static_var",
       "definition_spelling": "14:7-14:11",
       "definition_extent": "14:3-14:37",
+      "variable_type": 2,
       "kind": 13,
       "uses": ["14:7-14:11"]
     }]

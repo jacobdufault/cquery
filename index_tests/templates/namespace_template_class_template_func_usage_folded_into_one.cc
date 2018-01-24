@@ -31,6 +31,19 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["3:10-3:13", "10:11-10:14", "11:11-11:14"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -57,6 +70,7 @@ OUTPUT:
       "hover": "int ns::a = Foo<int>::foo<float>()",
       "definition_spelling": "10:7-10:8",
       "definition_extent": "10:3-10:33",
+      "variable_type": 1,
       "kind": 13,
       "uses": ["10:7-10:8"]
     }, {
@@ -67,6 +81,7 @@ OUTPUT:
       "hover": "int ns::b = Foo<bool>::foo<double>()",
       "definition_spelling": "11:7-11:8",
       "definition_extent": "11:3-11:35",
+      "variable_type": 1,
       "kind": 13,
       "uses": ["11:7-11:8"]
     }]

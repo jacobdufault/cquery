@@ -14,7 +14,20 @@ OUTPUT:
 {
   "includes": [],
   "skipped_by_preprocessor": [],
-  "types": [],
+  "types": [{
+      "id": 0,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1],
+      "uses": []
+    }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
@@ -53,6 +66,7 @@ OUTPUT:
       "detailed_name": "int ns::Foo",
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
     }, {
@@ -62,6 +76,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "3:19-3:20",
       "definition_extent": "3:15-3:20",
+      "variable_type": 0,
       "kind": 25,
       "uses": ["3:19-3:20"]
     }]

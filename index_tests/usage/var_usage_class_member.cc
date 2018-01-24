@@ -37,6 +37,19 @@ OUTPUT:
       "vars": [0, 1],
       "instances": [2],
       "uses": ["1:7-1:10", "11:3-11:6"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -97,6 +110,7 @@ OUTPUT:
       "detailed_name": "int Foo::x",
       "definition_spelling": "3:7-3:8",
       "definition_extent": "3:3-3:8",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["3:7-3:8", "12:5-12:6", "13:5-13:6", "14:12-14:13", "15:12-15:13", "16:13-16:14"]
@@ -107,6 +121,7 @@ OUTPUT:
       "detailed_name": "int Foo::y",
       "definition_spelling": "4:7-4:8",
       "definition_extent": "4:3-4:8",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["4:7-4:8", "17:12-17:13"]

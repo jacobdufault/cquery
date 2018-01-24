@@ -34,6 +34,19 @@ OUTPUT:
       "vars": [1, 0],
       "instances": [],
       "uses": ["5:8-5:11", "10:5-10:8", "14:22-14:25", "14:40-14:43"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1, 2],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -96,6 +109,7 @@ OUTPUT:
       "declaration": "6:14-6:24",
       "definition_spelling": "10:10-10:20",
       "definition_extent": "10:1-10:24",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 21,
       "uses": ["6:14-6:24", "10:10-10:20", "14:45-14:55"]
@@ -106,6 +120,7 @@ OUTPUT:
       "detailed_name": "int Foo::field_var",
       "definition_spelling": "7:7-7:16",
       "definition_extent": "7:3-7:16",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["7:7-7:16", "14:28-14:37"]
@@ -117,6 +132,7 @@ OUTPUT:
       "hover": "int a = 5",
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:12",
+      "variable_type": 1,
       "kind": 13,
       "uses": ["13:7-13:8", "14:10-14:11"]
     }]

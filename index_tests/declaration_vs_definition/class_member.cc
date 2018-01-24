@@ -22,6 +22,19 @@ OUTPUT:
       "vars": [0],
       "instances": [],
       "uses": ["1:7-1:10"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -31,6 +44,7 @@ OUTPUT:
       "detailed_name": "int Foo::foo",
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["2:7-2:10"]

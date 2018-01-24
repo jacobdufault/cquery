@@ -86,6 +86,19 @@ OUTPUT: header.h
       "vars": [0, 1, 2],
       "instances": [],
       "uses": ["15:6-15:10"]
+    }, {
+      "id": 5,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [3, 4],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -146,6 +159,7 @@ OUTPUT: header.h
       "detailed_name": "int Foo4",
       "definition_spelling": "17:5-17:9",
       "definition_extent": "17:1-17:9",
+      "variable_type": 5,
       "kind": 13,
       "uses": ["17:5-17:9"]
     }, {
@@ -155,6 +169,7 @@ OUTPUT: header.h
       "detailed_name": "int Foo5",
       "definition_spelling": "18:12-18:16",
       "definition_extent": "18:1-18:16",
+      "variable_type": 5,
       "kind": 13,
       "uses": ["18:12-18:16"]
     }]

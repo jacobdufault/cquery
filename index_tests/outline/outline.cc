@@ -35,7 +35,20 @@ OUTPUT:
       "uses": ["3:8-3:23"]
     }, {
       "id": 1,
-      "usr": 10956461108384510180,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1],
+      "uses": []
+    }, {
+      "id": 2,
+      "usr": 9178760565669096175,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -55,6 +68,7 @@ OUTPUT:
       "detailed_name": "int MergeableUpdate::a",
       "definition_spelling": "4:7-4:8",
       "definition_extent": "4:3-4:8",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["4:7-4:8"]
@@ -65,6 +79,7 @@ OUTPUT:
       "detailed_name": "int MergeableUpdate::b",
       "definition_spelling": "5:7-5:8",
       "definition_extent": "5:3-5:8",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["5:7-5:8"]
@@ -75,7 +90,7 @@ OUTPUT:
       "detailed_name": "std::vector<int> MergeableUpdate::to_add",
       "definition_spelling": "6:20-6:26",
       "definition_extent": "6:3-6:26",
-      "variable_type": 1,
+      "variable_type": 2,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["6:20-6:26"]

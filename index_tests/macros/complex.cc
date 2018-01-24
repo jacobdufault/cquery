@@ -16,7 +16,20 @@ OUTPUT:
 {
   "includes": [],
   "skipped_by_preprocessor": [],
-  "types": [],
+  "types": [{
+      "id": 0,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
+    }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
@@ -61,6 +74,7 @@ OUTPUT:
       "hover": "const int make2 = 5",
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["9:11-9:16", "12:14-12:19"]
     }, {

@@ -31,6 +31,32 @@ OUTPUT:
       "vars": [0, 1],
       "instances": [2],
       "uses": ["1:7-1:10", "6:1-6:4", "8:10-8:13"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
+    }, {
+      "id": 2,
+      "usr": 3,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [1],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -56,6 +82,7 @@ OUTPUT:
       "hover": "int Foo::a : 5",
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:12",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["2:7-2:8", "9:5-9:6"]
@@ -67,6 +94,7 @@ OUTPUT:
       "hover": "bool Foo::b : 3",
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:13",
+      "variable_type": 2,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["3:8-3:9"]

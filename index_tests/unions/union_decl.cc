@@ -23,6 +23,32 @@ OUTPUT:
       "vars": [0, 1],
       "instances": [],
       "uses": ["1:7-1:10"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
+    }, {
+      "id": 2,
+      "usr": 3,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [1],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -32,6 +58,7 @@ OUTPUT:
       "detailed_name": "int Foo::a",
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
+      "variable_type": 1,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["2:7-2:8"]
@@ -42,6 +69,7 @@ OUTPUT:
       "detailed_name": "bool Foo::b",
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:9",
+      "variable_type": 2,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["3:8-3:9"]

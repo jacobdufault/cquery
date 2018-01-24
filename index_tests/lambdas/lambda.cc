@@ -18,6 +18,19 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 2],
+      "uses": []
+    }, {
+      "id": 1,
       "usr": 1287417953265234030,
       "short_name": "",
       "detailed_name": "",
@@ -66,6 +79,7 @@ OUTPUT:
       "detailed_name": "int x",
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["2:7-2:8", "5:7-5:8", "4:24-4:25"]
     }, {
@@ -75,7 +89,7 @@ OUTPUT:
       "detailed_name": "lambda dosomething",
       "definition_spelling": "4:8-4:19",
       "definition_extent": "4:3-7:4",
-      "variable_type": 0,
+      "variable_type": 1,
       "kind": 13,
       "uses": ["4:8-4:19", "9:3-9:14", "10:3-10:14", "11:3-11:14"]
     }, {
@@ -85,6 +99,7 @@ OUTPUT:
       "detailed_name": "int y",
       "definition_spelling": "4:31-4:32",
       "definition_extent": "4:27-4:32",
+      "variable_type": 0,
       "kind": 25,
       "uses": ["4:31-4:32", "6:7-6:8"]
     }]

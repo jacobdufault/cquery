@@ -38,6 +38,19 @@ OUTPUT:
       "vars": [0, 1, 2],
       "instances": [],
       "uses": ["2:3-2:9"]
+    }, {
+      "id": 2,
+      "usr": 21,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1, 2, 3],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -47,6 +60,7 @@ OUTPUT:
       "detailed_name": "float vector3::(anon struct)::x",
       "definition_spelling": "2:18-2:19",
       "definition_extent": "2:12-2:19",
+      "variable_type": 2,
       "declaring_type": 1,
       "kind": 14,
       "uses": ["2:18-2:19"]
@@ -57,6 +71,7 @@ OUTPUT:
       "detailed_name": "float vector3::(anon struct)::y",
       "definition_spelling": "2:21-2:22",
       "definition_extent": "2:12-2:22",
+      "variable_type": 2,
       "declaring_type": 1,
       "kind": 14,
       "uses": ["2:21-2:22"]
@@ -67,6 +82,7 @@ OUTPUT:
       "detailed_name": "float vector3::(anon struct)::z",
       "definition_spelling": "2:24-2:25",
       "definition_extent": "2:12-2:25",
+      "variable_type": 2,
       "declaring_type": 1,
       "kind": 14,
       "uses": ["2:24-2:25"]
@@ -77,6 +93,7 @@ OUTPUT:
       "detailed_name": "float [3] vector3::v",
       "definition_spelling": "3:9-3:10",
       "definition_extent": "3:3-3:13",
+      "variable_type": 2,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["3:9-3:10"]

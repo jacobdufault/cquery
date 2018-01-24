@@ -26,6 +26,19 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["2:8-2:11", "6:9-6:12", "7:9-7:12"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1, 2],
+      "uses": []
     }],
   "funcs": [],
   "vars": [{
@@ -35,6 +48,7 @@ OUTPUT:
       "detailed_name": "const int Foo::var",
       "hover": "const int Foo::var = 3",
       "declaration": "3:24-3:27",
+      "variable_type": 1,
       "kind": 21,
       "uses": ["3:24-3:27", "6:19-6:22", "7:20-7:23"]
     }, {
@@ -45,6 +59,7 @@ OUTPUT:
       "hover": "int a = Foo<int>::var",
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:22",
+      "variable_type": 1,
       "kind": 13,
       "uses": ["6:5-6:6"]
     }, {
@@ -55,6 +70,7 @@ OUTPUT:
       "hover": "int b = Foo<bool>::var",
       "definition_spelling": "7:5-7:6",
       "definition_extent": "7:1-7:23",
+      "variable_type": 1,
       "kind": 13,
       "uses": ["7:5-7:6"]
     }]

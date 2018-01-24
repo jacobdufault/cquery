@@ -12,7 +12,20 @@ OUTPUT:
 {
   "includes": [],
   "skipped_by_preprocessor": [],
-  "types": [],
+  "types": [{
+      "id": 0,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0, 1],
+      "uses": []
+    }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
@@ -36,6 +49,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "1:14-1:15",
       "definition_extent": "1:10-1:15",
+      "variable_type": 0,
       "kind": 25,
       "uses": ["1:14-1:15", "2:3-2:4", "7:3-7:4"]
     }, {
@@ -45,6 +59,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:5-4:10",
+      "variable_type": 0,
       "kind": 13,
       "uses": ["4:9-4:10", "5:5-5:6"]
     }]

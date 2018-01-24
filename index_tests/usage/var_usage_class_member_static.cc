@@ -28,6 +28,19 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["1:8-1:11", "8:10-8:13"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -69,6 +82,7 @@ OUTPUT:
       "short_name": "x",
       "detailed_name": "int Foo::x",
       "declaration": "2:14-2:15",
+      "variable_type": 1,
       "kind": 21,
       "uses": ["2:14-2:15", "8:15-8:16"]
     }]

@@ -27,6 +27,19 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["4:8-4:11", "5:12-5:15"]
+    }, {
+      "id": 1,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -53,6 +66,7 @@ OUTPUT:
       "hover": "int x = A",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
+      "variable_type": 1,
       "kind": 13,
       "uses": ["8:5-8:6"]
     }, {
