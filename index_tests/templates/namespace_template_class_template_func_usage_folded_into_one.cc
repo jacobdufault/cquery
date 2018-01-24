@@ -18,6 +18,34 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 11072669167287398027,
+      "short_name": "ns",
+      "detailed_name": "ns",
+      "kind": 2,
+      "definition_spelling": "1:11-1:13",
+      "definition_extent": "1:1-12:2",
+      "parents": [1],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [0, 1],
+      "instances": [],
+      "uses": ["1:11-1:13"]
+    }, {
+      "id": 1,
+      "usr": 13838176792705659279,
+      "short_name": "<fundamental>",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [0],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 2,
       "usr": 14042997404480181958,
       "short_name": "Foo",
       "detailed_name": "ns::Foo",
@@ -32,7 +60,7 @@ OUTPUT:
       "instances": [],
       "uses": ["3:10-3:13", "10:11-10:14", "11:11-11:14"]
     }, {
-      "id": 1,
+      "id": 3,
       "usr": 17,
       "short_name": "",
       "detailed_name": "",
@@ -55,7 +83,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "5:16-5:19",
       "definition_extent": "5:5-7:6",
-      "declaring_type": 0,
+      "declaring_type": 2,
       "base": [],
       "derived": [],
       "locals": [],
@@ -70,7 +98,8 @@ OUTPUT:
       "hover": "int ns::a = Foo<int>::foo<float>()",
       "definition_spelling": "10:7-10:8",
       "definition_extent": "10:3-10:33",
-      "variable_type": 1,
+      "variable_type": 3,
+      "declaring_type": 0,
       "kind": 13,
       "uses": ["10:7-10:8"]
     }, {
@@ -81,7 +110,8 @@ OUTPUT:
       "hover": "int ns::b = Foo<bool>::foo<double>()",
       "definition_spelling": "11:7-11:8",
       "definition_extent": "11:3-11:35",
-      "variable_type": 1,
+      "variable_type": 3,
+      "declaring_type": 0,
       "kind": 13,
       "uses": ["11:7-11:8"]
     }]

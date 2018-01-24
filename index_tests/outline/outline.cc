@@ -59,6 +59,19 @@ OUTPUT:
       "vars": [],
       "instances": [2],
       "uses": ["6:8-6:14"]
+    }, {
+      "id": 3,
+      "usr": 5401847601697785946,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["6:3-6:6"]
     }],
   "funcs": [],
   "vars": [{

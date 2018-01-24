@@ -7,7 +7,20 @@ OUTPUT:
 {
   "includes": [],
   "skipped_by_preprocessor": [],
-  "types": [],
+  "types": [{
+      "id": 0,
+      "usr": 7144845543074395457,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [0],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }],
   "funcs": [{
       "id": 0,
       "is_operator": false,
@@ -21,6 +34,7 @@ OUTPUT:
           "content": "void foo()",
           "param_spellings": []
         }],
+      "declaring_type": 0,
       "base": [],
       "derived": [],
       "locals": [],

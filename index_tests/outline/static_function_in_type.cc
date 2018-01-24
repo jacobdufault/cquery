@@ -13,6 +13,34 @@ OUTPUT: static_function_in_type.h
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 11072669167287398027,
+      "short_name": "ns",
+      "detailed_name": "ns",
+      "kind": 2,
+      "definition_spelling": "1:11-1:13",
+      "definition_extent": "1:1-9:2",
+      "parents": [1],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["1:11-1:13"]
+    }, {
+      "id": 1,
+      "usr": 13838176792705659279,
+      "short_name": "<fundamental>",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [0],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 2,
       "usr": 1972401196751872203,
       "short_name": "",
       "detailed_name": "",
@@ -25,7 +53,7 @@ OUTPUT: static_function_in_type.h
       "instances": [],
       "uses": ["3:7-3:14", "6:24-6:31"]
     }, {
-      "id": 1,
+      "id": 3,
       "usr": 17262466801709381811,
       "short_name": "Foo",
       "detailed_name": "ns::Foo",
@@ -53,7 +81,7 @@ OUTPUT: static_function_in_type.h
           "content": "static void Register(Manager*)",
           "param_spellings": ["6:32-6:32"]
         }],
-      "declaring_type": 1,
+      "declaring_type": 3,
       "base": [],
       "derived": [],
       "locals": [],
@@ -71,6 +99,34 @@ OUTPUT: static_function_in_type.cc
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 11072669167287398027,
+      "short_name": "ns",
+      "detailed_name": "ns",
+      "kind": 2,
+      "definition_spelling": "3:11-3:13",
+      "definition_extent": "3:1-7:2",
+      "parents": [1],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["3:11-3:13"]
+    }, {
+      "id": 1,
+      "usr": 13838176792705659279,
+      "short_name": "<fundamental>",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [0],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 2,
       "usr": 17262466801709381811,
       "short_name": "",
       "detailed_name": "",
@@ -83,7 +139,7 @@ OUTPUT: static_function_in_type.cc
       "instances": [],
       "uses": ["5:6-5:9"]
     }, {
-      "id": 1,
+      "id": 3,
       "usr": 1972401196751872203,
       "short_name": "",
       "detailed_name": "",
@@ -106,7 +162,7 @@ OUTPUT: static_function_in_type.cc
       "declarations": [],
       "definition_spelling": "5:11-5:19",
       "definition_extent": "5:1-6:2",
-      "declaring_type": 0,
+      "declaring_type": 2,
       "base": [],
       "derived": [],
       "locals": [],
@@ -120,7 +176,7 @@ OUTPUT: static_function_in_type.cc
       "detailed_name": "ns::Manager *m",
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",
-      "variable_type": 1,
+      "variable_type": 3,
       "kind": 25,
       "uses": ["5:29-5:30"]
     }]

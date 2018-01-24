@@ -16,6 +16,34 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 11072669167287398027,
+      "short_name": "ns",
+      "detailed_name": "ns",
+      "kind": 2,
+      "definition_spelling": "1:11-1:13",
+      "definition_extent": "1:1-4:2",
+      "parents": [1],
+      "derived": [],
+      "types": [],
+      "funcs": [0],
+      "vars": [0],
+      "instances": [],
+      "uses": ["1:11-1:13", "7:3-7:5", "7:14-7:16", "8:19-8:21"]
+    }, {
+      "id": 1,
+      "usr": 13838176792705659279,
+      "short_name": "<fundamental>",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [0],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 2,
       "usr": 17,
       "short_name": "",
       "detailed_name": "",
@@ -38,6 +66,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "3:8-3:14",
       "definition_extent": "3:3-3:24",
+      "declaring_type": 0,
       "base": [],
       "derived": [],
       "locals": [],
@@ -66,7 +95,8 @@ OUTPUT:
       "detailed_name": "int ns::Foo",
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
-      "variable_type": 0,
+      "variable_type": 2,
+      "declaring_type": 0,
       "kind": 13,
       "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
     }, {
@@ -76,7 +106,7 @@ OUTPUT:
       "detailed_name": "int a",
       "definition_spelling": "3:19-3:20",
       "definition_extent": "3:15-3:20",
-      "variable_type": 0,
+      "variable_type": 2,
       "kind": 25,
       "uses": ["3:19-3:20"]
     }]

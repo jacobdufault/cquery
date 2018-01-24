@@ -55,7 +55,7 @@ OUTPUT:
       "uses": ["6:8-6:24", "12:13-12:29"]
     }, {
       "id": 1,
-      "usr": 4160338041907786,
+      "usr": 14151982074805896770,
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
@@ -68,6 +68,19 @@ OUTPUT:
       "uses": ["7:8-7:14", "8:8-8:14", "9:20-9:26", "12:78-12:84"]
     }, {
       "id": 2,
+      "usr": 5401847601697785946,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["7:3-7:6", "8:3-8:6", "9:3-9:6", "9:15-9:18", "12:1-12:4", "12:73-12:76"]
+    }, {
+      "id": 3,
       "usr": 10956461108384510180,
       "short_name": "",
       "detailed_name": "",
@@ -83,7 +96,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "is_operator": false,
-      "usr": 9802818309312685221,
+      "usr": 11244864715202245734,
       "short_name": "LoadCompilationEntriesFromDirectory",
       "detailed_name": "std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::string &project_directory)",
       "kind": 12,
@@ -128,7 +141,7 @@ OUTPUT:
       "detailed_name": "std::vector<std::string> CompilationEntry::args",
       "definition_spelling": "9:28-9:32",
       "definition_extent": "9:3-9:32",
-      "variable_type": 2,
+      "variable_type": 3,
       "declaring_type": 0,
       "kind": 14,
       "uses": ["9:28-9:32"]
