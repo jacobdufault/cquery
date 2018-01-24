@@ -20,14 +20,44 @@ export function parseUri(u): Uri {
 // internal number.
 const VERSION = 3;
 
-enum SemanticSymbolType {
-  Type = 0,
-  Function,
-  Variable
+enum SemanticSymbolKind {
+  Unknown,
+
+  Module = 1,
+  Namespace,
+  NamespaceAlias,
+  Macro,
+
+  Enum = 5,
+  Struct,
+  Class,
+  Protocol,
+  Extension,
+  Union,
+  TypeAlias,
+
+  Function = 12,
+  Variable,
+  Field,
+  EnumConstant,
+
+  InstanceMethod = 16,
+  ClassMethod,
+  StaticMethod,
+  InstanceProperty,
+  ClassProperty,
+  StaticProperty,
+
+  Constructor = 22,
+  Destructor,
+  ConversionFunction,
+
+  Parameter = 25,
+  Using,
 }
 class SemanticSymbol {
   constructor(
-      readonly stableId: number, readonly type: SemanticSymbolType,
+      readonly stableId: number, readonly kind: SemanticSymbolKind,
       readonly isTypeMember: boolean, readonly ranges: Array<Range>) {}
 }
 
@@ -617,7 +647,9 @@ export function activate(context: ExtensionContext) {
     let semanticEnabled = new Map<string, boolean>();
     for (let type of
              ['types', 'freeStandingFunctions', 'memberFunctions',
-              'freeStandingVariables', 'memberVariables']) {
+              'freeStandingVariables', 'memberVariables', 'namespaces',
+              'macros', 'enums', 'typeAliases', 'enumConstants', 
+              'staticMemberFunctions', 'parameters']) {
       semanticDecorations.set(type, makeDecorations(type));
       semanticEnabled.set(type, false);
     }
@@ -641,16 +673,35 @@ export function activate(context: ExtensionContext) {
         return decorations[symbol.stableId % decorations.length];
       };
 
-      if (symbol.type == SemanticSymbolType.Type) {
+      if (symbol.kind == SemanticSymbolKind.Class || 
+          symbol.kind == SemanticSymbolKind.Struct ||
+          symbol.kind == SemanticSymbolKind.Union) {
         return get('types');
-      } else if (symbol.type == SemanticSymbolType.Function) {
-        if (symbol.isTypeMember)
-          return get('memberFunctions');
+      } else if (symbol.kind == SemanticSymbolKind.Enum) {
+        return get('enums');
+      } else if (symbol.kind == SemanticSymbolKind.TypeAlias) {
+        return get('typeAliases');
+      } else if (symbol.kind == SemanticSymbolKind.Function) {
         return get('freeStandingFunctions');
-      } else if (symbol.type == SemanticSymbolType.Variable) {
-        if (symbol.isTypeMember)
-          return get('memberVariables');
+      } else if (symbol.kind == SemanticSymbolKind.InstanceMethod ||
+                 symbol.kind == SemanticSymbolKind.Constructor ||
+                 symbol.kind == SemanticSymbolKind.Destructor ||
+                 symbol.kind == SemanticSymbolKind.ConversionFunction) {
+        return get('memberFunctions')
+      } else if (symbol.kind == SemanticSymbolKind.StaticMethod) {
+        return get('staticMemberFunctions')
+      } else if (symbol.kind == SemanticSymbolKind.Variable) {
         return get('freeStandingVariables');
+      } else if (symbol.kind == SemanticSymbolKind.Field) {
+        return get('memberVariables');
+      } else if (symbol.kind == SemanticSymbolKind.Parameter) {
+        return get('parameters');
+      } else if (symbol.kind == SemanticSymbolKind.EnumConstant) {
+        return get('enumConstants');
+      } else if (symbol.kind == SemanticSymbolKind.Namespace) {
+        return get('namespaces');
+      } else if (symbol.kind == SemanticSymbolKind.Macro) {
+        return get('macros');
       }
     };
 
