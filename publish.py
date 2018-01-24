@@ -14,6 +14,6 @@ def RunOrExit(args):
 
 if __name__ == "__main__":
   # Example: 2018-01-13 (18:20)
-  DATE = datetime.datetime.now().strftime('v%F@%H%M')
-  RunOrExit(['git', 'tag', DATE])
-  RunOrExit(['git', 'push', 'origin', 'master', '--follow-tags'])
+  tag_name = datetime.datetime.now().strftime('v%F@%H%M')
+  RunOrExit(['git', 'tag', tag_name])
+  RunOrExit(['git', 'push', 'origin', tag_name])
