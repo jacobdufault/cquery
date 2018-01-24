@@ -13,7 +13,7 @@ def RunOrExit(args):
     sys.exit(1)
 
 if __name__ == "__main__":
-  # Example: 2018-01-13 (18:20)
+  # Example: v2018-01-13@1820
   tag_name = datetime.datetime.now().strftime('v%F@%H%M')
   RunOrExit(['git', 'tag', tag_name])
   RunOrExit(['git', 'push', 'origin', tag_name])
