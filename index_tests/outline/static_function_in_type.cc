@@ -42,8 +42,8 @@ OUTPUT: static_function_in_type.h
     }, {
       "id": 2,
       "usr": 1972401196751872203,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "Manager",
+      "detailed_name": "Manager",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -128,8 +128,8 @@ OUTPUT: static_function_in_type.cc
     }, {
       "id": 2,
       "usr": 17262466801709381811,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "Foo",
+      "detailed_name": "Foo",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -141,8 +141,8 @@ OUTPUT: static_function_in_type.cc
     }, {
       "id": 3,
       "usr": 1972401196751872203,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "Manager",
+      "detailed_name": "Manager",
       "kind": 0,
       "parents": [],
       "derived": [],

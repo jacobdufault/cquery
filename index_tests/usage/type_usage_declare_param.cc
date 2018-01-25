@@ -11,8 +11,8 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 13749354388332789217,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "ForwardType",
+      "detailed_name": "ForwardType",
       "kind": 0,
       "parents": [],
       "derived": [],

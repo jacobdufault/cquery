@@ -55,8 +55,8 @@ OUTPUT: static.cc
   "types": [{
       "id": 0,
       "usr": 9411323049603567600,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "Buffer",
+      "detailed_name": "Buffer",
       "kind": 0,
       "parents": [],
       "derived": [],
