@@ -196,8 +196,8 @@ OUTPUT: make_functions.cc
     }, {
       "id": 4,
       "usr": 14935975554338052500,
-      "short_name": "Foobar",
-      "detailed_name": "Foobar",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -209,8 +209,8 @@ OUTPUT: make_functions.cc
     }, {
       "id": 5,
       "usr": 12993848456528750350,
-      "short_name": "Bar",
-      "detailed_name": "Bar",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],

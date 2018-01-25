@@ -86,8 +86,8 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 14209198335088845323,
-      "short_name": "unique_ptr",
-      "detailed_name": "unique_ptr",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -99,8 +99,8 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4310164820010458371,
-      "short_name": "S1",
-      "detailed_name": "S1",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -112,8 +112,8 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 12728490517004312484,
-      "short_name": "S2",
-      "detailed_name": "S2",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],

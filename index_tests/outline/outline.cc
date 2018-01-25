@@ -49,8 +49,8 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 9178760565669096175,
-      "short_name": "vector",
-      "detailed_name": "vector",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
