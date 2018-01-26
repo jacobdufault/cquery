@@ -140,7 +140,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 1246637699196435450,
       "short_name": "as_return_type",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *as_return_type(unique_ptr<S1, S2> *)",
@@ -156,7 +155,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 13067214284561914253,
       "short_name": "no_return_type",
       "detailed_name": "void no_return_type(int)",
@@ -172,7 +170,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 18320186404467436976,
       "short_name": "empty",
       "detailed_name": "void empty()",
@@ -188,7 +185,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 3,
-      "is_operator": false,
       "usr": 17922201480358737771,
       "short_name": "foo",
       "detailed_name": "unique_ptr<S1, S2> *Foo::foo()",

@@ -29,7 +29,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 17922201480358737771,
       "short_name": "foo",
       "detailed_name": "void Foo::foo()",

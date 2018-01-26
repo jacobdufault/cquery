@@ -12,7 +12,6 @@ OUTPUT: simple_header.h
   "types": [],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 16236105532929924676,
       "short_name": "header",
       "detailed_name": "void header()",
@@ -42,7 +41,6 @@ OUTPUT: simple_impl.cc
   "types": [],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 3373269392705484958,
       "short_name": "impl",
       "detailed_name": "void impl()",
@@ -58,7 +56,6 @@ OUTPUT: simple_impl.cc
       "callees": ["1@4:3-4:9"]
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 16236105532929924676,
       "short_name": "",
       "detailed_name": "",

@@ -30,7 +30,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 17319723337446061757,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",

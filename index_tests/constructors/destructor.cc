@@ -36,7 +36,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 3385168158331140247,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",
@@ -53,7 +52,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 7440261702884428359,
       "short_name": "~Foo",
       "detailed_name": "void Foo::~Foo() noexcept",
@@ -70,7 +68,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",

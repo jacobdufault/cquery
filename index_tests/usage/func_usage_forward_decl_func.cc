@@ -11,7 +11,6 @@ OUTPUT:
   "types": [],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
@@ -30,7 +29,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 6767773193109753523,
       "short_name": "usage",
       "detailed_name": "void usage()",

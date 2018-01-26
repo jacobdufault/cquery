@@ -61,7 +61,6 @@ OUTPUT: make_functions.h
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 13131778807733950299,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar()",
@@ -78,7 +77,6 @@ OUTPUT: make_functions.h
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 13028995015627606181,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar(int)",
@@ -95,7 +93,6 @@ OUTPUT: make_functions.h
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 3765833212244435302,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar(int &&, Bar *, bool *)",
@@ -112,7 +109,6 @@ OUTPUT: make_functions.h
       "callees": []
     }, {
       "id": 3,
-      "is_operator": false,
       "usr": 17321436359755983845,
       "short_name": "Foobar",
       "detailed_name": "void Foobar::Foobar(int, Bar *, bool *)",
@@ -226,7 +222,6 @@ OUTPUT: make_functions.cc
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 15793662558620604611,
       "short_name": "MakeUnique",
       "detailed_name": "T *MakeUnique(Args &&... args)",
@@ -242,7 +237,6 @@ OUTPUT: make_functions.cc
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 2532818908869373467,
       "short_name": "maKE_NoRefs",
       "detailed_name": "T *maKE_NoRefs(Args... args)",
@@ -258,7 +252,6 @@ OUTPUT: make_functions.cc
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 2816883305867289955,
       "short_name": "caller22",
       "detailed_name": "void caller22()",
@@ -274,7 +267,6 @@ OUTPUT: make_functions.cc
       "callees": ["0@14:3-14:13", "0@15:3-15:13", "0@16:3-16:13", "1@17:3-17:14"]
     }, {
       "id": 3,
-      "is_operator": false,
       "usr": 13131778807733950299,
       "short_name": "",
       "detailed_name": "",
@@ -288,7 +280,6 @@ OUTPUT: make_functions.cc
       "callees": []
     }, {
       "id": 4,
-      "is_operator": false,
       "usr": 13028995015627606181,
       "short_name": "",
       "detailed_name": "",
@@ -302,7 +293,6 @@ OUTPUT: make_functions.cc
       "callees": []
     }, {
       "id": 5,
-      "is_operator": false,
       "usr": 3765833212244435302,
       "short_name": "",
       "detailed_name": "",
@@ -316,7 +306,6 @@ OUTPUT: make_functions.cc
       "callees": []
     }, {
       "id": 6,
-      "is_operator": false,
       "usr": 17321436359755983845,
       "short_name": "",
       "detailed_name": "",

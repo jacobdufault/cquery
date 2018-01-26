@@ -43,7 +43,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 13788753348312146871,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo(Foo &&)",

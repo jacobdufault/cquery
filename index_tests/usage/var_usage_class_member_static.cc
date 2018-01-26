@@ -44,7 +44,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 17175780305784503374,
       "short_name": "accept",
       "detailed_name": "void accept(int)",
@@ -63,7 +62,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",

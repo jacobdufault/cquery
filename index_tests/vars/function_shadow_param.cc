@@ -22,7 +22,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 11998306017310352355,
       "short_name": "foo",
       "detailed_name": "void foo(int p)",

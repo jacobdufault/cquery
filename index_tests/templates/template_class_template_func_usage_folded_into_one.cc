@@ -45,7 +45,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 9034026360701857235,
       "short_name": "foo",
       "detailed_name": "int Foo::foo()",

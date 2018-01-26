@@ -61,7 +61,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 16347272523198263017,
       "short_name": "~Base0",
       "detailed_name": "void Base0::~Base0() noexcept",
@@ -78,7 +77,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 8401779086123965305,
       "short_name": "~Base1",
       "detailed_name": "void Base1::~Base1() noexcept",
@@ -95,7 +93,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 13164726294460837993,
       "short_name": "~Derived",
       "detailed_name": "void Derived::~Derived() noexcept",

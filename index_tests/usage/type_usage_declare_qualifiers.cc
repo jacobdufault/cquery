@@ -29,7 +29,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 16858540520096802573,
       "short_name": "foo",
       "detailed_name": "void foo(Type &a0, const Type &a1)",

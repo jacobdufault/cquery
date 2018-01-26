@@ -40,7 +40,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 11994188353303124840,
       "short_name": "Foo",
       "detailed_name": "void Template::Foo()",

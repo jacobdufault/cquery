@@ -31,7 +31,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 10544127002917214589,
       "short_name": "Wrapper",
       "detailed_name": "void Wrapper::Wrapper(int i)",
@@ -51,7 +50,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 468307235068920063,
       "short_name": "called",
       "detailed_name": "int called()",
@@ -67,7 +65,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 11404881820527069090,
       "short_name": "caller",
       "detailed_name": "Wrapper caller()",

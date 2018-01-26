@@ -15,7 +15,6 @@ OUTPUT:
   "types": [],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 3223559731210506952,
       "short_name": "consume",
       "detailed_name": "void consume(void (*)())",
@@ -31,7 +30,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 5264867802674151787,
       "short_name": "used",
       "detailed_name": "void used()",
@@ -47,7 +45,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 9376923949268137283,
       "short_name": "user",
       "detailed_name": "void user()",

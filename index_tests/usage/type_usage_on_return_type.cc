@@ -53,7 +53,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "Type *foo()",
@@ -79,7 +78,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 13402221340333431092,
       "short_name": "Get",
       "detailed_name": "Type *Foo::Get(int)",
@@ -101,7 +99,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 4240751906910175539,
       "short_name": "Empty",
       "detailed_name": "void Foo::Empty()",
@@ -123,7 +120,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 3,
-      "is_operator": false,
       "usr": 7746867874366499515,
       "short_name": "external",
       "detailed_name": "const Type &external()",
@@ -142,7 +138,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 4,
-      "is_operator": false,
       "usr": 18408440185620243373,
       "short_name": "bar",
       "detailed_name": "Type *bar()",

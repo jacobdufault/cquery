@@ -60,7 +60,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 13982179977217945200,
       "short_name": "act",
       "detailed_name": "void act(Foo *)",

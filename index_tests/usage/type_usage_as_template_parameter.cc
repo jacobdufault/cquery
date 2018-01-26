@@ -48,7 +48,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 16359708726068806331,
       "short_name": "return_type",
       "detailed_name": "unique_ptr<S> *return_type()",

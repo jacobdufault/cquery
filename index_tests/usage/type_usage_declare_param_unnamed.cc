@@ -21,7 +21,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 15327735280790448926,
       "short_name": "foo",
       "detailed_name": "void foo(ForwardType *)",

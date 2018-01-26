@@ -25,7 +25,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 3277829753446788562,
       "short_name": "foo",
       "detailed_name": "void IFoo::foo()",

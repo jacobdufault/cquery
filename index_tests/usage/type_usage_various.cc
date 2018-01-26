@@ -32,7 +32,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 9488177941273031343,
       "short_name": "make",
       "detailed_name": "Foo *Foo::make()",

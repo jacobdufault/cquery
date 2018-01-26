@@ -25,7 +25,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 8105378401105136463,
       "short_name": "g",
       "detailed_name": "func g",

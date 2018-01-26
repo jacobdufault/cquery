@@ -58,7 +58,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 17328473273923617489,
       "short_name": "Accept",
       "detailed_name": "void ns::Accept(int a)",
@@ -75,7 +74,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 631910859630953711,
       "short_name": "Runner",
       "detailed_name": "void Runner()",

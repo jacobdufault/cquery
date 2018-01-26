@@ -25,7 +25,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 2747674671862363334,
       "short_name": "foo",
       "detailed_name": "int foo(int a, int b)",

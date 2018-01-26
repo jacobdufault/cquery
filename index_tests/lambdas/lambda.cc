@@ -45,7 +45,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 4259594751088586730,
       "short_name": "foo",
       "detailed_name": "void foo()",
@@ -61,7 +60,6 @@ OUTPUT:
       "callees": ["1@9:14-9:15", "1@10:14-10:15", "1@11:14-11:15"]
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 1328781044864682611,
       "short_name": "",
       "detailed_name": "",

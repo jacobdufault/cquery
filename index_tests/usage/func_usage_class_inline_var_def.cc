@@ -42,7 +42,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 9630503130605430498,
       "short_name": "helper",
       "detailed_name": "int helper()",

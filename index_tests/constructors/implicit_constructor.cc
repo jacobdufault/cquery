@@ -30,7 +30,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 10530961286677896857,
       "short_name": "Type",
       "detailed_name": "void Type::Type()",
@@ -47,7 +46,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 3957104924306079513,
       "short_name": "Make",
       "detailed_name": "void Make()",

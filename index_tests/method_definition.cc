@@ -27,7 +27,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 6446764306530590711,
       "short_name": "foo",
       "detailed_name": "void Foo::foo() const",

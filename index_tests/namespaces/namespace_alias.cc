@@ -105,7 +105,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 10818727483146447186,
       "short_name": "func",
       "detailed_name": "void func()",

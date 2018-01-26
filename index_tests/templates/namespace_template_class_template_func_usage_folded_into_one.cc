@@ -75,7 +75,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 8221803074608342407,
       "short_name": "foo",
       "detailed_name": "int ns::Foo::foo()",

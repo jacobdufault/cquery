@@ -30,7 +30,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 326583651986177228,
       "short_name": "foo",
       "detailed_name": "int foo()",

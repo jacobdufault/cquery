@@ -209,7 +209,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 18107614608385228556,
       "short_name": "clear",
       "detailed_name": "void vector::clear()",
@@ -229,7 +228,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 6113470698424012876,
       "short_name": "clear",
       "detailed_name": "void vector::clear()",
@@ -249,7 +247,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 17498190318698490707,
       "short_name": "foo",
       "detailed_name": "void foo(T Value)",

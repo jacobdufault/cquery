@@ -29,7 +29,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 4012226004228259562,
       "short_name": "declonly",
       "detailed_name": "void Foo::declonly()",
@@ -49,7 +48,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 10939323144126021546,
       "short_name": "purevirtual",
       "detailed_name": "void Foo::purevirtual()",
@@ -69,7 +67,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 15416083548883122431,
       "short_name": "def",
       "detailed_name": "void Foo::def()",

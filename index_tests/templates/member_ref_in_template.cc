@@ -58,7 +58,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 8905286151237717330,
       "short_name": "bar",
       "detailed_name": "void C::bar()",
@@ -78,7 +77,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 6875364467121018690,
       "short_name": "foo",
       "detailed_name": "void foo()",

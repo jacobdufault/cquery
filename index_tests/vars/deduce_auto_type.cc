@@ -27,7 +27,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 880549676430489861,
       "short_name": "f",
       "detailed_name": "void f()",

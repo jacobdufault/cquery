@@ -29,7 +29,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": true,
       "usr": 7874436189163837815,
       "short_name": "operator()",
       "detailed_name": "void Foo::operator()(int)",
@@ -46,7 +45,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": true,
       "usr": 3545323327609582678,
       "short_name": "operator()",
       "detailed_name": "void Foo::operator()(bool)",
@@ -66,7 +64,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": true,
       "usr": 3986818119971932909,
       "short_name": "operator()",
       "detailed_name": "int Foo::operator()(int a, int b)",
@@ -86,7 +83,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 3,
-      "is_operator": true,
       "usr": 8288368475529136092,
       "short_name": "operator+=",
       "detailed_name": "Foo &operator+=(const Foo &, const int &)",

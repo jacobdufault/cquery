@@ -45,7 +45,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 8412238651648388423,
       "short_name": "Bar",
       "detailed_name": "void Foo::Bar(Template<double> &)",

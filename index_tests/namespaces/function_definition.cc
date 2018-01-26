@@ -38,7 +38,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 243328841292951622,
       "short_name": "foo",
       "detailed_name": "void hello::foo()",

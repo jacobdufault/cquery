@@ -42,7 +42,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 4654328188330986029,
       "short_name": "Foo",
       "detailed_name": "void Foo()",

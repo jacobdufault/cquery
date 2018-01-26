@@ -31,7 +31,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 468307235068920063,
       "short_name": "called",
       "detailed_name": "void called()",
@@ -47,7 +46,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 3385168158331140247,
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",

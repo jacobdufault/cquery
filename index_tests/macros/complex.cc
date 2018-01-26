@@ -32,7 +32,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 14400399977994209582,
       "short_name": "make1",
       "detailed_name": "int make1()",
@@ -48,7 +47,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 9720930732776154610,
       "short_name": "a",
       "detailed_name": "int a()",

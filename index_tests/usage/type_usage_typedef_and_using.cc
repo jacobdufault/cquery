@@ -97,7 +97,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 9119341505144503905,
       "short_name": "accept",
       "detailed_name": "void accept(Foo *)",
@@ -113,7 +112,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 558620830317390922,
       "short_name": "accept1",
       "detailed_name": "void accept1(Foo1 *)",
@@ -129,7 +127,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 2,
-      "is_operator": false,
       "usr": 10523262907746124479,
       "short_name": "accept2",
       "detailed_name": "void accept2(Foo2 *)",
@@ -145,7 +142,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 3,
-      "is_operator": false,
       "usr": 14986366321326974406,
       "short_name": "accept3",
       "detailed_name": "void accept3(Foo3 *)",

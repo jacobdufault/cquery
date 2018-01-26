@@ -14,7 +14,6 @@ OUTPUT:
   "types": [],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 3787803219955606747,
       "short_name": "called",
       "detailed_name": "bool called(bool a, bool b)",
@@ -33,7 +32,6 @@ OUTPUT:
       "callees": []
     }, {
       "id": 1,
-      "is_operator": false,
       "usr": 11404881820527069090,
       "short_name": "caller",
       "detailed_name": "void caller()",

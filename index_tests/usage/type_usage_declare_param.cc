@@ -39,7 +39,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 1699390678058422036,
       "short_name": "foo",
       "detailed_name": "void foo(ForwardType *f, ImplementedType a)",

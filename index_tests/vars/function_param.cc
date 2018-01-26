@@ -23,7 +23,6 @@ OUTPUT:
     }],
   "funcs": [{
       "id": 0,
-      "is_operator": false,
       "usr": 8908726657907936744,
       "short_name": "foo",
       "detailed_name": "void foo(Foo *p0, Foo *p1)",
