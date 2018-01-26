@@ -12,6 +12,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo(int, int)",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "1:6-1:9",
       "definition_extent": "1:1-1:22",

@@ -28,6 +28,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo(Foo *p0, Foo *p1)",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:6-3:9",
       "definition_extent": "3:1-3:30",
@@ -42,20 +43,22 @@ OUTPUT:
       "usr": 4580260577538694711,
       "short_name": "p0",
       "detailed_name": "Foo *p0",
+      "kind": 25,
+      "storage": 1,
       "definition_spelling": "3:15-3:17",
       "definition_extent": "3:10-3:17",
       "variable_type": 0,
-      "kind": 25,
       "uses": ["3:15-3:17"]
     }, {
       "id": 1,
       "usr": 12071725611268840435,
       "short_name": "p1",
       "detailed_name": "Foo *p1",
+      "kind": 25,
+      "storage": 1,
       "definition_spelling": "3:24-3:26",
       "definition_extent": "3:19-3:26",
       "variable_type": 0,
-      "kind": 25,
       "uses": ["3:24-3:26"]
     }]
 }

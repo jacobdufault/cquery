@@ -32,6 +32,7 @@ OUTPUT:
       "short_name": "f",
       "detailed_name": "void f()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "2:6-2:7",
       "definition_extent": "2:1-5:2",
@@ -46,20 +47,22 @@ OUTPUT:
       "usr": 9275666070987716270,
       "short_name": "x",
       "detailed_name": "Foo *x",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:21",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["3:8-3:9"]
     }, {
       "id": 1,
       "usr": 16202433437488621027,
       "short_name": "y",
       "detailed_name": "Foo *y",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:3-4:22",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["4:9-4:10"]
     }]
 }

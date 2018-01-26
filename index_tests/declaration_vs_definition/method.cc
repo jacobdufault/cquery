@@ -34,6 +34,7 @@ OUTPUT:
       "short_name": "declonly",
       "detailed_name": "void Foo::declonly()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:8-2:16",
           "extent": "2:3-2:18",
@@ -53,6 +54,7 @@ OUTPUT:
       "short_name": "purevirtual",
       "detailed_name": "void Foo::purevirtual()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:16-3:27",
           "extent": "3:3-3:33",
@@ -72,6 +74,7 @@ OUTPUT:
       "short_name": "def",
       "detailed_name": "void Foo::def()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "4:8-4:11",
           "extent": "4:3-4:13",

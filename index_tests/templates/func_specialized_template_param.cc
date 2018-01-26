@@ -50,6 +50,7 @@ OUTPUT:
       "short_name": "Bar",
       "detailed_name": "void Foo::Bar(Template<double> &)",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "5:8-5:11",
           "extent": "5:3-5:30",

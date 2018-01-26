@@ -24,6 +24,7 @@ OUTPUT:
       "short_name": "called",
       "detailed_name": "void called()",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "1:6-1:12",
           "extent": "1:1-1:14",
@@ -42,6 +43,7 @@ OUTPUT:
       "short_name": "caller",
       "detailed_name": "void caller()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:6-4:12",
       "definition_extent": "4:1-6:2",
@@ -57,6 +59,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "8:6-8:9",
       "definition_extent": "8:1-10:2",

@@ -49,6 +49,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "int Foo::foo()",
       "kind": 18,
+      "storage": 3,
       "declarations": [],
       "definition_spelling": "3:14-3:17",
       "definition_extent": "3:3-5:4",
@@ -64,22 +65,24 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
+      "kind": 13,
+      "storage": 1,
       "hover": "int a = Foo<int>::foo()",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:24",
       "variable_type": 1,
-      "kind": 13,
       "uses": ["8:5-8:6"]
     }, {
       "id": 1,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "int b",
+      "kind": 13,
+      "storage": 1,
       "hover": "int b = Foo<bool>::foo()",
       "definition_spelling": "9:5-9:6",
       "definition_extent": "9:1-9:25",
       "variable_type": 1,
-      "kind": 13,
       "uses": ["9:5-9:6"]
     }]
 }

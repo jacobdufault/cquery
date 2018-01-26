@@ -24,9 +24,10 @@ OUTPUT:
       "usr": 9937941849651546906,
       "short_name": "global",
       "detailed_name": "int global",
+      "kind": 13,
+      "storage": 2,
       "declaration": "1:12-1:18",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["1:12-1:18"]
     }]
 }

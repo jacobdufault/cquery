@@ -30,6 +30,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void IFoo::foo()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:16-2:19",
           "extent": "2:3-2:25",

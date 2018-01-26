@@ -37,6 +37,7 @@ OUTPUT:
       "short_name": "make1",
       "detailed_name": "int make1()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "6:5-6:10",
       "definition_extent": "6:1-8:2",
@@ -52,6 +53,7 @@ OUTPUT:
       "short_name": "a",
       "detailed_name": "int a()",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "12:1-12:20",
           "extent": "12:1-12:20",
@@ -71,21 +73,23 @@ OUTPUT:
       "usr": 2878407290385495202,
       "short_name": "make2",
       "detailed_name": "const int make2",
+      "kind": 13,
+      "storage": 1,
       "hover": "const int make2 = 5",
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["9:11-9:16", "12:14-12:19"]
     }, {
       "id": 1,
       "usr": 4261071340275951718,
       "short_name": "FOO",
       "detailed_name": "FOO",
+      "kind": 4,
+      "storage": 0,
       "hover": "#define FOO(aaa, bbb)\n  int a();\n  int a() { return aaa + bbb; }",
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
-      "kind": 4,
       "uses": ["1:9-1:12", "12:1-12:4"]
     }]
 }

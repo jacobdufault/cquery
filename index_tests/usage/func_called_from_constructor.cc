@@ -36,6 +36,7 @@ OUTPUT:
       "short_name": "called",
       "detailed_name": "void called()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "1:6-1:12",
       "definition_extent": "1:1-1:17",
@@ -51,6 +52,7 @@ OUTPUT:
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",
       "kind": 22,
+      "storage": 1,
       "declarations": [{
           "spelling": "4:3-4:6",
           "extent": "4:3-4:8",

@@ -80,6 +80,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "int ns::Foo::foo()",
       "kind": 18,
+      "storage": 3,
       "declarations": [],
       "definition_spelling": "5:16-5:19",
       "definition_extent": "5:5-7:6",
@@ -95,24 +96,26 @@ OUTPUT:
       "usr": 15768138241775955040,
       "short_name": "a",
       "detailed_name": "int ns::a",
+      "kind": 13,
+      "storage": 1,
       "hover": "int ns::a = Foo<int>::foo<float>()",
       "definition_spelling": "10:7-10:8",
       "definition_extent": "10:3-10:33",
       "variable_type": 3,
       "declaring_type": 0,
-      "kind": 13,
       "uses": ["10:7-10:8"]
     }, {
       "id": 1,
       "usr": 3182917058194750998,
       "short_name": "b",
       "detailed_name": "int ns::b",
+      "kind": 13,
+      "storage": 1,
       "hover": "int ns::b = Foo<bool>::foo<double>()",
       "definition_spelling": "11:7-11:8",
       "definition_extent": "11:3-11:35",
       "variable_type": 3,
       "declaring_type": 0,
-      "kind": 13,
       "uses": ["11:7-11:8"]
     }]
 }

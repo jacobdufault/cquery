@@ -44,6 +44,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo(ForwardType *f, ImplementedType a)",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:6-4:9",
       "definition_extent": "4:1-4:47",
@@ -58,20 +59,22 @@ OUTPUT:
       "usr": 2584795197111552890,
       "short_name": "f",
       "detailed_name": "ForwardType *f",
+      "kind": 25,
+      "storage": 1,
       "definition_spelling": "4:23-4:24",
       "definition_extent": "4:10-4:24",
       "variable_type": 0,
-      "kind": 25,
       "uses": ["4:23-4:24"]
     }, {
       "id": 1,
       "usr": 5136230284979460117,
       "short_name": "a",
       "detailed_name": "ImplementedType a",
+      "kind": 25,
+      "storage": 1,
       "definition_spelling": "4:42-4:43",
       "definition_extent": "4:26-4:43",
       "variable_type": 1,
-      "kind": 25,
       "uses": ["4:42-4:43"]
     }]
 }

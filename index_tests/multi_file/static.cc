@@ -30,6 +30,7 @@ OUTPUT: static.h
       "short_name": "CreateSharedBuffer",
       "detailed_name": "void Buffer::CreateSharedBuffer()",
       "kind": 18,
+      "storage": 3,
       "declarations": [{
           "spelling": "4:15-4:33",
           "extent": "4:3-4:35",
@@ -73,6 +74,7 @@ OUTPUT: static.cc
       "short_name": "CreateSharedBuffer",
       "detailed_name": "void Buffer::CreateSharedBuffer()",
       "kind": 18,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:14-3:32",
       "definition_extent": "3:1-3:37",

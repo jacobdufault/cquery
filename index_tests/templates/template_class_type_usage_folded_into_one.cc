@@ -99,20 +99,22 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "Foo<A>::Inner a",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "9:15-9:16",
       "definition_extent": "9:1-9:16",
       "variable_type": 3,
-      "kind": 13,
       "uses": ["9:15-9:16"]
     }, {
       "id": 1,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "Foo<B>::Inner b",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "10:15-10:16",
       "definition_extent": "10:1-10:16",
       "variable_type": 3,
-      "kind": 13,
       "uses": ["10:15-10:16"]
     }]
 }

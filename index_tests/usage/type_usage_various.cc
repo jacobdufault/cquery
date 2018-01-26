@@ -37,6 +37,7 @@ OUTPUT:
       "short_name": "make",
       "detailed_name": "Foo *Foo::make()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:8-2:12",
           "extent": "2:3-2:14",
@@ -57,19 +58,21 @@ OUTPUT:
       "usr": 14873619387499024780,
       "short_name": "f",
       "detailed_name": "Foo f",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:8",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["6:7-6:8"]
     }, {
       "id": 1,
       "usr": 14455976355866885943,
       "short_name": "foo",
       "detailed_name": "Foo foo",
+      "kind": 13,
+      "storage": 2,
       "declaration": "10:12-10:15",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["10:12-10:15"]
     }]
 }

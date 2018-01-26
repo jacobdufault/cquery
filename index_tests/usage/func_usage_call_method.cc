@@ -35,6 +35,7 @@ OUTPUT:
       "short_name": "Used",
       "detailed_name": "void Foo::Used()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:8-2:12",
           "extent": "2:3-2:14",
@@ -54,6 +55,7 @@ OUTPUT:
       "short_name": "user",
       "detailed_name": "void user()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:6-5:10",
       "definition_extent": "5:1-8:2",
@@ -68,11 +70,12 @@ OUTPUT:
       "usr": 3014406561587537195,
       "short_name": "f",
       "detailed_name": "Foo *f",
+      "kind": 13,
+      "storage": 1,
       "hover": "Foo *f = nullptr",
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["6:8-6:9", "7:3-7:4"]
     }]
 }

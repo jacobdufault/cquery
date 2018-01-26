@@ -17,6 +17,7 @@ OUTPUT: simple_header.h
       "short_name": "header",
       "detailed_name": "void header()",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:6-3:12",
           "extent": "3:1-3:14",
@@ -46,6 +47,7 @@ OUTPUT: simple_impl.cc
       "short_name": "impl",
       "detailed_name": "void impl()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:6-3:10",
       "definition_extent": "3:1-5:2",
@@ -61,6 +63,7 @@ OUTPUT: simple_impl.cc
       "short_name": "",
       "detailed_name": "",
       "kind": 0,
+      "storage": 0,
       "declarations": [],
       "base": [],
       "derived": [],

@@ -35,6 +35,7 @@ OUTPUT:
       "short_name": "Type",
       "detailed_name": "void Type::Type()",
       "kind": 22,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "2:3-2:7",
       "definition_extent": "2:3-2:12",
@@ -51,6 +52,7 @@ OUTPUT:
       "short_name": "Make",
       "detailed_name": "void Make()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:6-5:10",
       "definition_extent": "5:1-8:2",
@@ -65,20 +67,22 @@ OUTPUT:
       "usr": 17348451315735351657,
       "short_name": "foo0",
       "detailed_name": "Type foo0",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "6:8-6:12",
       "definition_extent": "6:3-6:12",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["6:8-6:12"]
     }, {
       "id": 1,
       "usr": 3757978174345638825,
       "short_name": "foo1",
       "detailed_name": "Type foo1",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "7:8-7:12",
       "definition_extent": "7:3-7:21",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["7:8-7:12"]
     }]
 }

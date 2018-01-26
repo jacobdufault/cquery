@@ -127,10 +127,11 @@ OUTPUT:
       "usr": 3880651725784125791,
       "short_name": "T",
       "detailed_name": "unsigned int T",
+      "kind": 0,
+      "storage": 0,
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
       "variable_type": 3,
-      "kind": 0,
       "uses": ["7:23-7:24", "8:24-8:25"]
     }]
 }

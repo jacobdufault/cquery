@@ -30,6 +30,7 @@ OUTPUT:
       "short_name": "g",
       "detailed_name": "func g",
       "kind": 12,
+      "storage": 3,
       "declarations": [{
           "spelling": "2:13-2:14",
           "extent": "2:1-2:14",

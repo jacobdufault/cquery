@@ -36,6 +36,7 @@ OUTPUT:
       "short_name": "Wrapper",
       "detailed_name": "void Wrapper::Wrapper(int i)",
       "kind": 22,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:3-2:10",
           "extent": "2:3-2:17",
@@ -55,6 +56,7 @@ OUTPUT:
       "short_name": "called",
       "detailed_name": "int called()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:5-5:11",
       "definition_extent": "5:1-5:27",
@@ -70,6 +72,7 @@ OUTPUT:
       "short_name": "caller",
       "detailed_name": "Wrapper caller()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "7:9-7:15",
       "definition_extent": "7:1-9:2",

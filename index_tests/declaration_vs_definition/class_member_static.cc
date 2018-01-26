@@ -44,12 +44,13 @@ OUTPUT:
       "usr": 8942920329766232482,
       "short_name": "foo",
       "detailed_name": "int Foo::foo",
+      "kind": 21,
+      "storage": 1,
       "declaration": "2:14-2:17",
       "definition_spelling": "5:10-5:13",
       "definition_extent": "5:1-5:13",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 21,
       "uses": ["2:14-2:17", "5:10-5:13"]
     }]
 }

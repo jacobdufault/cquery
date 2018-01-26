@@ -16,6 +16,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "1:6-1:9",
           "extent": "1:1-1:11",
@@ -34,6 +35,7 @@ OUTPUT:
       "short_name": "usage",
       "detailed_name": "void usage()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:6-3:11",
       "definition_extent": "3:1-5:2",

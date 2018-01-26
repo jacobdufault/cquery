@@ -19,6 +19,7 @@ OUTPUT:
       "short_name": "called",
       "detailed_name": "bool called(bool a, bool b)",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:6-3:12",
           "extent": "3:1-3:28",
@@ -37,6 +38,7 @@ OUTPUT:
       "short_name": "caller",
       "detailed_name": "void caller()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:6-5:12",
       "definition_extent": "5:1-7:2",
@@ -51,10 +53,11 @@ OUTPUT:
       "usr": 1290746656694198202,
       "short_name": "MACRO_CALL",
       "detailed_name": "MACRO_CALL",
+      "kind": 4,
+      "storage": 0,
       "hover": "#define MACRO_CALL(e) e",
       "definition_spelling": "1:9-1:19",
       "definition_extent": "1:9-1:24",
-      "kind": 4,
       "uses": ["1:9-1:19", "6:3-6:13"]
     }]
 }

@@ -27,10 +27,11 @@ OUTPUT:
       "usr": 6601831367240627080,
       "short_name": "t",
       "detailed_name": "Type t",
+      "kind": 13,
+      "storage": 3,
       "definition_spelling": "2:13-2:14",
       "definition_extent": "2:1-2:14",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["2:13-2:14"]
     }]
 }

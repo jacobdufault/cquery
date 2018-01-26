@@ -30,6 +30,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:6-3:9",
       "definition_extent": "3:1-5:2",
@@ -44,10 +45,11 @@ OUTPUT:
       "usr": 11823161916242867318,
       "short_name": "a",
       "detailed_name": "int a",
+      "kind": 13,
+      "storage": 3,
       "definition_spelling": "1:12-1:13",
       "definition_extent": "1:1-1:13",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["1:12-1:13", "4:3-4:4"]
     }]
 }

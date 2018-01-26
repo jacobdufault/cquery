@@ -55,6 +55,7 @@ OUTPUT:
       "short_name": "called",
       "detailed_name": "void called(int a)",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "1:6-1:12",
           "extent": "1:1-1:19",
@@ -73,6 +74,7 @@ OUTPUT:
       "short_name": "gen",
       "detailed_name": "int gen()",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:5-3:8",
           "extent": "3:1-3:10",
@@ -91,6 +93,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "12:6-12:9",
       "definition_extent": "12:1-15:2",
@@ -105,35 +108,38 @@ OUTPUT:
       "usr": 11489549839875479478,
       "short_name": "static_var",
       "detailed_name": "int Foo::static_var",
+      "kind": 21,
+      "storage": 1,
       "hover": "int Foo::static_var = 0",
       "declaration": "6:14-6:24",
       "definition_spelling": "10:10-10:20",
       "definition_extent": "10:1-10:24",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 21,
       "uses": ["6:14-6:24", "10:10-10:20", "14:45-14:55"]
     }, {
       "id": 1,
       "usr": 9648311402855509901,
       "short_name": "field_var",
       "detailed_name": "int Foo::field_var",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "7:7-7:16",
       "definition_extent": "7:3-7:16",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["7:7-7:16", "14:28-14:37"]
     }, {
       "id": 2,
       "usr": 13284113377394221067,
       "short_name": "a",
       "detailed_name": "int a",
+      "kind": 13,
+      "storage": 1,
       "hover": "int a = 5",
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:12",
       "variable_type": 1,
-      "kind": 13,
       "uses": ["13:7-13:8", "14:10-14:11"]
     }]
 }

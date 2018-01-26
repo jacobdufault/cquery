@@ -79,33 +79,36 @@ OUTPUT:
       "usr": 11633578660978286467,
       "short_name": "a",
       "detailed_name": "int MergeableUpdate::a",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "4:7-4:8",
       "definition_extent": "4:3-4:8",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["4:7-4:8"]
     }, {
       "id": 1,
       "usr": 14949552147532317793,
       "short_name": "b",
       "detailed_name": "int MergeableUpdate::b",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "5:7-5:8",
       "definition_extent": "5:3-5:8",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["5:7-5:8"]
     }, {
       "id": 2,
       "usr": 9003350345237582363,
       "short_name": "to_add",
       "detailed_name": "std::vector<int> MergeableUpdate::to_add",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "6:20-6:26",
       "definition_extent": "6:3-6:26",
       "variable_type": 2,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["6:20-6:26"]
     }]
 }

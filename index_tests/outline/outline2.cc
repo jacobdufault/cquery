@@ -58,7 +58,7 @@ OUTPUT:
       "id": 1,
       "usr": 14151982074805896770,
       "short_name": "string",
-      "detailed_name": "std::__cxx11::string",
+      "detailed_name": "std::string",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -101,6 +101,7 @@ OUTPUT:
       "short_name": "LoadCompilationEntriesFromDirectory",
       "detailed_name": "std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::string &project_directory)",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "12:31-12:66",
           "extent": "12:1-12:104",
@@ -118,33 +119,36 @@ OUTPUT:
       "usr": 1153224798516629792,
       "short_name": "directory",
       "detailed_name": "std::string CompilationEntry::directory",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "7:15-7:24",
       "definition_extent": "7:3-7:24",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["7:15-7:24"]
     }, {
       "id": 1,
       "usr": 2255668374222866345,
       "short_name": "filename",
       "detailed_name": "std::string CompilationEntry::filename",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "8:15-8:23",
       "definition_extent": "8:3-8:23",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["8:15-8:23"]
     }, {
       "id": 2,
       "usr": 12616880765274259414,
       "short_name": "args",
       "detailed_name": "std::vector<std::string> CompilationEntry::args",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "9:28-9:32",
       "definition_extent": "9:3-9:32",
       "variable_type": 3,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["9:28-9:32"]
     }]
 }

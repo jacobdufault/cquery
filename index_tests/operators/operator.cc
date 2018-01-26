@@ -34,6 +34,7 @@ OUTPUT:
       "short_name": "operator()",
       "detailed_name": "void Foo::operator()(int)",
       "kind": 16,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "2:8-2:18",
       "definition_extent": "2:3-2:27",
@@ -50,6 +51,7 @@ OUTPUT:
       "short_name": "operator()",
       "detailed_name": "void Foo::operator()(bool)",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:8-3:18",
           "extent": "3:3-3:24",
@@ -69,6 +71,7 @@ OUTPUT:
       "short_name": "operator()",
       "detailed_name": "int Foo::operator()(int a, int b)",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "4:7-4:17",
           "extent": "4:3-4:31",
@@ -88,6 +91,7 @@ OUTPUT:
       "short_name": "operator+=",
       "detailed_name": "Foo &operator+=(const Foo &, const int &)",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "7:6-7:17",
           "extent": "7:1-7:42",

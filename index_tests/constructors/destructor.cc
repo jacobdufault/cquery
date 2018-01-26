@@ -41,6 +41,7 @@ OUTPUT:
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",
       "kind": 22,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:3-3:6",
       "definition_extent": "3:3-3:11",
@@ -57,6 +58,7 @@ OUTPUT:
       "short_name": "~Foo",
       "detailed_name": "void Foo::~Foo() noexcept",
       "kind": 23,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:3-4:7",
       "definition_extent": "4:3-4:12",
@@ -73,6 +75,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "7:6-7:9",
       "definition_extent": "7:1-9:2",
@@ -87,10 +90,11 @@ OUTPUT:
       "usr": 9954632887635271906,
       "short_name": "f",
       "detailed_name": "Foo f",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "8:7-8:8",
       "definition_extent": "8:3-8:8",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["8:7-8:8"]
     }]
 }

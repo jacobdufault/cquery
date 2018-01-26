@@ -61,22 +61,24 @@ OUTPUT:
       "usr": 15768138241775955040,
       "short_name": "a",
       "detailed_name": "Foo<int> ns::a",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "5:12-5:13",
       "definition_extent": "5:3-5:13",
       "variable_type": 2,
       "declaring_type": 0,
-      "kind": 13,
       "uses": ["5:12-5:13"]
     }, {
       "id": 1,
       "usr": 3182917058194750998,
       "short_name": "b",
       "detailed_name": "Foo<bool> ns::b",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "6:13-6:14",
       "definition_extent": "6:3-6:14",
       "variable_type": 2,
       "declaring_type": 0,
-      "kind": 13,
       "uses": ["6:13-6:14"]
     }]
 }

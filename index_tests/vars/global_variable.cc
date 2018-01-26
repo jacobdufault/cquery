@@ -24,11 +24,12 @@ OUTPUT:
       "usr": 6834525061342585382,
       "short_name": "global",
       "detailed_name": "int global",
+      "kind": 13,
+      "storage": 3,
       "hover": "int global = 0",
       "definition_spelling": "1:12-1:18",
       "definition_extent": "1:1-1:22",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["1:12-1:18"]
     }]
 }

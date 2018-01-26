@@ -145,6 +145,7 @@ OUTPUT:
       "short_name": "as_return_type",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *as_return_type(unique_ptr<S1, S2> *)",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "33:37-33:51",
       "definition_extent": "33:1-33:92",
@@ -160,6 +161,7 @@ OUTPUT:
       "short_name": "no_return_type",
       "detailed_name": "void no_return_type(int)",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "40:6-40:20",
       "definition_extent": "40:1-40:28",
@@ -175,6 +177,7 @@ OUTPUT:
       "short_name": "empty",
       "detailed_name": "void empty()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "53:6-53:11",
       "definition_extent": "53:1-55:2",
@@ -190,6 +193,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "unique_ptr<S1, S2> *Foo::foo()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "65:23-65:26",
           "extent": "65:3-65:28",
@@ -210,19 +214,21 @@ OUTPUT:
       "usr": 2933643612409209903,
       "short_name": "f",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
+      "kind": 13,
+      "storage": 2,
       "declaration": "15:43-15:44",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["15:43-15:44"]
     }, {
       "id": 1,
       "usr": 11547294959889394856,
       "short_name": "local",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *local",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "54:39-54:44",
       "definition_extent": "54:3-54:44",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["54:39-54:44"]
     }]
 }

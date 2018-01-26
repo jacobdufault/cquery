@@ -49,13 +49,14 @@ OUTPUT:
       "usr": 7057400933868440116,
       "short_name": "static_var",
       "detailed_name": "const VarType Holder::static_var",
+      "kind": 21,
+      "storage": 1,
       "hover": "const VarType Holder::static_var = (VarType)0x0",
       "declaration": "4:28-4:38",
       "definition_spelling": "7:23-7:33",
       "definition_extent": "7:1-7:33",
       "variable_type": 0,
       "declaring_type": 1,
-      "kind": 21,
       "uses": ["4:28-4:38", "7:23-7:33"]
     }]
 }

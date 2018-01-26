@@ -58,6 +58,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "Type *foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:7-3:10",
           "extent": "3:1-3:12",
@@ -83,6 +84,7 @@ OUTPUT:
       "short_name": "Get",
       "detailed_name": "Type *Foo::Get(int)",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "8:9-8:12",
           "extent": "8:3-8:17",
@@ -104,6 +106,7 @@ OUTPUT:
       "short_name": "Empty",
       "detailed_name": "void Foo::Empty()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "9:8-9:13",
           "extent": "9:3-9:15",
@@ -125,6 +128,7 @@ OUTPUT:
       "short_name": "external",
       "detailed_name": "const Type &external()",
       "kind": 12,
+      "storage": 2,
       "declarations": [{
           "spelling": "15:20-15:28",
           "extent": "15:1-15:30",
@@ -143,6 +147,7 @@ OUTPUT:
       "short_name": "bar",
       "detailed_name": "Type *bar()",
       "kind": 12,
+      "storage": 3,
       "declarations": [{
           "spelling": "17:14-17:17",
           "extent": "17:1-17:19",

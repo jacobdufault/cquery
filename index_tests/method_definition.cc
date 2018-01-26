@@ -32,6 +32,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void Foo::foo() const",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:8-2:11",
           "extent": "2:3-2:19",

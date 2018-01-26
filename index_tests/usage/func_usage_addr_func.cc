@@ -20,6 +20,7 @@ OUTPUT:
       "short_name": "consume",
       "detailed_name": "void consume(void (*)())",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "1:6-1:13",
       "definition_extent": "1:1-1:28",
@@ -35,6 +36,7 @@ OUTPUT:
       "short_name": "used",
       "detailed_name": "void used()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:6-3:10",
       "definition_extent": "3:1-3:15",
@@ -50,6 +52,7 @@ OUTPUT:
       "short_name": "user",
       "detailed_name": "void user()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:6-5:10",
       "definition_extent": "5:1-8:2",
@@ -64,9 +67,10 @@ OUTPUT:
       "usr": 13681544683892648258,
       "short_name": "x",
       "detailed_name": "void (*)() x",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "6:10-6:11",
       "definition_extent": "6:3-6:22",
-      "kind": 13,
       "uses": ["6:10-6:11"]
     }]
 }

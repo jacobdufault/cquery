@@ -63,6 +63,7 @@ OUTPUT:
       "short_name": "Accept",
       "detailed_name": "void ns::Accept(int a)",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:8-3:14",
       "definition_extent": "3:3-3:24",
@@ -79,6 +80,7 @@ OUTPUT:
       "short_name": "Runner",
       "detailed_name": "void Runner()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "6:6-6:12",
       "definition_extent": "6:1-10:2",
@@ -93,21 +95,23 @@ OUTPUT:
       "usr": 12898699035586282159,
       "short_name": "Foo",
       "detailed_name": "int ns::Foo",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
       "variable_type": 2,
       "declaring_type": 0,
-      "kind": 13,
       "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
     }, {
       "id": 1,
       "usr": 7976909968919750794,
       "short_name": "a",
       "detailed_name": "int a",
+      "kind": 25,
+      "storage": 1,
       "definition_spelling": "3:19-3:20",
       "definition_extent": "3:15-3:20",
       "variable_type": 2,
-      "kind": 25,
       "uses": ["3:19-3:20"]
     }]
 }

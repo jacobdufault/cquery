@@ -30,6 +30,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void Foo::foo()",
       "kind": 16,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "2:8-2:11",
       "definition_extent": "2:3-2:16",

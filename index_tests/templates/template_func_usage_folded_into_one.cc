@@ -35,6 +35,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "int foo()",
       "kind": 12,
+      "storage": 3,
       "declarations": [],
       "definition_spelling": "2:12-2:15",
       "definition_extent": "2:1-4:2",
@@ -49,22 +50,24 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
+      "kind": 13,
+      "storage": 1,
       "hover": "int a = foo<int>()",
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:19",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["6:5-6:6"]
     }, {
       "id": 1,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "int b",
+      "kind": 13,
+      "storage": 1,
       "hover": "int b = foo<bool>()",
       "definition_spelling": "7:5-7:6",
       "definition_extent": "7:1-7:20",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["7:5-7:6"]
     }]
 }

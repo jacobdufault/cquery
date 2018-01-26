@@ -41,9 +41,10 @@ OUTPUT:
       "usr": 5844987037615239736,
       "short_name": "member",
       "detailed_name": "int Foo::member",
+      "kind": 21,
+      "storage": 3,
       "declaration": "2:14-2:20",
       "variable_type": 1,
-      "kind": 21,
       "uses": ["2:14-2:20"]
     }]
 }

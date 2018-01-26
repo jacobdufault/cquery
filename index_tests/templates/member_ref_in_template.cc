@@ -63,6 +63,7 @@ OUTPUT:
       "short_name": "bar",
       "detailed_name": "void C::bar()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "4:8-4:11",
           "extent": "4:3-4:13",
@@ -82,6 +83,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "8:6-8:9",
       "definition_extent": "8:1-8:11",
@@ -96,10 +98,11 @@ OUTPUT:
       "usr": 5866801090710377175,
       "short_name": "x",
       "detailed_name": "T C::x",
+      "kind": 14,
+      "storage": 0,
       "definition_spelling": "3:5-3:6",
       "definition_extent": "3:3-3:6",
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["3:5-3:6"]
     }]
 }

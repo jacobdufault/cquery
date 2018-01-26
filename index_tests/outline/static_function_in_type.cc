@@ -75,6 +75,7 @@ OUTPUT: static_function_in_type.h
       "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *)",
       "kind": 18,
+      "storage": 3,
       "declarations": [{
           "spelling": "6:15-6:23",
           "extent": "6:3-6:33",
@@ -159,6 +160,7 @@ OUTPUT: static_function_in_type.cc
       "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *m)",
       "kind": 18,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:11-5:19",
       "definition_extent": "5:1-6:2",
@@ -174,10 +176,11 @@ OUTPUT: static_function_in_type.cc
       "usr": 9285345059965948351,
       "short_name": "m",
       "detailed_name": "ns::Manager *m",
+      "kind": 25,
+      "storage": 1,
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",
       "variable_type": 3,
-      "kind": 25,
       "uses": ["5:29-5:30"]
     }]
 }

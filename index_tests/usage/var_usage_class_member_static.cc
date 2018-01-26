@@ -49,6 +49,7 @@ OUTPUT:
       "short_name": "accept",
       "detailed_name": "void accept(int)",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "5:6-5:12",
           "extent": "5:1-5:17",
@@ -67,6 +68,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "7:6-7:9",
       "definition_extent": "7:1-9:2",
@@ -81,9 +83,10 @@ OUTPUT:
       "usr": 8599782646965457351,
       "short_name": "x",
       "detailed_name": "int Foo::x",
+      "kind": 21,
+      "storage": 3,
       "declaration": "2:14-2:15",
       "variable_type": 1,
-      "kind": 21,
       "uses": ["2:14-2:15", "8:15-8:16"]
     }]
 }

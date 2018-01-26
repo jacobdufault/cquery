@@ -34,6 +34,7 @@ OUTPUT:
       "short_name": "accept",
       "detailed_name": "void accept(T)",
       "kind": 12,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:6-2:12",
           "extent": "2:1-2:15",
@@ -52,6 +53,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void foo()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:6-4:9",
       "definition_extent": "4:1-7:2",

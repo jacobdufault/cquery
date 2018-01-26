@@ -60,6 +60,7 @@ OUTPUT:
       "short_name": "foo",
       "detailed_name": "void hello::Foo::foo()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "3:8-3:11",
           "extent": "3:3-3:13",

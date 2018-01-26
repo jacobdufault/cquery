@@ -48,6 +48,7 @@ OUTPUT:
       "short_name": "Foo",
       "detailed_name": "void Foo::Foo(Foo &&)",
       "kind": 22,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:12-5:15",
       "definition_extent": "5:12-5:16",
@@ -63,31 +64,34 @@ OUTPUT:
       "usr": 10677751717622394455,
       "short_name": "x",
       "detailed_name": "int x",
+      "kind": 13,
+      "storage": 1,
       "hover": "int x = A",
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
       "variable_type": 1,
-      "kind": 13,
       "uses": ["8:5-8:6"]
     }, {
       "id": 1,
       "usr": 7651988378939587454,
       "short_name": "A",
       "detailed_name": "A",
+      "kind": 4,
+      "storage": 0,
       "hover": "#define A 5",
       "definition_spelling": "1:9-1:10",
       "definition_extent": "1:9-1:12",
-      "kind": 4,
       "uses": ["1:9-1:10", "8:9-8:10"]
     }, {
       "id": 2,
       "usr": 14946041066794678724,
       "short_name": "DISALLOW",
       "detailed_name": "DISALLOW",
+      "kind": 4,
+      "storage": 0,
       "hover": "#define DISALLOW(type) type(type&&) = delete;",
       "definition_spelling": "2:9-2:17",
       "definition_extent": "2:9-2:46",
-      "kind": 4,
       "uses": ["2:9-2:17", "5:3-5:11"]
     }]
 }

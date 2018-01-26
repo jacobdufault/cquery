@@ -28,9 +28,10 @@ OUTPUT:
       "usr": 1346710425945444872,
       "short_name": "t",
       "detailed_name": "T t",
+      "kind": 13,
+      "storage": 2,
       "declaration": "3:10-3:11",
       "variable_type": 0,
-      "kind": 13,
       "uses": ["3:10-3:11"]
     }]
 }

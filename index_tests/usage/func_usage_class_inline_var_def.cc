@@ -47,6 +47,7 @@ OUTPUT:
       "short_name": "helper",
       "detailed_name": "int helper()",
       "kind": 12,
+      "storage": 3,
       "declarations": [],
       "definition_spelling": "1:12-1:18",
       "definition_extent": "1:1-3:2",
@@ -61,12 +62,13 @@ OUTPUT:
       "usr": 4220150017963593039,
       "short_name": "x",
       "detailed_name": "int Foo::x",
+      "kind": 14,
+      "storage": 0,
       "hover": "int Foo::x = helper()",
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:19",
       "variable_type": 1,
       "declaring_type": 0,
-      "kind": 14,
       "uses": ["6:7-6:8"]
     }]
 }

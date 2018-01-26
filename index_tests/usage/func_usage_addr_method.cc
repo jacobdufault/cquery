@@ -35,6 +35,7 @@ OUTPUT:
       "short_name": "Used",
       "detailed_name": "void Foo::Used()",
       "kind": 16,
+      "storage": 1,
       "declarations": [{
           "spelling": "2:8-2:12",
           "extent": "2:3-2:14",
@@ -54,6 +55,7 @@ OUTPUT:
       "short_name": "user",
       "detailed_name": "void user()",
       "kind": 12,
+      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:6-5:10",
       "definition_extent": "5:1-7:2",
@@ -68,9 +70,10 @@ OUTPUT:
       "usr": 8436636043513449412,
       "short_name": "x",
       "detailed_name": "void (Foo::*)() x",
+      "kind": 13,
+      "storage": 1,
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:22",
-      "kind": 13,
       "uses": ["6:8-6:9"]
     }]
 }
