@@ -1,0 +1,365 @@
+template<class T>
+class function;
+
+template<typename T, typename... Args>
+class function<T(Args...)> {};
+
+function<void(int)> f;
+
+template<typename T> class allocator;
+
+template<typename T, typename Alloc = allocator<T> >
+class vector {
+  void clear();
+};
+
+template<typename T>
+class vector<T*> {};
+
+struct Z1 {};
+
+template class vector<Z1>;
+
+struct Z2 {};
+
+template<>
+class vector<Z2> {
+  void clear();
+};
+
+vector<char> vc;
+vector<int*> vip;
+vector<Z1> vz1;
+vector<Z2> vz2;
+
+enum Enum {
+  Enum0, Enum1
+};
+template <typename T, int I, Enum, int E>
+void foo(T Value) {}
+
+static const int kOnst = 7;
+template <>
+void foo<float, 9, Enum0, kOnst + 7>(float Value);
+
+/*
+OUTPUT:
+{
+  "includes": [],
+  "skipped_by_preprocessor": [],
+  "types": [{
+      "id": 0,
+      "usr": 15019211479263750068,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["2:7-2:15", "5:7-5:15", "7:1-7:9"]
+    }, {
+      "id": 1,
+      "usr": 10470724750229934838,
+      "short_name": "function",
+      "detailed_name": "function",
+      "kind": 7,
+      "definition_spelling": "5:7-5:15",
+      "definition_extent": "4:1-5:30",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [0],
+      "uses": ["5:7-5:15", "7:1-7:9"]
+    }, {
+      "id": 2,
+      "usr": 15695704394170757108,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["9:28-9:37", "11:39-11:48"]
+    }, {
+      "id": 3,
+      "usr": 7440942986741176606,
+      "short_name": "vector",
+      "detailed_name": "vector",
+      "kind": 7,
+      "definition_spelling": "12:7-12:13",
+      "definition_extent": "12:1-14:2",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [0],
+      "vars": [],
+      "instances": [1, 3, 4],
+      "uses": ["12:7-12:13", "17:7-17:13", "26:7-26:13", "30:1-30:7", "31:1-31:7", "32:1-32:7", "33:1-33:7"]
+    }, {
+      "id": 4,
+      "usr": 16155717907537731864,
+      "short_name": "vector",
+      "detailed_name": "vector",
+      "kind": 7,
+      "definition_spelling": "17:7-17:13",
+      "definition_extent": "16:1-17:20",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [2],
+      "uses": ["17:7-17:13", "31:1-31:7"]
+    }, {
+      "id": 5,
+      "usr": 5760043510674081814,
+      "short_name": "Z1",
+      "detailed_name": "Z1",
+      "kind": 6,
+      "definition_spelling": "19:8-19:10",
+      "definition_extent": "19:1-19:13",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["19:8-19:10", "32:8-32:10"]
+    }, {
+      "id": 6,
+      "usr": 10124869160135436852,
+      "short_name": "Z2",
+      "detailed_name": "Z2",
+      "kind": 6,
+      "definition_spelling": "23:8-23:10",
+      "definition_extent": "23:1-23:13",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["23:8-23:10", "26:14-26:16", "33:8-33:10"]
+    }, {
+      "id": 7,
+      "usr": 1663022413889915338,
+      "short_name": "vector",
+      "detailed_name": "vector",
+      "kind": 7,
+      "definition_spelling": "26:7-26:13",
+      "definition_extent": "25:1-28:2",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [1],
+      "vars": [],
+      "instances": [],
+      "uses": ["26:7-26:13"]
+    }, {
+      "id": 8,
+      "usr": 9201299975592934124,
+      "short_name": "Enum",
+      "detailed_name": "Enum",
+      "kind": 5,
+      "definition_spelling": "35:6-35:10",
+      "definition_extent": "35:1-37:2",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [5, 6],
+      "instances": [],
+      "uses": ["35:6-35:10"]
+    }, {
+      "id": 9,
+      "usr": 2461355892344618654,
+      "short_name": "T",
+      "detailed_name": "T",
+      "kind": 0,
+      "definition_spelling": "38:20-38:21",
+      "definition_extent": "38:11-38:21",
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": ["38:20-38:21", "39:10-39:11"]
+    }, {
+      "id": 10,
+      "usr": 17,
+      "short_name": "",
+      "detailed_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [8],
+      "uses": []
+    }],
+  "funcs": [{
+      "id": 0,
+      "is_operator": false,
+      "usr": 18107614608385228556,
+      "short_name": "clear",
+      "detailed_name": "void vector::clear()",
+      "kind": 16,
+      "declarations": [{
+          "spelling": "13:8-13:13",
+          "extent": "13:3-13:15",
+          "content": "void clear()",
+          "param_spellings": []
+        }],
+      "declaring_type": 3,
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": [],
+      "callees": []
+    }, {
+      "id": 1,
+      "is_operator": false,
+      "usr": 6113470698424012876,
+      "short_name": "clear",
+      "detailed_name": "void vector::clear()",
+      "kind": 16,
+      "declarations": [{
+          "spelling": "27:8-27:13",
+          "extent": "27:3-27:15",
+          "content": "void clear()",
+          "param_spellings": []
+        }],
+      "declaring_type": 7,
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": [],
+      "callees": []
+    }, {
+      "id": 2,
+      "is_operator": false,
+      "usr": 17498190318698490707,
+      "short_name": "foo",
+      "detailed_name": "void foo(T Value)",
+      "kind": 12,
+      "declarations": [{
+          "spelling": "43:6-43:9",
+          "extent": "42:1-43:50",
+          "content": "template <>\nvoid foo<float, 9, Enum0, kOnst + 7>(float Value)",
+          "param_spellings": ["43:44-43:49"]
+        }],
+      "definition_spelling": "39:6-39:9",
+      "definition_extent": "39:1-39:21",
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": [],
+      "callees": []
+    }],
+  "vars": [{
+      "id": 0,
+      "usr": 2933643612409209903,
+      "short_name": "f",
+      "detailed_name": "function<void (int)> f",
+      "definition_spelling": "7:21-7:22",
+      "definition_extent": "7:1-7:22",
+      "variable_type": 1,
+      "kind": 13,
+      "uses": ["7:21-7:22"]
+    }, {
+      "id": 1,
+      "usr": 5792869548777559988,
+      "short_name": "vc",
+      "detailed_name": "vector<char> vc",
+      "definition_spelling": "30:14-30:16",
+      "definition_extent": "30:1-30:16",
+      "variable_type": 3,
+      "kind": 13,
+      "uses": ["30:14-30:16"]
+    }, {
+      "id": 2,
+      "usr": 86949563628772958,
+      "short_name": "vip",
+      "detailed_name": "vector<int *> vip",
+      "definition_spelling": "31:14-31:17",
+      "definition_extent": "31:1-31:17",
+      "variable_type": 4,
+      "kind": 13,
+      "uses": ["31:14-31:17"]
+    }, {
+      "id": 3,
+      "usr": 3566687051827176322,
+      "short_name": "vz1",
+      "detailed_name": "vector<Z1> vz1",
+      "definition_spelling": "32:12-32:15",
+      "definition_extent": "32:1-32:15",
+      "variable_type": 3,
+      "kind": 13,
+      "uses": ["32:12-32:15"]
+    }, {
+      "id": 4,
+      "usr": 15931696253641284761,
+      "short_name": "vz2",
+      "detailed_name": "vector<Z2> vz2",
+      "definition_spelling": "33:12-33:15",
+      "definition_extent": "33:1-33:15",
+      "variable_type": 3,
+      "kind": 13,
+      "uses": ["33:12-33:15"]
+    }, {
+      "id": 5,
+      "usr": 15477793821005285152,
+      "short_name": "Enum0",
+      "detailed_name": "Enum::Enum0",
+      "hover": "Enum::Enum0 = 0",
+      "definition_spelling": "36:3-36:8",
+      "definition_extent": "36:3-36:8",
+      "variable_type": 8,
+      "declaring_type": 8,
+      "kind": 15,
+      "uses": ["36:3-36:8", "43:20-43:25"]
+    }, {
+      "id": 6,
+      "usr": 4917621020431490070,
+      "short_name": "Enum1",
+      "detailed_name": "Enum::Enum1",
+      "hover": "Enum::Enum1 = 1",
+      "definition_spelling": "36:10-36:15",
+      "definition_extent": "36:10-36:15",
+      "variable_type": 8,
+      "declaring_type": 8,
+      "kind": 15,
+      "uses": ["36:10-36:15"]
+    }, {
+      "id": 7,
+      "usr": 10307767688451422448,
+      "short_name": "Value",
+      "detailed_name": "T Value",
+      "definition_spelling": "39:12-39:17",
+      "definition_extent": "39:10-39:17",
+      "kind": 25,
+      "uses": ["39:12-39:17"]
+    }, {
+      "id": 8,
+      "usr": 13914496963221806870,
+      "short_name": "kOnst",
+      "detailed_name": "const int kOnst",
+      "hover": "const int kOnst = 7",
+      "definition_spelling": "41:18-41:23",
+      "definition_extent": "41:1-41:27",
+      "variable_type": 10,
+      "kind": 13,
+      "uses": ["41:18-41:23", "43:27-43:32"]
+    }]
+}
+*/
