@@ -56,8 +56,8 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 14151982074805896770,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "string",
+      "detailed_name": "string",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -82,8 +82,8 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 10956461108384510180,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "vector",
+      "detailed_name": "vector",
       "kind": 0,
       "parents": [],
       "derived": [],

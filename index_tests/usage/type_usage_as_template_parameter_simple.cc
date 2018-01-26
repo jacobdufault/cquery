@@ -28,8 +28,8 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4750332761459066907,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "S",
+      "detailed_name": "S",
       "kind": 0,
       "parents": [],
       "derived": [],

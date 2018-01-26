@@ -13,8 +13,8 @@ OUTPUT: funky_enum.h
   "types": [{
       "id": 0,
       "usr": 16985894625255407295,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "Foo",
+      "detailed_name": "Foo",
       "kind": 0,
       "parents": [],
       "derived": [],

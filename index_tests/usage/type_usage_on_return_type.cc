@@ -25,8 +25,8 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 13487927231218873822,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "Type",
+      "detailed_name": "Type",
       "kind": 0,
       "parents": [],
       "derived": [],

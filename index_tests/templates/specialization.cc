@@ -50,8 +50,8 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 15019211479263750068,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "function",
+      "detailed_name": "function",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -78,8 +78,8 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 15695704394170757108,
-      "short_name": "",
-      "detailed_name": "",
+      "short_name": "allocator",
+      "detailed_name": "allocator",
       "kind": 0,
       "parents": [],
       "derived": [],

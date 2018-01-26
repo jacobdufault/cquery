@@ -26,8 +26,8 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 1428566502523368801,
-      "short_name": "<anonymous>",
-      "detailed_name": "vector3::<anonymous>",
+      "short_name": "(anon)",
+      "detailed_name": "vector3::(anon)",
       "kind": 6,
       "definition_spelling": "2:3-2:9",
       "definition_extent": "2:3-2:28",
