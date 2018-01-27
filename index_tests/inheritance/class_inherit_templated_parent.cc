@@ -129,6 +129,7 @@ OUTPUT:
       "detailed_name": "unsigned int T",
       "kind": 0,
       "storage": 0,
+      "declarations": [],
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
       "variable_type": 3,

@@ -83,9 +83,9 @@ OUTPUT:
       "detailed_name": "int Foo::x",
       "kind": 21,
       "storage": 3,
-      "declaration": "2:14-2:15",
+      "declarations": ["2:14-2:15"],
       "variable_type": 1,
-      "uses": ["2:14-2:15", "8:15-8:16"]
+      "uses": ["8:15-8:16"]
     }]
 }
 */

@@ -33,12 +33,12 @@ OUTPUT:
       "kind": 21,
       "storage": 1,
       "hover": "Foo *Foo::member = nullptr",
-      "declaration": "2:15-2:21",
+      "declarations": ["2:15-2:21"],
       "definition_spelling": "4:11-4:17",
       "definition_extent": "4:1-4:27",
       "variable_type": 0,
       "declaring_type": 0,
-      "uses": ["2:15-2:21"]
+      "uses": []
     }]
 }
 */

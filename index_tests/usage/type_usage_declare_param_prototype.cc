@@ -55,6 +55,7 @@ OUTPUT:
       "detailed_name": "Foo *f",
       "kind": 25,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "4:15-4:16",
       "definition_extent": "4:10-4:16",
       "variable_type": 0,

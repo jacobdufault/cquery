@@ -89,6 +89,7 @@ OUTPUT:
       "detailed_name": "Foo f",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "8:7-8:8",
       "definition_extent": "8:3-8:8",
       "variable_type": 0,

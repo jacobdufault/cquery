@@ -27,6 +27,7 @@ OUTPUT:
       "kind": 13,
       "storage": 3,
       "hover": "int global = 0",
+      "declarations": [],
       "definition_spelling": "1:12-1:18",
       "definition_extent": "1:1-1:22",
       "variable_type": 0,

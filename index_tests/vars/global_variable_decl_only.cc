@@ -26,9 +26,9 @@ OUTPUT:
       "detailed_name": "int global",
       "kind": 13,
       "storage": 2,
-      "declaration": "1:12-1:18",
+      "declarations": ["1:12-1:18"],
       "variable_type": 0,
-      "uses": ["1:12-1:18"]
+      "uses": []
     }]
 }
 */

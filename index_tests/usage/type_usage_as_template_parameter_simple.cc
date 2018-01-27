@@ -47,6 +47,7 @@ OUTPUT:
       "detailed_name": "unique_ptr<S> foo",
       "kind": 13,
       "storage": 3,
+      "declarations": [],
       "definition_spelling": "6:22-6:25",
       "definition_extent": "6:1-6:25",
       "variable_type": 0,

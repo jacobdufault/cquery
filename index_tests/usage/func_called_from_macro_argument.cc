@@ -54,6 +54,7 @@ OUTPUT:
       "kind": 4,
       "storage": 0,
       "hover": "#define MACRO_CALL(e) e",
+      "declarations": [],
       "definition_spelling": "1:9-1:19",
       "definition_extent": "1:9-1:24",
       "uses": ["1:9-1:19", "6:3-6:13"]

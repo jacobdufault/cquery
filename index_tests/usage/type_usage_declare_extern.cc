@@ -30,9 +30,9 @@ OUTPUT:
       "detailed_name": "T t",
       "kind": 13,
       "storage": 2,
-      "declaration": "3:10-3:11",
+      "declarations": ["3:10-3:11"],
       "variable_type": 0,
-      "uses": ["3:10-3:11"]
+      "uses": []
     }]
 }
 */

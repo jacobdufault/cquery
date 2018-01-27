@@ -18,6 +18,7 @@ OUTPUT:
       "kind": 4,
       "storage": 0,
       "hover": "#define FOO",
+      "declarations": [],
       "definition_spelling": "2:9-2:12",
       "definition_extent": "2:9-2:12",
       "uses": ["2:9-2:12"]

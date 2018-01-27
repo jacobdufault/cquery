@@ -67,6 +67,7 @@ OUTPUT:
       "detailed_name": "F a",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "4:5-4:6",
       "definition_extent": "4:3-4:6",
       "variable_type": 1,

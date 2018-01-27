@@ -212,9 +212,9 @@ OUTPUT:
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
       "kind": 13,
       "storage": 2,
-      "declaration": "15:43-15:44",
+      "declarations": ["15:43-15:44"],
       "variable_type": 0,
-      "uses": ["15:43-15:44"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 11547294959889394856,
@@ -222,6 +222,7 @@ OUTPUT:
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *local",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "54:39-54:44",
       "definition_extent": "54:3-54:44",
       "variable_type": 0,

@@ -70,6 +70,7 @@ OUTPUT:
       "kind": 13,
       "storage": 1,
       "hover": "Foo *f = nullptr",
+      "declarations": [],
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,

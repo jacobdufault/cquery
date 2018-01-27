@@ -74,6 +74,7 @@ OUTPUT:
       "kind": 13,
       "storage": 1,
       "hover": "const int make2 = 5",
+      "declarations": [],
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
       "variable_type": 0,
@@ -86,6 +87,7 @@ OUTPUT:
       "kind": 4,
       "storage": 0,
       "hover": "#define FOO(aaa, bbb)\n  int a();\n  int a() { return aaa + bbb; }",
+      "declarations": [],
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
       "uses": ["1:9-1:12", "12:1-12:4"]

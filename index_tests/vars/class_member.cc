@@ -30,6 +30,7 @@ OUTPUT:
       "detailed_name": "Foo *Foo::member",
       "kind": 14,
       "storage": 0,
+      "declarations": [],
       "definition_spelling": "2:8-2:14",
       "definition_extent": "2:3-2:14",
       "variable_type": 0,

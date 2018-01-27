@@ -45,9 +45,9 @@ OUTPUT:
       "detailed_name": "int a",
       "kind": 13,
       "storage": 2,
-      "declaration": "1:12-1:13",
+      "declarations": ["1:12-1:13"],
       "variable_type": 0,
-      "uses": ["1:12-1:13", "4:3-4:4"]
+      "uses": ["4:3-4:4"]
     }]
 }
 */

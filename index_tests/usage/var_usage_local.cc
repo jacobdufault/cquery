@@ -44,6 +44,7 @@ OUTPUT:
       "detailed_name": "int x",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
       "variable_type": 0,

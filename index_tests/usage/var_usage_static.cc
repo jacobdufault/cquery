@@ -46,6 +46,7 @@ OUTPUT:
       "detailed_name": "int a",
       "kind": 13,
       "storage": 3,
+      "declarations": [],
       "definition_spelling": "1:12-1:13",
       "definition_extent": "1:1-1:13",
       "variable_type": 0,

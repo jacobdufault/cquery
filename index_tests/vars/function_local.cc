@@ -46,6 +46,7 @@ OUTPUT:
       "detailed_name": "Foo *a",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:9",
       "variable_type": 0,

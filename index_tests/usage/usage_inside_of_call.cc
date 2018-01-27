@@ -108,12 +108,12 @@ OUTPUT:
       "kind": 21,
       "storage": 1,
       "hover": "int Foo::static_var = 0",
-      "declaration": "6:14-6:24",
+      "declarations": ["6:14-6:24"],
       "definition_spelling": "10:10-10:20",
       "definition_extent": "10:1-10:24",
       "variable_type": 1,
       "declaring_type": 0,
-      "uses": ["6:14-6:24", "14:45-14:55"]
+      "uses": ["14:45-14:55"]
     }, {
       "id": 1,
       "usr": 9648311402855509901,
@@ -121,6 +121,7 @@ OUTPUT:
       "detailed_name": "int Foo::field_var",
       "kind": 14,
       "storage": 0,
+      "declarations": [],
       "definition_spelling": "7:7-7:16",
       "definition_extent": "7:3-7:16",
       "variable_type": 1,
@@ -134,6 +135,7 @@ OUTPUT:
       "kind": 13,
       "storage": 1,
       "hover": "int a = 5",
+      "declarations": [],
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:12",
       "variable_type": 1,

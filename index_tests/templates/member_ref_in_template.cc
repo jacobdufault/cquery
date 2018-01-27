@@ -98,6 +98,7 @@ OUTPUT:
       "detailed_name": "T C::x",
       "kind": 14,
       "storage": 0,
+      "declarations": [],
       "definition_spelling": "3:5-3:6",
       "definition_extent": "3:3-3:6",
       "declaring_type": 0,

@@ -46,12 +46,12 @@ OUTPUT:
       "detailed_name": "int Foo::foo",
       "kind": 21,
       "storage": 1,
-      "declaration": "2:14-2:17",
+      "declarations": ["2:14-2:17"],
       "definition_spelling": "5:10-5:13",
       "definition_extent": "5:1-5:13",
       "variable_type": 1,
       "declaring_type": 0,
-      "uses": ["2:14-2:17"]
+      "uses": []
     }]
 }
 */

@@ -51,6 +51,7 @@ OUTPUT:
       "detailed_name": "void (*)() x",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:19",
       "uses": ["5:3-5:4"]

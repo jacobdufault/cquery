@@ -87,6 +87,7 @@ OUTPUT:
       "detailed_name": "T var",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
       "uses": ["7:7-7:10", "8:7-8:10"]
@@ -98,6 +99,7 @@ OUTPUT:
       "kind": 13,
       "storage": 1,
       "hover": "A a = var<A>",
+      "declarations": [],
       "definition_spelling": "7:3-7:4",
       "definition_extent": "7:1-7:13",
       "variable_type": 0,
@@ -110,6 +112,7 @@ OUTPUT:
       "kind": 13,
       "storage": 1,
       "hover": "B b = var<B>",
+      "declarations": [],
       "definition_spelling": "8:3-8:4",
       "definition_extent": "8:1-8:13",
       "variable_type": 1,

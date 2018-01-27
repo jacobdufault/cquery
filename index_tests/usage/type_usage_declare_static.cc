@@ -29,6 +29,7 @@ OUTPUT:
       "detailed_name": "Type t",
       "kind": 13,
       "storage": 3,
+      "declarations": [],
       "definition_spelling": "2:13-2:14",
       "definition_extent": "2:1-2:14",
       "variable_type": 0,

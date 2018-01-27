@@ -59,6 +59,7 @@ OUTPUT:
       "detailed_name": "Foo f",
       "kind": 13,
       "storage": 1,
+      "declarations": [],
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:8",
       "variable_type": 0,
@@ -70,9 +71,9 @@ OUTPUT:
       "detailed_name": "Foo foo",
       "kind": 13,
       "storage": 2,
-      "declaration": "10:12-10:15",
+      "declarations": ["10:12-10:15"],
       "variable_type": 0,
-      "uses": ["10:12-10:15"]
+      "uses": []
     }]
 }
 */
