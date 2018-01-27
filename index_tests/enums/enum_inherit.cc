@@ -75,7 +75,7 @@ OUTPUT:
       "definition_extent": "2:3-2:4",
       "variable_type": 0,
       "declaring_type": 0,
-      "uses": ["2:3-2:4"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 15962370213938840720,
@@ -88,7 +88,7 @@ OUTPUT:
       "definition_extent": "3:3-3:9",
       "variable_type": 0,
       "declaring_type": 0,
-      "uses": ["3:3-3:4"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 16614320383091394267,
@@ -101,7 +101,7 @@ OUTPUT:
       "definition_extent": "9:3-9:5",
       "variable_type": 2,
       "declaring_type": 2,
-      "uses": ["9:3-9:5"]
+      "uses": []
     }, {
       "id": 3,
       "usr": 16847439761518576294,
@@ -114,7 +114,7 @@ OUTPUT:
       "definition_extent": "10:3-10:11",
       "variable_type": 2,
       "declaring_type": 2,
-      "uses": ["10:3-10:6"]
+      "uses": []
     }]
 }
 */

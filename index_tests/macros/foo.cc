@@ -69,7 +69,7 @@ OUTPUT:
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
       "variable_type": 1,
-      "uses": ["8:5-8:6"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 7651988378939587454,

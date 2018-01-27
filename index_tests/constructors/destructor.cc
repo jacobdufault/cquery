@@ -92,7 +92,7 @@ OUTPUT:
       "definition_spelling": "8:7-8:8",
       "definition_extent": "8:3-8:8",
       "variable_type": 0,
-      "uses": ["8:7-8:8"]
+      "uses": []
     }]
 }
 */

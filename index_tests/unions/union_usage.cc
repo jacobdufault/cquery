@@ -86,7 +86,7 @@ OUTPUT:
       "definition_extent": "2:3-2:12",
       "variable_type": 1,
       "declaring_type": 0,
-      "uses": ["2:7-2:8", "9:5-9:6"]
+      "uses": ["9:5-9:6"]
     }, {
       "id": 1,
       "usr": 8804696910588009104,
@@ -99,7 +99,7 @@ OUTPUT:
       "definition_extent": "3:3-3:13",
       "variable_type": 2,
       "declaring_type": 0,
-      "uses": ["3:8-3:9"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 2933643612409209903,
@@ -110,7 +110,7 @@ OUTPUT:
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:6",
       "variable_type": 0,
-      "uses": ["6:5-6:6", "9:3-9:4"]
+      "uses": ["9:3-9:4"]
     }]
 }
 */

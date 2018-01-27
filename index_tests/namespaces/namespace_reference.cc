@@ -99,7 +99,7 @@ OUTPUT:
       "definition_extent": "2:3-2:10",
       "variable_type": 2,
       "declaring_type": 0,
-      "uses": ["2:7-2:10", "7:18-7:21", "9:10-9:13"]
+      "uses": ["7:18-7:21", "9:10-9:13"]
     }, {
       "id": 1,
       "usr": 7976909968919750794,
@@ -110,7 +110,7 @@ OUTPUT:
       "definition_spelling": "3:19-3:20",
       "definition_extent": "3:15-3:20",
       "variable_type": 2,
-      "uses": ["3:19-3:20"]
+      "uses": []
     }]
 }
 */

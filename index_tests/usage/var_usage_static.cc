@@ -49,7 +49,7 @@ OUTPUT:
       "definition_spelling": "1:12-1:13",
       "definition_extent": "1:1-1:13",
       "variable_type": 0,
-      "uses": ["1:12-1:13", "4:3-4:4"]
+      "uses": ["4:3-4:4"]
     }]
 }
 */

@@ -63,7 +63,7 @@ OUTPUT:
       "definition_spelling": "4:23-4:24",
       "definition_extent": "4:10-4:24",
       "variable_type": 0,
-      "uses": ["4:23-4:24"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 5136230284979460117,
@@ -74,7 +74,7 @@ OUTPUT:
       "definition_spelling": "4:42-4:43",
       "definition_extent": "4:26-4:43",
       "variable_type": 1,
-      "uses": ["4:42-4:43"]
+      "uses": []
     }]
 }
 */

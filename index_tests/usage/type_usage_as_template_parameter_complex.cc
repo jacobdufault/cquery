@@ -225,7 +225,7 @@ OUTPUT:
       "definition_spelling": "54:39-54:44",
       "definition_extent": "54:3-54:44",
       "variable_type": 0,
-      "uses": ["54:39-54:44"]
+      "uses": []
     }]
 }
 */

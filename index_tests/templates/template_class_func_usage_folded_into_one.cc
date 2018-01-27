@@ -70,7 +70,7 @@ OUTPUT:
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:24",
       "variable_type": 1,
-      "uses": ["8:5-8:6"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 12028309045033782423,
@@ -82,7 +82,7 @@ OUTPUT:
       "definition_spelling": "9:5-9:6",
       "definition_extent": "9:1-9:25",
       "variable_type": 1,
-      "uses": ["9:5-9:6"]
+      "uses": []
     }]
 }
 */

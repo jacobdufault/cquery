@@ -74,7 +74,7 @@ OUTPUT:
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,
-      "uses": ["6:8-6:9", "7:3-7:4"]
+      "uses": ["7:3-7:4"]
     }]
 }
 */

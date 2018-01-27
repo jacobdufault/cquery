@@ -62,7 +62,7 @@ OUTPUT:
       "definition_extent": "2:3-2:8",
       "variable_type": 1,
       "declaring_type": 0,
-      "uses": ["2:7-2:8"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 8804696910588009104,
@@ -74,7 +74,7 @@ OUTPUT:
       "definition_extent": "3:3-3:9",
       "variable_type": 2,
       "declaring_type": 0,
-      "uses": ["3:8-3:9"]
+      "uses": []
     }]
 }
 */

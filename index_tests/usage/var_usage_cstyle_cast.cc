@@ -57,7 +57,7 @@ OUTPUT:
       "definition_extent": "7:1-7:33",
       "variable_type": 0,
       "declaring_type": 1,
-      "uses": ["4:28-4:38", "7:23-7:33"]
+      "uses": ["4:28-4:38"]
     }]
 }
 */

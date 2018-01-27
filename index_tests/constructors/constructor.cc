@@ -71,7 +71,7 @@ OUTPUT:
       "definition_spelling": "7:7-7:8",
       "definition_extent": "7:3-7:8",
       "variable_type": 0,
-      "uses": ["7:7-7:8"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 11468802633764653592,
@@ -83,7 +83,7 @@ OUTPUT:
       "definition_spelling": "8:8-8:10",
       "definition_extent": "8:3-8:22",
       "variable_type": 0,
-      "uses": ["8:8-8:10"]
+      "uses": []
     }]
 }
 */

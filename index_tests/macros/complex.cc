@@ -77,7 +77,7 @@ OUTPUT:
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
       "variable_type": 0,
-      "uses": ["9:11-9:16", "12:14-12:19"]
+      "uses": ["12:14-12:19"]
     }, {
       "id": 1,
       "usr": 4261071340275951718,

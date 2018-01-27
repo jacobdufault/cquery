@@ -179,7 +179,7 @@ OUTPUT: static_function_in_type.cc
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",
       "variable_type": 3,
-      "uses": ["5:29-5:30"]
+      "uses": []
     }]
 }
 */

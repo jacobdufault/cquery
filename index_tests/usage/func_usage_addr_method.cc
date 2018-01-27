@@ -72,7 +72,7 @@ OUTPUT:
       "storage": 1,
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:22",
-      "uses": ["6:8-6:9"]
+      "uses": []
     }]
 }
 */

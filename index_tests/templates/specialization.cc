@@ -276,7 +276,7 @@ OUTPUT:
       "definition_spelling": "7:21-7:22",
       "definition_extent": "7:1-7:22",
       "variable_type": 1,
-      "uses": ["7:21-7:22"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 5792869548777559988,
@@ -287,7 +287,7 @@ OUTPUT:
       "definition_spelling": "30:14-30:16",
       "definition_extent": "30:1-30:16",
       "variable_type": 3,
-      "uses": ["30:14-30:16"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 86949563628772958,
@@ -298,7 +298,7 @@ OUTPUT:
       "definition_spelling": "31:14-31:17",
       "definition_extent": "31:1-31:17",
       "variable_type": 4,
-      "uses": ["31:14-31:17"]
+      "uses": []
     }, {
       "id": 3,
       "usr": 3566687051827176322,
@@ -309,7 +309,7 @@ OUTPUT:
       "definition_spelling": "32:12-32:15",
       "definition_extent": "32:1-32:15",
       "variable_type": 3,
-      "uses": ["32:12-32:15"]
+      "uses": []
     }, {
       "id": 4,
       "usr": 15931696253641284761,
@@ -320,7 +320,7 @@ OUTPUT:
       "definition_spelling": "33:12-33:15",
       "definition_extent": "33:1-33:15",
       "variable_type": 3,
-      "uses": ["33:12-33:15"]
+      "uses": []
     }, {
       "id": 5,
       "usr": 15477793821005285152,
@@ -333,7 +333,7 @@ OUTPUT:
       "definition_extent": "36:3-36:8",
       "variable_type": 8,
       "declaring_type": 8,
-      "uses": ["36:3-36:8", "43:20-43:25"]
+      "uses": ["43:20-43:25"]
     }, {
       "id": 6,
       "usr": 4917621020431490070,
@@ -346,7 +346,7 @@ OUTPUT:
       "definition_extent": "36:10-36:15",
       "variable_type": 8,
       "declaring_type": 8,
-      "uses": ["36:10-36:15"]
+      "uses": []
     }, {
       "id": 7,
       "usr": 10307767688451422448,
@@ -356,7 +356,7 @@ OUTPUT:
       "storage": 1,
       "definition_spelling": "39:12-39:17",
       "definition_extent": "39:10-39:17",
-      "uses": ["39:12-39:17"]
+      "uses": []
     }, {
       "id": 8,
       "usr": 13914496963221806870,
@@ -368,7 +368,7 @@ OUTPUT:
       "definition_spelling": "41:18-41:23",
       "definition_extent": "41:1-41:27",
       "variable_type": 10,
-      "uses": ["41:18-41:23", "43:27-43:32"]
+      "uses": ["43:27-43:32"]
     }]
 }
 */

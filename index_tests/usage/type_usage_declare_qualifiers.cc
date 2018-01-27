@@ -53,7 +53,7 @@ OUTPUT:
       "definition_spelling": "3:16-3:18",
       "definition_extent": "3:10-3:18",
       "variable_type": 0,
-      "uses": ["3:16-3:18"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 11558141642862804306,
@@ -64,7 +64,7 @@ OUTPUT:
       "definition_spelling": "3:32-3:34",
       "definition_extent": "3:20-3:34",
       "variable_type": 0,
-      "uses": ["3:32-3:34"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 1536316608590232194,
@@ -75,7 +75,7 @@ OUTPUT:
       "definition_spelling": "4:8-4:10",
       "definition_extent": "4:3-4:10",
       "variable_type": 0,
-      "uses": ["4:8-4:10"]
+      "uses": []
     }, {
       "id": 3,
       "usr": 316760354845869406,
@@ -86,7 +86,7 @@ OUTPUT:
       "definition_spelling": "5:9-5:11",
       "definition_extent": "5:3-5:11",
       "variable_type": 0,
-      "uses": ["5:9-5:11"]
+      "uses": []
     }, {
       "id": 4,
       "usr": 12321730890779907974,
@@ -97,7 +97,7 @@ OUTPUT:
       "definition_spelling": "6:15-6:17",
       "definition_extent": "6:3-6:17",
       "variable_type": 0,
-      "uses": ["6:15-6:17"]
+      "uses": []
     }, {
       "id": 5,
       "usr": 4771437488905761633,
@@ -109,7 +109,7 @@ OUTPUT:
       "definition_spelling": "7:21-7:23",
       "definition_extent": "7:3-7:33",
       "variable_type": 0,
-      "uses": ["7:21-7:23"]
+      "uses": []
     }]
 }
 */

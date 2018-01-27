@@ -124,7 +124,7 @@ OUTPUT:
       "definition_extent": "7:3-7:24",
       "variable_type": 1,
       "declaring_type": 0,
-      "uses": ["7:15-7:24"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 2255668374222866345,
@@ -136,7 +136,7 @@ OUTPUT:
       "definition_extent": "8:3-8:23",
       "variable_type": 1,
       "declaring_type": 0,
-      "uses": ["8:15-8:23"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 12616880765274259414,
@@ -148,7 +148,7 @@ OUTPUT:
       "definition_extent": "9:3-9:32",
       "variable_type": 3,
       "declaring_type": 0,
-      "uses": ["9:28-9:32"]
+      "uses": []
     }]
 }
 */

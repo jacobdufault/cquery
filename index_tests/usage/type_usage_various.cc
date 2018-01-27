@@ -62,7 +62,7 @@ OUTPUT:
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:8",
       "variable_type": 0,
-      "uses": ["6:7-6:8"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 14455976355866885943,

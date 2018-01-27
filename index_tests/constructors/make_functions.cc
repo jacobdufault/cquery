@@ -327,7 +327,7 @@ OUTPUT: make_functions.cc
       "storage": 1,
       "definition_spelling": "4:25-4:29",
       "definition_extent": "4:15-4:29",
-      "uses": ["4:25-4:29"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 12338908251430965107,
@@ -337,7 +337,7 @@ OUTPUT: make_functions.cc
       "storage": 1,
       "definition_spelling": "9:24-9:28",
       "definition_extent": "9:16-9:28",
-      "uses": ["9:24-9:28"]
+      "uses": []
     }]
 }
 */

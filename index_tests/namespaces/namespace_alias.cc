@@ -131,7 +131,7 @@ OUTPUT:
       "definition_extent": "4:14-4:26",
       "variable_type": 4,
       "declaring_type": 3,
-      "uses": ["4:18-4:21", "12:26-12:29", "13:16-13:19"]
+      "uses": ["12:26-12:29", "13:16-13:19"]
     }, {
       "id": 1,
       "usr": 107714981785063096,
@@ -143,7 +143,7 @@ OUTPUT:
       "definition_spelling": "12:7-12:8",
       "definition_extent": "12:3-12:29",
       "variable_type": 4,
-      "uses": ["12:7-12:8"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 1200087780658383286,
@@ -155,7 +155,7 @@ OUTPUT:
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:19",
       "variable_type": 4,
-      "uses": ["13:7-13:8"]
+      "uses": []
     }]
 }
 */

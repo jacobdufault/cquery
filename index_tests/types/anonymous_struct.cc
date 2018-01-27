@@ -64,7 +64,7 @@ OUTPUT:
       "definition_extent": "2:12-2:19",
       "variable_type": 2,
       "declaring_type": 1,
-      "uses": ["2:18-2:19"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 4821094820988543895,
@@ -76,7 +76,7 @@ OUTPUT:
       "definition_extent": "2:12-2:22",
       "variable_type": 2,
       "declaring_type": 1,
-      "uses": ["2:21-2:22"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 15292551660437765731,
@@ -88,7 +88,7 @@ OUTPUT:
       "definition_extent": "2:12-2:25",
       "variable_type": 2,
       "declaring_type": 1,
-      "uses": ["2:24-2:25"]
+      "uses": []
     }, {
       "id": 3,
       "usr": 1963212417280098348,
@@ -100,7 +100,7 @@ OUTPUT:
       "definition_extent": "3:3-3:13",
       "variable_type": 2,
       "declaring_type": 0,
-      "uses": ["3:9-3:10"]
+      "uses": []
     }]
 }
 */

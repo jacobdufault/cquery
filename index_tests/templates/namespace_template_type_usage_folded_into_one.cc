@@ -67,7 +67,7 @@ OUTPUT:
       "definition_extent": "5:3-5:13",
       "variable_type": 2,
       "declaring_type": 0,
-      "uses": ["5:12-5:13"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 3182917058194750998,
@@ -79,7 +79,7 @@ OUTPUT:
       "definition_extent": "6:3-6:14",
       "variable_type": 2,
       "declaring_type": 0,
-      "uses": ["6:13-6:14"]
+      "uses": []
     }]
 }
 */

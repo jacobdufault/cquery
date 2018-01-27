@@ -85,7 +85,7 @@ OUTPUT:
       "definition_spelling": "9:15-9:16",
       "definition_extent": "9:1-9:16",
       "variable_type": 3,
-      "uses": ["9:15-9:16"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 12028309045033782423,
@@ -96,7 +96,7 @@ OUTPUT:
       "definition_spelling": "10:8-10:9",
       "definition_extent": "10:1-10:9",
       "variable_type": 2,
-      "uses": ["10:8-10:9"]
+      "uses": []
     }]
 }
 */
