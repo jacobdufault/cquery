@@ -90,7 +90,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
-      "uses": ["1:9-1:12", "12:1-12:4"]
+      "uses": ["12:1-12:4"]
     }]
 }
 */

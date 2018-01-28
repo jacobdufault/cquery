@@ -82,7 +82,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "1:9-1:10",
       "definition_extent": "1:9-1:12",
-      "uses": ["1:9-1:10", "8:9-8:10"]
+      "uses": ["8:9-8:10"]
     }, {
       "id": 2,
       "usr": 14946041066794678724,
@@ -94,7 +94,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "2:9-2:17",
       "definition_extent": "2:9-2:46",
-      "uses": ["2:9-2:17", "5:3-5:11"]
+      "uses": ["5:3-5:11"]
     }]
 }
 */

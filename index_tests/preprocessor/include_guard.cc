@@ -21,7 +21,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "2:9-2:12",
       "definition_extent": "2:9-2:12",
-      "uses": ["2:9-2:12"]
+      "uses": []
     }]
 }
 */
