@@ -24,11 +24,13 @@ OUTPUT:
       "usr": 9937941849651546906,
       "short_name": "global",
       "detailed_name": "int global",
-      "kind": 13,
-      "storage": 2,
       "declarations": ["1:12-1:18"],
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 2
     }]
 }
 */

@@ -124,40 +124,46 @@ OUTPUT:
       "usr": 15042442838933090518,
       "short_name": "qux",
       "detailed_name": "int foo::bar::baz::qux",
-      "kind": 13,
-      "storage": 1,
       "hover": "int foo::bar::baz::qux = 42",
       "declarations": [],
       "definition_spelling": "4:18-4:21",
       "definition_extent": "4:14-4:26",
       "variable_type": 4,
-      "uses": ["12:26-12:29", "13:16-13:19"]
+      "uses": ["12:26-12:29", "13:16-13:19"],
+      "parent_id": 3,
+      "parent_kind": 2,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 107714981785063096,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 13,
-      "storage": 1,
       "hover": "int a = foo::bar::baz::qux",
       "declarations": [],
       "definition_spelling": "12:7-12:8",
       "definition_extent": "12:3-12:29",
       "variable_type": 4,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 2,
       "usr": 1200087780658383286,
       "short_name": "b",
       "detailed_name": "int b",
-      "kind": 13,
-      "storage": 1,
       "hover": "int b = fbz::qux",
       "declarations": [],
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:19",
       "variable_type": 4,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

@@ -67,14 +67,16 @@ OUTPUT:
       "usr": 12410753116854389823,
       "short_name": "f",
       "detailed_name": "Foo *f",
-      "kind": 13,
-      "storage": 1,
       "hover": "Foo *f = nullptr",
       "declarations": [],
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,
-      "uses": ["7:3-7:4"]
+      "uses": ["7:3-7:4"],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

@@ -65,25 +65,29 @@ OUTPUT:
       "usr": 17348451315735351657,
       "short_name": "foo0",
       "detailed_name": "Type foo0",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "6:8-6:12",
       "definition_extent": "6:3-6:12",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 3757978174345638825,
       "short_name": "foo1",
       "detailed_name": "Type foo1",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "7:8-7:12",
       "definition_extent": "7:3-7:21",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

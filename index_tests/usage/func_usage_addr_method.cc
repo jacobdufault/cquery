@@ -68,12 +68,14 @@ OUTPUT:
       "usr": 8436636043513449412,
       "short_name": "x",
       "detailed_name": "void (Foo::*)() x",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:22",
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

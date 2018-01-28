@@ -43,11 +43,13 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 13,
-      "storage": 2,
       "declarations": ["1:12-1:13"],
       "variable_type": 0,
-      "uses": ["4:3-4:4"]
+      "uses": ["4:3-4:4"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 2
     }]
 }
 */

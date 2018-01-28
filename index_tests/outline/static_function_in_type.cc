@@ -174,13 +174,15 @@ OUTPUT: static_function_in_type.cc
       "usr": 9285345059965948351,
       "short_name": "m",
       "detailed_name": "ns::Manager *m",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",
       "variable_type": 3,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 25,
+      "storage": 1
     }]
 }
 */

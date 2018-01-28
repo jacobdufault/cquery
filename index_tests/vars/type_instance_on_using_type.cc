@@ -65,13 +65,15 @@ OUTPUT:
       "usr": 7730100248624586522,
       "short_name": "a",
       "detailed_name": "F a",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:5-4:6",
       "definition_extent": "4:3-4:6",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

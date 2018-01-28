@@ -59,25 +59,29 @@ OUTPUT:
       "usr": 10480417713467708012,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:13-5:14",
       "definition_extent": "5:9-5:14",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 25,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 18099600680625658464,
       "short_name": "b",
       "detailed_name": "int b",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:20-5:21",
       "definition_extent": "5:16-5:21",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 25,
+      "storage": 1
     }]
 }
 */

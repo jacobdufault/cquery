@@ -77,37 +77,43 @@ OUTPUT:
       "usr": 17270098654620601683,
       "short_name": "x",
       "detailed_name": "int x",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
       "variable_type": 0,
-      "uses": ["5:7-5:8", "4:24-4:25"]
+      "uses": ["5:7-5:8", "4:24-4:25"],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 16806544259835773270,
       "short_name": "dosomething",
       "detailed_name": "lambda dosomething",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:8-4:19",
       "definition_extent": "4:3-7:4",
       "variable_type": 1,
-      "uses": ["9:3-9:14", "10:3-10:14", "11:3-11:14"]
+      "uses": ["9:3-9:14", "10:3-10:14", "11:3-11:14"],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 2,
       "usr": 2034725908368218782,
       "short_name": "y",
       "detailed_name": "int y",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:31-4:32",
       "definition_extent": "4:27-4:32",
       "variable_type": 0,
-      "uses": ["6:7-6:8"]
+      "uses": ["6:7-6:8"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 25,
+      "storage": 1
     }]
 }
 */

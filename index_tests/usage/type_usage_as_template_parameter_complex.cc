@@ -210,23 +210,27 @@ OUTPUT:
       "usr": 2933643612409209903,
       "short_name": "f",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
-      "kind": 13,
-      "storage": 2,
       "declarations": ["15:43-15:44"],
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 2
     }, {
       "id": 1,
       "usr": 11547294959889394856,
       "short_name": "local",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *local",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "54:39-54:44",
       "definition_extent": "54:3-54:44",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 2,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

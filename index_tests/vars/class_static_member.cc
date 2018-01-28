@@ -30,14 +30,16 @@ OUTPUT:
       "usr": 5844987037615239736,
       "short_name": "member",
       "detailed_name": "Foo *Foo::member",
-      "kind": 21,
-      "storage": 1,
       "hover": "Foo *Foo::member = nullptr",
       "declarations": ["2:15-2:21"],
       "definition_spelling": "4:11-4:17",
       "definition_extent": "4:1-4:27",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 21,
+      "storage": 1
     }]
 }
 */

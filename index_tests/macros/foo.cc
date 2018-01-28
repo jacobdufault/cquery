@@ -63,38 +63,44 @@ OUTPUT:
       "usr": 10677751717622394455,
       "short_name": "x",
       "detailed_name": "int x",
-      "kind": 13,
-      "storage": 1,
       "hover": "int x = A",
       "declarations": [],
       "definition_spelling": "8:5-8:6",
       "definition_extent": "8:1-8:10",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 7651988378939587454,
       "short_name": "A",
       "detailed_name": "A",
-      "kind": 4,
-      "storage": 0,
       "hover": "#define A 5",
       "declarations": [],
       "definition_spelling": "1:9-1:10",
       "definition_extent": "1:9-1:12",
-      "uses": ["8:9-8:10"]
+      "uses": ["8:9-8:10"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 4,
+      "storage": 0
     }, {
       "id": 2,
       "usr": 14946041066794678724,
       "short_name": "DISALLOW",
       "detailed_name": "DISALLOW",
-      "kind": 4,
-      "storage": 0,
       "hover": "#define DISALLOW(type) type(type&&) = delete;",
       "declarations": [],
       "definition_spelling": "2:9-2:17",
       "definition_extent": "2:9-2:46",
-      "uses": ["5:3-5:11"]
+      "uses": ["5:3-5:11"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 4,
+      "storage": 0
     }]
 }
 */

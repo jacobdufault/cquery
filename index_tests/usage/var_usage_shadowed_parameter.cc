@@ -47,25 +47,29 @@ OUTPUT:
       "usr": 11608231465452906059,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "1:14-1:15",
       "definition_extent": "1:10-1:15",
       "variable_type": 0,
-      "uses": ["2:3-2:4", "7:3-7:4"]
+      "uses": ["2:3-2:4", "7:3-7:4"],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 25,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 8011559936501990179,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:5-4:10",
       "variable_type": 0,
-      "uses": ["5:5-5:6"]
+      "uses": ["5:5-5:6"],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

@@ -68,53 +68,61 @@ OUTPUT:
       "usr": 439339022761937396,
       "short_name": "A",
       "detailed_name": "Foo::A",
-      "kind": 15,
-      "storage": 0,
       "hover": "Foo::A = 0",
       "declarations": [],
       "definition_spelling": "2:3-2:4",
       "definition_extent": "2:3-2:4",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 15962370213938840720,
       "short_name": "B",
       "detailed_name": "Foo::B",
-      "kind": 15,
-      "storage": 0,
       "hover": "Foo::B = 20",
       "declarations": [],
       "definition_spelling": "3:3-3:4",
       "definition_extent": "3:3-3:9",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }, {
       "id": 2,
       "usr": 16614320383091394267,
       "short_name": "E0",
       "detailed_name": "E::E0",
-      "kind": 15,
-      "storage": 0,
       "hover": "E::E0 = 0",
       "declarations": [],
       "definition_spelling": "9:3-9:5",
       "definition_extent": "9:3-9:5",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 2,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }, {
       "id": 3,
       "usr": 16847439761518576294,
       "short_name": "E20",
       "detailed_name": "E::E20",
-      "kind": 15,
-      "storage": 0,
       "hover": "E::E20 = 20",
       "declarations": [],
       "definition_spelling": "10:3-10:6",
       "definition_extent": "10:3-10:11",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 2,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }]
 }
 */

@@ -65,27 +65,31 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 13,
-      "storage": 1,
       "hover": "int a = Foo<int>::foo<float>()",
       "declarations": [],
       "definition_spelling": "9:5-9:6",
       "definition_extent": "9:1-9:31",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "int b",
-      "kind": 13,
-      "storage": 1,
       "hover": "int b = Foo<bool>::foo<double>()",
       "declarations": [],
       "definition_spelling": "10:5-10:6",
       "definition_extent": "10:1-10:33",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

@@ -118,37 +118,43 @@ OUTPUT:
       "usr": 1153224798516629792,
       "short_name": "directory",
       "detailed_name": "std::string CompilationEntry::directory",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "7:15-7:24",
       "definition_extent": "7:3-7:24",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 2255668374222866345,
       "short_name": "filename",
       "detailed_name": "std::string CompilationEntry::filename",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "8:15-8:23",
       "definition_extent": "8:3-8:23",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 2,
       "usr": 12616880765274259414,
       "short_name": "args",
       "detailed_name": "std::vector<std::string> CompilationEntry::args",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "9:28-9:32",
       "definition_extent": "9:3-9:32",
       "variable_type": 3,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

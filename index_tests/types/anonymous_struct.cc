@@ -58,49 +58,57 @@ OUTPUT:
       "usr": 3348817847649945564,
       "short_name": "x",
       "detailed_name": "float vector3::(anon struct)::x",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "2:18-2:19",
       "definition_extent": "2:12-2:19",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 4821094820988543895,
       "short_name": "y",
       "detailed_name": "float vector3::(anon struct)::y",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "2:21-2:22",
       "definition_extent": "2:12-2:22",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 2,
       "usr": 15292551660437765731,
       "short_name": "z",
       "detailed_name": "float vector3::(anon struct)::z",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "2:24-2:25",
       "definition_extent": "2:12-2:25",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 3,
       "usr": 1963212417280098348,
       "short_name": "v",
       "detailed_name": "float [3] vector3::v",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "3:9-3:10",
       "definition_extent": "3:3-3:13",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

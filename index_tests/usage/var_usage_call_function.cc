@@ -49,12 +49,14 @@ OUTPUT:
       "usr": 3510529098767253033,
       "short_name": "x",
       "detailed_name": "void (*)() x",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:19",
-      "uses": ["5:3-5:4"]
+      "uses": ["5:3-5:4"],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

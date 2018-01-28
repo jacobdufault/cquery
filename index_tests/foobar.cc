@@ -80,25 +80,29 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "Foo<A>::Inner a",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "9:15-9:16",
       "definition_extent": "9:1-9:16",
       "variable_type": 3,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "Foo<B> b",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "10:8-10:9",
       "definition_extent": "10:1-10:9",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

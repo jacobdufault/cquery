@@ -71,26 +71,30 @@ OUTPUT:
       "usr": 2878407290385495202,
       "short_name": "make2",
       "detailed_name": "const int make2",
-      "kind": 13,
-      "storage": 1,
       "hover": "const int make2 = 5",
       "declarations": [],
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
       "variable_type": 0,
-      "uses": ["12:14-12:19"]
+      "uses": ["12:14-12:19"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 4261071340275951718,
       "short_name": "FOO",
       "detailed_name": "FOO",
-      "kind": 4,
-      "storage": 0,
       "hover": "#define FOO(aaa, bbb)\n  int a();\n  int a() { return aaa + bbb; }",
       "declarations": [],
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
-      "uses": ["12:1-12:4"]
+      "uses": ["12:1-12:4"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 4,
+      "storage": 0
     }]
 }
 */

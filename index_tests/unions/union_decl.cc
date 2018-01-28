@@ -56,25 +56,29 @@ OUTPUT:
       "usr": 9529311430721959843,
       "short_name": "a",
       "detailed_name": "int Foo::a",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 8804696910588009104,
       "short_name": "b",
       "detailed_name": "bool Foo::b",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:9",
       "variable_type": 2,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

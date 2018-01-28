@@ -28,13 +28,15 @@ OUTPUT:
       "usr": 13799811842374292251,
       "short_name": "member",
       "detailed_name": "Foo *Foo::member",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "2:8-2:14",
       "definition_extent": "2:3-2:14",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

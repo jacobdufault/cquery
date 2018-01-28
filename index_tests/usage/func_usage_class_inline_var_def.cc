@@ -61,14 +61,16 @@ OUTPUT:
       "usr": 4220150017963593039,
       "short_name": "x",
       "detailed_name": "int Foo::x",
-      "kind": 14,
-      "storage": 0,
       "hover": "int Foo::x = helper()",
       "declarations": [],
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:19",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

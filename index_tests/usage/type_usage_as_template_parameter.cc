@@ -67,37 +67,43 @@ OUTPUT:
       "usr": 12857919739649552168,
       "short_name": "f0",
       "detailed_name": "unique_ptr<bool> f0",
-      "kind": 13,
-      "storage": 3,
       "declarations": [],
       "definition_spelling": "6:25-6:27",
       "definition_extent": "6:1-6:27",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 3
     }, {
       "id": 1,
       "usr": 18075066956054788088,
       "short_name": "f1",
       "detailed_name": "unique_ptr<S> f1",
-      "kind": 13,
-      "storage": 3,
       "declarations": [],
       "definition_spelling": "7:22-7:24",
       "definition_extent": "7:1-7:24",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 3
     }, {
       "id": 2,
       "usr": 2462000803278878465,
       "short_name": "local",
       "detailed_name": "unique_ptr<S> *local",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "10:18-10:23",
       "definition_extent": "10:3-10:23",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

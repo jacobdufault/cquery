@@ -42,13 +42,15 @@ OUTPUT:
       "usr": 8534460107894911680,
       "short_name": "x",
       "detailed_name": "int x",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
       "variable_type": 0,
-      "uses": ["3:3-3:4"]
+      "uses": ["3:3-3:4"],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

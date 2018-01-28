@@ -61,25 +61,29 @@ OUTPUT:
       "usr": 14314859014962085433,
       "short_name": "a",
       "detailed_name": "ForwardType *Foo::a",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "5:16-5:17",
       "definition_extent": "5:3-5:17",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 2,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 14727441168849658842,
       "short_name": "b",
       "detailed_name": "ImplementedType Foo::b",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "6:19-6:20",
       "definition_extent": "6:3-6:20",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 2,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

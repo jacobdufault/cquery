@@ -96,12 +96,14 @@ OUTPUT:
       "usr": 5866801090710377175,
       "short_name": "x",
       "detailed_name": "T C::x",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "3:5-3:6",
       "definition_extent": "3:3-3:6",
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }]
 }
 */

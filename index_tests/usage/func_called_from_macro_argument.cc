@@ -51,13 +51,15 @@ OUTPUT:
       "usr": 1290746656694198202,
       "short_name": "MACRO_CALL",
       "detailed_name": "MACRO_CALL",
-      "kind": 4,
-      "storage": 0,
       "hover": "#define MACRO_CALL(e) e",
       "declarations": [],
       "definition_spelling": "1:9-1:19",
       "definition_extent": "1:9-1:24",
-      "uses": ["6:3-6:13"]
+      "uses": ["6:3-6:13"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 4,
+      "storage": 0
     }]
 }
 */

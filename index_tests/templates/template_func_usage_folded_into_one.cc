@@ -49,27 +49,31 @@ OUTPUT:
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "int a",
-      "kind": 13,
-      "storage": 1,
       "hover": "int a = foo<int>()",
       "declarations": [],
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:19",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "int b",
-      "kind": 13,
-      "storage": 1,
       "hover": "int b = foo<bool>()",
       "declarations": [],
       "definition_spelling": "7:5-7:6",
       "definition_extent": "7:1-7:20",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

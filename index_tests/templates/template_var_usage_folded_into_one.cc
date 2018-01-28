@@ -85,38 +85,44 @@ OUTPUT:
       "usr": 8096973118640070624,
       "short_name": "var",
       "detailed_name": "T var",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
-      "uses": ["7:7-7:10", "8:7-8:10"]
+      "uses": ["7:7-7:10", "8:7-8:10"],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 16721564935990383768,
       "short_name": "a",
       "detailed_name": "A a",
-      "kind": 13,
-      "storage": 1,
       "hover": "A a = var<A>",
       "declarations": [],
       "definition_spelling": "7:3-7:4",
       "definition_extent": "7:1-7:13",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 2,
       "usr": 12028309045033782423,
       "short_name": "b",
       "detailed_name": "B b",
-      "kind": 13,
-      "storage": 1,
       "hover": "B b = var<B>",
       "declarations": [],
       "definition_spelling": "8:3-8:4",
       "definition_extent": "8:1-8:13",
       "variable_type": 1,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

@@ -108,37 +108,43 @@ OUTPUT:
       "usr": 4220150017963593039,
       "short_name": "x",
       "detailed_name": "int Foo::x",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "3:7-3:8",
       "definition_extent": "3:3-3:8",
       "variable_type": 1,
-      "uses": ["12:5-12:6", "13:5-13:6", "14:12-14:13", "15:12-15:13", "16:13-16:14"]
+      "uses": ["12:5-12:6", "13:5-13:6", "14:12-14:13", "15:12-15:13", "16:13-16:14"],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 3873837747174060388,
       "short_name": "y",
       "detailed_name": "int Foo::y",
-      "kind": 14,
-      "storage": 0,
       "declarations": [],
       "definition_spelling": "4:7-4:8",
       "definition_extent": "4:3-4:8",
       "variable_type": 1,
-      "uses": ["17:12-17:13"]
+      "uses": ["17:12-17:13"],
+      "parent_id": 0,
+      "parent_kind": 2,
+      "kind": 14,
+      "storage": 0
     }, {
       "id": 2,
       "usr": 16303259148898744165,
       "short_name": "f",
       "detailed_name": "Foo f",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "11:7-11:8",
       "definition_extent": "11:3-11:8",
       "variable_type": 0,
-      "uses": ["12:3-12:4", "13:3-13:4", "14:10-14:11", "15:10-15:11", "16:11-16:12", "17:10-17:11"]
+      "uses": ["12:3-12:4", "13:3-13:4", "14:10-14:11", "15:10-15:11", "16:11-16:12", "17:10-17:11"],
+      "parent_id": 2,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

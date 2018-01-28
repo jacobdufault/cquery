@@ -87,13 +87,15 @@ OUTPUT:
       "usr": 9954632887635271906,
       "short_name": "f",
       "detailed_name": "Foo f",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "8:7-8:8",
       "definition_extent": "8:3-8:8",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 2,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

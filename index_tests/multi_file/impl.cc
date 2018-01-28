@@ -121,64 +121,74 @@ OUTPUT: header.h
       "usr": 6141718166919284735,
       "short_name": "A",
       "detailed_name": "Foo3::A",
-      "kind": 15,
-      "storage": 0,
       "hover": "Foo3::A = 0",
       "declarations": [],
       "definition_spelling": "15:13-15:14",
       "definition_extent": "15:13-15:14",
       "variable_type": 4,
-      "uses": []
+      "uses": [],
+      "parent_id": 4,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }, {
       "id": 1,
       "usr": 17716334512218775320,
       "short_name": "B",
       "detailed_name": "Foo3::B",
-      "kind": 15,
-      "storage": 0,
       "hover": "Foo3::B = 1",
       "declarations": [],
       "definition_spelling": "15:16-15:17",
       "definition_extent": "15:16-15:17",
       "variable_type": 4,
-      "uses": []
+      "uses": [],
+      "parent_id": 4,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }, {
       "id": 2,
       "usr": 7285646116511901840,
       "short_name": "C",
       "detailed_name": "Foo3::C",
-      "kind": 15,
-      "storage": 0,
       "hover": "Foo3::C = 2",
       "declarations": [],
       "definition_spelling": "15:19-15:20",
       "definition_extent": "15:19-15:20",
       "variable_type": 4,
-      "uses": []
+      "uses": [],
+      "parent_id": 4,
+      "parent_kind": 2,
+      "kind": 15,
+      "storage": 0
     }, {
       "id": 3,
       "usr": 2638219001294786365,
       "short_name": "Foo4",
       "detailed_name": "int Foo4",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "17:5-17:9",
       "definition_extent": "17:1-17:9",
       "variable_type": 5,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 4,
       "usr": 8395885290297540138,
       "short_name": "Foo5",
       "detailed_name": "int Foo5",
-      "kind": 13,
-      "storage": 3,
       "declarations": [],
       "definition_spelling": "18:12-18:16",
       "definition_extent": "18:1-18:16",
       "variable_type": 5,
-      "uses": []
+      "uses": [],
+      "parent_id": 18446744073709551615,
+      "parent_kind": 0,
+      "kind": 13,
+      "storage": 3
     }]
 }
 OUTPUT: impl.cc

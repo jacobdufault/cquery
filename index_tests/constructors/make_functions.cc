@@ -323,23 +323,27 @@ OUTPUT: make_functions.cc
       "usr": 15288691366352169805,
       "short_name": "args",
       "detailed_name": "Args &&... args",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:25-4:29",
       "definition_extent": "4:15-4:29",
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 25,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 12338908251430965107,
       "short_name": "args",
       "detailed_name": "Args... args",
-      "kind": 25,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "9:24-9:28",
       "definition_extent": "9:16-9:28",
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 25,
+      "storage": 1
     }]
 }
 */

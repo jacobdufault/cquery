@@ -66,26 +66,30 @@ OUTPUT:
       "usr": 18410644574635149442,
       "short_name": "f",
       "detailed_name": "Foo f",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "7:7-7:8",
       "definition_extent": "7:3-7:8",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 11468802633764653592,
       "short_name": "f2",
       "detailed_name": "Foo *f2",
-      "kind": 13,
-      "storage": 1,
       "hover": "Foo *f2 = new Foo()",
       "declarations": [],
       "definition_spelling": "8:8-8:10",
       "definition_extent": "8:3-8:22",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 1,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */

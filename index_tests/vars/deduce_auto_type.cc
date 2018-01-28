@@ -46,25 +46,29 @@ OUTPUT:
       "usr": 9275666070987716270,
       "short_name": "x",
       "detailed_name": "Foo *x",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:21",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }, {
       "id": 1,
       "usr": 16202433437488621027,
       "short_name": "y",
       "detailed_name": "Foo *y",
-      "kind": 13,
-      "storage": 1,
       "declarations": [],
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:3-4:22",
       "variable_type": 0,
-      "uses": []
+      "uses": [],
+      "parent_id": 0,
+      "parent_kind": 3,
+      "kind": 13,
+      "storage": 1
     }]
 }
 */
