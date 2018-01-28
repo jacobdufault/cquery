@@ -68,7 +68,6 @@ OUTPUT:
       "definition_spelling": "6:7-6:8",
       "definition_extent": "6:3-6:19",
       "variable_type": 1,
-      "declaring_type": 0,
       "uses": []
     }]
 }

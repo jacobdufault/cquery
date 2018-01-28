@@ -114,7 +114,6 @@ OUTPUT:
       "definition_spelling": "3:7-3:8",
       "definition_extent": "3:3-3:8",
       "variable_type": 1,
-      "declaring_type": 0,
       "uses": ["12:5-12:6", "13:5-13:6", "14:12-14:13", "15:12-15:13", "16:13-16:14"]
     }, {
       "id": 1,
@@ -127,7 +126,6 @@ OUTPUT:
       "definition_spelling": "4:7-4:8",
       "definition_extent": "4:3-4:8",
       "variable_type": 1,
-      "declaring_type": 0,
       "uses": ["17:12-17:13"]
     }, {
       "id": 2,

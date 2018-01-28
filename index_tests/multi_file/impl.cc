@@ -128,7 +128,6 @@ OUTPUT: header.h
       "definition_spelling": "15:13-15:14",
       "definition_extent": "15:13-15:14",
       "variable_type": 4,
-      "declaring_type": 4,
       "uses": []
     }, {
       "id": 1,
@@ -142,7 +141,6 @@ OUTPUT: header.h
       "definition_spelling": "15:16-15:17",
       "definition_extent": "15:16-15:17",
       "variable_type": 4,
-      "declaring_type": 4,
       "uses": []
     }, {
       "id": 2,
@@ -156,7 +154,6 @@ OUTPUT: header.h
       "definition_spelling": "15:19-15:20",
       "definition_extent": "15:19-15:20",
       "variable_type": 4,
-      "declaring_type": 4,
       "uses": []
     }, {
       "id": 3,

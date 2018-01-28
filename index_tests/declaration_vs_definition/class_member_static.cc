@@ -50,7 +50,6 @@ OUTPUT:
       "definition_spelling": "5:10-5:13",
       "definition_extent": "5:1-5:13",
       "variable_type": 1,
-      "declaring_type": 0,
       "uses": []
     }]
 }

@@ -37,7 +37,6 @@ OUTPUT: funky_enum.h
       "definition_spelling": "4:1-4:2",
       "definition_extent": "4:1-4:2",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": []
     }, {
       "id": 1,
@@ -51,7 +50,6 @@ OUTPUT: funky_enum.h
       "definition_spelling": "5:1-5:2",
       "definition_extent": "5:1-5:2",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": []
     }, {
       "id": 2,
@@ -65,7 +63,6 @@ OUTPUT: funky_enum.h
       "definition_spelling": "6:1-6:2",
       "definition_extent": "6:1-6:2",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": []
     }]
 }

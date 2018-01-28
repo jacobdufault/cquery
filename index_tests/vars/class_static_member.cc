@@ -37,7 +37,6 @@ OUTPUT:
       "definition_spelling": "4:11-4:17",
       "definition_extent": "4:1-4:27",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": []
     }]
 }

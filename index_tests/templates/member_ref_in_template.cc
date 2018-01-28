@@ -101,7 +101,6 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "3:5-3:6",
       "definition_extent": "3:3-3:6",
-      "declaring_type": 0,
       "uses": []
     }]
 }

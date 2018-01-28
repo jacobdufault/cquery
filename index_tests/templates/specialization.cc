@@ -338,7 +338,6 @@ OUTPUT:
       "definition_spelling": "36:3-36:8",
       "definition_extent": "36:3-36:8",
       "variable_type": 8,
-      "declaring_type": 8,
       "uses": ["43:20-43:25"]
     }, {
       "id": 6,
@@ -352,7 +351,6 @@ OUTPUT:
       "definition_spelling": "36:10-36:15",
       "definition_extent": "36:10-36:15",
       "variable_type": 8,
-      "declaring_type": 8,
       "uses": []
     }, {
       "id": 7,

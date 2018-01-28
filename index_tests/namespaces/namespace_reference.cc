@@ -99,7 +99,6 @@ OUTPUT:
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
       "variable_type": 2,
-      "declaring_type": 0,
       "uses": ["7:18-7:21", "9:10-9:13"]
     }, {
       "id": 1,

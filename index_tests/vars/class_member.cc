@@ -34,7 +34,6 @@ OUTPUT:
       "definition_spelling": "2:8-2:14",
       "definition_extent": "2:3-2:14",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": []
     }]
 }

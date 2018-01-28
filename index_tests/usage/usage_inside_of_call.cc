@@ -112,7 +112,6 @@ OUTPUT:
       "definition_spelling": "10:10-10:20",
       "definition_extent": "10:1-10:24",
       "variable_type": 1,
-      "declaring_type": 0,
       "uses": ["14:45-14:55"]
     }, {
       "id": 1,
@@ -125,7 +124,6 @@ OUTPUT:
       "definition_spelling": "7:7-7:16",
       "definition_extent": "7:3-7:16",
       "variable_type": 1,
-      "declaring_type": 0,
       "uses": ["14:28-14:37"]
     }, {
       "id": 2,

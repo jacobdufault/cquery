@@ -64,7 +64,6 @@ OUTPUT:
       "definition_spelling": "2:18-2:19",
       "definition_extent": "2:12-2:19",
       "variable_type": 2,
-      "declaring_type": 1,
       "uses": []
     }, {
       "id": 1,
@@ -77,7 +76,6 @@ OUTPUT:
       "definition_spelling": "2:21-2:22",
       "definition_extent": "2:12-2:22",
       "variable_type": 2,
-      "declaring_type": 1,
       "uses": []
     }, {
       "id": 2,
@@ -90,7 +88,6 @@ OUTPUT:
       "definition_spelling": "2:24-2:25",
       "definition_extent": "2:12-2:25",
       "variable_type": 2,
-      "declaring_type": 1,
       "uses": []
     }, {
       "id": 3,
@@ -103,7 +100,6 @@ OUTPUT:
       "definition_spelling": "3:9-3:10",
       "definition_extent": "3:3-3:13",
       "variable_type": 2,
-      "declaring_type": 0,
       "uses": []
     }]
 }

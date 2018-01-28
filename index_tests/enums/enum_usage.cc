@@ -39,7 +39,6 @@ OUTPUT:
       "definition_spelling": "2:3-2:4",
       "definition_extent": "2:3-2:4",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": ["6:14-6:15"]
     }, {
       "id": 1,
@@ -53,7 +52,6 @@ OUTPUT:
       "definition_spelling": "3:3-3:4",
       "definition_extent": "3:3-3:9",
       "variable_type": 0,
-      "declaring_type": 0,
       "uses": []
     }, {
       "id": 2,

@@ -131,7 +131,6 @@ OUTPUT:
       "definition_spelling": "4:18-4:21",
       "definition_extent": "4:14-4:26",
       "variable_type": 4,
-      "declaring_type": 3,
       "uses": ["12:26-12:29", "13:16-13:19"]
     }, {
       "id": 1,
