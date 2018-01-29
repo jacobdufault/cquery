@@ -32,7 +32,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1, 2],
       "instances": [],
-      "uses": ["3:8-3:23"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 17,

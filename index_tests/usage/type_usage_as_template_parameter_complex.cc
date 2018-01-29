@@ -99,8 +99,8 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4310164820010458371,
-      "short_name": "S1",
-      "detailed_name": "S1",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -112,8 +112,8 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 12728490517004312484,
-      "short_name": "S2",
-      "detailed_name": "S2",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -136,7 +136,7 @@ OUTPUT:
       "funcs": [3],
       "vars": [],
       "instances": [],
-      "uses": ["64:7-64:10", "79:21-79:24"]
+      "uses": ["79:21-79:24"]
     }],
   "funcs": [{
       "id": 0,

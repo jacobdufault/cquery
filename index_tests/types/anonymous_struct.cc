@@ -22,7 +22,7 @@ OUTPUT:
       "funcs": [],
       "vars": [3],
       "instances": [],
-      "uses": ["1:7-1:14"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 1428566502523368801,
@@ -37,7 +37,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1, 2],
       "instances": [],
-      "uses": ["2:3-2:9"]
+      "uses": []
     }, {
       "id": 2,
       "usr": 21,

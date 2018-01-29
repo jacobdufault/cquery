@@ -52,9 +52,11 @@ OUTPUT:
       "usr": 15019211479263750068,
       "short_name": "function",
       "detailed_name": "function",
-      "kind": 0,
+      "kind": 7,
+      "definition_spelling": "2:7-2:15",
+      "definition_extent": "1:1-2:15",
       "parents": [],
-      "derived": [],
+      "derived": [1],
       "types": [],
       "funcs": [],
       "vars": [],
@@ -68,18 +70,18 @@ OUTPUT:
       "kind": 7,
       "definition_spelling": "5:7-5:15",
       "definition_extent": "4:1-5:30",
-      "parents": [],
+      "parents": [0],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [0],
-      "uses": ["5:7-5:15", "7:1-7:9"]
+      "uses": ["7:1-7:9"]
     }, {
       "id": 2,
       "usr": 15695704394170757108,
-      "short_name": "allocator",
-      "detailed_name": "allocator",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -97,12 +99,12 @@ OUTPUT:
       "definition_spelling": "12:7-12:13",
       "definition_extent": "12:1-14:2",
       "parents": [],
-      "derived": [],
+      "derived": [4, 7],
       "types": [],
       "funcs": [0],
       "vars": [],
       "instances": [1, 3, 4],
-      "uses": ["12:7-12:13", "17:7-17:13", "26:7-26:13", "30:1-30:7", "31:1-31:7", "32:1-32:7", "33:1-33:7"]
+      "uses": ["17:7-17:13", "26:7-26:13", "30:1-30:7", "31:1-31:7", "32:1-32:7", "33:1-33:7"]
     }, {
       "id": 4,
       "usr": 16155717907537731864,
@@ -111,13 +113,13 @@ OUTPUT:
       "kind": 7,
       "definition_spelling": "17:7-17:13",
       "definition_extent": "16:1-17:20",
-      "parents": [],
+      "parents": [3],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [2],
-      "uses": ["17:7-17:13", "31:1-31:7"]
+      "uses": ["31:1-31:7"]
     }, {
       "id": 5,
       "usr": 5760043510674081814,
@@ -132,7 +134,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["19:8-19:10", "32:8-32:10"]
+      "uses": ["32:8-32:10"]
     }, {
       "id": 6,
       "usr": 10124869160135436852,
@@ -147,7 +149,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["23:8-23:10", "26:14-26:16", "33:8-33:10"]
+      "uses": ["26:14-26:16", "33:8-33:10"]
     }, {
       "id": 7,
       "usr": 1663022413889915338,
@@ -156,13 +158,13 @@ OUTPUT:
       "kind": 7,
       "definition_spelling": "26:7-26:13",
       "definition_extent": "25:1-28:2",
-      "parents": [],
+      "parents": [3],
       "derived": [],
       "types": [],
       "funcs": [1],
       "vars": [],
       "instances": [],
-      "uses": ["26:7-26:13"]
+      "uses": []
     }, {
       "id": 8,
       "usr": 9201299975592934124,
@@ -177,7 +179,7 @@ OUTPUT:
       "funcs": [],
       "vars": [5, 6],
       "instances": [],
-      "uses": ["35:6-35:10"]
+      "uses": []
     }, {
       "id": 9,
       "usr": 2461355892344618654,

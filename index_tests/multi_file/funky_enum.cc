@@ -93,7 +93,7 @@ OUTPUT: funky_enum.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["1:6-1:9"]
+      "uses": []
     }],
   "funcs": [],
   "vars": []

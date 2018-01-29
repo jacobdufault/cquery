@@ -26,7 +26,7 @@ OUTPUT:
       "funcs": [0],
       "vars": [],
       "instances": [0],
-      "uses": ["1:8-1:11", "6:3-6:6"]
+      "uses": ["6:3-6:6"]
     }],
   "funcs": [{
       "id": 0,

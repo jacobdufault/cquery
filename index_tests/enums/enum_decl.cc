@@ -22,7 +22,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1],
       "instances": [],
-      "uses": ["1:6-1:9"]
+      "uses": []
     }],
   "funcs": [],
   "vars": [{

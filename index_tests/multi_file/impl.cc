@@ -23,7 +23,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["3:8-3:12", "5:26-5:30"]
+      "uses": ["5:26-5:30"]
     }, {
       "id": 1,
       "usr": 16750616846959666305,
@@ -38,7 +38,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["5:8-5:23", "7:14-7:29"]
+      "uses": ["7:14-7:29"]
     }, {
       "id": 2,
       "usr": 619345544228965342,
@@ -70,7 +70,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["13:8-13:12"]
+      "uses": []
     }, {
       "id": 4,
       "usr": 4481210672785600703,
@@ -85,7 +85,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [0, 1, 2],
       "instances": [],
-      "uses": ["15:6-15:10"]
+      "uses": []
     }, {
       "id": 5,
       "usr": 17,

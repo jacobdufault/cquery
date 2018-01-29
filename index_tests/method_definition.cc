@@ -23,7 +23,7 @@ OUTPUT:
       "funcs": [0],
       "vars": [],
       "instances": [],
-      "uses": ["1:7-1:10", "5:6-5:9"]
+      "uses": ["5:6-5:9"]
     }],
   "funcs": [{
       "id": 0,

@@ -25,8 +25,8 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 13487927231218873822,
-      "short_name": "Type",
-      "detailed_name": "Type",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -49,7 +49,7 @@ OUTPUT:
       "funcs": [1, 2],
       "vars": [],
       "instances": [],
-      "uses": ["7:7-7:10", "12:7-12:10", "13:6-13:9"]
+      "uses": ["12:7-12:10", "13:6-13:9"]
     }],
   "funcs": [{
       "id": 0,

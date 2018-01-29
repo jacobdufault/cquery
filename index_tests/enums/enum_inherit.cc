@@ -29,7 +29,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1],
       "instances": [],
-      "uses": ["1:6-1:9"]
+      "uses": []
     }, {
       "id": 1,
       "usr": 14939241684006947339,
@@ -60,7 +60,7 @@ OUTPUT:
       "funcs": [],
       "vars": [2, 3],
       "instances": [],
-      "uses": ["8:12-8:13"]
+      "uses": []
     }],
   "funcs": [],
   "vars": [{

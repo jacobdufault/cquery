@@ -21,7 +21,7 @@ OUTPUT: static.h
       "funcs": [0],
       "vars": [],
       "instances": [],
-      "uses": ["3:8-3:14"]
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -55,8 +55,8 @@ OUTPUT: static.cc
   "types": [{
       "id": 0,
       "usr": 9411323049603567600,
-      "short_name": "Buffer",
-      "detailed_name": "Buffer",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],

@@ -42,7 +42,7 @@ OUTPUT: make_functions.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["1:8-1:11", "7:17-7:20", "8:15-8:18"]
+      "uses": ["7:17-7:20", "8:15-8:18"]
     }, {
       "id": 1,
       "usr": 14935975554338052500,
@@ -57,7 +57,7 @@ OUTPUT: make_functions.h
       "funcs": [0, 1, 2, 3],
       "vars": [],
       "instances": [],
-      "uses": ["3:7-3:13", "5:3-5:9", "6:3-6:9", "7:3-7:9", "8:3-8:9"]
+      "uses": ["5:3-5:9", "6:3-6:9", "7:3-7:9", "8:3-8:9"]
     }],
   "funcs": [{
       "id": 0,
@@ -196,8 +196,8 @@ OUTPUT: make_functions.cc
     }, {
       "id": 4,
       "usr": 14935975554338052500,
-      "short_name": "Foobar",
-      "detailed_name": "Foobar",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -209,8 +209,8 @@ OUTPUT: make_functions.cc
     }, {
       "id": 5,
       "usr": 12993848456528750350,
-      "short_name": "Bar",
-      "detailed_name": "Bar",
+      "short_name": "",
+      "detailed_name": "",
       "kind": 0,
       "parents": [],
       "derived": [],
