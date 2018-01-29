@@ -147,7 +147,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["4:1-4:2", "3:20-3:21"]
+      "uses": ["4:1-4:2"]
     }, {
       "id": 1,
       "usr": 12533159752419999454,
@@ -162,7 +162,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["3:35-3:39", "4:15-4:19"]
+      "uses": ["4:15-4:19"]
     }, {
       "id": 2,
       "usr": 18441628706991062891,
@@ -177,7 +177,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["9:1-9:2", "8:20-8:21"]
+      "uses": ["9:1-9:2"]
     }, {
       "id": 3,
       "usr": 9441341235704820385,
@@ -192,7 +192,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["8:35-8:39", "9:16-9:20"]
+      "uses": ["9:16-9:20"]
     }, {
       "id": 4,
       "usr": 14935975554338052500,

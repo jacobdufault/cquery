@@ -54,7 +54,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["1:17-1:18", "3:3-3:4"]
+      "uses": ["3:3-3:4"]
     }],
   "funcs": [{
       "id": 0,

@@ -104,7 +104,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["10:19-10:20", "11:24-11:25"]
+      "uses": ["11:24-11:25"]
     }, {
       "id": 6,
       "usr": 10963370434658308541,
@@ -131,7 +131,7 @@ OUTPUT:
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",
       "variable_type": 3,
-      "uses": ["7:23-7:24", "8:24-8:25"],
+      "uses": ["8:24-8:25"],
       "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 0,
