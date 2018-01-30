@@ -11,7 +11,7 @@
 
 # FIXME: use clang-format build build/ directory.
 
-CLANG_FORMAT=./build/clang+llvm-4.0.0-x86_64-apple-darwin/bin/clang-format
+CLANG_FORMAT=$(find . -name clang-format)
 echo "Using CLANG_FORMAT=$CLANG_FORMAT"
 
 FILES=$(find src -name '*.cc' -o -name '*.h' | grep -v '/\.')
