@@ -76,8 +76,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8221803074608342407,
-      "short_name": "foo",
       "detailed_name": "int ns::Foo::foo()",
+      "short_name_offset": 13,
+      "short_name_size": 3,
       "kind": 18,
       "storage": 3,
       "declarations": [],

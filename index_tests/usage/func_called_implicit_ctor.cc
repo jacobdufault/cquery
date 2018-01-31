@@ -32,8 +32,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 10544127002917214589,
-      "short_name": "Wrapper",
       "detailed_name": "void Wrapper::Wrapper(int i)",
+      "short_name_offset": 5,
+      "short_name_size": 7,
       "kind": 22,
       "storage": 1,
       "declarations": [{
@@ -51,8 +52,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 468307235068920063,
-      "short_name": "called",
       "detailed_name": "int called()",
+      "short_name_offset": 4,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -66,8 +68,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 11404881820527069090,
-      "short_name": "caller",
       "detailed_name": "Wrapper caller()",
+      "short_name_offset": 8,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],

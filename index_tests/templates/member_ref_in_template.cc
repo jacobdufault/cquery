@@ -59,8 +59,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8905286151237717330,
-      "short_name": "bar",
       "detailed_name": "void C::bar()",
+      "short_name_offset": 8,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -78,8 +79,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 6875364467121018690,
-      "short_name": "foo",
       "detailed_name": "void foo()",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [],

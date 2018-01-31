@@ -32,8 +32,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 468307235068920063,
-      "short_name": "called",
       "detailed_name": "void called()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -47,8 +48,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 3385168158331140247,
-      "short_name": "Foo",
       "detailed_name": "void Foo::Foo()",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 22,
       "storage": 1,
       "declarations": [{

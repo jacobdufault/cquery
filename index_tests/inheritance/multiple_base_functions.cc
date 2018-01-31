@@ -62,8 +62,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 16347272523198263017,
-      "short_name": "~Base0",
       "detailed_name": "void Base0::~Base0() noexcept",
+      "short_name_offset": 12,
+      "short_name_size": 6,
       "kind": 23,
       "storage": 1,
       "declarations": [],
@@ -78,8 +79,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 8401779086123965305,
-      "short_name": "~Base1",
       "detailed_name": "void Base1::~Base1() noexcept",
+      "short_name_offset": 12,
+      "short_name_size": 6,
       "kind": 23,
       "storage": 1,
       "declarations": [],
@@ -94,8 +96,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 13164726294460837993,
-      "short_name": "~Derived",
       "detailed_name": "void Derived::~Derived() noexcept",
+      "short_name_offset": 14,
+      "short_name_size": 8,
       "kind": 23,
       "storage": 1,
       "declarations": [],

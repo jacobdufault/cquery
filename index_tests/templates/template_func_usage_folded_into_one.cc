@@ -31,8 +31,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 326583651986177228,
-      "short_name": "foo",
       "detailed_name": "int foo()",
+      "short_name_offset": 4,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 3,
       "declarations": [],

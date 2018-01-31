@@ -98,8 +98,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 9119341505144503905,
-      "short_name": "accept",
       "detailed_name": "void accept(Foo *)",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -113,8 +114,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 558620830317390922,
-      "short_name": "accept1",
       "detailed_name": "void accept1(Foo1 *)",
+      "short_name_offset": 5,
+      "short_name_size": 7,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -128,8 +130,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 10523262907746124479,
-      "short_name": "accept2",
       "detailed_name": "void accept2(Foo2 *)",
+      "short_name_offset": 5,
+      "short_name_size": 7,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -143,8 +146,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 14986366321326974406,
-      "short_name": "accept3",
       "detailed_name": "void accept3(Foo3 *)",
+      "short_name_offset": 5,
+      "short_name_size": 7,
       "kind": 12,
       "storage": 1,
       "declarations": [],

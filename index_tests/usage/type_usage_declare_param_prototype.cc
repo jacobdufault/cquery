@@ -30,8 +30,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8908726657907936744,
-      "short_name": "foo",
       "detailed_name": "void foo(Foo *f, Foo *)",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [{

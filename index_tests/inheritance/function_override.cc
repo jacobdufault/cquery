@@ -44,8 +44,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 9948027785633571339,
-      "short_name": "foo",
       "detailed_name": "void Root::foo()",
+      "short_name_offset": 11,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -63,8 +64,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 6666242542855173890,
-      "short_name": "foo",
       "detailed_name": "void Derived::foo()",
+      "short_name_offset": 14,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [],

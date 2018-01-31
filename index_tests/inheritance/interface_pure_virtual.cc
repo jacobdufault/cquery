@@ -26,8 +26,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 3277829753446788562,
-      "short_name": "foo",
       "detailed_name": "void IFoo::foo()",
+      "short_name_offset": 11,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

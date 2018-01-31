@@ -26,8 +26,9 @@ OUTPUT: static.h
   "funcs": [{
       "id": 0,
       "usr": 14576076421851654759,
-      "short_name": "CreateSharedBuffer",
       "detailed_name": "void Buffer::CreateSharedBuffer()",
+      "short_name_offset": 13,
+      "short_name_size": 18,
       "kind": 18,
       "storage": 3,
       "declarations": [{
@@ -69,8 +70,9 @@ OUTPUT: static.cc
   "funcs": [{
       "id": 0,
       "usr": 14576076421851654759,
-      "short_name": "CreateSharedBuffer",
       "detailed_name": "void Buffer::CreateSharedBuffer()",
+      "short_name_offset": 13,
+      "short_name_size": 18,
       "kind": 18,
       "storage": 1,
       "declarations": [],

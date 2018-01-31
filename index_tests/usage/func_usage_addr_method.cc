@@ -31,8 +31,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 18417145003926999463,
-      "short_name": "Used",
       "detailed_name": "void Foo::Used()",
+      "short_name_offset": 10,
+      "short_name_size": 4,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -50,8 +51,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 9376923949268137283,
-      "short_name": "user",
       "detailed_name": "void user()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],

@@ -61,8 +61,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 13982179977217945200,
-      "short_name": "act",
       "detailed_name": "void act(Foo *)",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [],

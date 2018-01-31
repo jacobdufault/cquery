@@ -58,8 +58,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 10487325150128053272,
-      "short_name": "foo",
       "detailed_name": "void hello::Foo::foo()",
+      "short_name_offset": 17,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

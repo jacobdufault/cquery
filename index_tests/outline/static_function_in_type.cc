@@ -71,8 +71,9 @@ OUTPUT: static_function_in_type.h
   "funcs": [{
       "id": 0,
       "usr": 17019747379608639279,
-      "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *)",
+      "short_name_offset": 14,
+      "short_name_size": 8,
       "kind": 18,
       "storage": 3,
       "declarations": [{
@@ -155,8 +156,9 @@ OUTPUT: static_function_in_type.cc
   "funcs": [{
       "id": 0,
       "usr": 17019747379608639279,
-      "short_name": "Register",
       "detailed_name": "void ns::Foo::Register(ns::Manager *m)",
+      "short_name_offset": 14,
+      "short_name_size": 8,
       "kind": 18,
       "storage": 1,
       "declarations": [],

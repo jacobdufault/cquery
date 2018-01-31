@@ -28,8 +28,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 880549676430489861,
-      "short_name": "f",
       "detailed_name": "void f()",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "kind": 12,
       "storage": 1,
       "declarations": [],

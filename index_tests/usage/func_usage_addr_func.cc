@@ -16,8 +16,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 3223559731210506952,
-      "short_name": "consume",
       "detailed_name": "void consume(void (*)())",
+      "short_name_offset": 5,
+      "short_name_size": 7,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -31,8 +32,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 5264867802674151787,
-      "short_name": "used",
       "detailed_name": "void used()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -46,8 +48,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 9376923949268137283,
-      "short_name": "user",
       "detailed_name": "void user()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],

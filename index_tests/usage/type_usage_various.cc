@@ -33,8 +33,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 9488177941273031343,
-      "short_name": "make",
       "detailed_name": "Foo *Foo::make()",
+      "short_name_offset": 10,
+      "short_name_size": 4,
       "kind": 16,
       "storage": 1,
       "declarations": [{

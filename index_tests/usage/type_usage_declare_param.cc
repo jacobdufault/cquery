@@ -40,8 +40,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 1699390678058422036,
-      "short_name": "foo",
       "detailed_name": "void foo(ForwardType *f, ImplementedType a)",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [],

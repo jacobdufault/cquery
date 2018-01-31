@@ -106,8 +106,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 10818727483146447186,
-      "short_name": "func",
       "detailed_name": "void func()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],

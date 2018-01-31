@@ -49,8 +49,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 16359708726068806331,
-      "short_name": "return_type",
       "detailed_name": "unique_ptr<S> *return_type()",
+      "short_name_offset": 15,
+      "short_name_size": 11,
       "kind": 12,
       "storage": 1,
       "declarations": [],

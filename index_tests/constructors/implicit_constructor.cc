@@ -31,8 +31,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 10530961286677896857,
-      "short_name": "Type",
       "detailed_name": "void Type::Type()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 22,
       "storage": 1,
       "declarations": [],
@@ -47,8 +48,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 3957104924306079513,
-      "short_name": "Make",
       "detailed_name": "void Make()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],

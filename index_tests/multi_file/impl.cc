@@ -103,8 +103,9 @@ OUTPUT: header.h
   "funcs": [{
       "id": 0,
       "usr": 11650481237659640387,
-      "short_name": "Foo1",
       "detailed_name": "void Foo1()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -207,8 +208,9 @@ OUTPUT: impl.cc
   "funcs": [{
       "id": 0,
       "usr": 5817708529036841195,
-      "short_name": "Impl",
       "detailed_name": "void Impl()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -222,8 +224,9 @@ OUTPUT: impl.cc
     }, {
       "id": 1,
       "usr": 11650481237659640387,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 8,
+      "short_name_size": 0,
       "kind": 0,
       "storage": 0,
       "declarations": [],

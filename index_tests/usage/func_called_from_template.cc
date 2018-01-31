@@ -20,8 +20,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 468307235068920063,
-      "short_name": "called",
       "detailed_name": "void called()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [{
@@ -38,8 +39,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 10177235824697315808,
-      "short_name": "caller",
       "detailed_name": "void caller()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -53,8 +55,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 4259594751088586730,
-      "short_name": "foo",
       "detailed_name": "void foo()",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [],

@@ -26,8 +26,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8105378401105136463,
-      "short_name": "g",
       "detailed_name": "func g",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "kind": 12,
       "storage": 3,
       "declarations": [{

@@ -97,8 +97,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 11244864715202245734,
-      "short_name": "LoadCompilationEntriesFromDirectory",
       "detailed_name": "std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::string &project_directory)",
+      "short_name_offset": 30,
+      "short_name_size": 35,
       "kind": 12,
       "storage": 1,
       "declarations": [{

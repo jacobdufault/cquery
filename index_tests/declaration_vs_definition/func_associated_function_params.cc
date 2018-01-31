@@ -26,8 +26,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 2747674671862363334,
-      "short_name": "foo",
       "detailed_name": "int foo(int a, int b)",
+      "short_name_offset": 4,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [{

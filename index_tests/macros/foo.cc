@@ -44,8 +44,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 13788753348312146871,
-      "short_name": "Foo",
       "detailed_name": "void Foo::Foo(Foo &&)",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 22,
       "storage": 1,
       "declarations": [],

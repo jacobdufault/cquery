@@ -12,8 +12,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 468307235068920063,
-      "short_name": "called",
       "detailed_name": "void called()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -27,8 +28,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 11404881820527069090,
-      "short_name": "caller",
       "detailed_name": "void caller()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],

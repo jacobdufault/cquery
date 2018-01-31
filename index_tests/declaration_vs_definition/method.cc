@@ -30,8 +30,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 4012226004228259562,
-      "short_name": "declonly",
       "detailed_name": "void Foo::declonly()",
+      "short_name_offset": 10,
+      "short_name_size": 8,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -49,8 +50,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 10939323144126021546,
-      "short_name": "purevirtual",
       "detailed_name": "void Foo::purevirtual()",
+      "short_name_offset": 10,
+      "short_name_size": 11,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -68,8 +70,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 15416083548883122431,
-      "short_name": "def",
       "detailed_name": "void Foo::def()",
+      "short_name_offset": 10,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

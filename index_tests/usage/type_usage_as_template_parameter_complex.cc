@@ -141,8 +141,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 1246637699196435450,
-      "short_name": "as_return_type",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *as_return_type(unique_ptr<S1, S2> *)",
+      "short_name_offset": 36,
+      "short_name_size": 14,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -156,8 +157,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 13067214284561914253,
-      "short_name": "no_return_type",
       "detailed_name": "void no_return_type(int)",
+      "short_name_offset": 5,
+      "short_name_size": 14,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -171,8 +173,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 18320186404467436976,
-      "short_name": "empty",
       "detailed_name": "void empty()",
+      "short_name_offset": 5,
+      "short_name_size": 5,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -186,8 +189,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 17922201480358737771,
-      "short_name": "foo",
       "detailed_name": "unique_ptr<S1, S2> *Foo::foo()",
+      "short_name_offset": 25,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

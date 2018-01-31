@@ -45,8 +45,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 17175780305784503374,
-      "short_name": "accept",
       "detailed_name": "void accept(int)",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [{
@@ -63,8 +64,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4259594751088586730,
-      "short_name": "foo",
       "detailed_name": "void foo()",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [],

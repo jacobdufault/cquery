@@ -257,8 +257,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 18107614608385228556,
-      "short_name": "clear",
       "detailed_name": "void vector::clear()",
+      "short_name_offset": 13,
+      "short_name_size": 5,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -276,8 +277,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 6113470698424012876,
-      "short_name": "clear",
       "detailed_name": "void vector::clear()",
+      "short_name_offset": 13,
+      "short_name_size": 5,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -295,8 +297,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 17498190318698490707,
-      "short_name": "foo",
       "detailed_name": "void foo(T Value)",
+      "short_name_offset": 5,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [{

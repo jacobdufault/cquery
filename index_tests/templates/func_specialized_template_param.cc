@@ -46,8 +46,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8412238651648388423,
-      "short_name": "Bar",
       "detailed_name": "void Foo::Bar(Template<double> &)",
+      "short_name_offset": 10,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

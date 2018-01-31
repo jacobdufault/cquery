@@ -54,8 +54,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 4259594751088586730,
-      "short_name": "foo",
       "detailed_name": "Type *foo()",
+      "short_name_offset": 6,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 1,
       "declarations": [{
@@ -79,8 +80,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 13402221340333431092,
-      "short_name": "Get",
       "detailed_name": "Type *Foo::Get(int)",
+      "short_name_offset": 11,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -100,8 +102,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 4240751906910175539,
-      "short_name": "Empty",
       "detailed_name": "void Foo::Empty()",
+      "short_name_offset": 10,
+      "short_name_size": 5,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -121,8 +124,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 7746867874366499515,
-      "short_name": "external",
       "detailed_name": "const Type &external()",
+      "short_name_offset": 12,
+      "short_name_size": 8,
       "kind": 12,
       "storage": 2,
       "declarations": [{
@@ -139,8 +143,9 @@ OUTPUT:
     }, {
       "id": 4,
       "usr": 18408440185620243373,
-      "short_name": "bar",
       "detailed_name": "Type *bar()",
+      "short_name_offset": 6,
+      "short_name_size": 3,
       "kind": 12,
       "storage": 3,
       "declarations": [{

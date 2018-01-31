@@ -41,8 +41,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 11994188353303124840,
-      "short_name": "Foo",
       "detailed_name": "void Template::Foo()",
+      "short_name_offset": 15,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

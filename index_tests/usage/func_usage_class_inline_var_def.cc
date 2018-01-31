@@ -43,8 +43,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 9630503130605430498,
-      "short_name": "helper",
       "detailed_name": "int helper()",
+      "short_name_offset": 4,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 3,
       "declarations": [],

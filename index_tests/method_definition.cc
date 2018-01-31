@@ -28,8 +28,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 6446764306530590711,
-      "short_name": "foo",
       "detailed_name": "void Foo::foo() const",
+      "short_name_offset": 10,
+      "short_name_size": 3,
       "kind": 16,
       "storage": 1,
       "declarations": [{

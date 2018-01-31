@@ -33,8 +33,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 14400399977994209582,
-      "short_name": "make1",
       "detailed_name": "int make1()",
+      "short_name_offset": 4,
+      "short_name_size": 5,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -48,8 +49,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 9720930732776154610,
-      "short_name": "a",
       "detailed_name": "int a()",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "kind": 12,
       "storage": 1,
       "declarations": [{

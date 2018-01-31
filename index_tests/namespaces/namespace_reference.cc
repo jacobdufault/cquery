@@ -59,8 +59,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 17328473273923617489,
-      "short_name": "Accept",
       "detailed_name": "void ns::Accept(int a)",
+      "short_name_offset": 9,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -75,8 +76,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 631910859630953711,
-      "short_name": "Runner",
       "detailed_name": "void Runner()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [],

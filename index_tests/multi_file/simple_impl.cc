@@ -13,8 +13,9 @@ OUTPUT: simple_header.h
   "funcs": [{
       "id": 0,
       "usr": 16236105532929924676,
-      "short_name": "header",
       "detailed_name": "void header()",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 12,
       "storage": 1,
       "declarations": [{
@@ -42,8 +43,9 @@ OUTPUT: simple_impl.cc
   "funcs": [{
       "id": 0,
       "usr": 3373269392705484958,
-      "short_name": "impl",
       "detailed_name": "void impl()",
+      "short_name_offset": 5,
+      "short_name_size": 4,
       "kind": 12,
       "storage": 1,
       "declarations": [],
@@ -57,8 +59,9 @@ OUTPUT: simple_impl.cc
     }, {
       "id": 1,
       "usr": 16236105532929924676,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 8,
+      "short_name_size": 0,
       "kind": 0,
       "storage": 0,
       "declarations": [],

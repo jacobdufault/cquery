@@ -30,8 +30,9 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 7874436189163837815,
-      "short_name": "operator()",
       "detailed_name": "void Foo::operator()(int)",
+      "short_name_offset": 10,
+      "short_name_size": 10,
       "kind": 16,
       "storage": 1,
       "declarations": [],
@@ -46,8 +47,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 3545323327609582678,
-      "short_name": "operator()",
       "detailed_name": "void Foo::operator()(bool)",
+      "short_name_offset": 10,
+      "short_name_size": 10,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -65,8 +67,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 3986818119971932909,
-      "short_name": "operator()",
       "detailed_name": "int Foo::operator()(int a, int b)",
+      "short_name_offset": 9,
+      "short_name_size": 10,
       "kind": 16,
       "storage": 1,
       "declarations": [{
@@ -84,8 +87,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 8288368475529136092,
-      "short_name": "operator+=",
       "detailed_name": "Foo &operator+=(const Foo &, const int &)",
+      "short_name_offset": 5,
+      "short_name_size": 10,
       "kind": 12,
       "storage": 1,
       "declarations": [{
