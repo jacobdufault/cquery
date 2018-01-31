@@ -116,8 +116,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 1153224798516629792,
-      "short_name": "directory",
       "detailed_name": "std::string CompilationEntry::directory",
+      "short_name_offset": 30,
+      "short_name_size": 9,
       "declarations": [],
       "definition_spelling": "7:15-7:24",
       "definition_extent": "7:3-7:24",
@@ -130,8 +131,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 2255668374222866345,
-      "short_name": "filename",
       "detailed_name": "std::string CompilationEntry::filename",
+      "short_name_offset": 30,
+      "short_name_size": 8,
       "declarations": [],
       "definition_spelling": "8:15-8:23",
       "definition_extent": "8:3-8:23",
@@ -144,8 +146,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 12616880765274259414,
-      "short_name": "args",
       "detailed_name": "std::vector<std::string> CompilationEntry::args",
+      "short_name_offset": 43,
+      "short_name_size": 4,
       "declarations": [],
       "definition_spelling": "9:28-9:32",
       "definition_extent": "9:3-9:32",

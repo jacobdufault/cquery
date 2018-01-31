@@ -122,8 +122,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 15042442838933090518,
-      "short_name": "qux",
       "detailed_name": "int foo::bar::baz::qux",
+      "short_name_offset": 19,
+      "short_name_size": 3,
       "hover": "int foo::bar::baz::qux = 42",
       "declarations": [],
       "definition_spelling": "4:18-4:21",
@@ -137,8 +138,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 107714981785063096,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int a = foo::bar::baz::qux",
       "declarations": [],
       "definition_spelling": "12:7-12:8",
@@ -152,8 +154,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 1200087780658383286,
-      "short_name": "b",
       "detailed_name": "int b",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int b = fbz::qux",
       "declarations": [],
       "definition_spelling": "13:7-13:8",

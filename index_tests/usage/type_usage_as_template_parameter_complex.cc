@@ -208,8 +208,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 2933643612409209903,
-      "short_name": "f",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
+      "short_name_offset": 35,
+      "short_name_size": 1,
       "declarations": ["15:43-15:44"],
       "variable_type": 0,
       "uses": [],
@@ -220,8 +221,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 11547294959889394856,
-      "short_name": "local",
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> *local",
+      "short_name_offset": 36,
+      "short_name_size": 5,
       "declarations": [],
       "definition_spelling": "54:39-54:44",
       "definition_extent": "54:3-54:44",

@@ -59,8 +59,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 4220150017963593039,
-      "short_name": "x",
       "detailed_name": "int Foo::x",
+      "short_name_offset": 9,
+      "short_name_size": 1,
       "hover": "int Foo::x = helper()",
       "declarations": [],
       "definition_spelling": "6:7-6:8",

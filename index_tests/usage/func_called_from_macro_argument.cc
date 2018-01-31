@@ -49,8 +49,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 1290746656694198202,
-      "short_name": "MACRO_CALL",
       "detailed_name": "MACRO_CALL",
+      "short_name_offset": 0,
+      "short_name_size": 10,
       "hover": "#define MACRO_CALL(e) e",
       "declarations": [],
       "definition_spelling": "1:9-1:19",

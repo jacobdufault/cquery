@@ -79,8 +79,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 8599782646965457351,
-      "short_name": "x",
       "detailed_name": "int Foo::x",
+      "short_name_offset": 9,
+      "short_name_size": 1,
       "declarations": ["2:14-2:15"],
       "variable_type": 1,
       "uses": ["8:15-8:16"],

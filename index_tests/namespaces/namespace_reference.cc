@@ -91,8 +91,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 12898699035586282159,
-      "short_name": "Foo",
       "detailed_name": "int ns::Foo",
+      "short_name_offset": 8,
+      "short_name_size": 3,
       "declarations": [],
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",
@@ -105,8 +106,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 7976909968919750794,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "3:19-3:20",
       "definition_extent": "3:15-3:20",

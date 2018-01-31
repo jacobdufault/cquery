@@ -22,8 +22,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 9937941849651546906,
-      "short_name": "global",
       "detailed_name": "int global",
+      "short_name_offset": 4,
+      "short_name_size": 6,
       "declarations": ["1:12-1:18"],
       "variable_type": 0,
       "uses": [],

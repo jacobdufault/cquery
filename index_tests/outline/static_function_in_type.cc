@@ -172,8 +172,9 @@ OUTPUT: static_function_in_type.cc
   "vars": [{
       "id": 0,
       "usr": 9285345059965948351,
-      "short_name": "m",
       "detailed_name": "ns::Manager *m",
+      "short_name_offset": 13,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "5:29-5:30",
       "definition_extent": "5:20-5:30",

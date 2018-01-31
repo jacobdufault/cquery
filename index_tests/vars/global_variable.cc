@@ -22,8 +22,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 6834525061342585382,
-      "short_name": "global",
       "detailed_name": "int global",
+      "short_name_offset": 4,
+      "short_name_size": 6,
       "hover": "int global = 0",
       "declarations": [],
       "definition_spelling": "1:12-1:18",

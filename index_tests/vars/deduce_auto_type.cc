@@ -44,8 +44,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 9275666070987716270,
-      "short_name": "x",
       "detailed_name": "Foo *x",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "3:8-3:9",
       "definition_extent": "3:3-3:21",
@@ -58,8 +59,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 16202433437488621027,
-      "short_name": "y",
       "detailed_name": "Foo *y",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:3-4:22",

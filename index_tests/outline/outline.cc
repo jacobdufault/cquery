@@ -77,8 +77,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 11633578660978286467,
-      "short_name": "a",
       "detailed_name": "int MergeableUpdate::a",
+      "short_name_offset": 9,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:7-4:8",
       "definition_extent": "4:3-4:8",
@@ -91,8 +92,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 14949552147532317793,
-      "short_name": "b",
       "detailed_name": "int MergeableUpdate::b",
+      "short_name_offset": 10,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "5:7-5:8",
       "definition_extent": "5:3-5:8",
@@ -105,8 +107,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 9003350345237582363,
-      "short_name": "to_add",
       "detailed_name": "std::vector<int> MergeableUpdate::to_add",
+      "short_name_offset": 34,
+      "short_name_size": 6,
       "declarations": [],
       "definition_spelling": "6:20-6:26",
       "definition_extent": "6:3-6:26",

@@ -44,8 +44,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 13545144895171991916,
-      "short_name": "var",
       "detailed_name": "const int Foo::var",
+      "short_name_offset": 15,
+      "short_name_size": 3,
       "hover": "const int Foo::var = 3",
       "declarations": ["3:24-3:27"],
       "variable_type": 1,
@@ -57,8 +58,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 16721564935990383768,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int a = Foo<int>::var",
       "declarations": [],
       "definition_spelling": "6:5-6:6",
@@ -72,8 +74,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 12028309045033782423,
-      "short_name": "b",
       "detailed_name": "int b",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int b = Foo<bool>::var",
       "declarations": [],
       "definition_spelling": "7:5-7:6",

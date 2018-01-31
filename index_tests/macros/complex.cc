@@ -69,8 +69,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 2878407290385495202,
-      "short_name": "make2",
       "detailed_name": "const int make2",
+      "short_name_offset": 10,
+      "short_name_size": 5,
       "hover": "const int make2 = 5",
       "declarations": [],
       "definition_spelling": "9:11-9:16",
@@ -84,8 +85,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4261071340275951718,
-      "short_name": "FOO",
       "detailed_name": "FOO",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "hover": "#define FOO(aaa, bbb)\n  int a();\n  int a() { return aaa + bbb; }",
       "declarations": [],
       "definition_spelling": "1:9-1:12",

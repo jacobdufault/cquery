@@ -40,8 +40,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 9736582033442720743,
-      "short_name": "foo",
       "detailed_name": "int Foo::foo",
+      "short_name_offset": 9,
+      "short_name_size": 3,
       "declarations": [],
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:3-2:10",

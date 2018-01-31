@@ -62,8 +62,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 13681544683892648258,
-      "short_name": "x",
       "detailed_name": "void (*)() x",
+      "short_name_offset": 11,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "6:10-6:11",
       "definition_extent": "6:3-6:22",

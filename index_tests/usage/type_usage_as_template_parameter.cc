@@ -65,8 +65,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 12857919739649552168,
-      "short_name": "f0",
       "detailed_name": "unique_ptr<bool> f0",
+      "short_name_offset": 17,
+      "short_name_size": 2,
       "declarations": [],
       "definition_spelling": "6:25-6:27",
       "definition_extent": "6:1-6:27",
@@ -79,8 +80,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 18075066956054788088,
-      "short_name": "f1",
       "detailed_name": "unique_ptr<S> f1",
+      "short_name_offset": 14,
+      "short_name_size": 2,
       "declarations": [],
       "definition_spelling": "7:22-7:24",
       "definition_extent": "7:1-7:24",
@@ -93,8 +95,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 2462000803278878465,
-      "short_name": "local",
       "detailed_name": "unique_ptr<S> *local",
+      "short_name_offset": 15,
+      "short_name_size": 5,
       "declarations": [],
       "definition_spelling": "10:18-10:23",
       "definition_extent": "10:3-10:23",

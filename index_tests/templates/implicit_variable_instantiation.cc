@@ -108,8 +108,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 4731849186641714451,
-      "short_name": "static_var",
       "detailed_name": "const ns::VarType ns::Holder::static_var",
+      "short_name_offset": 30,
+      "short_name_size": 10,
       "hover": "const ns::VarType ns::Holder::static_var = (VarType)0x0",
       "declarations": ["6:30-6:40"],
       "definition_spelling": "10:37-10:47",
@@ -123,8 +124,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 12898699035586282159,
-      "short_name": "Foo",
       "detailed_name": "int ns::Foo",
+      "short_name_offset": 8,
+      "short_name_size": 3,
       "hover": "int ns::Foo = Holder<int>::static_var",
       "declarations": [],
       "definition_spelling": "13:7-13:10",
@@ -138,8 +140,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 9008550860229740818,
-      "short_name": "Foo2",
       "detailed_name": "int ns::Foo2",
+      "short_name_offset": 8,
+      "short_name_size": 4,
       "hover": "int ns::Foo2 = Holder<int>::static_var",
       "declarations": [],
       "definition_spelling": "14:7-14:11",

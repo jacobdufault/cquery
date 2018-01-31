@@ -65,8 +65,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 12410753116854389823,
-      "short_name": "f",
       "detailed_name": "Foo *f",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "hover": "Foo *f = nullptr",
       "declarations": [],
       "definition_spelling": "6:8-6:9",

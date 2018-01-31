@@ -59,8 +59,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 15768138241775955040,
-      "short_name": "a",
       "detailed_name": "Foo<int> ns::a",
+      "short_name_offset": 13,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "5:12-5:13",
       "definition_extent": "5:3-5:13",
@@ -73,8 +74,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 3182917058194750998,
-      "short_name": "b",
       "detailed_name": "Foo<bool> ns::b",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "6:13-6:14",
       "definition_extent": "6:3-6:14",

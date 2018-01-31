@@ -56,8 +56,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 3348817847649945564,
-      "short_name": "x",
       "detailed_name": "float vector3::(anon struct)::x",
+      "short_name_offset": 30,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "2:18-2:19",
       "definition_extent": "2:12-2:19",
@@ -70,8 +71,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4821094820988543895,
-      "short_name": "y",
       "detailed_name": "float vector3::(anon struct)::y",
+      "short_name_offset": 30,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "2:21-2:22",
       "definition_extent": "2:12-2:22",
@@ -84,8 +86,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 15292551660437765731,
-      "short_name": "z",
       "detailed_name": "float vector3::(anon struct)::z",
+      "short_name_offset": 30,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "2:24-2:25",
       "definition_extent": "2:12-2:25",
@@ -98,8 +101,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 1963212417280098348,
-      "short_name": "v",
       "detailed_name": "float [3] vector3::v",
+      "short_name_offset": 10,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "3:9-3:10",
       "definition_extent": "3:3-3:13",

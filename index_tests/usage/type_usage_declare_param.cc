@@ -56,8 +56,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 2584795197111552890,
-      "short_name": "f",
       "detailed_name": "ForwardType *f",
+      "short_name_offset": 13,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:23-4:24",
       "definition_extent": "4:10-4:24",
@@ -70,8 +71,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 5136230284979460117,
-      "short_name": "a",
       "detailed_name": "ImplementedType a",
+      "short_name_offset": 16,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:42-4:43",
       "definition_extent": "4:26-4:43",

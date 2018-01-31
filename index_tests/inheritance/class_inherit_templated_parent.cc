@@ -125,8 +125,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 3880651725784125791,
-      "short_name": "T",
       "detailed_name": "unsigned int T",
+      "short_name_offset": 13,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "7:23-7:24",
       "definition_extent": "7:10-7:24",

@@ -63,8 +63,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 7730100248624586522,
-      "short_name": "a",
       "detailed_name": "F a",
+      "short_name_offset": 2,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:5-4:6",
       "definition_extent": "4:3-4:6",

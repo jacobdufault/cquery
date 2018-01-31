@@ -28,8 +28,9 @@ OUTPUT: funky_enum.h
   "vars": [{
       "id": 0,
       "usr": 439339022761937396,
-      "short_name": "A",
       "detailed_name": "Foo::A",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "hover": "Foo::A = 0",
       "declarations": [],
       "definition_spelling": "4:1-4:2",
@@ -43,8 +44,9 @@ OUTPUT: funky_enum.h
     }, {
       "id": 1,
       "usr": 15962370213938840720,
-      "short_name": "B",
       "detailed_name": "Foo::B",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "hover": "Foo::B = 1",
       "declarations": [],
       "definition_spelling": "5:1-5:2",
@@ -58,8 +60,9 @@ OUTPUT: funky_enum.h
     }, {
       "id": 2,
       "usr": 8524995777615948802,
-      "short_name": "C",
       "detailed_name": "Foo::C",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "hover": "Foo::C = 2",
       "declarations": [],
       "definition_spelling": "6:1-6:2",

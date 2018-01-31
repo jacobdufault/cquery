@@ -103,8 +103,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 11489549839875479478,
-      "short_name": "static_var",
       "detailed_name": "int Foo::static_var",
+      "short_name_offset": 9,
+      "short_name_size": 10,
       "hover": "int Foo::static_var = 0",
       "declarations": ["6:14-6:24"],
       "definition_spelling": "10:10-10:20",
@@ -118,8 +119,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 9648311402855509901,
-      "short_name": "field_var",
       "detailed_name": "int Foo::field_var",
+      "short_name_offset": 9,
+      "short_name_size": 9,
       "declarations": [],
       "definition_spelling": "7:7-7:16",
       "definition_extent": "7:3-7:16",
@@ -132,8 +134,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 13284113377394221067,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int a = 5",
       "declarations": [],
       "definition_spelling": "13:7-13:8",

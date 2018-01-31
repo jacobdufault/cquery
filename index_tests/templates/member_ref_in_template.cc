@@ -94,8 +94,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 5866801090710377175,
-      "short_name": "x",
       "detailed_name": "T C::x",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "3:5-3:6",
       "definition_extent": "3:3-3:6",

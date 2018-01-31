@@ -77,8 +77,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 9529311430721959843,
-      "short_name": "a",
       "detailed_name": "int Foo::a",
+      "short_name_offset": 9,
+      "short_name_size": 1,
       "hover": "int Foo::a : 5",
       "declarations": [],
       "definition_spelling": "2:7-2:8",
@@ -92,8 +93,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 8804696910588009104,
-      "short_name": "b",
       "detailed_name": "bool Foo::b",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "hover": "bool Foo::b : 3",
       "declarations": [],
       "definition_spelling": "3:8-3:9",
@@ -107,8 +109,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 2933643612409209903,
-      "short_name": "f",
       "detailed_name": "Foo f",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:6",

@@ -45,8 +45,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 11608231465452906059,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "1:14-1:15",
       "definition_extent": "1:10-1:15",
@@ -59,8 +60,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 8011559936501990179,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:9-4:10",
       "definition_extent": "4:5-4:10",

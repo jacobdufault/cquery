@@ -26,8 +26,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 13799811842374292251,
-      "short_name": "member",
       "detailed_name": "Foo *Foo::member",
+      "short_name_offset": 10,
+      "short_name_size": 6,
       "declarations": [],
       "definition_spelling": "2:8-2:14",
       "definition_extent": "2:3-2:14",

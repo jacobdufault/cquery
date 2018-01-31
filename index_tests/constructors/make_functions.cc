@@ -321,8 +321,9 @@ OUTPUT: make_functions.cc
   "vars": [{
       "id": 0,
       "usr": 15288691366352169805,
-      "short_name": "args",
       "detailed_name": "Args &&... args",
+      "short_name_offset": 11,
+      "short_name_size": 4,
       "declarations": [],
       "definition_spelling": "4:25-4:29",
       "definition_extent": "4:15-4:29",
@@ -334,8 +335,9 @@ OUTPUT: make_functions.cc
     }, {
       "id": 1,
       "usr": 12338908251430965107,
-      "short_name": "args",
       "detailed_name": "Args... args",
+      "short_name_offset": 8,
+      "short_name_size": 4,
       "declarations": [],
       "definition_spelling": "9:24-9:28",
       "definition_extent": "9:16-9:28",

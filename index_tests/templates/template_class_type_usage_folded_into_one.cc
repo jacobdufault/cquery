@@ -97,8 +97,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 16721564935990383768,
-      "short_name": "a",
       "detailed_name": "Foo<A>::Inner a",
+      "short_name_offset": 14,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "9:15-9:16",
       "definition_extent": "9:1-9:16",
@@ -111,8 +112,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 12028309045033782423,
-      "short_name": "b",
       "detailed_name": "Foo<B>::Inner b",
+      "short_name_offset": 14,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "10:15-10:16",
       "definition_extent": "10:1-10:16",

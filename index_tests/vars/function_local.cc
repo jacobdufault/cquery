@@ -42,8 +42,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 10782632605670042066,
-      "short_name": "a",
       "detailed_name": "Foo *a",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "4:8-4:9",
       "definition_extent": "4:3-4:9",

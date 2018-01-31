@@ -64,8 +64,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 18410644574635149442,
-      "short_name": "f",
       "detailed_name": "Foo f",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "7:7-7:8",
       "definition_extent": "7:3-7:8",
@@ -78,8 +79,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 11468802633764653592,
-      "short_name": "f2",
       "detailed_name": "Foo *f2",
+      "short_name_offset": 5,
+      "short_name_size": 2,
       "hover": "Foo *f2 = new Foo()",
       "declarations": [],
       "definition_spelling": "8:8-8:10",

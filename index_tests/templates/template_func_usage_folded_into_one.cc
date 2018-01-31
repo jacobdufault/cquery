@@ -47,8 +47,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 16721564935990383768,
-      "short_name": "a",
       "detailed_name": "int a",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int a = foo<int>()",
       "declarations": [],
       "definition_spelling": "6:5-6:6",
@@ -62,8 +63,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 12028309045033782423,
-      "short_name": "b",
       "detailed_name": "int b",
+      "short_name_offset": 4,
+      "short_name_size": 1,
       "hover": "int b = foo<bool>()",
       "declarations": [],
       "definition_spelling": "7:5-7:6",

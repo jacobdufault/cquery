@@ -83,8 +83,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 8096973118640070624,
-      "short_name": "var",
       "detailed_name": "T var",
+      "short_name_offset": 2,
+      "short_name_size": 3,
       "declarations": [],
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
@@ -96,8 +97,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 16721564935990383768,
-      "short_name": "a",
       "detailed_name": "A a",
+      "short_name_offset": 2,
+      "short_name_size": 1,
       "hover": "A a = var<A>",
       "declarations": [],
       "definition_spelling": "7:3-7:4",
@@ -111,8 +113,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 12028309045033782423,
-      "short_name": "b",
       "detailed_name": "B b",
+      "short_name_offset": 2,
+      "short_name_size": 1,
       "hover": "B b = var<B>",
       "declarations": [],
       "definition_spelling": "8:3-8:4",

@@ -25,8 +25,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 6601831367240627080,
-      "short_name": "t",
       "detailed_name": "Type t",
+      "short_name_offset": 5,
+      "short_name_size": 1,
       "declarations": [],
       "definition_spelling": "2:13-2:14",
       "definition_extent": "2:1-2:14",

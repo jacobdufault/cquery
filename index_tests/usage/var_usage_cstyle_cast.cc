@@ -47,8 +47,9 @@ OUTPUT:
   "vars": [{
       "id": 0,
       "usr": 7057400933868440116,
-      "short_name": "static_var",
       "detailed_name": "const VarType Holder::static_var",
+      "short_name_offset": 22,
+      "short_name_size": 10,
       "hover": "const VarType Holder::static_var = (VarType)0x0",
       "declarations": ["4:28-4:38"],
       "definition_spelling": "7:23-7:33",
