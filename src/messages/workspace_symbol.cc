@@ -201,7 +201,7 @@ struct WorkspaceSymbolHandler : BaseMessageHandler<Ipc_WorkspaceSymbol> {
     // detailed_names.
 
     // Find exact substring matches.
-    for (int i = 0; i < db->detailed_names.size(); ++i) {
+    for (size_t i = 0; i < db->detailed_names.size(); ++i) {
       if (db->detailed_names[i].find(query) != std::string::npos) {
         // Do not show the same entry twice.
         if (!inserted_results.insert(db->detailed_names[i]).second)
@@ -210,21 +210,21 @@ struct WorkspaceSymbolHandler : BaseMessageHandler<Ipc_WorkspaceSymbol> {
         if (InsertSymbolIntoResult(db, working_files, db->symbols[i],
                                    &unsorted_results)) {
           result_indices.push_back(i);
-          if (unsorted_results.size() >= config->maxWorkspaceSearchResults)
+          if ((int)unsorted_results.size() >= config->maxWorkspaceSearchResults)
             break;
         }
       }
     }
 
     // Find subsequence matches.
-    if (unsorted_results.size() < config->maxWorkspaceSearchResults) {
+    if ((int)unsorted_results.size() < config->maxWorkspaceSearchResults) {
       std::string query_without_space;
       query_without_space.reserve(query.size());
       for (char c : query)
         if (!isspace(c))
           query_without_space += c;
 
-      for (int i = 0; i < db->short_names.size(); ++i) {
+      for (size_t i = 0; i < db->short_names.size(); ++i) {
         if (SubsequenceMatch(query_without_space, db->short_names[i])) {
           // Do not show the same entry twice.
           if (!inserted_results.insert(db->detailed_names[i]).second)
@@ -233,7 +233,7 @@ struct WorkspaceSymbolHandler : BaseMessageHandler<Ipc_WorkspaceSymbol> {
           if (InsertSymbolIntoResult(db, working_files, db->symbols[i],
                                      &unsorted_results)) {
             result_indices.push_back(i);
-            if (unsorted_results.size() >= config->maxWorkspaceSearchResults)
+            if ((int)unsorted_results.size() >= config->maxWorkspaceSearchResults)
               break;
           }
         }

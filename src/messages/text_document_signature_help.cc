@@ -102,7 +102,7 @@ struct TextDocumentSignatureHelpHandler : MessageHandler {
       return;
 
     ClangCompleteManager::OnComplete callback = std::bind(
-        [this](BaseIpcMessage* message, std::string search, int active_param,
+        [this](BaseIpcMessage* message, std::string search, size_t active_param,
                const std::vector<lsCompletionItem>& results,
                bool is_cached_result) {
           auto msg = message->As<Ipc_TextDocumentSignatureHelp>();

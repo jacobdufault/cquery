@@ -27,7 +27,7 @@ lsPosition CharPos(const std::string& search,
                    char character,
                    int character_offset) {
   lsPosition result;
-  int index = 0;
+  size_t index = 0;
   while (index < search.size()) {
     char c = search[index];
     if (c == character)
@@ -83,13 +83,13 @@ std::tuple<bool, std::string, std::string> ShouldRunIncludeCompletion(
 optional<lsRange> ExtractQuotedRange(int line_number, const std::string& line) {
   // Find starting and ending quote.
   int start = 0;
-  while (start < line.size()) {
+  while (start < (int)line.size()) {
     char c = line[start];
     ++start;
     if (c == '"' || c == '<')
       break;
   }
-  if (start == line.size())
+  if (start == (int)line.size())
     return nullopt;
 
   int end = (int)line.size();
@@ -111,12 +111,12 @@ void LexFunctionDeclaration(const std::string& buffer_content,
                             optional<std::string> type_name,
                             std::string* insert_text,
                             int* newlines_after_name) {
-  int name_start = GetOffsetForPosition(declaration_spelling, buffer_content);
+  size_t name_start = GetOffsetForPosition(declaration_spelling, buffer_content);
 
   bool parse_return_type = true;
   // We need to check if we have a return type (ctors and dtors do not).
   if (type_name) {
-    int name_end = name_start;
+    size_t name_end = name_start;
     while (name_end < buffer_content.size()) {
       char c = buffer_content[name_end];
       if (isspace(c) || c == '(')
@@ -169,7 +169,7 @@ void LexFunctionDeclaration(const std::string& buffer_content,
 
   // We need to fetch the arguments. Just scan for the next ';'.
   *newlines_after_name = 0;
-  int end = name_start;
+  size_t end = name_start;
   while (end < buffer_content.size()) {
     char c = buffer_content[end];
     if (c == ';')
@@ -204,7 +204,7 @@ std::string LexWordAroundPos(lsPosition position, const std::string& content) {
     }
   }
 
-  while ((end + 1) < content.size()) {
+  while ((end + 1) < (int)content.size()) {
     char c = content[end + 1];
     if (isalnum(c) || c == '_') {
       ++end;
@@ -238,7 +238,7 @@ TEST_SUITE("Offset") {
 
   TEST_CASE("in middle of content") {
     std::string content = "abcdefghijk";
-    for (int i = 0; i < content.size(); ++i) {
+    for (int i = 0; i < (int)content.size(); ++i) {
       int offset = GetOffsetForPosition(lsPosition(0, i), content);
       REQUIRE(i == offset);
     }
