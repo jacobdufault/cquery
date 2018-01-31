@@ -25,8 +25,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 17107291254533526269,
-      "short_name": "Template",
       "detailed_name": "Template",
+      "short_name_offset": 0,
+      "short_name_size": 8,
       "kind": 7,
       "definition_spelling": "2:7-2:15",
       "definition_extent": "2:1-4:2",

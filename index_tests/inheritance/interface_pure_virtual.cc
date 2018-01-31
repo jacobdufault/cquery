@@ -10,8 +10,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 9949214233977131946,
-      "short_name": "IFoo",
       "detailed_name": "IFoo",
+      "short_name_offset": 0,
+      "short_name_size": 4,
       "kind": 7,
       "definition_spelling": "1:7-1:11",
       "definition_extent": "1:1-3:2",

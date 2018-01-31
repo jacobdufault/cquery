@@ -42,8 +42,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 4992269036372211530,
-      "short_name": "CompilationEntry",
       "detailed_name": "CompilationEntry",
+      "short_name_offset": 0,
+      "short_name_size": 16,
       "kind": 6,
       "definition_spelling": "6:8-6:24",
       "definition_extent": "6:1-10:2",
@@ -57,8 +58,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 14151982074805896770,
-      "short_name": "string",
       "detailed_name": "std::string",
+      "short_name_offset": 14,
+      "short_name_size": 6,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -70,8 +72,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 5401847601697785946,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -83,8 +86,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 10956461108384510180,
-      "short_name": "vector",
       "detailed_name": "std::vector",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 0,
       "parents": [],
       "derived": [],

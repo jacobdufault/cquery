@@ -16,8 +16,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 11628904180681204356,
-      "short_name": "Base0",
       "detailed_name": "Base0",
+      "short_name_offset": 0,
+      "short_name_size": 5,
       "kind": 6,
       "definition_spelling": "1:8-1:13",
       "definition_extent": "1:1-3:2",
@@ -31,8 +32,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 15826803741381445676,
-      "short_name": "Base1",
       "detailed_name": "Base1",
+      "short_name_offset": 0,
+      "short_name_size": 5,
       "kind": 6,
       "definition_spelling": "4:8-4:13",
       "definition_extent": "4:1-6:2",
@@ -46,8 +48,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 10963370434658308541,
-      "short_name": "Derived",
       "detailed_name": "Derived",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 6,
       "definition_spelling": "7:8-7:15",
       "definition_extent": "7:1-9:2",

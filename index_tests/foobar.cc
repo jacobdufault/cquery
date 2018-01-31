@@ -16,8 +16,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 6697181287623958829,
-      "short_name": "A",
       "detailed_name": "A",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "kind": 5,
       "definition_spelling": "1:6-1:7",
       "definition_extent": "1:1-1:10",
@@ -31,8 +32,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 13892793056005362145,
-      "short_name": "B",
       "detailed_name": "B",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "kind": 5,
       "definition_spelling": "2:6-2:7",
       "definition_extent": "2:1-2:10",
@@ -46,8 +48,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 10528472276654770367,
-      "short_name": "Foo",
       "detailed_name": "Foo",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "kind": 7,
       "definition_spelling": "5:8-5:11",
       "definition_extent": "5:1-7:2",
@@ -61,8 +64,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 13938528237873543349,
-      "short_name": "Inner",
       "detailed_name": "Foo::Inner",
+      "short_name_offset": 5,
+      "short_name_size": 5,
       "kind": 6,
       "definition_spelling": "6:10-6:15",
       "definition_extent": "6:3-6:18",

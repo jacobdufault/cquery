@@ -8,8 +8,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 13749354388332789217,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],

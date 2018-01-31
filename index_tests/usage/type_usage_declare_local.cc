@@ -14,8 +14,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 13749354388332789217,
-      "short_name": "ForwardType",
       "detailed_name": "ForwardType",
+      "short_name_offset": 0,
+      "short_name_size": 11,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -27,8 +28,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 8508299082070213750,
-      "short_name": "ImplementedType",
       "detailed_name": "ImplementedType",
+      "short_name_offset": 0,
+      "short_name_size": 15,
       "kind": 6,
       "definition_spelling": "2:8-2:23",
       "definition_extent": "2:1-2:26",

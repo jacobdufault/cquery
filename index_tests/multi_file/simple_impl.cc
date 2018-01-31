@@ -60,7 +60,7 @@ OUTPUT: simple_impl.cc
       "id": 1,
       "usr": 16236105532929924676,
       "detailed_name": "",
-      "short_name_offset": 8,
+      "short_name_offset": 0,
       "short_name_size": 0,
       "kind": 0,
       "storage": 0,

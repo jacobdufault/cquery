@@ -28,8 +28,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 8402783583255987702,
-      "short_name": "C",
       "detailed_name": "C",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "kind": 7,
       "definition_spelling": "2:8-2:9",
       "definition_extent": "2:1-5:2",
@@ -43,8 +44,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 14750650276757822712,
-      "short_name": "T",
       "detailed_name": "T",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "kind": 0,
       "definition_spelling": "1:17-1:18",
       "definition_extent": "1:11-1:18",

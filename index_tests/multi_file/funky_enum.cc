@@ -13,8 +13,9 @@ OUTPUT: funky_enum.h
   "types": [{
       "id": 0,
       "usr": 16985894625255407295,
-      "short_name": "Foo",
       "detailed_name": "Foo",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -85,8 +86,9 @@ OUTPUT: funky_enum.cc
   "types": [{
       "id": 0,
       "usr": 16985894625255407295,
-      "short_name": "Foo",
       "detailed_name": "Foo",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "kind": 5,
       "definition_spelling": "1:6-1:9",
       "definition_extent": "1:1-3:2",

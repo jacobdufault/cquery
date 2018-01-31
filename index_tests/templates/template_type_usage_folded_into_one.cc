@@ -12,8 +12,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 10528472276654770367,
-      "short_name": "Foo",
       "detailed_name": "Foo",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "kind": 7,
       "definition_spelling": "2:7-2:10",
       "definition_extent": "2:1-2:13",

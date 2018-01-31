@@ -11,8 +11,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 17937907487590875128,
-      "short_name": "vector3",
       "detailed_name": "vector3",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 10,
       "definition_spelling": "1:7-1:14",
       "definition_extent": "1:1-4:2",
@@ -26,8 +27,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 1428566502523368801,
-      "short_name": "(anon)",
       "detailed_name": "vector3::(anon)",
+      "short_name_offset": 9,
+      "short_name_size": 6,
       "kind": 6,
       "definition_spelling": "2:3-2:9",
       "definition_extent": "2:3-2:28",
@@ -41,8 +43,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 21,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],

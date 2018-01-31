@@ -11,8 +11,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 3897841498936210886,
-      "short_name": "Root",
       "detailed_name": "Root",
+      "short_name_offset": 0,
+      "short_name_size": 4,
       "kind": 7,
       "definition_spelling": "1:7-1:11",
       "definition_extent": "1:1-1:14",
@@ -26,8 +27,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 11863524815063131483,
-      "short_name": "MiddleA",
       "detailed_name": "MiddleA",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 7,
       "definition_spelling": "2:7-2:14",
       "definition_extent": "2:1-2:31",
@@ -41,8 +43,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 14022569716337624303,
-      "short_name": "MiddleB",
       "detailed_name": "MiddleB",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 7,
       "definition_spelling": "3:7-3:14",
       "definition_extent": "3:1-3:31",
@@ -56,8 +59,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 10963370434658308541,
-      "short_name": "Derived",
       "detailed_name": "Derived",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 7,
       "definition_spelling": "4:7-4:14",
       "definition_extent": "4:1-4:50",

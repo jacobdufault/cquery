@@ -9,8 +9,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 10383876566159302459,
-      "short_name": "func",
       "detailed_name": "func",
+      "short_name_offset": 0,
+      "short_name_size": 4,
       "kind": 11,
       "hover": "typedef int (func)(const int *a, const int *b)",
       "definition_spelling": "1:14-1:18",

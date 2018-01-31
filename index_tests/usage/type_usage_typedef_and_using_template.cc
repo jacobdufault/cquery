@@ -12,8 +12,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 10528472276654770367,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -25,8 +26,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 1544499294580512394,
-      "short_name": "Foo1",
       "detailed_name": "Foo1",
+      "short_name_offset": 0,
+      "short_name_size": 4,
       "kind": 11,
       "hover": "using Foo1 = Foo<int>",
       "definition_spelling": "4:7-4:11",
@@ -42,8 +44,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 15933698173231330933,
-      "short_name": "Foo2",
       "detailed_name": "Foo2",
+      "short_name_offset": 0,
+      "short_name_size": 4,
       "kind": 11,
       "hover": "typedef Foo<Foo1> Foo2",
       "definition_spelling": "5:19-5:23",

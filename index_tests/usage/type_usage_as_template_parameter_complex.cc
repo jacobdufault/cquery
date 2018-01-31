@@ -86,8 +86,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 14209198335088845323,
-      "short_name": "unique_ptr",
       "detailed_name": "unique_ptr",
+      "short_name_offset": 0,
+      "short_name_size": 10,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -99,8 +100,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 4310164820010458371,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -112,8 +114,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 12728490517004312484,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -125,8 +128,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 15041163540773201510,
-      "short_name": "Foo",
       "detailed_name": "Foo",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "kind": 7,
       "definition_spelling": "64:7-64:10",
       "definition_extent": "64:1-66:2",

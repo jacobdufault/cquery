@@ -9,8 +9,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 3866412049634585509,
-      "short_name": "Parent",
       "detailed_name": "Parent",
+      "short_name_offset": 0,
+      "short_name_size": 6,
       "kind": 7,
       "definition_spelling": "1:7-1:13",
       "definition_extent": "1:1-1:16",
@@ -24,8 +25,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 10963370434658308541,
-      "short_name": "Derived",
       "detailed_name": "Derived",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 7,
       "definition_spelling": "2:7-2:14",
       "definition_extent": "2:1-2:33",

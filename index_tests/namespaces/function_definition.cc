@@ -10,8 +10,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 2029211996748007610,
-      "short_name": "hello",
       "detailed_name": "hello",
+      "short_name_offset": 0,
+      "short_name_size": 5,
       "kind": 2,
       "definition_spelling": "1:11-1:16",
       "definition_extent": "1:1-3:2",
@@ -25,8 +26,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 13838176792705659279,
-      "short_name": "<fundamental>",
-      "detailed_name": "",
+      "detailed_name": "<fundamental>",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [0],

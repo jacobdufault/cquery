@@ -16,8 +16,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 13611487872560323389,
-      "short_name": "Wrapper",
       "detailed_name": "Wrapper",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 6,
       "definition_spelling": "1:8-1:15",
       "definition_extent": "1:1-3:2",

@@ -9,8 +9,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 5673439900521455039,
-      "short_name": "T",
       "detailed_name": "T",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "kind": 6,
       "definition_spelling": "1:8-1:9",
       "definition_extent": "1:1-1:12",

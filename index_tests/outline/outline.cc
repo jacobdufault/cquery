@@ -21,8 +21,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 14399919566014425846,
-      "short_name": "MergeableUpdate",
       "detailed_name": "MergeableUpdate",
+      "short_name_offset": 0,
+      "short_name_size": 15,
       "kind": 6,
       "definition_spelling": "3:8-3:23",
       "definition_extent": "3:1-7:2",
@@ -36,8 +37,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 17,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -49,8 +51,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 9178760565669096175,
-      "short_name": "vector",
       "detailed_name": "std::vector",
+      "short_name_offset": 5,
+      "short_name_size": 6,
       "kind": 0,
       "parents": [],
       "derived": [],
@@ -62,8 +65,9 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 5401847601697785946,
-      "short_name": "",
       "detailed_name": "",
+      "short_name_offset": 0,
+      "short_name_size": 0,
       "kind": 0,
       "parents": [],
       "derived": [],

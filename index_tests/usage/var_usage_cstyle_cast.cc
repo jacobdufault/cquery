@@ -15,8 +15,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 5792006888140599735,
-      "short_name": "VarType",
       "detailed_name": "VarType",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 5,
       "definition_spelling": "1:6-1:13",
       "definition_extent": "1:1-1:16",
@@ -30,8 +31,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 10028537921178202800,
-      "short_name": "Holder",
       "detailed_name": "Holder",
+      "short_name_offset": 0,
+      "short_name_size": 6,
       "kind": 6,
       "definition_spelling": "3:8-3:14",
       "definition_extent": "3:1-5:2",

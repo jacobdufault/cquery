@@ -18,8 +18,9 @@ OUTPUT:
   "types": [{
       "id": 0,
       "usr": 16985894625255407295,
-      "short_name": "Foo",
       "detailed_name": "Foo",
+      "short_name_offset": 0,
+      "short_name_size": 3,
       "kind": 5,
       "definition_spelling": "1:6-1:9",
       "definition_extent": "1:1-4:2",
@@ -33,8 +34,9 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 14939241684006947339,
-      "short_name": "int32_t",
       "detailed_name": "int32_t",
+      "short_name_offset": 0,
+      "short_name_size": 7,
       "kind": 11,
       "hover": "typedef int int32_t",
       "definition_spelling": "6:13-6:20",
@@ -49,8 +51,9 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 2986879766914123941,
-      "short_name": "E",
       "detailed_name": "E",
+      "short_name_offset": 0,
+      "short_name_size": 1,
       "kind": 5,
       "definition_spelling": "8:12-8:13",
       "definition_extent": "8:1-11:2",
