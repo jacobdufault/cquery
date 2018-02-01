@@ -265,6 +265,58 @@ OUTPUT: make_functions.cc
       "locals": [],
       "callers": [],
       "callees": ["0@14:3-14:13", "0@15:3-15:13", "0@16:3-16:13", "1@17:3-17:14"]
+    }, {
+      "id": 3,
+      "usr": 13131778807733950299,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "storage": 0,
+      "declarations": [],
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": ["~-1@14:3-14:13"],
+      "callees": []
+    }, {
+      "id": 4,
+      "usr": 13028995015627606181,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "storage": 0,
+      "declarations": [],
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": ["~-1@15:3-15:13"],
+      "callees": []
+    }, {
+      "id": 5,
+      "usr": 3765833212244435302,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "storage": 0,
+      "declarations": [],
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": ["~-1@16:3-16:13"],
+      "callees": []
+    }, {
+      "id": 6,
+      "usr": 17321436359755983845,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "storage": 0,
+      "declarations": [],
+      "base": [],
+      "derived": [],
+      "locals": [],
+      "callers": ["~-1@17:3-17:14"],
+      "callees": []
     }],
   "vars": [{
       "id": 0,
