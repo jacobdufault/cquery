@@ -12,8 +12,7 @@ OUTPUT:
       "id": 0,
       "usr": 4259594751088586730,
       "detailed_name": "void foo()",
-      "short_name_offset": 5,
-      "short_name_size": 3,
+      "short_name": "foo",
       "kind": 12,
       "storage": 1,
       "declarations": [{
