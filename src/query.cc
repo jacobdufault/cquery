@@ -404,7 +404,7 @@ QueryTypeId IdMap::ToQuery(IndexTypeId id) const {
   return QueryTypeId(cached_type_ids_.find(id)->second);
 }
 QueryFuncId IdMap::ToQuery(IndexFuncId id) const {
-  if (id.id == -1)
+  if (id.id == (size_t)-1)
     return QueryFuncId((size_t)-1);
   assert(cached_func_ids_.find(id) != cached_func_ids_.end());
   return QueryFuncId(cached_func_ids_.find(id)->second);
@@ -945,7 +945,7 @@ void QueryDatabase::UpdateDetailedNames(size_t* qualified_name_index,
                                         size_t symbol_index,
                                         const std::string& short_name,
                                         const std::string& detailed_name) {
-  if (*qualified_name_index == -1) {
+  if (*qualified_name_index == (size_t)-1) {
     short_names.push_back(short_name);
     detailed_names.push_back(detailed_name);
     symbols.push_back(SymbolIdx(kind, symbol_index));

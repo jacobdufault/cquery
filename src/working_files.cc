@@ -20,12 +20,12 @@ constexpr int kMaxDiff = 20;
 constexpr int kMaxColumnAlignSize = 200;
 
 lsPosition GetPositionForOffset(const std::string& content, int offset) {
-  if (offset >= content.size())
+  if (offset >= (int)content.size())
     offset = (int)content.size() - 1;
 
   lsPosition result;
   int i = 0;
-  while (i < offset) {
+  while (i < (int)offset) {
     if (content[i] == '\n') {
       result.line += 1;
       result.character = 0;
@@ -296,7 +296,7 @@ void WorkingFile::ComputeLineMapping() {
   // Starting at unique lines, extend upwards and downwards.
   for (i = 0; i < (int)index_hashes.size() - 1; i++) {
     int j = index_to_buffer[i];
-    if (0 <= j && j + 1 < buffer_hashes.size() &&
+    if (0 <= j && j + 1 < (int)buffer_hashes.size() &&
         index_hashes[i + 1] == buffer_hashes[j + 1])
       index_to_buffer[i + 1] = j + 1;
   }
@@ -523,7 +523,7 @@ void WorkingFiles::OnClose(const lsTextDocumentIdentifier& close) {
 
   std::string filename = close.uri.GetPath();
 
-  for (int i = 0; i < files.size(); ++i) {
+  for (size_t i = 0; i < files.size(); ++i) {
     if (files[i]->filename == filename) {
       files.erase(files.begin() + i);
       return;

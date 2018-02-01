@@ -152,7 +152,7 @@ def configure(ctx):
     if ctx.env.CXXFLAGS:
       cxxflags = ctx.env.CXXFLAGS
     else:
-      cxxflags = ['-g', '-Wall', '-Wno-sign-compare', '-Werror']
+      cxxflags = ['-g', '-Wall', '-Werror']
 
     if all(not x.startswith('-std=') for x in ctx.env.CXXFLAGS):
       cxxflags.append('-std=c++11')

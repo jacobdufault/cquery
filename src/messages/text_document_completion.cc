@@ -241,7 +241,7 @@ struct TextDocumentCompletionHandler : MessageHandler {
     // of order, ie, we get completion request before buffer content update.
     std::string buffer_line;
     if (request->params.position.line >= 0 &&
-        request->params.position.line < file->buffer_lines.size()) {
+        request->params.position.line < (int)file->buffer_lines.size()) {
       buffer_line = file->buffer_lines[request->params.position.line];
     }
 
@@ -271,7 +271,7 @@ struct TextDocumentCompletionHandler : MessageHandler {
       }
       // If the character is > but - does not preced it, or if it is : and :
       // does not preced it, do not show completion results.
-      else if (preceding_index < buffer_line.size()) {
+      else if (preceding_index < (int)buffer_line.size()) {
         char preceding = buffer_line[preceding_index];
         did_fail_check = (preceding != '-' && character == ">") ||
                          (preceding != ':' && character == ":");
