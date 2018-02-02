@@ -16,7 +16,7 @@ OUTPUT:
       "usr": 13420564603121289209,
       "detailed_name": "T",
       "short_name": "T",
-      "kind": 0,
+      "kind": 25,
       "definition_spelling": "1:19-1:20",
       "definition_extent": "1:10-1:20",
       "parents": [],

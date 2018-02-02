@@ -95,7 +95,7 @@ OUTPUT:
       "usr": 780719166805015998,
       "detailed_name": "T",
       "short_name": "T",
-      "kind": 0,
+      "kind": 25,
       "definition_spelling": "10:19-10:20",
       "definition_extent": "10:10-10:20",
       "parents": [],
@@ -134,7 +134,7 @@ OUTPUT:
       "uses": ["8:24-8:25"],
       "parent_id": 18446744073709551615,
       "parent_kind": 0,
-      "kind": 0,
+      "kind": 25,
       "storage": 0
     }]
 }
