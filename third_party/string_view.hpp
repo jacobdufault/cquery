@@ -30,7 +30,7 @@
 #endif
 
 #if defined(__has_include) && !defined(STX_NO_STD_STRING_VIEW)
-#if __has_include(<string_view>) && (__cplusplus > 201402)
+#if __has_include(<string_view>)
         #include <string_view>
         #define STX_HAVE_STD_STRING_VIEW 1
         namespace STX_NAMESPACE_NAME {
