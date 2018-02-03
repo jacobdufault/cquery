@@ -110,7 +110,6 @@ OUTPUT:
       "definition_extent": "4:27-4:32",
       "variable_type": 0,
       "uses": ["6:7-6:8"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 25,
       "storage": 1

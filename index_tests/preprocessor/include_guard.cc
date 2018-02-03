@@ -20,7 +20,6 @@ OUTPUT:
       "definition_spelling": "2:9-2:12",
       "definition_extent": "2:9-2:12",
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 4,
       "storage": 0

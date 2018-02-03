@@ -44,7 +44,6 @@ OUTPUT:
       "declarations": ["2:14-2:20"],
       "variable_type": 1,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 21,
       "storage": 3

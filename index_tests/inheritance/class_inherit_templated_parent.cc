@@ -132,7 +132,6 @@ OUTPUT:
       "definition_extent": "7:10-7:24",
       "variable_type": 3,
       "uses": ["8:24-8:25"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 25,
       "storage": 0

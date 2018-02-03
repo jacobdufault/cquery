@@ -171,7 +171,6 @@ OUTPUT: header.h
       "definition_extent": "17:1-17:9",
       "variable_type": 5,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -185,7 +184,6 @@ OUTPUT: header.h
       "definition_extent": "18:1-18:16",
       "variable_type": 5,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 3

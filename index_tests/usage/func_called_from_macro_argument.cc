@@ -56,7 +56,6 @@ OUTPUT:
       "definition_spelling": "1:9-1:19",
       "definition_extent": "1:9-1:24",
       "uses": ["6:3-6:13"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 4,
       "storage": 0

@@ -89,7 +89,6 @@ OUTPUT:
       "definition_spelling": "5:3-5:6",
       "definition_extent": "5:1-5:12",
       "uses": ["7:7-7:10", "8:7-8:10"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -104,7 +103,6 @@ OUTPUT:
       "definition_extent": "7:1-7:13",
       "variable_type": 0,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -119,7 +117,6 @@ OUTPUT:
       "definition_extent": "8:1-8:13",
       "variable_type": 1,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1

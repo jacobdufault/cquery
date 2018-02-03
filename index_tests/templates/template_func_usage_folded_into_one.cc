@@ -55,7 +55,6 @@ OUTPUT:
       "definition_extent": "6:1-6:19",
       "variable_type": 0,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -70,7 +69,6 @@ OUTPUT:
       "definition_extent": "7:1-7:20",
       "variable_type": 0,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1

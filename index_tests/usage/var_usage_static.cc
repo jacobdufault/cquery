@@ -49,7 +49,6 @@ OUTPUT:
       "definition_extent": "1:1-1:13",
       "variable_type": 0,
       "uses": ["4:3-4:4"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 3

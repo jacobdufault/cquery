@@ -50,7 +50,6 @@ OUTPUT:
       "declarations": ["3:24-3:27"],
       "variable_type": 1,
       "uses": ["6:19-6:22", "7:20-7:23"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 21,
       "storage": 3
@@ -65,7 +64,6 @@ OUTPUT:
       "definition_extent": "6:1-6:22",
       "variable_type": 1,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -80,7 +78,6 @@ OUTPUT:
       "definition_extent": "7:1-7:23",
       "variable_type": 1,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1

@@ -69,7 +69,6 @@ OUTPUT:
       "definition_extent": "8:1-8:10",
       "variable_type": 1,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -83,7 +82,6 @@ OUTPUT:
       "definition_spelling": "1:9-1:10",
       "definition_extent": "1:9-1:12",
       "uses": ["8:9-8:10"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 4,
       "storage": 0
@@ -97,7 +95,6 @@ OUTPUT:
       "definition_spelling": "2:9-2:17",
       "definition_extent": "2:9-2:46",
       "uses": ["5:3-5:11"],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 4,
       "storage": 0

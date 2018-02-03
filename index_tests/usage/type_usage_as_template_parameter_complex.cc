@@ -213,7 +213,6 @@ OUTPUT:
       "declarations": ["15:43-15:44"],
       "variable_type": 0,
       "uses": [],
-      "parent_id": 18446744073709551615,
       "parent_kind": 0,
       "kind": 13,
       "storage": 2
