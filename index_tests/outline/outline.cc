@@ -8,6 +8,7 @@ struct MergeableUpdate {
 
 /*
 TEXT_REPLACE:
+std::__1::vector <===> std::vector
 c:@N@std@ST>2#T#T@vector <===> c:@N@std@N@__1@ST>2#T#T@vector
 10956461108384510180 <===> 9178760565669096175
 

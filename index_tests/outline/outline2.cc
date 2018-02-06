@@ -13,6 +13,8 @@ std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::str
 
 /*
 TEXT_REPLACE:
+std::__1::vector <===> std::vector
+std::__1::string <===> std::string
 std::__cxx11::string <===> std::string
 c:@N@std@string <===> c:@N@std@N@__1@T@string
 c:@N@std@T@string <===> c:@N@std@N@__1@T@string
