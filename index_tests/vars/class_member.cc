@@ -20,7 +20,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0],
       "instances": [0],
-      "uses": ["2:3-2:6"]
+      "uses": ["2:3-2:6|-1|1|4"]
     }],
   "funcs": [],
   "vars": [{

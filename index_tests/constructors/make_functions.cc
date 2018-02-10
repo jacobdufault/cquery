@@ -42,7 +42,7 @@ OUTPUT: make_functions.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["7:17-7:20", "8:15-8:18"]
+      "uses": ["7:17-7:20|-1|1|4", "8:15-8:18|-1|1|4"]
     }, {
       "id": 1,
       "usr": 14935975554338052500,
@@ -57,7 +57,7 @@ OUTPUT: make_functions.h
       "funcs": [0, 1, 2, 3],
       "vars": [],
       "instances": [],
-      "uses": ["5:3-5:9", "6:3-6:9", "7:3-7:9", "8:3-8:9"]
+      "uses": ["5:3-5:9|1|3|4", "6:3-6:9|1|3|4", "7:3-7:9|1|3|4", "8:3-8:9|1|3|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -73,7 +73,7 @@ OUTPUT: make_functions.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 1,
@@ -89,7 +89,7 @@ OUTPUT: make_functions.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 2,
@@ -105,7 +105,7 @@ OUTPUT: make_functions.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 3,
@@ -121,7 +121,7 @@ OUTPUT: make_functions.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []
@@ -147,7 +147,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["4:1-4:2"]
+      "uses": ["4:1-4:2|-1|1|4"]
     }, {
       "id": 1,
       "usr": 12533159752419999454,
@@ -162,7 +162,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["4:15-4:19"]
+      "uses": ["4:15-4:19|-1|1|4"]
     }, {
       "id": 2,
       "usr": 18441628706991062891,
@@ -177,7 +177,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["9:1-9:2"]
+      "uses": ["9:1-9:2|-1|1|4"]
     }, {
       "id": 3,
       "usr": 9441341235704820385,
@@ -192,7 +192,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["9:16-9:20"]
+      "uses": ["9:16-9:20|-1|1|4"]
     }, {
       "id": 4,
       "usr": 14935975554338052500,
@@ -205,7 +205,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["14:14-14:20", "15:14-15:20", "16:14-16:20", "17:15-17:21"]
+      "uses": ["14:14-14:20|-1|1|4", "15:14-15:20|-1|1|4", "16:14-16:20|-1|1|4", "17:15-17:21|-1|1|4"]
     }, {
       "id": 5,
       "usr": 12993848456528750350,
@@ -218,7 +218,7 @@ OUTPUT: make_functions.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["16:29-16:32", "17:30-17:33"]
+      "uses": ["16:29-16:32|-1|1|4", "17:30-17:33|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -233,7 +233,7 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["2@14:3-14:13", "2@15:3-15:13", "2@16:3-16:13"],
+      "uses": ["14:3-14:13|2|3|64", "15:3-15:13|2|3|64", "16:3-16:13|2|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -248,7 +248,7 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["2@17:3-17:14"],
+      "uses": ["17:3-17:14|2|3|64"],
       "callees": []
     }, {
       "id": 2,
@@ -263,8 +263,8 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@14:3-14:13", "0@15:3-15:13", "0@16:3-16:13", "1@17:3-17:14"]
+      "uses": [],
+      "callees": ["14:3-14:13|0|3|64", "15:3-15:13|0|3|64", "16:3-16:13|0|3|64", "17:3-17:14|1|3|64"]
     }, {
       "id": 3,
       "usr": 13131778807733950299,
@@ -276,7 +276,7 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["~-1@14:3-14:13"],
+      "uses": ["14:3-14:13|-1|1|72"],
       "callees": []
     }, {
       "id": 4,
@@ -289,7 +289,7 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["~-1@15:3-15:13"],
+      "uses": ["15:3-15:13|-1|1|72"],
       "callees": []
     }, {
       "id": 5,
@@ -302,7 +302,7 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["~-1@16:3-16:13"],
+      "uses": ["16:3-16:13|-1|1|72"],
       "callees": []
     }, {
       "id": 6,
@@ -315,7 +315,7 @@ OUTPUT: make_functions.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["~-1@17:3-17:14"],
+      "uses": ["17:3-17:14|-1|1|72"],
       "callees": []
     }],
   "vars": [{

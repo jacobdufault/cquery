@@ -28,7 +28,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@6:14-6:20"],
+      "uses": ["6:14-6:20|1|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -43,8 +43,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@6:14-6:20"]
+      "uses": [],
+      "callees": ["6:14-6:20|0|3|64"]
     }],
   "vars": [{
       "id": 0,
@@ -55,7 +55,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "1:9-1:19",
       "definition_extent": "1:9-1:24",
-      "uses": ["6:3-6:13"],
+      "uses": ["6:3-6:13|-1|1|4"],
       "parent_kind": 0,
       "kind": 4,
       "storage": 0

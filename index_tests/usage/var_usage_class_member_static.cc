@@ -27,7 +27,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["8:10-8:13"]
+      "uses": ["8:10-8:13|-1|1|4"]
     }, {
       "id": 1,
       "usr": 17,
@@ -58,7 +58,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@8:3-8:9"],
+      "uses": ["8:3-8:9|1|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -73,8 +73,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@8:3-8:9"]
+      "uses": [],
+      "callees": ["8:3-8:9|0|3|64"]
     }],
   "vars": [{
       "id": 0,
@@ -83,7 +83,7 @@ OUTPUT:
       "short_name": "x",
       "declarations": ["2:14-2:15"],
       "variable_type": 1,
-      "uses": ["8:15-8:16"],
+      "uses": ["8:15-8:16|1|3|4"],
       "parent_kind": 0,
       "kind": 21,
       "storage": 3

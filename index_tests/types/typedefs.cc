@@ -21,7 +21,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["1:14-1:18", "2:8-2:12"]
+      "uses": ["1:14-1:18|-1|1|4", "2:8-2:12|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -39,7 +39,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []

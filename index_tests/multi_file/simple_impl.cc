@@ -26,7 +26,7 @@ OUTPUT: simple_header.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []
@@ -52,8 +52,8 @@ OUTPUT: simple_impl.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["1@4:3-4:9"]
+      "uses": [],
+      "callees": ["4:3-4:9|1|3|64"]
     }, {
       "id": 1,
       "usr": 16236105532929924676,
@@ -65,7 +65,7 @@ OUTPUT: simple_impl.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["0@4:3-4:9"],
+      "uses": ["4:3-4:9|0|3|64"],
       "callees": []
     }],
   "vars": []

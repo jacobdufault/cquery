@@ -40,7 +40,7 @@ OUTPUT: static.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []
@@ -64,7 +64,7 @@ OUTPUT: static.cc
       "funcs": [0],
       "vars": [],
       "instances": [],
-      "uses": ["3:6-3:12"]
+      "uses": ["3:6-3:12|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -80,7 +80,7 @@ OUTPUT: static.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []

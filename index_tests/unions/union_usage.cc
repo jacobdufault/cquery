@@ -30,7 +30,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1],
       "instances": [2],
-      "uses": ["6:1-6:4", "8:10-8:13"]
+      "uses": ["6:1-6:4|-1|1|4", "8:10-8:13|-1|1|4"]
     }, {
       "id": 1,
       "usr": 17,
@@ -71,7 +71,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": [{
@@ -84,7 +84,7 @@ OUTPUT:
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:12",
       "variable_type": 1,
-      "uses": ["9:5-9:6"],
+      "uses": ["9:5-9:6|0|3|4"],
       "parent_id": 0,
       "parent_kind": 2,
       "kind": 14,
@@ -113,7 +113,7 @@ OUTPUT:
       "definition_spelling": "6:5-6:6",
       "definition_extent": "6:1-6:6",
       "variable_type": 0,
-      "uses": ["9:3-9:4"],
+      "uses": ["9:3-9:4|0|3|4"],
       "parent_kind": 0,
       "kind": 13,
       "storage": 1

@@ -25,7 +25,7 @@ OUTPUT: static_function_in_type.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["1:11-1:13"]
+      "uses": ["1:11-1:13|-1|1|4"]
     }, {
       "id": 1,
       "usr": 13838176792705659279,
@@ -51,7 +51,7 @@ OUTPUT: static_function_in_type.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["3:7-3:14", "6:24-6:31"]
+      "uses": ["3:7-3:14|-1|1|4", "6:24-6:31|-1|1|4"]
     }, {
       "id": 3,
       "usr": 17262466801709381811,
@@ -85,7 +85,7 @@ OUTPUT: static_function_in_type.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []
@@ -111,7 +111,7 @@ OUTPUT: static_function_in_type.cc
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["3:11-3:13"]
+      "uses": ["3:11-3:13|-1|1|4"]
     }, {
       "id": 1,
       "usr": 13838176792705659279,
@@ -137,7 +137,7 @@ OUTPUT: static_function_in_type.cc
       "funcs": [0],
       "vars": [],
       "instances": [],
-      "uses": ["5:6-5:9"]
+      "uses": ["5:6-5:9|-1|1|4"]
     }, {
       "id": 3,
       "usr": 1972401196751872203,
@@ -150,7 +150,7 @@ OUTPUT: static_function_in_type.cc
       "funcs": [],
       "vars": [],
       "instances": [0],
-      "uses": ["5:20-5:27"]
+      "uses": ["5:20-5:27|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -166,7 +166,7 @@ OUTPUT: static_function_in_type.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": [{

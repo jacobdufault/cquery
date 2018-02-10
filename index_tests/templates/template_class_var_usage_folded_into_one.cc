@@ -25,7 +25,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["6:9-6:12", "7:9-7:12"]
+      "uses": ["6:9-6:12|-1|1|4", "7:9-7:12|-1|1|4"]
     }, {
       "id": 1,
       "usr": 17,
@@ -49,7 +49,7 @@ OUTPUT:
       "hover": "const int Foo::var = 3",
       "declarations": ["3:24-3:27"],
       "variable_type": 1,
-      "uses": ["6:19-6:22", "7:20-7:23"],
+      "uses": ["6:19-6:22|-1|1|4", "7:20-7:23|-1|1|4"],
       "parent_kind": 0,
       "kind": 21,
       "storage": 3

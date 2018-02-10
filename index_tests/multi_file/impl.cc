@@ -23,7 +23,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["5:26-5:30"]
+      "uses": ["5:26-5:30|-1|1|4"]
     }, {
       "id": 1,
       "usr": 16750616846959666305,
@@ -38,7 +38,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["7:14-7:29"]
+      "uses": ["7:14-7:29|-1|1|4"]
     }, {
       "id": 2,
       "usr": 619345544228965342,
@@ -55,7 +55,7 @@ OUTPUT: header.h
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["7:7-7:11"]
+      "uses": ["7:7-7:11|-1|1|4"]
     }, {
       "id": 3,
       "usr": 529393482671181129,
@@ -113,7 +113,7 @@ OUTPUT: header.h
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": [{
@@ -210,8 +210,8 @@ OUTPUT: impl.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["1@4:3-4:7"]
+      "uses": [],
+      "callees": ["4:3-4:7|1|3|64"]
     }, {
       "id": 1,
       "usr": 11650481237659640387,
@@ -223,7 +223,7 @@ OUTPUT: impl.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["0@4:3-4:7"],
+      "uses": ["4:3-4:7|0|3|64"],
       "callees": []
     }],
   "vars": []

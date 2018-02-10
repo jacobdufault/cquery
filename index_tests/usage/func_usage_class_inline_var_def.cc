@@ -53,7 +53,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["-1@6:11-6:17"],
+      "uses": ["6:11-6:17|0|2|64"],
       "callees": []
     }],
   "vars": [{

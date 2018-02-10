@@ -23,7 +23,7 @@ OUTPUT:
       "funcs": [],
       "vars": [],
       "instances": [0, 1],
-      "uses": ["3:16-3:19", "4:17-4:20"]
+      "uses": ["3:16-3:19|-1|1|4", "4:17-4:20|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -38,7 +38,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": [{

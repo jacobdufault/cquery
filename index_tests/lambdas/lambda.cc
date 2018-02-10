@@ -56,8 +56,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["1@9:14-9:15", "1@10:14-10:15", "1@11:14-11:15"]
+      "uses": [],
+      "callees": ["9:14-9:15|1|3|64", "10:14-10:15|1|3|64", "11:14-11:15|1|3|64"]
     }, {
       "id": 1,
       "usr": 1328781044864682611,
@@ -69,7 +69,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["0@9:14-9:15", "0@10:14-10:15", "0@11:14-11:15"],
+      "uses": ["9:14-9:15|0|3|64", "10:14-10:15|0|3|64", "11:14-11:15|0|3|64"],
       "callees": []
     }],
   "vars": [{
@@ -81,7 +81,7 @@ OUTPUT:
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
       "variable_type": 0,
-      "uses": ["5:7-5:8", "4:24-4:25"],
+      "uses": ["5:7-5:8|-1|1|4", "4:24-4:25|0|3|4"],
       "parent_id": 0,
       "parent_kind": 3,
       "kind": 13,
@@ -95,7 +95,7 @@ OUTPUT:
       "definition_spelling": "4:8-4:19",
       "definition_extent": "4:3-7:4",
       "variable_type": 1,
-      "uses": ["9:3-9:14", "10:3-10:14", "11:3-11:14"],
+      "uses": ["9:3-9:14|0|3|4", "10:3-10:14|0|3|4", "11:3-11:14|0|3|4"],
       "parent_id": 0,
       "parent_kind": 3,
       "kind": 13,
@@ -109,7 +109,7 @@ OUTPUT:
       "definition_spelling": "4:31-4:32",
       "definition_extent": "4:27-4:32",
       "variable_type": 0,
-      "uses": ["6:7-6:8"],
+      "uses": ["6:7-6:8|0|3|4"],
       "parent_kind": 0,
       "kind": 25,
       "storage": 1
