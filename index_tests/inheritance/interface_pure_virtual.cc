@@ -40,7 +40,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []

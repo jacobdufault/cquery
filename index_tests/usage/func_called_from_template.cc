@@ -33,7 +33,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@5:3-5:9"],
+      "uses": ["5:3-5:9|1|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -48,8 +48,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["2@9:3-9:9"],
-      "callees": ["0@5:3-5:9"]
+      "uses": ["9:3-9:9|2|3|64"],
+      "callees": ["5:3-5:9|0|3|64"]
     }, {
       "id": 2,
       "usr": 4259594751088586730,
@@ -63,8 +63,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["1@9:3-9:9"]
+      "uses": [],
+      "callees": ["9:3-9:9|1|3|64"]
     }],
   "vars": []
 }

@@ -33,7 +33,7 @@ OUTPUT:
       "funcs": [],
       "vars": [1, 0],
       "instances": [],
-      "uses": ["10:5-10:8", "14:22-14:25", "14:40-14:43"]
+      "uses": ["10:5-10:8|-1|1|4", "14:22-14:25|-1|1|4", "14:40-14:43|-1|1|4"]
     }, {
       "id": 1,
       "usr": 17,
@@ -64,7 +64,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["2@14:3-14:9"],
+      "uses": ["14:3-14:9|2|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -82,7 +82,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["2@14:14-14:17"],
+      "uses": ["14:14-14:17|2|3|64"],
       "callees": []
     }, {
       "id": 2,
@@ -97,8 +97,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@14:3-14:9", "1@14:14-14:17"]
+      "uses": [],
+      "callees": ["14:3-14:9|0|3|64", "14:14-14:17|1|3|64"]
     }],
   "vars": [{
       "id": 0,
@@ -110,7 +110,7 @@ OUTPUT:
       "definition_spelling": "10:10-10:20",
       "definition_extent": "10:1-10:24",
       "variable_type": 1,
-      "uses": ["14:45-14:55"],
+      "uses": ["14:45-14:55|2|3|4"],
       "parent_id": 0,
       "parent_kind": 2,
       "kind": 21,
@@ -124,7 +124,7 @@ OUTPUT:
       "definition_spelling": "7:7-7:16",
       "definition_extent": "7:3-7:16",
       "variable_type": 1,
-      "uses": ["14:28-14:37"],
+      "uses": ["14:28-14:37|2|3|4"],
       "parent_id": 0,
       "parent_kind": 2,
       "kind": 14,
@@ -139,7 +139,7 @@ OUTPUT:
       "definition_spelling": "13:7-13:8",
       "definition_extent": "13:3-13:12",
       "variable_type": 1,
-      "uses": ["14:10-14:11"],
+      "uses": ["14:10-14:11|2|3|4"],
       "parent_id": 2,
       "parent_kind": 3,
       "kind": 13,

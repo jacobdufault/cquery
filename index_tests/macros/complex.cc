@@ -43,7 +43,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@12:5-12:10"],
+      "uses": ["12:5-12:10|1|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -63,8 +63,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@12:5-12:10"]
+      "uses": [],
+      "callees": ["12:5-12:10|0|3|64"]
     }],
   "vars": [{
       "id": 0,
@@ -76,7 +76,7 @@ OUTPUT:
       "definition_spelling": "9:11-9:16",
       "definition_extent": "9:1-9:20",
       "variable_type": 0,
-      "uses": ["12:14-12:19"],
+      "uses": ["12:14-12:19|1|3|4"],
       "parent_kind": 0,
       "kind": 13,
       "storage": 1
@@ -89,7 +89,7 @@ OUTPUT:
       "declarations": [],
       "definition_spelling": "1:9-1:12",
       "definition_extent": "1:9-3:32",
-      "uses": ["12:1-12:4"],
+      "uses": ["12:1-12:4|-1|1|4"],
       "parent_kind": 0,
       "kind": 4,
       "storage": 0

@@ -22,7 +22,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@3:3-3:9"],
+      "uses": ["3:3-3:9|1|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -37,8 +37,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@3:3-3:9"]
+      "uses": [],
+      "callees": ["3:3-3:9|0|3|64"]
     }],
   "vars": []
 }

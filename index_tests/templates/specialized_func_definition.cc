@@ -36,7 +36,7 @@ OUTPUT:
       "funcs": [0],
       "vars": [],
       "instances": [],
-      "uses": ["7:6-7:14", "10:6-10:14"]
+      "uses": ["7:6-7:14|-1|1|4", "10:6-10:14|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -62,7 +62,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []

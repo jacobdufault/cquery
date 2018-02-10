@@ -25,7 +25,7 @@ OUTPUT:
       "funcs": [0, 1, 2],
       "vars": [],
       "instances": [],
-      "uses": ["7:1-7:4", "7:25-7:28"]
+      "uses": ["7:1-7:4|-1|1|4", "7:25-7:28|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -41,7 +41,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 1,
@@ -60,7 +60,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 2,
@@ -79,7 +79,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 3,
@@ -97,7 +97,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": []

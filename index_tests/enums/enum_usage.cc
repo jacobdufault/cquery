@@ -24,7 +24,7 @@ OUTPUT:
       "funcs": [],
       "vars": [0, 1],
       "instances": [2],
-      "uses": ["6:1-6:4", "6:9-6:12"]
+      "uses": ["6:1-6:4|-1|1|4", "6:9-6:12|-1|1|4"]
     }],
   "funcs": [],
   "vars": [{
@@ -37,7 +37,7 @@ OUTPUT:
       "definition_spelling": "2:3-2:4",
       "definition_extent": "2:3-2:4",
       "variable_type": 0,
-      "uses": ["6:14-6:15"],
+      "uses": ["6:14-6:15|-1|1|4"],
       "parent_id": 0,
       "parent_kind": 2,
       "kind": 15,

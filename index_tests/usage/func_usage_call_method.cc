@@ -26,7 +26,7 @@ OUTPUT:
       "funcs": [0],
       "vars": [],
       "instances": [0],
-      "uses": ["6:3-6:6"]
+      "uses": ["6:3-6:6|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,
@@ -45,7 +45,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["1@7:6-7:10"],
+      "uses": ["7:6-7:10|1|3|64"],
       "callees": []
     }, {
       "id": 1,
@@ -60,8 +60,8 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["0@7:6-7:10"]
+      "uses": [],
+      "callees": ["7:6-7:10|0|3|64"]
     }],
   "vars": [{
       "id": 0,
@@ -73,7 +73,7 @@ OUTPUT:
       "definition_spelling": "6:8-6:9",
       "definition_extent": "6:3-6:19",
       "variable_type": 0,
-      "uses": ["7:3-7:4"],
+      "uses": ["7:3-7:4|1|3|4"],
       "parent_id": 1,
       "parent_kind": 3,
       "kind": 13,

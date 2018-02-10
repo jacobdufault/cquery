@@ -39,7 +39,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }],
   "vars": [{
@@ -51,7 +51,7 @@ OUTPUT:
       "definition_spelling": "2:7-2:8",
       "definition_extent": "2:3-2:8",
       "variable_type": 0,
-      "uses": ["3:3-3:4", "8:3-8:4"],
+      "uses": ["3:3-3:4|0|3|4", "8:3-8:4|0|3|4"],
       "parent_id": 0,
       "parent_kind": 3,
       "kind": 13,
@@ -65,7 +65,7 @@ OUTPUT:
       "definition_spelling": "5:9-5:10",
       "definition_extent": "5:5-5:10",
       "variable_type": 0,
-      "uses": ["6:5-6:6"],
+      "uses": ["6:5-6:6|0|3|4"],
       "parent_id": 0,
       "parent_kind": 3,
       "kind": 13,
