@@ -46,8 +46,8 @@ OUTPUT:
           "content": "int foo(int aaa, int bbb)",
           "param_spellings": ["4:13-4:16", "4:22-4:25"]
         }],
-      "spell": "5:5-5:8",
-      "extent": "5:1-5:36",
+      "spell": "5:5-5:8|-1|1|2",
+      "extent": "5:1-5:36|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],

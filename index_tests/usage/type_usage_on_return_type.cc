@@ -69,8 +69,8 @@ OUTPUT:
           "content": "Type* foo()",
           "param_spellings": []
         }],
-      "spell": "5:7-5:10",
-      "extent": "5:1-5:32",
+      "spell": "5:7-5:10|-1|1|2",
+      "extent": "5:1-5:32|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],
@@ -89,8 +89,8 @@ OUTPUT:
           "content": "Type* Get(int)",
           "param_spellings": ["8:16-8:16"]
         }],
-      "spell": "12:12-12:15",
-      "extent": "12:1-12:40",
+      "spell": "12:12-12:15|-1|1|2",
+      "extent": "12:1-12:40|-1|1|0",
       "declaring_type": 1,
       "base": [],
       "derived": [],
@@ -110,8 +110,8 @@ OUTPUT:
           "content": "void Empty()",
           "param_spellings": []
         }],
-      "spell": "13:11-13:16",
-      "extent": "13:1-13:21",
+      "spell": "13:11-13:16|-1|1|2",
+      "extent": "13:1-13:21|-1|1|0",
       "declaring_type": 1,
       "base": [],
       "derived": [],
@@ -149,8 +149,8 @@ OUTPUT:
           "content": "static Type* bar()",
           "param_spellings": []
         }],
-      "spell": "18:14-18:17",
-      "extent": "18:1-18:39",
+      "spell": "18:14-18:17|-1|1|2",
+      "extent": "18:1-18:39|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],

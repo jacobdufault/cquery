@@ -68,8 +68,8 @@ OUTPUT:
           "content": "void foo()",
           "param_spellings": []
         }],
-      "spell": "6:11-6:14",
-      "extent": "6:1-6:19",
+      "spell": "6:11-6:14|0|2|2",
+      "extent": "6:1-6:19|0|2|2",
       "declaring_type": 2,
       "base": [],
       "derived": [],

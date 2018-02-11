@@ -43,8 +43,8 @@ OUTPUT:
           "content": "Foo* make()",
           "param_spellings": []
         }],
-      "spell": "5:11-5:15",
-      "extent": "5:1-8:2",
+      "spell": "5:11-5:15|-1|1|2",
+      "extent": "5:1-8:2|-1|1|0",
       "declaring_type": 0,
       "base": [],
       "derived": [],

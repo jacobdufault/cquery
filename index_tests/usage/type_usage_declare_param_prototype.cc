@@ -40,8 +40,8 @@ OUTPUT:
           "content": "void foo(Foo* f, Foo*)",
           "param_spellings": ["3:15-3:16", "3:22-3:22"]
         }],
-      "spell": "4:6-4:9",
-      "extent": "4:1-4:26",
+      "spell": "4:6-4:9|-1|1|2",
+      "extent": "4:1-4:26|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],

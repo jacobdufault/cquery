@@ -56,8 +56,8 @@ OUTPUT:
           "content": "template<>\nvoid Template<void>::Foo() {}",
           "param_spellings": []
         }],
-      "spell": "7:19-7:22",
-      "extent": "6:1-7:24",
+      "spell": "7:19-7:22|-1|1|2",
+      "extent": "6:1-7:24|-1|1|0",
       "declaring_type": 0,
       "base": [],
       "derived": [],

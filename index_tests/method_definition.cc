@@ -38,8 +38,8 @@ OUTPUT:
           "content": "void foo() const",
           "param_spellings": []
         }],
-      "spell": "5:11-5:14",
-      "extent": "5:1-5:25",
+      "spell": "5:11-5:14|-1|1|2",
+      "extent": "5:1-5:25|-1|1|0",
       "declaring_type": 0,
       "base": [],
       "derived": [],
