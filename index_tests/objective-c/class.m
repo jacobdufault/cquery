@@ -27,15 +27,15 @@ OUTPUT:
       "detailed_name": "AClass",
       "short_name": "AClass",
       "kind": 7,
-      "definition_spelling": "7:17-7:23",
-      "definition_extent": "7:1-10:2",
+      "spell": "7:17-7:23|-1|1|2",
+      "extent": "7:1-10:2|-1|1|0",
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [2],
-      "uses": ["14:3-14:9", "14:23-14:29"]
+      "uses": ["14:3-14:9|-1|1|4", "14:23-14:29|-1|1|4"]
     }, {
       "id": 1,
       "usr": 17,
@@ -63,12 +63,12 @@ OUTPUT:
           "content": "+ (void)test;",
           "param_spellings": []
         }],
-      "definition_spelling": "8:9-8:13",
-      "definition_extent": "8:1-8:16",
+      "spell": "8:9-8:13|-1|1|2",
+      "extent": "8:1-8:16|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 1,
@@ -83,12 +83,12 @@ OUTPUT:
           "content": "- (void)anInstanceMethod;",
           "param_spellings": []
         }],
-      "definition_spelling": "9:9-9:25",
-      "definition_extent": "9:1-9:28",
+      "spell": "9:9-9:25|-1|1|2",
+      "extent": "9:1-9:28|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["4@15:13-15:29"],
+      "uses": ["15:13-15:29|4|3|64"],
       "callees": []
     }, {
       "id": 2,
@@ -103,11 +103,11 @@ OUTPUT:
           "content": "aProp",
           "param_spellings": []
         }],
-      "definition_extent": "4:29-4:34",
+      "extent": "4:29-4:34|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
+      "uses": [],
       "callees": []
     }, {
       "id": 3,
@@ -122,11 +122,11 @@ OUTPUT:
           "content": "aProp",
           "param_spellings": ["4:29-4:34"]
         }],
-      "definition_extent": "4:29-4:34",
+      "extent": "4:29-4:34|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": ["4@0:0-0:0"],
+      "uses": ["0:0-0:0|4|3|64"],
       "callees": []
     }, {
       "id": 4,
@@ -136,13 +136,13 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [],
-      "definition_spelling": "12:5-12:9",
-      "definition_extent": "12:1-17:2",
+      "spell": "12:5-12:9|-1|1|2",
+      "extent": "12:1-17:2|-1|1|0",
       "base": [],
       "derived": [],
       "locals": [],
-      "callers": [],
-      "callees": ["1@15:13-15:29", "3@0:0-0:0"]
+      "uses": [],
+      "callees": ["15:13-15:29|1|3|64", "0:0-0:0|3|3|64"]
     }],
   "vars": [{
       "id": 0,
@@ -150,9 +150,8 @@ OUTPUT:
       "detailed_name": "int AClass::aProp",
       "short_name": "aProp",
       "declarations": ["4:29-4:34"],
-      "variable_type": 1,
-      "uses": ["16:12-16:17"],
-      "parent_kind": 0,
+      "type": 1,
+      "uses": ["16:12-16:17|4|3|4"],
       "kind": 19,
       "storage": 0
     }, {
@@ -161,11 +160,10 @@ OUTPUT:
       "detailed_name": "int AClass::_aProp",
       "short_name": "_aProp",
       "declarations": [],
-      "definition_spelling": "4:29-4:34",
-      "definition_extent": "4:29-4:34",
-      "variable_type": 1,
+      "spell": "4:29-4:34|-1|1|2",
+      "extent": "4:29-4:34|-1|1|0",
+      "type": 1,
       "uses": [],
-      "parent_kind": 0,
       "kind": 14,
       "storage": 0
     }, {
@@ -175,12 +173,10 @@ OUTPUT:
       "short_name": "instance",
       "hover": "AClass *instance = [AClass init]",
       "declarations": [],
-      "definition_spelling": "14:11-14:19",
-      "definition_extent": "14:3-14:35",
-      "variable_type": 0,
-      "uses": ["15:4-15:12", "16:3-16:11"],
-      "parent_id": 4,
-      "parent_kind": 3,
+      "spell": "14:11-14:19|4|3|2",
+      "extent": "14:3-14:35|4|3|2",
+      "type": 0,
+      "uses": ["15:4-15:12|4|3|4", "16:3-16:11|4|3|4"],
       "kind": 13,
       "storage": 1
     }]
