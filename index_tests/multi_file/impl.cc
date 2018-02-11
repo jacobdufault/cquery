@@ -125,10 +125,8 @@ OUTPUT: header.h
       "declarations": [],
       "spell": "15:13-15:14|4|2|2",
       "extent": "15:13-15:14|4|2|2",
-      "variable_type": 4,
+      "type": 4,
       "uses": [],
-      "parent_id": 4,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }, {
@@ -140,10 +138,8 @@ OUTPUT: header.h
       "declarations": [],
       "spell": "15:16-15:17|4|2|2",
       "extent": "15:16-15:17|4|2|2",
-      "variable_type": 4,
+      "type": 4,
       "uses": [],
-      "parent_id": 4,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }, {
@@ -155,10 +151,8 @@ OUTPUT: header.h
       "declarations": [],
       "spell": "15:19-15:20|4|2|2",
       "extent": "15:19-15:20|4|2|2",
-      "variable_type": 4,
+      "type": 4,
       "uses": [],
-      "parent_id": 4,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }, {
@@ -169,9 +163,8 @@ OUTPUT: header.h
       "declarations": [],
       "spell": "17:5-17:9|-1|1|2",
       "extent": "17:1-17:9|-1|1|0",
-      "variable_type": 5,
+      "type": 5,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 1
     }, {
@@ -182,9 +175,8 @@ OUTPUT: header.h
       "declarations": [],
       "spell": "18:12-18:16|-1|1|2",
       "extent": "18:1-18:16|-1|1|0",
-      "variable_type": 5,
+      "type": 5,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 3
     }]

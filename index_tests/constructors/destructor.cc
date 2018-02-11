@@ -90,10 +90,8 @@ OUTPUT:
       "declarations": [],
       "spell": "8:7-8:8|2|3|2",
       "extent": "8:3-8:8|2|3|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 2,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }]

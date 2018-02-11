@@ -30,9 +30,8 @@ OUTPUT:
       "declarations": [],
       "spell": "2:13-2:14|-1|1|2",
       "extent": "2:1-2:14|-1|1|0",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 3
     }]

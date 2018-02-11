@@ -60,10 +60,8 @@ OUTPUT:
       "declarations": [],
       "spell": "6:7-6:8|0|3|2",
       "extent": "6:3-6:8|0|3|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }, {
@@ -72,9 +70,8 @@ OUTPUT:
       "detailed_name": "Foo foo",
       "short_name": "foo",
       "declarations": ["10:12-10:15"],
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 2
     }]

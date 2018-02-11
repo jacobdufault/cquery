@@ -34,10 +34,8 @@ OUTPUT:
       "declarations": [],
       "spell": "2:3-2:4|0|2|2",
       "extent": "2:3-2:4|0|2|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }, {
@@ -49,10 +47,8 @@ OUTPUT:
       "declarations": [],
       "spell": "3:3-3:4|0|2|2",
       "extent": "3:3-3:9|0|2|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }]

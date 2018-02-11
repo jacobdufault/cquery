@@ -29,9 +29,8 @@ OUTPUT:
       "detailed_name": "T t",
       "short_name": "t",
       "declarations": ["3:10-3:11"],
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 2
     }]

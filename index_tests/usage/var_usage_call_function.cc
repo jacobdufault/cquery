@@ -53,8 +53,6 @@ OUTPUT:
       "spell": "4:8-4:9|1|3|2",
       "extent": "4:3-4:19|1|3|2",
       "uses": ["5:3-5:4|1|3|4"],
-      "parent_id": 1,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }]

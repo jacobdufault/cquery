@@ -25,9 +25,8 @@ OUTPUT:
       "detailed_name": "int global",
       "short_name": "global",
       "declarations": ["1:12-1:18"],
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 2
     }]

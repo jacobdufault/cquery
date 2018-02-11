@@ -72,8 +72,6 @@ OUTPUT:
       "spell": "6:8-6:9|1|3|2",
       "extent": "6:3-6:22|1|3|2",
       "uses": [],
-      "parent_id": 1,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }]

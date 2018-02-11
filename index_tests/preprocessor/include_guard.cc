@@ -20,7 +20,6 @@ OUTPUT:
       "spell": "2:9-2:12|-1|1|2",
       "extent": "2:9-2:12|-1|1|0",
       "uses": [],
-      "parent_kind": 0,
       "kind": 4,
       "storage": 0
     }]

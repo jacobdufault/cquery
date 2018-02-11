@@ -48,9 +48,8 @@ OUTPUT:
       "declarations": [],
       "spell": "6:22-6:25|-1|1|2",
       "extent": "6:1-6:25|-1|1|0",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 3
     }]

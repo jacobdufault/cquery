@@ -47,10 +47,8 @@ OUTPUT:
       "declarations": [],
       "spell": "4:8-4:9|0|3|2",
       "extent": "4:3-4:9|0|3|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }]

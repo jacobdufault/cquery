@@ -211,9 +211,8 @@ OUTPUT:
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
       "short_name": "f",
       "declarations": ["15:43-15:44"],
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 2
     }, {
@@ -224,10 +223,8 @@ OUTPUT:
       "declarations": [],
       "spell": "54:39-54:44|2|3|2",
       "extent": "54:3-54:44|2|3|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 2,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }]

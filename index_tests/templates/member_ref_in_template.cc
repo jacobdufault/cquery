@@ -100,8 +100,6 @@ OUTPUT:
       "spell": "3:5-3:6|0|2|2",
       "extent": "3:3-3:6|0|2|2",
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 14,
       "storage": 0
     }]

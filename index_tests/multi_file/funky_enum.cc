@@ -34,10 +34,8 @@ OUTPUT: funky_enum.h
       "declarations": [],
       "spell": "4:1-4:2|0|2|2",
       "extent": "4:1-4:2|0|2|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }, {
@@ -49,10 +47,8 @@ OUTPUT: funky_enum.h
       "declarations": [],
       "spell": "5:1-5:2|0|2|2",
       "extent": "5:1-5:2|0|2|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }, {
@@ -64,10 +60,8 @@ OUTPUT: funky_enum.h
       "declarations": [],
       "spell": "6:1-6:2|0|2|2",
       "extent": "6:1-6:2|0|2|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 15,
       "storage": 0
     }]

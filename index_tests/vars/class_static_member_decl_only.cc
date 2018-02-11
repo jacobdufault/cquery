@@ -42,9 +42,8 @@ OUTPUT:
       "detailed_name": "int Foo::member",
       "short_name": "member",
       "declarations": ["2:14-2:20"],
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_kind": 0,
       "kind": 21,
       "storage": 3
     }]

@@ -177,10 +177,8 @@ OUTPUT: static_function_in_type.cc
       "declarations": [],
       "spell": "5:29-5:30|0|3|2",
       "extent": "5:20-5:30|0|3|2",
-      "variable_type": 3,
+      "type": 3,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 3,
       "kind": 25,
       "storage": 1
     }]

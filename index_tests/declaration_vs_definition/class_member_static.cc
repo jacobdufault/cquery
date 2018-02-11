@@ -47,10 +47,8 @@ OUTPUT:
       "declarations": ["2:14-2:17"],
       "spell": "5:10-5:13|-1|1|2",
       "extent": "5:1-5:13|-1|1|0",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 21,
       "storage": 1
     }]

@@ -47,9 +47,8 @@ OUTPUT:
       "declarations": [],
       "spell": "1:12-1:13|-1|1|2",
       "extent": "1:1-1:13|-1|1|0",
-      "variable_type": 0,
+      "type": 0,
       "uses": ["4:3-4:4|0|3|4"],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 3
     }]

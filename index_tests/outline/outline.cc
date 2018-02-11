@@ -83,10 +83,8 @@ OUTPUT:
       "declarations": [],
       "spell": "4:7-4:8|0|2|2",
       "extent": "4:3-4:8|0|2|2",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 14,
       "storage": 0
     }, {
@@ -97,10 +95,8 @@ OUTPUT:
       "declarations": [],
       "spell": "5:7-5:8|0|2|2",
       "extent": "5:3-5:8|0|2|2",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 14,
       "storage": 0
     }, {
@@ -111,10 +107,8 @@ OUTPUT:
       "declarations": [],
       "spell": "6:20-6:26|0|2|2",
       "extent": "6:3-6:26|0|2|2",
-      "variable_type": 2,
+      "type": 2,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 14,
       "storage": 0
     }]

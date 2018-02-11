@@ -130,9 +130,8 @@ OUTPUT:
       "declarations": [],
       "spell": "7:23-7:24|-1|1|2",
       "extent": "7:10-7:24|-1|1|0",
-      "variable_type": 3,
+      "type": 3,
       "uses": ["8:24-8:25|-1|1|4"],
-      "parent_kind": 0,
       "kind": 25,
       "storage": 0
     }]

@@ -48,9 +48,8 @@ OUTPUT:
       "short_name": "var",
       "hover": "const int Foo::var = 3",
       "declarations": ["3:24-3:27"],
-      "variable_type": 1,
+      "type": 1,
       "uses": ["6:19-6:22|-1|1|4", "7:20-7:23|-1|1|4"],
-      "parent_kind": 0,
       "kind": 21,
       "storage": 3
     }, {
@@ -62,9 +61,8 @@ OUTPUT:
       "declarations": [],
       "spell": "6:5-6:6|-1|1|2",
       "extent": "6:1-6:22|-1|1|0",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 1
     }, {
@@ -76,9 +74,8 @@ OUTPUT:
       "declarations": [],
       "spell": "7:5-7:6|-1|1|2",
       "extent": "7:1-7:23|-1|1|0",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 1
     }]

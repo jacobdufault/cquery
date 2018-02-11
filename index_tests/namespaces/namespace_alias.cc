@@ -128,10 +128,8 @@ OUTPUT:
       "declarations": [],
       "spell": "4:18-4:21|3|2|2",
       "extent": "4:14-4:26|3|2|2",
-      "variable_type": 4,
+      "type": 4,
       "uses": ["12:26-12:29|-1|1|4", "13:16-13:19|-1|1|4"],
-      "parent_id": 3,
-      "parent_kind": 2,
       "kind": 13,
       "storage": 1
     }, {
@@ -143,10 +141,8 @@ OUTPUT:
       "declarations": [],
       "spell": "12:7-12:8|0|3|2",
       "extent": "12:3-12:29|0|3|2",
-      "variable_type": 4,
+      "type": 4,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }, {
@@ -158,10 +154,8 @@ OUTPUT:
       "declarations": [],
       "spell": "13:7-13:8|0|3|2",
       "extent": "13:3-13:19|0|3|2",
-      "variable_type": 4,
+      "type": 4,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 3,
       "kind": 13,
       "storage": 1
     }]

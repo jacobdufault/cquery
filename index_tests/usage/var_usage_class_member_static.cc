@@ -82,9 +82,8 @@ OUTPUT:
       "detailed_name": "int Foo::x",
       "short_name": "x",
       "declarations": ["2:14-2:15"],
-      "variable_type": 1,
+      "type": 1,
       "uses": ["8:15-8:16|1|3|4"],
-      "parent_kind": 0,
       "kind": 21,
       "storage": 3
     }]

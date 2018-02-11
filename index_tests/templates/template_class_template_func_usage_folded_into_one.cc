@@ -69,9 +69,8 @@ OUTPUT:
       "declarations": [],
       "spell": "9:5-9:6|-1|1|2",
       "extent": "9:1-9:31|-1|1|0",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 1
     }, {
@@ -83,9 +82,8 @@ OUTPUT:
       "declarations": [],
       "spell": "10:5-10:6|-1|1|2",
       "extent": "10:1-10:33|-1|1|0",
-      "variable_type": 1,
+      "type": 1,
       "uses": [],
-      "parent_kind": 0,
       "kind": 13,
       "storage": 1
     }]

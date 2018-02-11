@@ -31,10 +31,8 @@ OUTPUT:
       "declarations": [],
       "spell": "2:8-2:14|0|2|2",
       "extent": "2:3-2:14|0|2|2",
-      "variable_type": 0,
+      "type": 0,
       "uses": [],
-      "parent_id": 0,
-      "parent_kind": 2,
       "kind": 14,
       "storage": 0
     }]
