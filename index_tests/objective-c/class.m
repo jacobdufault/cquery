@@ -149,7 +149,7 @@ OUTPUT:
       "usr": 14842397373703114213,
       "detailed_name": "int AClass::aProp",
       "short_name": "aProp",
-      "declarations": ["4:29-4:34"],
+      "declarations": ["4:29-4:34|-1|1|1"],
       "type": 1,
       "uses": ["16:12-16:17|4|3|4"],
       "kind": 19,
