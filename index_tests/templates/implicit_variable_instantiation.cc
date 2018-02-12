@@ -111,7 +111,7 @@ OUTPUT:
       "detailed_name": "const ns::VarType ns::Holder::static_var",
       "short_name": "static_var",
       "hover": "const ns::VarType ns::Holder::static_var = (VarType)0x0",
-      "declarations": ["6:30-6:40"],
+      "declarations": ["6:30-6:40|3|2|2"],
       "spell": "10:37-10:47|0|2|2",
       "extent": "9:3-10:47|0|2|2",
       "type": 2,

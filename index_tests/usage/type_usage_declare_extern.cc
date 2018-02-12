@@ -28,7 +28,7 @@ OUTPUT:
       "usr": 1346710425945444872,
       "detailed_name": "T t",
       "short_name": "t",
-      "declarations": ["3:10-3:11"],
+      "declarations": ["3:10-3:11|-1|1|1"],
       "type": 0,
       "uses": [],
       "kind": 13,

@@ -41,7 +41,7 @@ OUTPUT:
       "usr": 5844987037615239736,
       "detailed_name": "int Foo::member",
       "short_name": "member",
-      "declarations": ["2:14-2:20"],
+      "declarations": ["2:14-2:20|0|2|2"],
       "type": 1,
       "uses": [],
       "kind": 21,

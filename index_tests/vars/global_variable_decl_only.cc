@@ -24,7 +24,7 @@ OUTPUT:
       "usr": 9937941849651546906,
       "detailed_name": "int global",
       "short_name": "global",
-      "declarations": ["1:12-1:18"],
+      "declarations": ["1:12-1:18|-1|1|1"],
       "type": 0,
       "uses": [],
       "kind": 13,

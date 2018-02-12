@@ -69,7 +69,7 @@ OUTPUT:
       "usr": 14455976355866885943,
       "detailed_name": "Foo foo",
       "short_name": "foo",
-      "declarations": ["10:12-10:15"],
+      "declarations": ["10:12-10:15|-1|1|1"],
       "type": 0,
       "uses": [],
       "kind": 13,

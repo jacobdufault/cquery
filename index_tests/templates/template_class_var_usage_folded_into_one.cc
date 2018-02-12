@@ -47,7 +47,7 @@ OUTPUT:
       "detailed_name": "const int Foo::var",
       "short_name": "var",
       "hover": "const int Foo::var = 3",
-      "declarations": ["3:24-3:27"],
+      "declarations": ["3:24-3:27|0|2|2"],
       "type": 1,
       "uses": ["6:19-6:22|-1|1|4", "7:20-7:23|-1|1|4"],
       "kind": 21,

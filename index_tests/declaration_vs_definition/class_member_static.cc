@@ -44,7 +44,7 @@ OUTPUT:
       "usr": 8942920329766232482,
       "detailed_name": "int Foo::foo",
       "short_name": "foo",
-      "declarations": ["2:14-2:17"],
+      "declarations": ["2:14-2:17|0|2|2"],
       "spell": "5:10-5:13|-1|1|2",
       "extent": "5:1-5:13|-1|1|0",
       "type": 1,

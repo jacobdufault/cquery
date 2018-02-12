@@ -81,7 +81,7 @@ OUTPUT:
       "usr": 8599782646965457351,
       "detailed_name": "int Foo::x",
       "short_name": "x",
-      "declarations": ["2:14-2:15"],
+      "declarations": ["2:14-2:15|0|2|2"],
       "type": 1,
       "uses": ["8:15-8:16|1|3|4"],
       "kind": 21,

@@ -210,7 +210,7 @@ OUTPUT:
       "usr": 2933643612409209903,
       "detailed_name": "unique_ptr<unique_ptr<S1, S2>, S2> f",
       "short_name": "f",
-      "declarations": ["15:43-15:44"],
+      "declarations": ["15:43-15:44|-1|1|1"],
       "type": 0,
       "uses": [],
       "kind": 13,
