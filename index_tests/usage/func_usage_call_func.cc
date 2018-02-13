@@ -22,7 +22,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "uses": ["3:3-3:9|1|3|64"],
+      "uses": ["3:3-3:9|1|3|32"],
       "callees": []
     }, {
       "id": 1,
@@ -38,7 +38,7 @@ OUTPUT:
       "derived": [],
       "locals": [],
       "uses": [],
-      "callees": ["3:3-3:9|0|3|64"]
+      "callees": ["3:3-3:9|0|3|32"]
     }],
   "vars": []
 }

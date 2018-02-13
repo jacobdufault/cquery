@@ -28,7 +28,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "uses": ["6:14-6:20|1|3|64"],
+      "uses": ["6:14-6:20|1|3|32"],
       "callees": []
     }, {
       "id": 1,
@@ -44,7 +44,7 @@ OUTPUT:
       "derived": [],
       "locals": [],
       "uses": [],
-      "callees": ["6:14-6:20|0|3|64"]
+      "callees": ["6:14-6:20|0|3|32"]
     }],
   "vars": [{
       "id": 0,

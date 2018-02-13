@@ -53,7 +53,7 @@ OUTPUT:
       "base": [],
       "derived": [],
       "locals": [],
-      "uses": ["6:11-6:17|0|2|64"],
+      "uses": ["6:11-6:17|0|2|32"],
       "callees": []
     }],
   "vars": [{

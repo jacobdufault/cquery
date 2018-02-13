@@ -53,7 +53,7 @@ OUTPUT: simple_impl.cc
       "derived": [],
       "locals": [],
       "uses": [],
-      "callees": ["4:3-4:9|1|3|64"]
+      "callees": ["4:3-4:9|1|3|32"]
     }, {
       "id": 1,
       "usr": 16236105532929924676,
@@ -65,7 +65,7 @@ OUTPUT: simple_impl.cc
       "base": [],
       "derived": [],
       "locals": [],
-      "uses": ["4:3-4:9|0|3|64"],
+      "uses": ["4:3-4:9|0|3|32"],
       "callees": []
     }],
   "vars": []
