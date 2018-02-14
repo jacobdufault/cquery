@@ -1,10 +1,8 @@
 #include "import_pipeline.h"
 
 #include "cache_manager.h"
-#include "config.h"
 #include "iindexer.h"
 #include "import_manager.h"
-#include "language_server_api.h"
 #include "message_handler.h"
 #include "platform.h"
 #include "project.h"

@@ -1,9 +1,5 @@
 #include "queue_manager.h"
 
-#include "cache_manager.h"
-#include "language_server_api.h"
-#include "query.h"
-
 #include <sstream>
 
 Index_Request::Index_Request(const std::string& path,

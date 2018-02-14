@@ -1,9 +1,5 @@
 #include "query.h"
 
-#include "indexer.h"
-#include "serializer.h"
-#include "serializers/json.h"
-
 #include <doctest/doctest.h>
 #include <optional.h>
 #include <loguru.hpp>

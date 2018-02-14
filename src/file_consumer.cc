@@ -1,9 +1,6 @@
 #include "file_consumer.h"
 
-#include "clang_utils.h"
 #include "indexer.h"
-#include "platform.h"
-#include "utils.h"
 
 #include <loguru.hpp>
 
@@ -66,7 +63,7 @@ IndexFile* FileConsumer::TryConsumeFile(CXFile file,
 
   // No result in local; we need to query global.
   bool did_insert = shared_->Mark(file_name);
-  
+
   // We did not take the file from global. Cache that we failed so we don't try
   // again and return nullptr.
   if (!did_insert) {

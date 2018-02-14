@@ -1,7 +1,6 @@
 #pragma once
 
 #include "indexer.h"
-#include "serializer.h"
 
 #include <sparsepp/spp.h>
 

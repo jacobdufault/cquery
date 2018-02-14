@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ipc.h"
-#include "language_server_api.h"
 #include "query.h"
 
 #include <optional.h>

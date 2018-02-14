@@ -2,7 +2,6 @@
 
 #include "clang_utils.h"
 #include "platform.h"
-#include "utils.h"
 
 #include <loguru.hpp>
 

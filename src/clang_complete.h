@@ -1,9 +1,7 @@
 #pragma once
 
 #include "atomic_object.h"
-#include "clang_index.h"
 #include "clang_translation_unit.h"
-#include "language_server_api.h"
 #include "lru_cache.h"
 #include "project.h"
 #include "threaded_queue.h"

@@ -1,7 +1,6 @@
 #include "language_server_api.h"
 
 #include "recorder.h"
-#include "serializers/json.h"
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>

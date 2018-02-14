@@ -1,4 +1,3 @@
-#include "fuzzy_match.h"
 #include "lex_utils.h"
 #include "message_handler.h"
 #include "query_utils.h"

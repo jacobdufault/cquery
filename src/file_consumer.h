@@ -1,7 +1,6 @@
 #pragma once
 
 #include "file_contents.h"
-#include "utils.h"
 
 #include <clang-c/Index.h>
 

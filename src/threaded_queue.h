@@ -1,6 +1,5 @@
 #pragma once
 
-#include "utils.h"
 #include "work_thread.h"
 
 #include <optional.h>

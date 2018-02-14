@@ -1,7 +1,6 @@
 #include "working_files.h"
 
 #include "lex_utils.h"
-#include "position.h"
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
