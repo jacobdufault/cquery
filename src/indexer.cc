@@ -1848,7 +1848,9 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
           }
           // TODO The name may be assigned in |ResolveToDeclarationType| but
           // |spell| is nullopt.
-          if (!origin->def.spell) {
+          bool is_this_file = clang_Location_isFromMainFile(
+              clang_getCursorLocation(origin_cursor.cx_cursor));
+          if (!origin->def.spell && is_this_file) {
             SetUse(db, &origin->def.spell, origin_cursor.get_spelling_range(), lex_parent, Role::Definition);
             SetUse(db, &origin->def.extent, origin_cursor.get_extent(), lex_parent, Role::None);
           }
