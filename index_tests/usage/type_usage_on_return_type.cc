@@ -89,7 +89,7 @@ OUTPUT:
           "content": "Type* Get(int)",
           "param_spellings": ["8:16-8:16"]
         }],
-      "spell": "12:12-12:15|-1|1|2",
+      "spell": "12:12-12:15|1|2|2",
       "extent": "12:1-12:40|-1|1|0",
       "declaring_type": 1,
       "base": [],
@@ -110,7 +110,7 @@ OUTPUT:
           "content": "void Empty()",
           "param_spellings": []
         }],
-      "spell": "13:11-13:16|-1|1|2",
+      "spell": "13:11-13:16|1|2|2",
       "extent": "13:1-13:21|-1|1|0",
       "declaring_type": 1,
       "base": [],

@@ -107,7 +107,7 @@ OUTPUT:
       "short_name": "static_var",
       "hover": "int Foo::static_var = 0",
       "declarations": ["6:14-6:24|0|2|2"],
-      "spell": "10:10-10:20|-1|1|2",
+      "spell": "10:10-10:20|0|2|2",
       "extent": "10:1-10:24|-1|1|0",
       "type": 1,
       "uses": ["14:45-14:55|2|3|4"],

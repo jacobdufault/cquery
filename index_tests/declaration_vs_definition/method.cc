@@ -78,7 +78,7 @@ OUTPUT:
           "content": "void def()",
           "param_spellings": []
         }],
-      "spell": "7:11-7:14|-1|1|2",
+      "spell": "7:11-7:14|0|2|2",
       "extent": "7:1-7:19|-1|1|0",
       "declaring_type": 0,
       "base": [],

@@ -37,6 +37,19 @@ OUTPUT:
       "vars": [],
       "instances": [],
       "uses": ["7:6-7:14|-1|1|4", "10:6-10:14|-1|1|4"]
+    }, {
+      "id": 1,
+      "usr": 17649312483543982122,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "parents": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
     }],
   "funcs": [{
       "id": 0,
@@ -56,7 +69,7 @@ OUTPUT:
           "content": "template<>\nvoid Template<void>::Foo() {}",
           "param_spellings": []
         }],
-      "spell": "7:19-7:22|-1|1|2",
+      "spell": "7:19-7:22|0|2|2",
       "extent": "6:1-7:24|-1|1|0",
       "declaring_type": 0,
       "base": [],

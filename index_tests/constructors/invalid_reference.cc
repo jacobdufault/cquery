@@ -36,7 +36,7 @@ OUTPUT:
       "kind": 22,
       "storage": 1,
       "declarations": [],
-      "spell": "4:6-4:9|-1|1|2",
+      "spell": "4:6-4:9|0|2|2",
       "extent": "4:1-4:11|-1|1|0",
       "declaring_type": 0,
       "base": [],

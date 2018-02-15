@@ -196,7 +196,7 @@ OUTPUT:
           "content": "unique_ptr<S1, S2>* foo()",
           "param_spellings": []
         }],
-      "spell": "79:26-79:29|-1|1|2",
+      "spell": "79:26-79:29|3|2|2",
       "extent": "79:1-79:51|-1|1|0",
       "declaring_type": 3,
       "base": [],

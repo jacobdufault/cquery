@@ -32,7 +32,7 @@ OUTPUT:
       "short_name": "member",
       "hover": "Foo *Foo::member = nullptr",
       "declarations": ["2:15-2:21|0|2|2"],
-      "spell": "4:11-4:17|-1|1|2",
+      "spell": "4:11-4:17|0|2|2",
       "extent": "4:1-4:27|-1|1|0",
       "type": 0,
       "uses": [],

@@ -51,7 +51,7 @@ OUTPUT:
       "short_name": "static_var",
       "hover": "const VarType Holder::static_var = (VarType)0x0",
       "declarations": ["4:28-4:38|1|2|2"],
-      "spell": "7:23-7:33|-1|1|2",
+      "spell": "7:23-7:33|1|2|2",
       "extent": "7:1-7:33|-1|1|0",
       "type": 0,
       "uses": [],

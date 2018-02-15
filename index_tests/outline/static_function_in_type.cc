@@ -160,7 +160,7 @@ OUTPUT: static_function_in_type.cc
       "kind": 18,
       "storage": 1,
       "declarations": [],
-      "spell": "5:11-5:19|0|2|2",
+      "spell": "5:11-5:19|2|2|2",
       "extent": "5:1-6:2|0|2|2",
       "declaring_type": 2,
       "base": [],
