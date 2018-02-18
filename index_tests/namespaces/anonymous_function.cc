@@ -29,7 +29,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spell": "2:6-2:9|0|2|2",
+          "spell": "2:6-2:9|0|2|1",
           "param_spellings": []
         }],
       "declaring_type": 0,

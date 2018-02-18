@@ -43,10 +43,10 @@ OUTPUT:
       "short_name": "p",
       "declarations": [],
       "spell": "1:14-1:15|0|3|2",
-      "extent": "1:10-1:15|0|3|2",
+      "extent": "1:10-1:15|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }, {
       "id": 1,
@@ -56,7 +56,7 @@ OUTPUT:
       "hover": "int p = 0",
       "declarations": [],
       "spell": "2:9-2:10|0|3|2",
-      "extent": "2:5-2:14|0|3|2",
+      "extent": "2:5-2:14|0|3|0",
       "type": 0,
       "uses": [],
       "kind": 13,

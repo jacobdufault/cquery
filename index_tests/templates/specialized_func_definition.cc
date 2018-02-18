@@ -27,7 +27,7 @@ OUTPUT:
       "usr": 17107291254533526269,
       "detailed_name": "Template",
       "short_name": "Template",
-      "kind": 7,
+      "kind": 5,
       "spell": "2:7-2:15|-1|1|2",
       "extent": "2:1-4:2|-1|1|0",
       "parents": [],
@@ -56,10 +56,10 @@ OUTPUT:
       "usr": 11994188353303124840,
       "detailed_name": "void Template::Foo()",
       "short_name": "Foo",
-      "kind": 16,
+      "kind": 6,
       "storage": 1,
       "declarations": [{
-          "spell": "3:8-3:11|0|2|2",
+          "spell": "3:8-3:11|0|2|1",
           "param_spellings": []
         }, {
           "spell": "10:22-10:25|-1|1|1",

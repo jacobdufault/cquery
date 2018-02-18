@@ -24,7 +24,7 @@ OUTPUT:
       "usr": 14399919566014425846,
       "detailed_name": "MergeableUpdate",
       "short_name": "MergeableUpdate",
-      "kind": 6,
+      "kind": 23,
       "spell": "3:8-3:23|-1|1|2",
       "extent": "3:1-7:2|-1|1|0",
       "parents": [],
@@ -82,10 +82,10 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "4:7-4:8|0|2|2",
-      "extent": "4:3-4:8|0|2|2",
+      "extent": "4:3-4:8|0|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 1,
@@ -94,10 +94,10 @@ OUTPUT:
       "short_name": "b",
       "declarations": [],
       "spell": "5:7-5:8|0|2|2",
-      "extent": "5:3-5:8|0|2|2",
+      "extent": "5:3-5:8|0|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 2,
@@ -106,10 +106,10 @@ OUTPUT:
       "short_name": "to_add",
       "declarations": [],
       "spell": "6:20-6:26|0|2|2",
-      "extent": "6:3-6:26|0|2|2",
+      "extent": "6:3-6:26|0|2|0",
       "type": 2,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

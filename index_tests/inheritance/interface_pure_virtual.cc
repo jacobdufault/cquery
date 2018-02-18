@@ -12,7 +12,7 @@ OUTPUT:
       "usr": 9949214233977131946,
       "detailed_name": "IFoo",
       "short_name": "IFoo",
-      "kind": 7,
+      "kind": 5,
       "spell": "1:7-1:11|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],
@@ -28,10 +28,10 @@ OUTPUT:
       "usr": 3277829753446788562,
       "detailed_name": "void IFoo::foo()",
       "short_name": "foo",
-      "kind": 16,
+      "kind": 6,
       "storage": 1,
       "declarations": [{
-          "spell": "2:16-2:19|0|2|2",
+          "spell": "2:16-2:19|0|2|1",
           "param_spellings": []
         }],
       "declaring_type": 0,

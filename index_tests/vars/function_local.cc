@@ -46,7 +46,7 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "4:8-4:9|0|3|2",
-      "extent": "4:3-4:9|0|3|2",
+      "extent": "4:3-4:9|0|3|0",
       "type": 0,
       "uses": [],
       "kind": 13,

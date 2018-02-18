@@ -17,7 +17,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 6,
+      "kind": 23,
       "spell": "4:8-4:11|-1|1|2",
       "extent": "4:1-6:2|-1|1|0",
       "parents": [],
@@ -46,11 +46,11 @@ OUTPUT:
       "usr": 13788753348312146871,
       "detailed_name": "void Foo::Foo(Foo &&)",
       "short_name": "Foo",
-      "kind": 22,
+      "kind": 9,
       "storage": 1,
       "declarations": [],
       "spell": "5:12-5:15|0|2|2",
-      "extent": "5:12-5:16|0|2|2",
+      "extent": "5:12-5:16|0|2|0",
       "declaring_type": 0,
       "base": [],
       "derived": [],
@@ -81,7 +81,7 @@ OUTPUT:
       "spell": "1:9-1:10|-1|1|2",
       "extent": "1:9-1:12|-1|1|0",
       "uses": ["8:9-8:10|-1|1|4"],
-      "kind": 4,
+      "kind": 255,
       "storage": 0
     }, {
       "id": 2,
@@ -93,7 +93,7 @@ OUTPUT:
       "spell": "2:9-2:17|-1|1|2",
       "extent": "2:9-2:46|-1|1|0",
       "uses": ["5:3-5:11|-1|1|4"],
-      "kind": 4,
+      "kind": 255,
       "storage": 0
     }]
 }

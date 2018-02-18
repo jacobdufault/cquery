@@ -40,7 +40,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 7,
+      "kind": 5,
       "spell": "7:7-7:10|-1|1|2",
       "extent": "7:1-10:2|-1|1|0",
       "parents": [],
@@ -77,10 +77,10 @@ OUTPUT:
       "usr": 13402221340333431092,
       "detailed_name": "Type *Foo::Get(int)",
       "short_name": "Get",
-      "kind": 16,
+      "kind": 6,
       "storage": 1,
       "declarations": [{
-          "spell": "8:9-8:12|1|2|2",
+          "spell": "8:9-8:12|1|2|1",
           "param_spellings": ["8:16-8:16"]
         }],
       "spell": "12:12-12:15|1|2|2",
@@ -96,10 +96,10 @@ OUTPUT:
       "usr": 4240751906910175539,
       "detailed_name": "void Foo::Empty()",
       "short_name": "Empty",
-      "kind": 16,
+      "kind": 6,
       "storage": 1,
       "declarations": [{
-          "spell": "9:8-9:13|1|2|2",
+          "spell": "9:8-9:13|1|2|1",
           "param_spellings": []
         }],
       "spell": "13:11-13:16|1|2|2",

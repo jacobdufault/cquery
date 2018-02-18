@@ -13,7 +13,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 7,
+      "kind": 5,
       "spell": "3:7-3:10|-1|1|2",
       "extent": "3:1-3:13|-1|1|0",
       "parents": [],

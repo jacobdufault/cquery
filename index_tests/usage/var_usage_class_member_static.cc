@@ -18,7 +18,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 6,
+      "kind": 23,
       "spell": "1:8-1:11|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],
@@ -79,10 +79,10 @@ OUTPUT:
       "usr": 8599782646965457351,
       "detailed_name": "int Foo::x",
       "short_name": "x",
-      "declarations": ["2:14-2:15|0|2|2"],
+      "declarations": ["2:14-2:15|0|2|1"],
       "type": 1,
       "uses": ["8:15-8:16|1|3|4"],
-      "kind": 21,
+      "kind": 8,
       "storage": 3
     }]
 }

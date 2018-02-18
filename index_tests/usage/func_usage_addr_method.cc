@@ -17,7 +17,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 6,
+      "kind": 23,
       "spell": "1:8-1:11|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],
@@ -33,10 +33,10 @@ OUTPUT:
       "usr": 18417145003926999463,
       "detailed_name": "void Foo::Used()",
       "short_name": "Used",
-      "kind": 16,
+      "kind": 6,
       "storage": 1,
       "declarations": [{
-          "spell": "2:8-2:12|0|2|2",
+          "spell": "2:8-2:12|0|2|1",
           "param_spellings": []
         }],
       "declaring_type": 0,
@@ -68,7 +68,7 @@ OUTPUT:
       "short_name": "x",
       "declarations": [],
       "spell": "6:8-6:9|1|3|2",
-      "extent": "6:3-6:22|1|3|2",
+      "extent": "6:3-6:22|1|3|0",
       "uses": [],
       "kind": 13,
       "storage": 1

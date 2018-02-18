@@ -14,7 +14,7 @@ OUTPUT:
       "usr": 10528472276654770367,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 7,
+      "kind": 5,
       "spell": "2:7-2:10|-1|1|2",
       "extent": "2:1-2:13|-1|1|0",
       "parents": [],

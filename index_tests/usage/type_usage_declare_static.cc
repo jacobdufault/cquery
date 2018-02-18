@@ -10,7 +10,7 @@ OUTPUT:
       "usr": 13487927231218873822,
       "detailed_name": "Type",
       "short_name": "Type",
-      "kind": 6,
+      "kind": 23,
       "spell": "1:8-1:12|-1|1|2",
       "extent": "1:1-1:15|-1|1|0",
       "parents": [],

@@ -46,7 +46,7 @@ OUTPUT:
       "usr": 4992269036372211530,
       "detailed_name": "CompilationEntry",
       "short_name": "CompilationEntry",
-      "kind": 6,
+      "kind": 23,
       "spell": "6:8-6:24|-1|1|2",
       "extent": "6:1-10:2|-1|1|0",
       "parents": [],
@@ -120,10 +120,10 @@ OUTPUT:
       "short_name": "directory",
       "declarations": [],
       "spell": "7:15-7:24|0|2|2",
-      "extent": "7:3-7:24|0|2|2",
+      "extent": "7:3-7:24|0|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 1,
@@ -132,10 +132,10 @@ OUTPUT:
       "short_name": "filename",
       "declarations": [],
       "spell": "8:15-8:23|0|2|2",
-      "extent": "8:3-8:23|0|2|2",
+      "extent": "8:3-8:23|0|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 2,
@@ -144,10 +144,10 @@ OUTPUT:
       "short_name": "args",
       "declarations": [],
       "spell": "9:28-9:32|0|2|2",
-      "extent": "9:3-9:32|0|2|2",
+      "extent": "9:3-9:32|0|2|0",
       "type": 3,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

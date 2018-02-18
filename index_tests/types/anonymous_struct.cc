@@ -13,7 +13,7 @@ OUTPUT:
       "usr": 17937907487590875128,
       "detailed_name": "vector3",
       "short_name": "vector3",
-      "kind": 10,
+      "kind": 23,
       "spell": "1:7-1:14|-1|1|2",
       "extent": "1:1-4:2|-1|1|0",
       "parents": [],
@@ -28,9 +28,9 @@ OUTPUT:
       "usr": 1428566502523368801,
       "detailed_name": "vector3::(anon)",
       "short_name": "(anon)",
-      "kind": 6,
+      "kind": 23,
       "spell": "2:3-2:9|0|2|2",
-      "extent": "2:3-2:28|0|2|2",
+      "extent": "2:3-2:28|0|2|0",
       "parents": [],
       "derived": [],
       "types": [],
@@ -60,10 +60,10 @@ OUTPUT:
       "short_name": "x",
       "declarations": [],
       "spell": "2:18-2:19|1|2|2",
-      "extent": "2:12-2:19|1|2|2",
+      "extent": "2:12-2:19|1|2|0",
       "type": 2,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 1,
@@ -72,10 +72,10 @@ OUTPUT:
       "short_name": "y",
       "declarations": [],
       "spell": "2:21-2:22|1|2|2",
-      "extent": "2:12-2:22|1|2|2",
+      "extent": "2:12-2:22|1|2|0",
       "type": 2,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 2,
@@ -84,10 +84,10 @@ OUTPUT:
       "short_name": "z",
       "declarations": [],
       "spell": "2:24-2:25|1|2|2",
-      "extent": "2:12-2:25|1|2|2",
+      "extent": "2:12-2:25|1|2|0",
       "type": 2,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 3,
@@ -96,10 +96,10 @@ OUTPUT:
       "short_name": "v",
       "declarations": [],
       "spell": "3:9-3:10|0|2|2",
-      "extent": "3:3-3:13|0|2|2",
+      "extent": "3:3-3:13|0|2|0",
       "type": 2,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

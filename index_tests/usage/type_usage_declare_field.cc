@@ -29,7 +29,7 @@ OUTPUT:
       "usr": 8508299082070213750,
       "detailed_name": "ImplementedType",
       "short_name": "ImplementedType",
-      "kind": 6,
+      "kind": 23,
       "spell": "2:8-2:23|-1|1|2",
       "extent": "2:1-2:26|-1|1|0",
       "parents": [],
@@ -44,7 +44,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 6,
+      "kind": 23,
       "spell": "4:8-4:11|-1|1|2",
       "extent": "4:1-7:2|-1|1|0",
       "parents": [],
@@ -63,10 +63,10 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "5:16-5:17|2|2|2",
-      "extent": "5:3-5:17|2|2|2",
+      "extent": "5:3-5:17|2|2|0",
       "type": 0,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 1,
@@ -75,10 +75,10 @@ OUTPUT:
       "short_name": "b",
       "declarations": [],
       "spell": "6:19-6:20|2|2|2",
-      "extent": "6:3-6:20|2|2|2",
+      "extent": "6:3-6:20|2|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

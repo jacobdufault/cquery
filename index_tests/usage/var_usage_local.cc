@@ -44,7 +44,7 @@ OUTPUT:
       "short_name": "x",
       "declarations": [],
       "spell": "2:7-2:8|0|3|2",
-      "extent": "2:3-2:8|0|3|2",
+      "extent": "2:3-2:8|0|3|0",
       "type": 0,
       "uses": ["3:3-3:4|0|3|4"],
       "kind": 13,

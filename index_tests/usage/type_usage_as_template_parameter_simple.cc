@@ -15,7 +15,7 @@ OUTPUT:
       "usr": 3286534761799572592,
       "detailed_name": "unique_ptr",
       "short_name": "unique_ptr",
-      "kind": 7,
+      "kind": 5,
       "spell": "2:7-2:17|-1|1|2",
       "extent": "2:1-2:20|-1|1|0",
       "parents": [],

@@ -43,10 +43,10 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "1:14-1:15|0|3|2",
-      "extent": "1:10-1:15|0|3|2",
+      "extent": "1:10-1:15|0|3|0",
       "type": 0,
       "uses": ["2:3-2:4|0|3|4"],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }]
 }

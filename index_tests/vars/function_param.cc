@@ -44,10 +44,10 @@ OUTPUT:
       "short_name": "p0",
       "declarations": [],
       "spell": "3:15-3:17|0|3|2",
-      "extent": "3:10-3:17|0|3|2",
+      "extent": "3:10-3:17|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }, {
       "id": 1,
@@ -56,10 +56,10 @@ OUTPUT:
       "short_name": "p1",
       "declarations": [],
       "spell": "3:24-3:26|0|3|2",
-      "extent": "3:19-3:26|0|3|2",
+      "extent": "3:19-3:26|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }]
 }

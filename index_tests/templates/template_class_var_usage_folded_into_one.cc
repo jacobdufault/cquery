@@ -16,7 +16,7 @@ OUTPUT:
       "usr": 10528472276654770367,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 7,
+      "kind": 5,
       "spell": "2:8-2:11|-1|1|2",
       "extent": "2:1-4:2|-1|1|0",
       "parents": [],
@@ -47,10 +47,10 @@ OUTPUT:
       "detailed_name": "const int Foo::var",
       "short_name": "var",
       "hover": "const int Foo::var = 3",
-      "declarations": ["3:24-3:27|0|2|2"],
+      "declarations": ["3:24-3:27|0|2|1"],
       "type": 1,
       "uses": ["6:19-6:22|-1|1|4", "7:20-7:23|-1|1|4"],
-      "kind": 21,
+      "kind": 8,
       "storage": 3
     }, {
       "id": 1,

@@ -33,10 +33,10 @@ OUTPUT: funky_enum.h
       "hover": "Foo::A = 0",
       "declarations": [],
       "spell": "4:1-4:2|0|2|2",
-      "extent": "4:1-4:2|0|2|2",
+      "extent": "4:1-4:2|0|2|0",
       "type": 0,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }, {
       "id": 1,
@@ -46,10 +46,10 @@ OUTPUT: funky_enum.h
       "hover": "Foo::B = 1",
       "declarations": [],
       "spell": "5:1-5:2|0|2|2",
-      "extent": "5:1-5:2|0|2|2",
+      "extent": "5:1-5:2|0|2|0",
       "type": 0,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }, {
       "id": 2,
@@ -59,10 +59,10 @@ OUTPUT: funky_enum.h
       "hover": "Foo::C = 2",
       "declarations": [],
       "spell": "6:1-6:2|0|2|2",
-      "extent": "6:1-6:2|0|2|2",
+      "extent": "6:1-6:2|0|2|0",
       "type": 0,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }]
 }
@@ -78,7 +78,7 @@ OUTPUT: funky_enum.cc
       "usr": 16985894625255407295,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 5,
+      "kind": 10,
       "spell": "1:6-1:9|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],

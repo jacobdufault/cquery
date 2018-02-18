@@ -18,7 +18,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 6,
+      "kind": 23,
       "spell": "3:8-3:11|-1|1|2",
       "extent": "3:1-5:2|-1|1|0",
       "parents": [],
@@ -49,10 +49,10 @@ OUTPUT:
       "usr": 3385168158331140247,
       "detailed_name": "void Foo::Foo()",
       "short_name": "Foo",
-      "kind": 22,
+      "kind": 9,
       "storage": 1,
       "declarations": [{
-          "spell": "4:3-4:6|0|2|2",
+          "spell": "4:3-4:6|0|2|1",
           "param_spellings": []
         }],
       "spell": "7:6-7:9|0|2|2",

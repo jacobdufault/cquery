@@ -55,10 +55,10 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "5:13-5:14|0|3|2",
-      "extent": "5:9-5:14|0|3|2",
+      "extent": "5:9-5:14|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }, {
       "id": 1,
@@ -67,10 +67,10 @@ OUTPUT:
       "short_name": "b",
       "declarations": [],
       "spell": "5:20-5:21|0|3|2",
-      "extent": "5:16-5:21|0|3|2",
+      "extent": "5:16-5:21|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }]
 }

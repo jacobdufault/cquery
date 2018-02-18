@@ -11,7 +11,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 7,
+      "kind": 5,
       "spell": "1:7-1:10|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],
@@ -30,10 +30,10 @@ OUTPUT:
       "short_name": "member",
       "declarations": [],
       "spell": "2:8-2:14|0|2|2",
-      "extent": "2:3-2:14|0|2|2",
+      "extent": "2:3-2:14|0|2|0",
       "type": 0,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

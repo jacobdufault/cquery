@@ -13,7 +13,7 @@ OUTPUT:
       "usr": 16985894625255407295,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 5,
+      "kind": 10,
       "spell": "1:6-1:9|-1|1|2",
       "extent": "1:1-4:2|-1|1|0",
       "parents": [],
@@ -33,10 +33,10 @@ OUTPUT:
       "hover": "Foo::A = 0",
       "declarations": [],
       "spell": "2:3-2:4|0|2|2",
-      "extent": "2:3-2:4|0|2|2",
+      "extent": "2:3-2:4|0|2|0",
       "type": 0,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }, {
       "id": 1,
@@ -46,10 +46,10 @@ OUTPUT:
       "hover": "Foo::B = 20",
       "declarations": [],
       "spell": "3:3-3:4|0|2|2",
-      "extent": "3:3-3:9|0|2|2",
+      "extent": "3:3-3:9|0|2|0",
       "type": 0,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }]
 }

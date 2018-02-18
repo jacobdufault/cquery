@@ -30,7 +30,7 @@ OUTPUT:
       "usr": 8402783583255987702,
       "detailed_name": "C",
       "short_name": "C",
-      "kind": 7,
+      "kind": 5,
       "spell": "2:8-2:9|-1|1|2",
       "extent": "2:1-5:2|-1|1|0",
       "parents": [],
@@ -45,7 +45,7 @@ OUTPUT:
       "usr": 14750650276757822712,
       "detailed_name": "T",
       "short_name": "T",
-      "kind": 25,
+      "kind": 0,
       "spell": "1:17-1:18|-1|1|2",
       "extent": "1:11-1:18|-1|1|0",
       "parents": [],
@@ -61,10 +61,10 @@ OUTPUT:
       "usr": 8905286151237717330,
       "detailed_name": "void C::bar()",
       "short_name": "bar",
-      "kind": 16,
+      "kind": 6,
       "storage": 1,
       "declarations": [{
-          "spell": "4:8-4:11|0|2|2",
+          "spell": "4:8-4:11|0|2|1",
           "param_spellings": []
         }],
       "declaring_type": 0,
@@ -96,9 +96,9 @@ OUTPUT:
       "short_name": "x",
       "declarations": [],
       "spell": "3:5-3:6|0|2|2",
-      "extent": "3:3-3:6|0|2|2",
+      "extent": "3:3-3:6|0|2|0",
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

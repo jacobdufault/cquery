@@ -51,7 +51,7 @@ OUTPUT:
       "short_name": "x",
       "declarations": [],
       "spell": "4:8-4:9|1|3|2",
-      "extent": "4:3-4:19|1|3|2",
+      "extent": "4:3-4:19|1|3|0",
       "uses": ["5:3-5:4|1|3|4"],
       "kind": 13,
       "storage": 1

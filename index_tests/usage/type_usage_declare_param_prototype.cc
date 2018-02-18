@@ -53,10 +53,10 @@ OUTPUT:
       "short_name": "f",
       "declarations": [],
       "spell": "4:15-4:16|0|3|2",
-      "extent": "4:10-4:16|0|3|2",
+      "extent": "4:10-4:16|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }]
 }

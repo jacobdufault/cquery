@@ -26,7 +26,7 @@ OUTPUT:
       "usr": 8508299082070213750,
       "detailed_name": "ImplementedType",
       "short_name": "ImplementedType",
-      "kind": 6,
+      "kind": 23,
       "spell": "2:8-2:23|-1|1|2",
       "extent": "2:1-2:26|-1|1|0",
       "parents": [],
@@ -60,10 +60,10 @@ OUTPUT:
       "short_name": "f",
       "declarations": [],
       "spell": "4:23-4:24|0|3|2",
-      "extent": "4:10-4:24|0|3|2",
+      "extent": "4:10-4:24|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }, {
       "id": 1,
@@ -72,10 +72,10 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "4:42-4:43|0|3|2",
-      "extent": "4:26-4:43|0|3|2",
+      "extent": "4:26-4:43|0|3|0",
       "type": 1,
       "uses": [],
-      "kind": 25,
+      "kind": 13,
       "storage": 1
     }]
 }

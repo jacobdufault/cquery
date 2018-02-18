@@ -12,7 +12,7 @@ OUTPUT:
       "usr": 2029211996748007610,
       "detailed_name": "hello",
       "short_name": "hello",
-      "kind": 2,
+      "kind": 3,
       "spell": "1:11-1:16|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [1],
@@ -44,7 +44,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spell": "2:6-2:9|0|2|2",
+          "spell": "2:6-2:9|0|2|1",
           "param_spellings": ["2:14-2:15", "2:21-2:22"]
         }],
       "declaring_type": 0,

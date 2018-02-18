@@ -17,7 +17,7 @@ OUTPUT:
       "usr": 5792006888140599735,
       "detailed_name": "VarType",
       "short_name": "VarType",
-      "kind": 5,
+      "kind": 10,
       "spell": "1:6-1:13|-1|1|2",
       "extent": "1:1-1:16|-1|1|0",
       "parents": [],
@@ -32,7 +32,7 @@ OUTPUT:
       "usr": 10028537921178202800,
       "detailed_name": "Holder",
       "short_name": "Holder",
-      "kind": 6,
+      "kind": 23,
       "spell": "3:8-3:14|-1|1|2",
       "extent": "3:1-5:2|-1|1|0",
       "parents": [],
@@ -50,12 +50,12 @@ OUTPUT:
       "detailed_name": "const VarType Holder::static_var",
       "short_name": "static_var",
       "hover": "const VarType Holder::static_var = (VarType)0x0",
-      "declarations": ["4:28-4:38|1|2|2"],
+      "declarations": ["4:28-4:38|1|2|1"],
       "spell": "7:23-7:33|1|2|2",
       "extent": "7:1-7:33|-1|1|0",
       "type": 0,
       "uses": [],
-      "kind": 21,
+      "kind": 8,
       "storage": 1
     }]
 }

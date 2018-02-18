@@ -18,7 +18,7 @@ OUTPUT:
       "usr": 13611487872560323389,
       "detailed_name": "Wrapper",
       "short_name": "Wrapper",
-      "kind": 6,
+      "kind": 23,
       "spell": "1:8-1:15|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],
@@ -34,10 +34,10 @@ OUTPUT:
       "usr": 10544127002917214589,
       "detailed_name": "void Wrapper::Wrapper(int i)",
       "short_name": "Wrapper",
-      "kind": 22,
+      "kind": 9,
       "storage": 1,
       "declarations": [{
-          "spell": "2:3-2:10|0|2|2",
+          "spell": "2:3-2:10|0|2|1",
           "param_spellings": ["2:15-2:16"]
         }],
       "declaring_type": 0,

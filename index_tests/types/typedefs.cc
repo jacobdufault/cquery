@@ -11,7 +11,7 @@ OUTPUT:
       "usr": 10383876566159302459,
       "detailed_name": "func",
       "short_name": "func",
-      "kind": 11,
+      "kind": 26,
       "hover": "typedef int (func)(const int *a, const int *b)",
       "spell": "1:14-1:18|-1|1|2",
       "extent": "1:1-1:47|-1|1|0",

@@ -13,7 +13,7 @@ OUTPUT:
       "usr": 8501689086387244262,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 10,
+      "kind": 23,
       "spell": "1:7-1:10|-1|1|2",
       "extent": "1:1-4:2|-1|1|0",
       "parents": [],
@@ -58,10 +58,10 @@ OUTPUT:
       "short_name": "a",
       "declarations": [],
       "spell": "2:7-2:8|0|2|2",
-      "extent": "2:3-2:8|0|2|2",
+      "extent": "2:3-2:8|0|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }, {
       "id": 1,
@@ -70,10 +70,10 @@ OUTPUT:
       "short_name": "b",
       "declarations": [],
       "spell": "3:8-3:9|0|2|2",
-      "extent": "3:3-3:9|0|2|2",
+      "extent": "3:3-3:9|0|2|0",
       "type": 2,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

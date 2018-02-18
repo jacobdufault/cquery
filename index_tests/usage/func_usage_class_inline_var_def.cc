@@ -16,7 +16,7 @@ OUTPUT:
       "usr": 15041163540773201510,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 7,
+      "kind": 5,
       "spell": "5:7-5:10|-1|1|2",
       "extent": "5:1-7:2|-1|1|0",
       "parents": [],
@@ -64,10 +64,10 @@ OUTPUT:
       "hover": "int Foo::x = helper()",
       "declarations": [],
       "spell": "6:7-6:8|0|2|2",
-      "extent": "6:3-6:19|0|2|2",
+      "extent": "6:3-6:19|0|2|0",
       "type": 1,
       "uses": [],
-      "kind": 14,
+      "kind": 8,
       "storage": 0
     }]
 }

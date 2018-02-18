@@ -66,7 +66,7 @@ OUTPUT:
       "short_name": "x",
       "declarations": [],
       "spell": "6:10-6:11|2|3|2",
-      "extent": "6:3-6:22|2|3|2",
+      "extent": "6:3-6:22|2|3|0",
       "uses": [],
       "kind": 13,
       "storage": 1

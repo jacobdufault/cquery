@@ -14,7 +14,7 @@ OUTPUT:
       "usr": 2010430204259339553,
       "detailed_name": "uint8_t",
       "short_name": "uint8_t",
-      "kind": 11,
+      "kind": 26,
       "hover": "typedef unsigned char uint8_t",
       "spell": "1:23-1:30|-1|1|2",
       "extent": "1:1-1:30|-1|1|0",
@@ -30,7 +30,7 @@ OUTPUT:
       "usr": 16985894625255407295,
       "detailed_name": "Foo",
       "short_name": "Foo",
-      "kind": 5,
+      "kind": 10,
       "spell": "2:12-2:15|-1|1|2",
       "extent": "2:1-5:2|-1|1|0",
       "parents": [],
@@ -50,10 +50,10 @@ OUTPUT:
       "hover": "Foo::A = 0",
       "declarations": [],
       "spell": "3:3-3:4|1|2|2",
-      "extent": "3:3-3:4|1|2|2",
+      "extent": "3:3-3:4|1|2|0",
       "type": 1,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }, {
       "id": 1,
@@ -63,10 +63,10 @@ OUTPUT:
       "hover": "Foo::B = 20",
       "declarations": [],
       "spell": "4:3-4:4|1|2|2",
-      "extent": "4:3-4:9|1|2|2",
+      "extent": "4:3-4:9|1|2|0",
       "type": 1,
       "uses": [],
-      "kind": 15,
+      "kind": 22,
       "storage": 0
     }]
 }
