@@ -44,9 +44,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "2:6-2:9",
-          "extent": "2:1-2:23",
-          "content": "void foo(int a, int b)",
+          "spell": "2:6-2:9|0|2|2",
           "param_spellings": ["2:14-2:15", "2:21-2:22"]
         }],
       "declaring_type": 0,

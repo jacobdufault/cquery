@@ -20,9 +20,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:6-3:12",
-          "extent": "3:1-3:28",
-          "content": "bool called(bool a, bool b)",
+          "spell": "3:6-3:12|-1|1|1",
           "param_spellings": ["3:18-3:19", "3:26-3:27"]
         }],
       "base": [],

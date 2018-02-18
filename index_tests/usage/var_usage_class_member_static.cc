@@ -50,9 +50,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "5:6-5:12",
-          "extent": "5:1-5:17",
-          "content": "void accept(int)",
+          "spell": "5:6-5:12|-1|1|1",
           "param_spellings": ["5:16-5:16"]
         }],
       "base": [],

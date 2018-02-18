@@ -31,9 +31,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "2:16-2:19",
-          "extent": "2:3-2:25",
-          "content": "virtual void foo() = 0",
+          "spell": "2:16-2:19|0|2|2",
           "param_spellings": []
         }],
       "declaring_type": 0,

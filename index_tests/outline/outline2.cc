@@ -104,9 +104,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "12:31-12:66",
-          "extent": "12:1-12:104",
-          "content": "std::vector<CompilationEntry> LoadCompilationEntriesFromDirectory(const std::string& project_directory)",
+          "spell": "12:31-12:66|-1|1|1",
           "param_spellings": ["12:86-12:103"]
         }],
       "base": [],

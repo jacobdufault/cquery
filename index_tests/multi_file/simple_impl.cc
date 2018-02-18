@@ -18,9 +18,7 @@ OUTPUT: simple_header.h
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:6-3:12",
-          "extent": "3:1-3:14",
-          "content": "void header()",
+          "spell": "3:6-3:12|-1|1|1",
           "param_spellings": []
         }],
       "base": [],

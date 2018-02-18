@@ -35,9 +35,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:6-3:9",
-          "extent": "3:1-3:23",
-          "content": "void foo(Foo* f, Foo*)",
+          "spell": "3:6-3:9|-1|1|1",
           "param_spellings": ["3:15-3:16", "3:22-3:22"]
         }],
       "spell": "4:6-4:9|-1|1|2",

@@ -262,9 +262,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "13:8-13:13",
-          "extent": "13:3-13:15",
-          "content": "void clear()",
+          "spell": "13:8-13:13|5|2|2",
           "param_spellings": []
         }],
       "declaring_type": 5,
@@ -281,9 +279,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "27:8-27:13",
-          "extent": "27:3-27:15",
-          "content": "void clear()",
+          "spell": "27:8-27:13|10|2|2",
           "param_spellings": []
         }],
       "declaring_type": 10,
@@ -300,9 +296,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "43:6-43:9",
-          "extent": "42:1-43:50",
-          "content": "template <>\nvoid foo<float, 9, Enum0, kOnst + 7>(float Value)",
+          "spell": "43:6-43:9|-1|1|1",
           "param_spellings": ["43:44-43:49"]
         }],
       "spell": "39:6-39:9|-1|1|2",

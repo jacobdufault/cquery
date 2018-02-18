@@ -31,9 +31,7 @@ OUTPUT:
       "kind": 12,
       "storage": 3,
       "declarations": [{
-          "spelling": "2:13-2:14",
-          "extent": "2:1-2:14",
-          "content": "static func g",
+          "spell": "2:13-2:14|-1|1|1",
           "param_spellings": ["2:13-2:13", "2:13-2:13"]
         }],
       "base": [],

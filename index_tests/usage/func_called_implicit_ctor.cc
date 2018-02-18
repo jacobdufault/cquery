@@ -37,9 +37,7 @@ OUTPUT:
       "kind": 22,
       "storage": 1,
       "declarations": [{
-          "spelling": "2:3-2:10",
-          "extent": "2:3-2:17",
-          "content": "Wrapper(int i)",
+          "spell": "2:3-2:10|0|2|2",
           "param_spellings": ["2:15-2:16"]
         }],
       "declaring_type": 0,

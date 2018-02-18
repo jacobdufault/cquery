@@ -17,9 +17,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "1:6-1:9",
-          "extent": "1:1-1:11",
-          "content": "void foo()",
+          "spell": "1:6-1:9|-1|1|1",
           "param_spellings": []
         }],
       "base": [],

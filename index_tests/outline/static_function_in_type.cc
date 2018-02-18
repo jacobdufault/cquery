@@ -76,9 +76,7 @@ OUTPUT: static_function_in_type.h
       "kind": 18,
       "storage": 3,
       "declarations": [{
-          "spelling": "6:15-6:23",
-          "extent": "6:3-6:33",
-          "content": "static void Register(Manager*)",
+          "spell": "6:15-6:23|3|2|2",
           "param_spellings": ["6:32-6:32"]
         }],
       "declaring_type": 3,

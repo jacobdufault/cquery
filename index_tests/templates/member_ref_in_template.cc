@@ -64,9 +64,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "4:8-4:11",
-          "extent": "4:3-4:13",
-          "content": "void bar()",
+          "spell": "4:8-4:11|0|2|2",
           "param_spellings": []
         }],
       "declaring_type": 0,

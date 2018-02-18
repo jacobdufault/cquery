@@ -36,9 +36,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "2:8-2:12",
-          "extent": "2:3-2:14",
-          "content": "void Used()",
+          "spell": "2:8-2:12|0|2|2",
           "param_spellings": []
         }],
       "declaring_type": 0,

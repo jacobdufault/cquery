@@ -59,14 +59,10 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:7-3:10",
-          "extent": "3:1-3:12",
-          "content": "Type* foo()",
+          "spell": "3:7-3:10|-1|1|1",
           "param_spellings": []
         }, {
-          "spelling": "4:7-4:10",
-          "extent": "4:1-4:12",
-          "content": "Type* foo()",
+          "spell": "4:7-4:10|-1|1|1",
           "param_spellings": []
         }],
       "spell": "5:7-5:10|-1|1|2",
@@ -84,9 +80,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "8:9-8:12",
-          "extent": "8:3-8:17",
-          "content": "Type* Get(int)",
+          "spell": "8:9-8:12|1|2|2",
           "param_spellings": ["8:16-8:16"]
         }],
       "spell": "12:12-12:15|1|2|2",
@@ -105,9 +99,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "9:8-9:13",
-          "extent": "9:3-9:15",
-          "content": "void Empty()",
+          "spell": "9:8-9:13|1|2|2",
           "param_spellings": []
         }],
       "spell": "13:11-13:16|1|2|2",
@@ -126,9 +118,7 @@ OUTPUT:
       "kind": 12,
       "storage": 2,
       "declarations": [{
-          "spelling": "15:20-15:28",
-          "extent": "15:1-15:30",
-          "content": "extern const Type& external()",
+          "spell": "15:20-15:28|-1|1|1",
           "param_spellings": []
         }],
       "base": [],
@@ -144,9 +134,7 @@ OUTPUT:
       "kind": 12,
       "storage": 3,
       "declarations": [{
-          "spelling": "17:14-17:17",
-          "extent": "17:1-17:19",
-          "content": "static Type* bar()",
+          "spell": "17:14-17:17|-1|1|1",
           "param_spellings": []
         }],
       "spell": "18:14-18:17|-1|1|2",

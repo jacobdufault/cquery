@@ -52,9 +52,7 @@ OUTPUT:
       "kind": 22,
       "storage": 1,
       "declarations": [{
-          "spelling": "4:3-4:6",
-          "extent": "4:3-4:8",
-          "content": "Foo()",
+          "spell": "4:3-4:6|0|2|2",
           "param_spellings": []
         }],
       "spell": "7:6-7:9|0|2|2",

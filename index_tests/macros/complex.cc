@@ -53,9 +53,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "12:1-12:20",
-          "extent": "12:1-12:20",
-          "content": "int a();\n  int a() { return aaa + bbb; }\n\n\nint make1() {\n  return 3;\n}\nconst int make2 = 5;\n\n\nFOO(make1(), make2)",
+          "spell": "12:1-12:20|-1|1|1",
           "param_spellings": []
         }],
       "spell": "12:1-12:20|-1|1|2",

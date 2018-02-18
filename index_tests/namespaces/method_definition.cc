@@ -63,9 +63,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:8-3:11",
-          "extent": "3:3-3:13",
-          "content": "void foo()",
+          "spell": "3:8-3:11|2|2|2",
           "param_spellings": []
         }],
       "spell": "6:11-6:14|2|2|2",

@@ -51,9 +51,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "5:8-5:11",
-          "extent": "5:3-5:30",
-          "content": "void Bar(Template<double>&)",
+          "spell": "5:8-5:11|1|2|2",
           "param_spellings": ["5:29-5:29"]
         }],
       "spell": "8:11-8:14|1|2|2",

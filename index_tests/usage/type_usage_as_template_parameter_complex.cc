@@ -191,9 +191,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "65:23-65:26",
-          "extent": "65:3-65:28",
-          "content": "unique_ptr<S1, S2>* foo()",
+          "spell": "65:23-65:26|3|2|2",
           "param_spellings": []
         }],
       "spell": "79:26-79:29|3|2|2",

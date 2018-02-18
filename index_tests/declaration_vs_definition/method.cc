@@ -35,9 +35,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "2:8-2:16",
-          "extent": "2:3-2:18",
-          "content": "void declonly()",
+          "spell": "2:8-2:16|0|2|2",
           "param_spellings": []
         }],
       "declaring_type": 0,
@@ -54,9 +52,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:16-3:27",
-          "extent": "3:3-3:33",
-          "content": "virtual void purevirtual() = 0",
+          "spell": "3:16-3:27|0|2|2",
           "param_spellings": []
         }],
       "declaring_type": 0,
@@ -73,9 +69,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "4:8-4:11",
-          "extent": "4:3-4:13",
-          "content": "void def()",
+          "spell": "4:8-4:11|0|2|2",
           "param_spellings": []
         }],
       "spell": "7:11-7:14|0|2|2",

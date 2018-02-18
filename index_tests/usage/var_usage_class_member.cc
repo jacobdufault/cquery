@@ -59,9 +59,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "7:6-7:12",
-          "extent": "7:1-7:17",
-          "content": "void accept(int)",
+          "spell": "7:6-7:12|-1|1|1",
           "param_spellings": ["7:16-7:16"]
         }],
       "base": [],
@@ -77,9 +75,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "8:6-8:12",
-          "extent": "8:1-8:18",
-          "content": "void accept(int*)",
+          "spell": "8:6-8:12|-1|1|1",
           "param_spellings": ["8:17-8:17"]
         }],
       "base": [],

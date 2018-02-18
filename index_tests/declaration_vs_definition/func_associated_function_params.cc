@@ -31,19 +31,13 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "1:5-1:8",
-          "extent": "1:1-1:18",
-          "content": "int foo(int, int)",
+          "spell": "1:5-1:8|-1|1|1",
           "param_spellings": ["1:12-1:12", "1:17-1:17"]
         }, {
-          "spelling": "2:5-2:8",
-          "extent": "2:1-3:16",
-          "content": "int foo(int aa,\n        int bb)",
+          "spell": "2:5-2:8|-1|1|1",
           "param_spellings": ["2:13-2:15", "3:13-3:15"]
         }, {
-          "spelling": "4:5-4:8",
-          "extent": "4:1-4:26",
-          "content": "int foo(int aaa, int bbb)",
+          "spell": "4:5-4:8|-1|1|1",
           "param_spellings": ["4:13-4:16", "4:22-4:25"]
         }],
       "spell": "5:5-5:8|-1|1|2",

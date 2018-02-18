@@ -31,9 +31,7 @@ OUTPUT: static.h
       "kind": 18,
       "storage": 3,
       "declarations": [{
-          "spelling": "4:15-4:33",
-          "extent": "4:3-4:35",
-          "content": "static void CreateSharedBuffer()",
+          "spell": "4:15-4:33|0|2|2",
           "param_spellings": []
         }],
       "declaring_type": 0,

@@ -51,9 +51,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "3:8-3:18",
-          "extent": "3:3-3:24",
-          "content": "void operator()(bool)",
+          "spell": "3:8-3:18|0|2|2",
           "param_spellings": ["3:23-3:23"]
         }],
       "declaring_type": 0,
@@ -70,9 +68,7 @@ OUTPUT:
       "kind": 16,
       "storage": 1,
       "declarations": [{
-          "spelling": "4:7-4:17",
-          "extent": "4:3-4:31",
-          "content": "int operator()(int a, int b)",
+          "spell": "4:7-4:17|0|2|2",
           "param_spellings": ["4:22-4:23", "4:29-4:30"]
         }],
       "declaring_type": 0,
@@ -89,9 +85,7 @@ OUTPUT:
       "kind": 12,
       "storage": 1,
       "declarations": [{
-          "spelling": "7:6-7:17",
-          "extent": "7:1-7:42",
-          "content": "Foo &operator += (const Foo&, const int&)",
+          "spell": "7:6-7:17|-1|1|1",
           "param_spellings": ["7:29-7:29", "7:41-7:41"]
         }],
       "base": [],
