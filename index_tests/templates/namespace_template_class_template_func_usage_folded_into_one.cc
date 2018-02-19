@@ -78,7 +78,7 @@ OUTPUT:
       "usr": 8221803074608342407,
       "detailed_name": "int ns::Foo::foo()",
       "short_name": "foo",
-      "kind": 6,
+      "kind": 254,
       "storage": 3,
       "declarations": [],
       "spell": "5:16-5:19|2|2|2",

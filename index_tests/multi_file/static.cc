@@ -28,7 +28,7 @@ OUTPUT: static.h
       "usr": 14576076421851654759,
       "detailed_name": "void Buffer::CreateSharedBuffer()",
       "short_name": "CreateSharedBuffer",
-      "kind": 6,
+      "kind": 254,
       "storage": 3,
       "declarations": [{
           "spell": "4:15-4:33|0|2|1",
@@ -69,7 +69,7 @@ OUTPUT: static.cc
       "usr": 14576076421851654759,
       "detailed_name": "void Buffer::CreateSharedBuffer()",
       "short_name": "CreateSharedBuffer",
-      "kind": 6,
+      "kind": 254,
       "storage": 1,
       "declarations": [],
       "spell": "3:14-3:32|0|2|2",

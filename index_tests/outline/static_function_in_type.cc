@@ -73,7 +73,7 @@ OUTPUT: static_function_in_type.h
       "usr": 17019747379608639279,
       "detailed_name": "void ns::Foo::Register(ns::Manager *)",
       "short_name": "Register",
-      "kind": 6,
+      "kind": 254,
       "storage": 3,
       "declarations": [{
           "spell": "6:15-6:23|3|2|1",
@@ -155,7 +155,7 @@ OUTPUT: static_function_in_type.cc
       "usr": 17019747379608639279,
       "detailed_name": "void ns::Foo::Register(ns::Manager *m)",
       "short_name": "Register",
-      "kind": 6,
+      "kind": 254,
       "storage": 1,
       "declarations": [],
       "spell": "5:11-5:19|2|2|2",

@@ -47,7 +47,7 @@ OUTPUT:
       "usr": 8340731781048851399,
       "detailed_name": "int Foo::foo()",
       "short_name": "foo",
-      "kind": 6,
+      "kind": 254,
       "storage": 3,
       "declarations": [],
       "spell": "3:14-3:17|0|2|2",
