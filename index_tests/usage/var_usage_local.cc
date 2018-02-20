@@ -13,6 +13,7 @@ OUTPUT:
       "detailed_name": "",
       "short_name": "",
       "kind": 0,
+      "declarations": [],
       "parents": [],
       "derived": [],
       "types": [],

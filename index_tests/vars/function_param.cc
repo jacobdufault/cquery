@@ -13,13 +13,14 @@ OUTPUT:
       "detailed_name": "Foo",
       "short_name": "Foo",
       "kind": 0,
+      "declarations": ["1:8-1:11|-1|1|4"],
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [0, 1],
-      "uses": ["1:8-1:11|-1|1|4", "3:10-3:13|-1|1|4", "3:19-3:22|-1|1|4"]
+      "uses": ["3:10-3:13|-1|1|4", "3:19-3:22|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,

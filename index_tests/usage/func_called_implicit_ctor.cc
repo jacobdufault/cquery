@@ -19,6 +19,7 @@ OUTPUT:
       "detailed_name": "Wrapper",
       "short_name": "Wrapper",
       "kind": 23,
+      "declarations": ["2:3-2:10|-1|1|4"],
       "spell": "1:8-1:15|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],

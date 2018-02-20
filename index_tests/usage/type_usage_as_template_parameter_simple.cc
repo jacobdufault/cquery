@@ -16,6 +16,7 @@ OUTPUT:
       "detailed_name": "unique_ptr",
       "short_name": "unique_ptr",
       "kind": 5,
+      "declarations": [],
       "spell": "2:7-2:17|-1|1|2",
       "extent": "2:1-2:20|-1|1|0",
       "parents": [],
@@ -31,13 +32,14 @@ OUTPUT:
       "detailed_name": "",
       "short_name": "",
       "kind": 0,
+      "declarations": ["4:8-4:9|-1|1|4"],
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["4:8-4:9|-1|1|4", "6:19-6:20|-1|1|4"]
+      "uses": ["6:19-6:20|-1|1|4"]
     }],
   "funcs": [],
   "vars": [{

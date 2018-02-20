@@ -19,6 +19,7 @@ OUTPUT:
       "detailed_name": "Base0",
       "short_name": "Base0",
       "kind": 23,
+      "declarations": ["2:12-2:17|-1|1|4", "7:18-7:23|-1|1|4"],
       "spell": "1:8-1:13|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],
@@ -27,13 +28,14 @@ OUTPUT:
       "funcs": [0],
       "vars": [],
       "instances": [],
-      "uses": ["2:12-2:17|-1|1|4", "7:18-7:23|-1|1|4"]
+      "uses": ["7:18-7:23|-1|1|4"]
     }, {
       "id": 1,
       "usr": 15826803741381445676,
       "detailed_name": "Base1",
       "short_name": "Base1",
       "kind": 23,
+      "declarations": ["5:12-5:17|-1|1|4", "7:25-7:30|-1|1|4"],
       "spell": "4:8-4:13|-1|1|2",
       "extent": "4:1-6:2|-1|1|0",
       "parents": [],
@@ -42,13 +44,14 @@ OUTPUT:
       "funcs": [1],
       "vars": [],
       "instances": [],
-      "uses": ["5:12-5:17|-1|1|4", "7:25-7:30|-1|1|4"]
+      "uses": ["7:25-7:30|-1|1|4"]
     }, {
       "id": 2,
       "usr": 10963370434658308541,
       "detailed_name": "Derived",
       "short_name": "Derived",
       "kind": 23,
+      "declarations": ["8:4-8:11|-1|1|4"],
       "spell": "7:8-7:15|-1|1|2",
       "extent": "7:1-9:2|-1|1|0",
       "parents": [0, 1],
@@ -57,7 +60,7 @@ OUTPUT:
       "funcs": [2],
       "vars": [],
       "instances": [],
-      "uses": ["8:4-8:11|-1|1|4"]
+      "uses": []
     }],
   "funcs": [{
       "id": 0,

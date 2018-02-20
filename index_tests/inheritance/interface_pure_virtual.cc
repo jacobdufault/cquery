@@ -13,6 +13,7 @@ OUTPUT:
       "detailed_name": "IFoo",
       "short_name": "IFoo",
       "kind": 5,
+      "declarations": [],
       "spell": "1:7-1:11|-1|1|2",
       "extent": "1:1-3:2|-1|1|0",
       "parents": [],

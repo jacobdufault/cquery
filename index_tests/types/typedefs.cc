@@ -13,6 +13,7 @@ OUTPUT:
       "short_name": "func",
       "kind": 26,
       "hover": "typedef int (func)(const int *a, const int *b)",
+      "declarations": [],
       "spell": "1:14-1:18|-1|1|2",
       "extent": "1:1-1:47|-1|1|0",
       "parents": [],

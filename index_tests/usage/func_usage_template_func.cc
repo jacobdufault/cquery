@@ -17,6 +17,7 @@ OUTPUT:
       "detailed_name": "T",
       "short_name": "T",
       "kind": 26,
+      "declarations": [],
       "spell": "1:19-1:20|0|3|2",
       "extent": "1:10-1:20|0|3|0",
       "parents": [],

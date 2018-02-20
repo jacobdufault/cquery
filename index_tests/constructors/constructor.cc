@@ -19,6 +19,7 @@ OUTPUT:
       "detailed_name": "Foo",
       "short_name": "Foo",
       "kind": 5,
+      "declarations": ["3:3-3:6|-1|1|4"],
       "spell": "1:7-1:10|-1|1|2",
       "extent": "1:1-4:2|-1|1|0",
       "parents": [],

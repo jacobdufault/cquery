@@ -14,19 +14,21 @@ OUTPUT:
       "detailed_name": "ForwardType",
       "short_name": "ForwardType",
       "kind": 0,
+      "declarations": ["1:8-1:19|-1|1|4"],
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [0],
-      "uses": ["1:8-1:19|-1|1|4", "4:10-4:21|-1|1|4"]
+      "uses": ["4:10-4:21|-1|1|4"]
     }, {
       "id": 1,
       "usr": 8508299082070213750,
       "detailed_name": "ImplementedType",
       "short_name": "ImplementedType",
       "kind": 23,
+      "declarations": [],
       "spell": "2:8-2:23|-1|1|2",
       "extent": "2:1-2:26|-1|1|0",
       "parents": [],

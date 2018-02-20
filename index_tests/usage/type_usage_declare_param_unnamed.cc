@@ -11,13 +11,14 @@ OUTPUT:
       "detailed_name": "",
       "short_name": "",
       "kind": 0,
+      "declarations": ["1:8-1:19|-1|1|4"],
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["1:8-1:19|-1|1|4", "2:10-2:21|-1|1|4"]
+      "uses": ["2:10-2:21|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,

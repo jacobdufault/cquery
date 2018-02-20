@@ -15,13 +15,14 @@ OUTPUT:
       "detailed_name": "",
       "short_name": "",
       "kind": 0,
+      "declarations": ["2:8-2:11|-1|1|4"],
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [],
-      "uses": ["2:8-2:11|-1|1|4", "4:14-4:17|-1|1|4", "5:9-5:12|-1|1|4"]
+      "uses": ["4:14-4:17|-1|1|4", "5:9-5:12|-1|1|4"]
     }, {
       "id": 1,
       "usr": 1544499294580512394,
@@ -29,6 +30,7 @@ OUTPUT:
       "short_name": "Foo1",
       "kind": 26,
       "hover": "using Foo1 = Foo<int>",
+      "declarations": [],
       "spell": "4:7-4:11|-1|1|2",
       "extent": "4:1-4:22|-1|1|0",
       "alias_of": 0,
@@ -46,6 +48,7 @@ OUTPUT:
       "short_name": "Foo2",
       "kind": 26,
       "hover": "typedef Foo<Foo1> Foo2",
+      "declarations": [],
       "spell": "5:19-5:23|-1|1|2",
       "extent": "5:1-5:23|-1|1|0",
       "alias_of": 0,

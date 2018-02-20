@@ -15,13 +15,14 @@ OUTPUT:
       "detailed_name": "Foo",
       "short_name": "Foo",
       "kind": 0,
+      "declarations": ["1:8-1:11|-1|1|4"],
       "parents": [],
       "derived": [],
       "types": [],
       "funcs": [],
       "vars": [],
       "instances": [0],
-      "uses": ["1:8-1:11|-1|1|4", "4:3-4:6|-1|1|4"]
+      "uses": ["4:3-4:6|-1|1|4"]
     }],
   "funcs": [{
       "id": 0,

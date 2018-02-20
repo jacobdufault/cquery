@@ -17,6 +17,7 @@ OUTPUT:
       "detailed_name": "Type",
       "short_name": "Type",
       "kind": 23,
+      "declarations": [],
       "spell": "1:8-1:12|-1|1|2",
       "extent": "1:1-1:15|-1|1|0",
       "parents": [],
