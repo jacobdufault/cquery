@@ -5,8 +5,6 @@
 #include "platform.h"
 #include "project.h"
 #include "queue_manager.h"
-#include "serializer.h"
-#include "serializers/json.h"
 #include "timer.h"
 #include "working_files.h"
 

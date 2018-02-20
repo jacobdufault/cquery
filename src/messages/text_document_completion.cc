@@ -4,7 +4,6 @@
 #include "message_handler.h"
 #include "queue_manager.h"
 #include "timer.h"
-#include "working_files.h"
 
 #include "lex_utils.h"
 

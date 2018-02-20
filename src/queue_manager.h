@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ipc.h"
-#include "performance.h"
 #include "query.h"
 #include "threaded_queue.h"
 

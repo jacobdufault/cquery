@@ -1,6 +1,5 @@
 #include "serializer.h"
 
-#include "serializers/json.h"
 #include "serializers/msgpack.h"
 
 #include "indexer.h"

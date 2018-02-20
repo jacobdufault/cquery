@@ -1,7 +1,5 @@
-#include "clang_format.h"
 #include "message_handler.h"
 #include "queue_manager.h"
-#include "working_files.h"
 
 #include <loguru.hpp>
 

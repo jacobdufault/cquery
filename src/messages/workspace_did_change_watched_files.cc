@@ -1,9 +1,7 @@
 #include "cache_manager.h"
 #include "clang_complete.h"
 #include "message_handler.h"
-#include "project.h"
 #include "queue_manager.h"
-#include "working_files.h"
 
 #include <loguru/loguru.hpp>
 

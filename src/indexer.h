@@ -1,19 +1,10 @@
 #pragma once
 
-#include "clang_cursor.h"
-#include "clang_index.h"
 #include "clang_translation_unit.h"
 #include "clang_utils.h"
 #include "file_consumer.h"
-#include "file_contents.h"
-#include "language_server_api.h"
-#include "maybe.h"
-#include "nt_string.h"
 #include "performance.h"
-#include "position.h"
-#include "serializer.h"
 #include "symbol.h"
-#include "utils.h"
 
 #include <optional.h>
 #include <rapidjson/document.h>

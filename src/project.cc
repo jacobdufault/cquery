@@ -3,9 +3,7 @@
 #include "clang_utils.h"
 #include "match.h"
 #include "platform.h"
-#include "serializer.h"
 #include "timer.h"
-#include "utils.h"
 
 #include <clang-c/CXCompilationDatabase.h>
 #include <doctest/doctest.h>

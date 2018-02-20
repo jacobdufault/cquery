@@ -1,9 +1,6 @@
 #include "indexer.h"
 
-#include "clang_cursor.h"
-#include "clang_utils.h"
 #include "platform.h"
-#include "serializer.h"
 #include "timer.h"
 #include "type_printer.h"
 

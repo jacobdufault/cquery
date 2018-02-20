@@ -2,8 +2,6 @@
 
 #include "indexer.h"
 #include "platform.h"
-#include "serializer.h"
-#include "utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
