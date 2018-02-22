@@ -47,7 +47,7 @@ OUTPUT:
       "extent": "1:10-1:15|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }, {
       "id": 1,

@@ -32,7 +32,7 @@ OUTPUT:
       "usr": 7434820806199665424,
       "detailed_name": "F",
       "short_name": "F",
-      "kind": 26,
+      "kind": 252,
       "hover": "using F = S",
       "declarations": [],
       "spell": "2:7-2:8|-1|1|2",

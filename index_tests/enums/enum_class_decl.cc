@@ -14,7 +14,7 @@ OUTPUT:
       "usr": 2010430204259339553,
       "detailed_name": "uint8_t",
       "short_name": "uint8_t",
-      "kind": 26,
+      "kind": 252,
       "hover": "typedef unsigned char uint8_t",
       "declarations": [],
       "spell": "1:23-1:30|-1|1|2",

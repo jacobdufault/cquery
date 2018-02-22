@@ -113,7 +113,7 @@ OUTPUT:
       "extent": "3:15-3:20|0|3|0",
       "type": 2,
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }]
 }

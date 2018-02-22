@@ -335,7 +335,7 @@ OUTPUT: make_functions.cc
       "spell": "4:25-4:29|0|3|2",
       "extent": "4:15-4:29|0|3|0",
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }, {
       "id": 1,
@@ -346,7 +346,7 @@ OUTPUT: make_functions.cc
       "spell": "9:24-9:28|1|3|2",
       "extent": "9:16-9:28|1|3|0",
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }]
 }

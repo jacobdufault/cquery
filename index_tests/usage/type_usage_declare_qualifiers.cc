@@ -54,7 +54,7 @@ OUTPUT:
       "extent": "3:10-3:18|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }, {
       "id": 1,
@@ -66,7 +66,7 @@ OUTPUT:
       "extent": "3:20-3:34|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }, {
       "id": 2,
