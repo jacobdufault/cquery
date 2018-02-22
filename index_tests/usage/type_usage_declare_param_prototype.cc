@@ -57,7 +57,7 @@ OUTPUT:
       "extent": "4:10-4:16|0|3|0",
       "type": 0,
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }]
 }

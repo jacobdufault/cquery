@@ -185,7 +185,7 @@ OUTPUT: static_function_in_type.cc
       "extent": "5:20-5:30|0|3|0",
       "type": 3,
       "uses": [],
-      "kind": 13,
+      "kind": 253,
       "storage": 1
     }]
 }

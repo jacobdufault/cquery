@@ -36,7 +36,7 @@ OUTPUT:
       "usr": 14939241684006947339,
       "detailed_name": "int32_t",
       "short_name": "int32_t",
-      "kind": 26,
+      "kind": 252,
       "hover": "typedef int int32_t",
       "declarations": [],
       "spell": "6:13-6:20|-1|1|2",

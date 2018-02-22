@@ -46,7 +46,7 @@ OUTPUT: header.h
       "usr": 619345544228965342,
       "detailed_name": "Foo0",
       "short_name": "Foo0",
-      "kind": 26,
+      "kind": 252,
       "hover": "using Foo0 = SameFileDerived",
       "declarations": [],
       "spell": "7:7-7:11|-1|1|2",
