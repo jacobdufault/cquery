@@ -22,8 +22,8 @@
 #endif
 
 // libstdc++'s std::experimental::string_view requries C++14
-#if !defined(STX_NO_STD_STRING_VIEW) && (__cplusplus < 201402)
 #include <cstddef>
+#if !defined(STX_NO_STD_STRING_VIEW) && (__cplusplus < 201402)
 #if defined(__GLIBCXX__)
 #define STX_NO_STD_STRING_VIEW
 #endif
