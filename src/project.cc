@@ -341,6 +341,8 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* init_opts,
     e.directory = config->project_dir;
     e.file = file;
     e.args = GetCompilerArgumentForFile(file);
+    if (e.args.empty())
+      e.args.push_back("%clang"); // Add a Dummy.
     e.args.push_back(e.file);
     auto idx = e.args[0].rfind("clang");
     if (idx != std::string::npos) {
