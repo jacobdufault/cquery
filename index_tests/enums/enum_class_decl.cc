@@ -11,6 +11,20 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 5,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "declarations": [],
+      "bases": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 1,
       "usr": 2010430204259339553,
       "detailed_name": "uint8_t",
       "short_name": "uint8_t",
@@ -19,6 +33,7 @@ OUTPUT:
       "declarations": [],
       "spell": "1:23-1:30|-1|1|2",
       "extent": "1:1-1:30|-1|1|0",
+      "alias_of": 0,
       "bases": [],
       "derived": [],
       "types": [],
@@ -27,7 +42,7 @@ OUTPUT:
       "instances": [],
       "uses": ["1:23-1:30|-1|1|4", "2:12-2:15|-1|1|4"]
     }, {
-      "id": 1,
+      "id": 2,
       "usr": 16985894625255407295,
       "detailed_name": "Foo",
       "short_name": "Foo",
@@ -51,9 +66,9 @@ OUTPUT:
       "short_name": "A",
       "hover": "Foo::A = 0",
       "declarations": [],
-      "spell": "3:3-3:4|1|2|2",
-      "extent": "3:3-3:4|1|2|0",
-      "type": 1,
+      "spell": "3:3-3:4|2|2|2",
+      "extent": "3:3-3:4|2|2|0",
+      "type": 2,
       "uses": [],
       "kind": 22,
       "storage": 0
@@ -64,9 +79,9 @@ OUTPUT:
       "short_name": "B",
       "hover": "Foo::B = 20",
       "declarations": [],
-      "spell": "4:3-4:4|1|2|2",
-      "extent": "4:3-4:9|1|2|0",
-      "type": 1,
+      "spell": "4:3-4:4|2|2|2",
+      "extent": "4:3-4:9|2|2|0",
+      "type": 2,
       "uses": [],
       "kind": 22,
       "storage": 0

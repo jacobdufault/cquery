@@ -84,6 +84,20 @@ OUTPUT:
       "uses": ["4:7-4:11|-1|1|4", "10:14-10:18|-1|1|4"]
     }, {
       "id": 4,
+      "usr": 17,
+      "detailed_name": "",
+      "short_name": "",
+      "kind": 0,
+      "declarations": [],
+      "bases": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 5,
       "usr": 2638219001294786365,
       "detailed_name": "Foo4",
       "short_name": "Foo4",
@@ -92,6 +106,7 @@ OUTPUT:
       "declarations": [],
       "spell": "5:7-5:11|-1|1|2",
       "extent": "5:1-5:17|-1|1|0",
+      "alias_of": 4,
       "bases": [],
       "derived": [],
       "types": [],

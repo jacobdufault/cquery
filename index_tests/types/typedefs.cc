@@ -8,6 +8,20 @@ OUTPUT:
   "skipped_by_preprocessor": [],
   "types": [{
       "id": 0,
+      "usr": 13838176792705659279,
+      "detailed_name": "<fundamental>",
+      "short_name": "",
+      "kind": 0,
+      "declarations": [],
+      "bases": [],
+      "derived": [],
+      "types": [],
+      "funcs": [],
+      "vars": [],
+      "instances": [],
+      "uses": []
+    }, {
+      "id": 1,
       "usr": 10383876566159302459,
       "detailed_name": "func",
       "short_name": "func",
@@ -16,6 +30,7 @@ OUTPUT:
       "declarations": [],
       "spell": "1:14-1:18|-1|1|2",
       "extent": "1:1-1:47|-1|1|0",
+      "alias_of": 0,
       "bases": [],
       "derived": [],
       "types": [],
