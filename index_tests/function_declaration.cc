@@ -17,7 +17,7 @@ OUTPUT:
           "spell": "1:6-1:9|-1|1|1",
           "param_spellings": ["1:14-1:15", "1:21-1:22"]
         }],
-      "base": [],
+      "bases": [],
       "derived": [],
       "locals": [],
       "uses": [],

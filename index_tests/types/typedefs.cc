@@ -16,7 +16,7 @@ OUTPUT:
       "declarations": [],
       "spell": "1:14-1:18|-1|1|2",
       "extent": "1:1-1:47|-1|1|0",
-      "parents": [],
+      "bases": [],
       "derived": [],
       "types": [],
       "funcs": [],
@@ -35,7 +35,7 @@ OUTPUT:
           "spell": "2:13-2:14|-1|1|1",
           "param_spellings": ["2:13-2:13", "2:13-2:13"]
         }],
-      "base": [],
+      "bases": [],
       "derived": [],
       "locals": [],
       "uses": [],

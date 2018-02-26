@@ -17,7 +17,7 @@ OUTPUT:
       "declarations": [],
       "spell": "1:6-1:9|-1|1|2",
       "extent": "1:1-4:2|-1|1|0",
-      "parents": [],
+      "bases": [],
       "derived": [],
       "types": [],
       "funcs": [],

@@ -23,7 +23,7 @@ OUTPUT:
           "spell": "3:6-3:12|-1|1|1",
           "param_spellings": ["3:18-3:19", "3:26-3:27"]
         }],
-      "base": [],
+      "bases": [],
       "derived": [],
       "locals": [],
       "uses": ["6:14-6:20|1|3|32"],
@@ -38,7 +38,7 @@ OUTPUT:
       "declarations": [],
       "spell": "5:6-5:12|-1|1|2",
       "extent": "5:1-7:2|-1|1|0",
-      "base": [],
+      "bases": [],
       "derived": [],
       "locals": [],
       "uses": [],

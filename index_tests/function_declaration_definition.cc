@@ -21,7 +21,7 @@ OUTPUT:
         }],
       "spell": "3:6-3:9|-1|1|2",
       "extent": "3:1-3:14|-1|1|0",
-      "base": [],
+      "bases": [],
       "derived": [],
       "locals": [],
       "uses": [],

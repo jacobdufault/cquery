@@ -11,7 +11,7 @@ OUTPUT:
       "short_name": "",
       "kind": 0,
       "declarations": [],
-      "parents": [],
+      "bases": [],
       "derived": [],
       "types": [],
       "funcs": [],

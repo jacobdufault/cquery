@@ -14,7 +14,7 @@ OUTPUT:
       "short_name": "",
       "kind": 0,
       "declarations": [],
-      "parents": [],
+      "bases": [],
       "derived": [],
       "types": [],
       "funcs": [0],
@@ -34,7 +34,7 @@ OUTPUT:
           "param_spellings": []
         }],
       "declaring_type": 0,
-      "base": [],
+      "bases": [],
       "derived": [],
       "locals": [],
       "uses": [],
