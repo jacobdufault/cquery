@@ -27,8 +27,8 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 1428566502523368801,
-      "detailed_name": "vector3::(anon)",
-      "short_name": "(anon)",
+      "detailed_name": "vector3::(anon struct)",
+      "short_name": "(anon struct)",
       "kind": 23,
       "declarations": [],
       "spell": "2:3-2:9|0|2|2",
