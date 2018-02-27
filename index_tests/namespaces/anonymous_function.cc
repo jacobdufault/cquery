@@ -36,7 +36,7 @@ OUTPUT:
       "declaring_type": 0,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

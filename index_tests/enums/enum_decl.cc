@@ -21,7 +21,7 @@ OUTPUT:
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [0, 1],
+      "vars": [],
       "instances": [],
       "uses": []
     }],

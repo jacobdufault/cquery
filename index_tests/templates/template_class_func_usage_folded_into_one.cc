@@ -57,7 +57,7 @@ OUTPUT:
       "declaring_type": 0,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["8:19-8:22|-1|1|32", "9:20-9:23|-1|1|32"],
       "callees": []
     }],

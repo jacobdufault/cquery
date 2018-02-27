@@ -28,7 +28,7 @@ OUTPUT:
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [0, 1],
+      "vars": [],
       "instances": [],
       "uses": []
     }, {
@@ -76,7 +76,7 @@ OUTPUT:
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [2, 3],
+      "vars": [],
       "instances": [],
       "uses": []
     }],

@@ -39,7 +39,7 @@ OUTPUT:
       "extent": "1:1-9:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [0, 1],
       "uses": [],
       "callees": []
     }],

@@ -38,7 +38,7 @@ OUTPUT: static.h
       "declaring_type": 0,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],
@@ -79,7 +79,7 @@ OUTPUT: static.cc
       "declaring_type": 0,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

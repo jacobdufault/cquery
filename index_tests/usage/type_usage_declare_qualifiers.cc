@@ -40,7 +40,7 @@ OUTPUT:
       "extent": "3:1-8:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [0, 1, 2, 3, 4, 5],
       "uses": [],
       "callees": []
     }],

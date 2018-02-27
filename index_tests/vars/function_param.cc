@@ -34,7 +34,7 @@ OUTPUT:
       "extent": "3:1-3:30|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [0, 1],
       "uses": [],
       "callees": []
     }],

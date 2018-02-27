@@ -75,7 +75,7 @@ OUTPUT:
       "declaring_type": 0,
       "bases": [],
       "derived": [2],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -91,7 +91,7 @@ OUTPUT:
       "declaring_type": 1,
       "bases": [],
       "derived": [2],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -107,7 +107,7 @@ OUTPUT:
       "declaring_type": 2,
       "bases": [0, 1],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

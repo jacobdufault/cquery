@@ -25,7 +25,7 @@ OUTPUT:
         }],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["6:14-6:20|1|3|32"],
       "callees": []
     }, {
@@ -40,7 +40,7 @@ OUTPUT:
       "extent": "5:1-7:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": ["6:14-6:20|0|3|32"]
     }],

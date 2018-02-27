@@ -234,7 +234,7 @@ OUTPUT:
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [5, 6],
+      "vars": [],
       "instances": [],
       "uses": []
     }, {
@@ -282,7 +282,7 @@ OUTPUT:
       "declaring_type": 5,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -299,7 +299,7 @@ OUTPUT:
       "declaring_type": 10,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -317,7 +317,7 @@ OUTPUT:
       "extent": "39:1-39:21|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [7],
       "uses": [],
       "callees": []
     }],

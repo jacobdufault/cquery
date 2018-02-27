@@ -86,7 +86,7 @@ OUTPUT: static_function_in_type.h
       "declaring_type": 3,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],
@@ -171,7 +171,7 @@ OUTPUT: static_function_in_type.cc
       "declaring_type": 2,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [0],
       "uses": [],
       "callees": []
     }],

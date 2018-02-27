@@ -42,7 +42,7 @@ OUTPUT:
       "extent": "1:1-1:17|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["8:3-8:9|1|3|32"],
       "callees": []
     }, {
@@ -61,7 +61,7 @@ OUTPUT:
       "declaring_type": 0,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": ["8:3-8:9|0|3|32"]
     }],

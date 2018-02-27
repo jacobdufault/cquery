@@ -113,7 +113,7 @@ OUTPUT:
         }],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

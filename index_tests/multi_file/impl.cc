@@ -88,7 +88,7 @@ OUTPUT: header.h
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [0, 1, 2],
+      "vars": [],
       "instances": [],
       "uses": []
     }, {
@@ -118,7 +118,7 @@ OUTPUT: header.h
       "extent": "10:1-10:15|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],
@@ -207,7 +207,7 @@ OUTPUT: impl.cc
       "extent": "3:1-5:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": ["4:3-4:7|1|3|32"]
     }, {
@@ -220,7 +220,7 @@ OUTPUT: impl.cc
       "declarations": [],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["4:3-4:7|0|3|32"],
       "callees": []
     }],

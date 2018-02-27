@@ -54,7 +54,7 @@ OUTPUT:
       "extent": "1:1-3:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["6:11-6:17|0|2|32"],
       "callees": []
     }],

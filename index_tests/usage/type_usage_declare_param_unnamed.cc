@@ -32,7 +32,7 @@ OUTPUT:
       "extent": "2:1-2:26|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

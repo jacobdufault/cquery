@@ -23,7 +23,7 @@ OUTPUT:
       "extent": "3:1-3:14|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

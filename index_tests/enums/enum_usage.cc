@@ -23,7 +23,7 @@ OUTPUT:
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [0, 1],
+      "vars": [],
       "instances": [2],
       "uses": ["6:1-6:4|-1|1|4", "6:9-6:12|-1|1|4"]
     }],

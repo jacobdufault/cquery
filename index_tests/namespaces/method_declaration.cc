@@ -70,7 +70,7 @@ OUTPUT:
       "declaring_type": 2,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],

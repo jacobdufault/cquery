@@ -123,7 +123,7 @@ OUTPUT:
       "extent": "11:1-14:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [1, 2],
       "uses": [],
       "callees": []
     }],

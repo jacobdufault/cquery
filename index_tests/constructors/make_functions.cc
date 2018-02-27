@@ -74,7 +74,7 @@ OUTPUT: make_functions.h
       "declaring_type": 1,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -90,7 +90,7 @@ OUTPUT: make_functions.h
       "declaring_type": 1,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -106,7 +106,7 @@ OUTPUT: make_functions.h
       "declaring_type": 1,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }, {
@@ -122,7 +122,7 @@ OUTPUT: make_functions.h
       "declaring_type": 1,
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],
@@ -240,7 +240,7 @@ OUTPUT: make_functions.cc
       "extent": "4:1-6:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [0],
       "uses": ["14:3-14:13|2|3|32", "15:3-15:13|2|3|32", "16:3-16:13|2|3|32"],
       "callees": []
     }, {
@@ -255,7 +255,7 @@ OUTPUT: make_functions.cc
       "extent": "9:1-11:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [1],
       "uses": ["17:3-17:14|2|3|32"],
       "callees": []
     }, {
@@ -270,7 +270,7 @@ OUTPUT: make_functions.cc
       "extent": "13:1-18:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": ["14:3-14:13|0|3|32", "15:3-15:13|0|3|32", "16:3-16:13|0|3|32", "17:3-17:14|1|3|32"]
     }, {
@@ -283,7 +283,7 @@ OUTPUT: make_functions.cc
       "declarations": [],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["14:3-14:13|-1|1|288"],
       "callees": []
     }, {
@@ -296,7 +296,7 @@ OUTPUT: make_functions.cc
       "declarations": [],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["15:3-15:13|-1|1|288"],
       "callees": []
     }, {
@@ -309,7 +309,7 @@ OUTPUT: make_functions.cc
       "declarations": [],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["16:3-16:13|-1|1|288"],
       "callees": []
     }, {
@@ -322,7 +322,7 @@ OUTPUT: make_functions.cc
       "declarations": [],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["17:3-17:14|-1|1|288"],
       "callees": []
     }],

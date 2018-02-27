@@ -23,7 +23,7 @@ OUTPUT: simple_header.h
         }],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": []
     }],
@@ -49,7 +49,7 @@ OUTPUT: simple_impl.cc
       "extent": "3:1-5:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": ["4:3-4:9|1|3|32"]
     }, {
@@ -62,7 +62,7 @@ OUTPUT: simple_impl.cc
       "declarations": [],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["4:3-4:9|0|3|32"],
       "callees": []
     }],

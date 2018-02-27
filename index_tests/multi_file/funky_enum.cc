@@ -21,7 +21,7 @@ OUTPUT: funky_enum.h
       "derived": [],
       "types": [],
       "funcs": [],
-      "vars": [0, 1, 2],
+      "vars": [],
       "instances": [],
       "uses": []
     }],

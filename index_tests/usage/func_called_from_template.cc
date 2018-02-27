@@ -30,7 +30,7 @@ OUTPUT:
         }],
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["5:3-5:9|1|3|32"],
       "callees": []
     }, {
@@ -45,7 +45,7 @@ OUTPUT:
       "extent": "4:1-6:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": ["9:3-9:9|2|3|32"],
       "callees": ["5:3-5:9|0|3|32"]
     }, {
@@ -60,7 +60,7 @@ OUTPUT:
       "extent": "8:1-10:2|-1|1|0",
       "bases": [],
       "derived": [],
-      "locals": [],
+      "vars": [],
       "uses": [],
       "callees": ["9:3-9:9|1|3|32"]
     }],
