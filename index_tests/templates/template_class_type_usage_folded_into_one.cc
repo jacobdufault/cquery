@@ -31,7 +31,7 @@ VarDecl b
 OUTPUT:
 {
   "includes": [],
-  "skipped_by_preprocessor": ["12:1-28:7"],
+  "skipped_by_preprocessor": ["12:0-28:7"],
   "types": [{
       "id": 0,
       "usr": 6697181287623958829,

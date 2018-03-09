@@ -15,7 +15,7 @@ OUTPUT:
   "types": [],
   "funcs": [{
       "id": 0,
-      "usr": 3223559731210506952,
+      "usr": 12924914488846929470,
       "detailed_name": "void consume(void (*)())",
       "short_name": "consume",
       "kind": 12,

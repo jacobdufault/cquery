@@ -53,7 +53,7 @@ OUTPUT:
       "detailed_name": "function",
       "short_name": "function",
       "kind": 5,
-      "declarations": ["2:7-2:15|-1|1|4", "5:7-5:15|-1|1|4"],
+      "declarations": ["2:7-2:15|-1|1|1", "5:7-5:15|-1|1|4"],
       "spell": "2:7-2:15|-1|1|2",
       "extent": "1:1-2:15|-1|1|0",
       "bases": [],
@@ -65,7 +65,7 @@ OUTPUT:
       "uses": ["7:1-7:9|-1|1|4"]
     }, {
       "id": 1,
-      "usr": 10470724750229934838,
+      "usr": 218068462278884837,
       "detailed_name": "function",
       "short_name": "function",
       "kind": 5,
@@ -114,10 +114,10 @@ OUTPUT:
     }, {
       "id": 4,
       "usr": 15695704394170757108,
-      "detailed_name": "",
-      "short_name": "",
-      "kind": 0,
-      "declarations": ["9:28-9:37|-1|1|4", "11:39-11:48|-1|1|4"],
+      "detailed_name": "allocator",
+      "short_name": "allocator",
+      "kind": 5,
+      "declarations": ["9:28-9:37|-1|1|1", "11:39-11:48|-1|1|4"],
       "bases": [],
       "derived": [],
       "types": [],
