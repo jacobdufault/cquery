@@ -83,7 +83,7 @@ std::vector<std::string> kBlacklist = {
 std::vector<std::string> kPathArgs = {
     "-I",        "-iquote",        "-isystem",     "--sysroot=",
     "-isysroot", "-gcc-toolchain", "-include-pch", "-iframework",
-    "-F",        "-imacros",       "-include",     "\\I"};
+    "-F",        "-imacros",       "-include",     "/I"};
 
 // Arguments which always require an absolute path, ie, clang -working-directory
 // does not work as expected. Argument processing assumes that this is a subset
@@ -93,7 +93,7 @@ std::vector<std::string> kNormalizePathArgs = {"--sysroot="};
 // Arguments whose path arguments should be injected into include dir lookup
 // for #include completion.
 std::vector<std::string> kQuoteIncludeArgs = {"-iquote"};
-std::vector<std::string> kAngleIncludeArgs = {"-I", "\\I", "-isystem"};
+std::vector<std::string> kAngleIncludeArgs = {"-I", "/I", "-isystem"};
 
 bool ShouldAddToQuoteIncludes(const std::string& arg) {
   return StartsWithAny(arg, kQuoteIncludeArgs);
@@ -156,8 +156,6 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     return result;
 
   bool clang_cl = strstr(args[0].c_str(), "clang-cl") ||
-                  strstr(args[0].c_str(), "clang-cl.exe") ||
-                  strstr(args[0].c_str(), "cl") ||
                   strstr(args[0].c_str(), "cl.exe") ||
                   AnyStartsWith(args, "--driver-mode=cl");
   size_t i = 1;
@@ -692,22 +690,21 @@ TEST_SUITE("Project") {
                 "-fparse-all-comments"});
 
     CheckFlags("E:/workdir", "E:/workdir/bar.cc",
-               /* raw */ {"clang-cl.exe", "\\I./test", "E:/workdir/bar.cc"},
+               /* raw */ {"clang-cl.exe", "/I./test", "E:/workdir/bar.cc"},
                /* expected */
                {"clang-cl.exe", "-working-directory=E:/workdir",
-                "\\I&E:/workdir/./test", "&E:/workdir/bar.cc",
+                "/I&E:/workdir/./test", "&E:/workdir/bar.cc",
                 "-resource-dir=/w/resource_dir/", "-Wno-unknown-warning-option",
                 "-fparse-all-comments"});
 
-    CheckFlags(
-        "E:/workdir", "E:/workdir/bar.cc",
-        /* raw */
-        {"cl.exe", "\\I../third_party/test/include", "E:/workdir/bar.cc"},
-        /* expected */
-        {"cl.exe", "-working-directory=E:/workdir",
-         "\\I&E:/workdir/../third_party/test/include", "&E:/workdir/bar.cc",
-         "-resource-dir=/w/resource_dir/", "-Wno-unknown-warning-option",
-         "-fparse-all-comments"});
+    CheckFlags("E:/workdir", "E:/workdir/bar.cc",
+               /* raw */
+               {"cl.exe", "/I../third_party/test/include", "E:/workdir/bar.cc"},
+               /* expected */
+               {"cl.exe", "-working-directory=E:/workdir",
+                "/I&E:/workdir/../third_party/test/include",
+                "&E:/workdir/bar.cc", "-resource-dir=/w/resource_dir/",
+                "-Wno-unknown-warning-option", "-fparse-all-comments"});
   }
 
   TEST_CASE("Path in args") {
