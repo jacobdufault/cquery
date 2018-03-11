@@ -17,11 +17,6 @@ from waflib import Logs, TaskGen, Task
 
 Task.Task.keep_last_cmd = True
 
-if sys.hexversion >= 0x3030000:
-	quote = shlex.quote
-else:
-	quote = pipes.quote
-
 @TaskGen.feature('c', 'cxx')
 @TaskGen.after_method('process_use')
 def collect_compilation_db_tasks(self):
@@ -53,11 +48,10 @@ def write_compilation_database(ctx):
 			continue
 		directory = getattr(task, 'cwd', ctx.variant_dir)
 		f_node = task.inputs[0]
-		filename = f_node.abspath();
-		cmd = " ".join(map(quote, cmd))
+		filename = os.path.relpath(f_node.abspath(), directory)
 		entry = {
 			"directory": directory,
-			"command": cmd,
+			"arguments": cmd,
 			"file": filename,
 		}
 		clang_db[filename] = entry
