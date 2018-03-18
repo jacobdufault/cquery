@@ -5,7 +5,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 include(DefaultCMakeBuildType)
 include(DownloadAndExtractLLVM)
 
-set(CLANG_VERSION 6.0.0 CACHE STRING "Downloaded Clang version (6.0.0)")
 option(SYSTEM_CLANG "Use system Clang instead of downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(CLANG_CXX "Build with Clang C++ api required by some cquery \
@@ -78,7 +77,7 @@ endif()
 ### Download Clang if required
 
 if(NOT SYSTEM_CLANG)
-  download_and_extract_llvm(${CLANG_VERSION})
+  download_and_extract_llvm()
   # Used by FindClang
   set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
 endif()

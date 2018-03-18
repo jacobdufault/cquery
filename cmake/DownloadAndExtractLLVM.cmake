@@ -4,10 +4,11 @@
 # Returns the extracted LLVM archive directory in DOWNLOADED_CLANG_DIR
 #
 # Downloads 7-Zip to extract LLVM if it isn't available in the PATH
-function(download_and_extract_llvm CLANG_VERSION)
+function(download_and_extract_llvm)
 
 include(DownloadAndExtract7zip)
 
+set(CLANG_VERSION 6.0.0)
 set(CLANG_ARCHIVE_EXT .tar.xz)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
@@ -67,33 +68,6 @@ if(NOT EXISTS ${CLANG_ARCHIVE_EXTRACT_DIR})
     # CMake has builtin support for tar via the -E flag
     execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xf ${CLANG_ARCHIVE_FILE}
                     OUTPUT_QUIET)
-  endif()
-
-  # There is a null pointer dereference issue in 
-  # tools/libclang/CXIndexDataConsumer.cpp handleReference.
-  # https://github.com/cquery-project/cquery/issues/219
-  if(${CMAKE_SYSTEM_NAME} STREQUAL Linux AND 
-     ${CLANG_VERSION} MATCHES 4.0.0|5.0.1)
-    message(STATUS "Patching downloaded LLVM (see \
-https://github.com/cquery-project/cquery/issues/219)")
-    
-    if(${CLANG_VERSION} STREQUAL 4.0.0)
-      # 4289205 = $[0x4172b5] (we use decimals for seek since execute_process 
-      # does not evaluate $[] bash syntax)
-      execute_process(COMMAND printf \\x4d
-                      COMMAND dd 
-                        of=${CLANG_ARCHIVE_EXTRACT_DIR}/lib/libclang.so.4.0
-                        obs=1 seek=4289205 conv=notrunc
-                      OUTPUT_QUIET)
-
-    elseif(${CLANG_VERSION} STREQUAL 5.0.1)
-      # 4697806 = $[0x47aece] 
-      execute_process(COMMAND printf \\x4d
-                      COMMAND dd 
-                        of=${CLANG_ARCHIVE_EXTRACT_DIR}/lib/libclang.so.5.0
-                        obs=1 seek=4697806 conv=notrunc
-                      OUTPUT_QUIET)
-    endif()
   endif()
 endif()
 
