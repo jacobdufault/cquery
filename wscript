@@ -2,17 +2,25 @@
 # encoding: utf-8
 
 try:
-    from urllib2 import urlopen  # Python 2
+  from urllib.request import urlopen  # Python 3
 except ImportError:
-    from urllib.request import urlopen  # Python 3
+  from urllib2 import urlopen  # Python 2
 
+try:
+  import lzma as xz  # Python 3
+except ImportError:
+  import pylzma as xz  # Python 2
+
+import ctypes
 import os.path
+import re
+import shutil
 import string
 import subprocess
 import sys
-import re
-import ctypes
-import shutil
+import tarfile
+
+from waflib.Tools.compiler_cxx import cxx_compiler
 
 VERSION = '0.0.1'
 APPNAME = 'cquery'
@@ -34,7 +42,6 @@ elif sys.platform == 'win32':
   CLANG_TARBALL_NAME = 'LLVM-$version-win64'
   CLANG_TARBALL_EXT = '.exe'
 
-from waflib.Tools.compiler_cxx import cxx_compiler
 cxx_compiler['linux'] = ['clang++', 'g++']
 
 # Creating symbolic link on Windows requires a special priviledge SeCreateSymboliclinkPrivilege,
@@ -103,8 +110,8 @@ def download_and_extract(destdir, url, ext):
     # Download and save the compressed tarball as |compressed_file_name|.
     if not os.path.isfile(dest):
       print('Downloading tarball')
-      print('   destination: {0}'.format(dest))
       print('   source:      {0}'.format(url))
+      print('   destination: {0}'.format(dest))
       # TODO: verify checksum
       response = urlopen(url, timeout=60)
       with open(dest, 'wb') as f:
@@ -113,11 +120,21 @@ def download_and_extract(destdir, url, ext):
       print('Found tarball at {0}'.format(dest))
 
     print('Extracting {0}'.format(dest))
-    # TODO: make portable.
+
+    # Unpacking using 7z do not guarantee to work for various reasons, see #505: https://github.com/cquery-project/cquery/issues/505
+    # To overcome this situation it is better to let the installer do its jobs but silently.
+    # For more info on silent mode: http://nsis.sourceforge.net/Docs/Chapter4.html#silent
     if ext == '.exe':
-      subprocess.call(['7z', 'x', '-o{0}'.format(destdir), '-xr!$PLUGINSDIR', dest])
+      try:
+        output_dir = os.path.abspath(os.path.join(out, CLANG_TARBALL_NAME))
+        subprocess.check_call([dest, '/S', '/D=%s' % output_dir])
+      except subprocess.CalledProcessError as e:
+        print('[rc=%d] Failed to unpack clang compiler' % e.returncode)
     else:
-      subprocess.call(['tar', '-x', '-C', out, '-f', dest])
+      with xz.open(dest, 'rb') as xz_file:
+        with tarfile.open(fileobj=xz_file) as t_file:
+          t_file.extractall(path=out)
+
       # TODO Remove after migrating to a clang release newer than 5.0.1
       # For 5.0.1 Mac OS X, the directory and the tarball have different name
       if destdir == 'build/clang+llvm-5.0.1-x86_64-apple-darwin':
