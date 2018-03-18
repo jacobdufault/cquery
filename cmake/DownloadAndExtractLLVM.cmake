@@ -12,13 +12,8 @@ set(CLANG_ARCHIVE_EXT .tar.xz)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
 
-  if(${CLANG_VERSION} STREQUAL 5.0.0)
-    set(CLANG_ARCHIVE_NAME 
-        clang+llvm-${CLANG_VERSION}-linux-x86_64-ubuntu14.04)
-  else()
-    set(CLANG_ARCHIVE_NAME 
-        clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04)
-  endif()
+  set(CLANG_ARCHIVE_NAME 
+      clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 
@@ -49,7 +44,7 @@ set(CLANG_ARCHIVE_EXTRACT_DIR ${CMAKE_BINARY_DIR}/${CLANG_ARCHIVE_NAME})
 set(CLANG_ARCHIVE_URL 
     https://releases.llvm.org/${CLANG_VERSION}/${CLANG_ARCHIVE_FULL_NAME})
 set(CLANG_ARCHIVE_HASH_FILE 
-    ${CMAKE_SOURCE_DIR}/llvm_hashes/${CLANG_ARCHIVE_FULL_NAME}.SHA256)
+    ${CMAKE_SOURCE_DIR}/clang_hashes/${CLANG_ARCHIVE_FULL_NAME}.SHA256)
 
 if(NOT EXISTS ${CLANG_ARCHIVE_HASH_FILE})
   message(FATAL_ERROR "No SHA256 hash available for the current platform \
