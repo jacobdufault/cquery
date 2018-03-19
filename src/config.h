@@ -212,6 +212,10 @@ struct Config {
     bool sort = true;
   } workspaceSymbol;
 
+  // Allow indexing on textDocument/didChange.
+  // May be too slow for big projects, so it is off by default.
+  bool enableIndexOnDidChange = false;
+
   struct Xref {
     // If true, |Location[]| response will include lexical container.
     bool container = false;
@@ -274,6 +278,8 @@ MAKE_REFLECT_STRUCT(Config,
                     index,
                     workspaceSymbol,
                     xref,
+                    
+                    enableIndexOnDidChange,
 
                     dumpAST);
 
