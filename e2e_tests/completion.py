@@ -1,5 +1,5 @@
 import e2e_test_runner
-
+from e2e_tests.utils import *
 
 def IGNORE_Test_Completion():
   return (e2e_test_runner.TestBuilder()
@@ -20,7 +20,7 @@ void foobar() {
               'method': 'textDocument/completion',
               'params': {
                   'textDocument': {
-                      'uri': 'foo.cc'
+                      'uri': BuildUri('foo.cc')
                   },
                   'position': {
                     'line': 7,

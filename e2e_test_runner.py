@@ -7,7 +7,8 @@ import re
 import shutil
 import subprocess
 
-CQUERY_PATH = 'build/release/bin/cquery'
+#CQUERY_PATH = 'build/release/bin/cquery'
+CQUERY_PATH = 'x64/Debug/cquery.exe'
 CACHE_DIR = 'e2e_cache'
 
 # We write test files in python. The test runner collects all python files in
@@ -39,8 +40,10 @@ class TestBuilder:
             'path': path,
             'contents': contents,
             'args': [
+                'clang',
                 '-xc++',
-                '-std=c++11'
+                '-std=c++11',
+                path
             ]
         }
     })
@@ -62,7 +65,7 @@ class TestBuilder:
 
   def WaitForIdle(self):
     """
-    cquery will pause processing messages until it is idle.
+    cquery will wait until the import pipeline is idle
     """
     self.Send({'method': '$cquery/wait'})
     return self
@@ -113,7 +116,7 @@ class TestBuilder:
                 'hoverProvider': True,
                 'completionProvider': {
                     'resolveProvider': False,
-                    'triggerCharacters': ['.', ':', '>', '#']
+                    'triggerCharacters': ['.', ':', '>', '#', '<', '"', '/']
                 },
                 'signatureHelpProvider': {
                     'triggerCharacters': ['(', ',']
@@ -131,13 +134,82 @@ class TestBuilder:
                 'documentRangeFormattingProvider': False,
                 'renameProvider': True,
                 'documentLinkProvider': {
-                    'resolveProvider': False
+                    'resolveProvider': True
+                },
+                'executeCommandProvider': {
+                    'commands': []
                 }
             }
         }
     })
     return self
 
+class Diff(object):
+    def __init__(self, first, second, with_values=True, vice_versa=False):
+        self.difference = []
+        self.check(first, second, with_values=with_values)
+
+        if vice_versa:
+            self.check(second, first, with_values=with_values)
+
+    def check(self, first, second, path='', with_values=False):
+        if second != None:
+            if not isinstance(first, type(second)):
+                message = '%s- %s, %s' % (path, type(first), type(second))
+                self.save_diff(message, TYPE)
+
+        if isinstance(first, dict):
+            for key in first:
+                # the first part of path must not have trailing dot.
+                if len(path) == 0:
+                    new_path = key
+                else:
+                    new_path = "%s.%s" % (path, key)
+
+                if isinstance(second, dict):
+                    if key in second:
+                        sec = second[key]
+                    else:
+                        #  there are key in the first, that is not presented in the second
+                        self.save_diff(new_path, path)
+
+                        # prevent further values checking.
+                        sec = None
+
+                    # recursive call
+                    self.check(first[key], sec, path=new_path, with_values=with_values)
+                else:
+                    # second is not dict. every key from first goes to the difference
+                    self.save_diff(new_path, 'path')
+                    self.check(first[key], second, path=new_path, with_values=with_values)
+
+        # if object is list, loop over it and check.
+        elif isinstance(first, list):
+            for (index, item) in enumerate(first):
+                new_path = "%s[%s]" % (path, index)
+                # try to get the same index from second
+                sec = None
+                if second != None:
+                    try:
+                        sec = second[index]
+                    except (IndexError, KeyError):
+                        # goes to difference
+                        self.save_diff('%s - %s, %s' % (new_path, type(first), type(second)), 'type')
+
+                # recursive call
+                self.check(first[index], sec, path=new_path, with_values=with_values)
+
+        # not list, not dict. check for equality (only if with_values is True) and return.
+        else:
+            if with_values and second != None:
+                if first != second:
+                    self.save_diff('%s - %s | %s' % (path, first, second), 'VALUE')
+            return
+
+    def save_diff(self, diff_message, type_):
+        message = '%s: %s' % (type_, diff_message)
+        if diff_message not in self.difference:
+            self.difference.append(message)
 
 def _ExecuteTest(name, func):
   """
@@ -203,8 +275,21 @@ def _ExecuteTest(name, func):
   exit_code = process.wait()
 
   # Check if test succeeded.
+  success = exit_code == 0
   actual = GetMessages(stdout.decode('utf8'))
-  success = exit_code == 0 and actual == test_builder.expected
+  expected = test_builder.expected
+  common_end = min(len(test_builder.expected), len(actual))
+  for i in range(0, common_end):
+    diff = Diff(actual[i], expected[i])
+    if len(diff.difference) != 0:
+      print('############')
+      print('Actual')
+      print(actual[i])
+      print('Expected')
+      print(expected[i])
+      success = False
+      for d in diff.difference:
+        print(d)
 
   # Print failure messages.
   if success:

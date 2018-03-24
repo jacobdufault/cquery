@@ -1,5 +1,5 @@
 import e2e_test_runner
-
+from e2e_tests.utils import *
 
 def Test_Outline():
   return (e2e_test_runner.TestBuilder()
@@ -12,7 +12,7 @@ def Test_Outline():
               'method': 'textDocument/documentSymbol',
               'params': {
                   'textDocument': {
-                      'uri': 'foo.cc'
+                      'uri': BuildUri('foo.cc')
                   }
               }
           })
@@ -33,7 +33,7 @@ def Test_Outline():
                               'character': 11
                           }
                       },
-                      'uri': 'file://foo.cc'
+                      'uri': BuildUri('foo.cc')
                   }
               }]
           }))
