@@ -32,8 +32,8 @@ bool EndsWithAny(const std::string& value,
                  const std::vector<std::string>& endings);
 bool FindAnyPartial(const std::string& value,
                     const std::vector<std::string>& values);
-// Returns the dirname of |path|, i.e. "foo/bar.cc" => "foo", "foo" => ".",
-// "/foo" => "/".
+// Returns the dirname of |path|, i.e. "foo/bar.cc" => "foo/", "foo" => "./",
+// "/foo" => "/". The result always ends in '/'.
 std::string GetDirName(std::string path);
 // Returns the basename of |path|, ie, "foo/bar.cc" => "bar.cc".
 std::string GetBaseName(const std::string& path);
