@@ -29,9 +29,13 @@ REGISTER_IN_MESSAGE(In_CqueryIndexFile);
 struct Handler_CqueryIndexFile : BaseMessageHandler<In_CqueryIndexFile> {
   MethodType GetMethodType() const override { return kMethodType; }
   void Run(In_CqueryIndexFile* request) override {
+    optional<AbsolutePath> path = NormalizePath(request->params.path);
+    if (!path)
+      ABORT_S() << "Unable to find " << request->params.path;
+
     LOG_S(INFO) << "Indexing file " << request->params.path;
     QueueManager::instance()->index_request.PushBack(
-        Index_Request(NormalizePath(request->params.path), request->params.args,
+        Index_Request(path->path, request->params.args,
                       request->params.is_interactive, request->params.contents,
                       ICacheManager::Make(config)));
   }

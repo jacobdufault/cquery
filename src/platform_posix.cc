@@ -49,7 +49,7 @@ namespace {
 // Returns the canonicalized absolute pathname, without expanding symbolic
 // links. This is a variant of realpath(2), C++ rewrite of
 // https://github.com/freebsd/freebsd/blob/master/lib/libc/stdlib/realpath.c
-optional<std::string> RealPathNotExpandSymlink(std::string path) {
+optional<AbsolutePath> RealPathNotExpandSymlink(std::string path) {
   if (path.empty()) {
     errno = EINVAL;
     return nullopt;
@@ -106,7 +106,7 @@ optional<std::string> RealPathNotExpandSymlink(std::string path) {
   // Remove trailing slash except when a single "/".
   if (resolved.size() > 1 && resolved.back() == '/')
     resolved.pop_back();
-  return resolved;
+  return AbsolutePath(resolved);
 }
 
 }  // namespace
@@ -119,7 +119,7 @@ extern "C" int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
 
 // See
 // https://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
-std::string GetExecutablePath() {
+AbsolutePath GetExecutablePath() {
 #ifdef __APPLE__
   uint32_t size = 0;
   _NSGetExecutablePath(nullptr, &size);
@@ -150,23 +150,22 @@ std::string GetExecutablePath() {
 #endif
 }
 
-std::string GetWorkingDirectory() {
+AbsolutePath GetWorkingDirectory() {
   char result[FILENAME_MAX];
   if (!getcwd(result, sizeof(result)))
-    return "";
+    return AbsolutePath("");
   std::string working_dir = std::string(result, strlen(result));
   EnsureEndsInSlash(working_dir);
   return working_dir;
 }
 
-std::string NormalizePath(const std::string& path) {
-  optional<std::string> resolved = RealPathNotExpandSymlink(path);
-  return resolved ? *resolved : path;
+optional<AbsolutePath> NormalizePath(const std::string& path) {
+  return RealPathNotExpandSymlink(path);
 }
 
-bool TryMakeDirectory(const std::string& absolute_path) {
+bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   const mode_t kMode = 0777;  // UNIX style permissions
-  if (mkdir(absolute_path.c_str(), kMode) == -1) {
+  if (mkdir(absolute_path.path.c_str(), kMode) == -1) {
     // Success if the directory exists.
     return errno == EEXIST;
   }
@@ -184,9 +183,9 @@ void SetCurrentThreadName(const std::string& thread_name) {
 #endif
 }
 
-optional<int64_t> GetLastModificationTime(const std::string& absolute_path) {
+optional<int64_t> GetLastModificationTime(const AbsolutePath& absolute_path) {
   struct stat buf;
-  if (stat(absolute_path.c_str(), &buf) != 0) {
+  if (stat(absolute_path.path.c_str(), &buf) != 0) {
     switch (errno) {
       case ENOENT:
         // std::cerr << "GetLastModificationTime: unable to find file " <<
@@ -206,18 +205,18 @@ optional<int64_t> GetLastModificationTime(const std::string& absolute_path) {
   return buf.st_mtime;
 }
 
-void MoveFileTo(const std::string& dest, const std::string& source) {
+void MoveFileTo(const AbsolutePath& dest, const AbsolutePath& source) {
   // TODO/FIXME - do a real move.
   CopyFileTo(dest, source);
 }
 
 // See http://stackoverflow.com/q/13198627
-void CopyFileTo(const std::string& dest, const std::string& source) {
-  int fd_from = open(source.c_str(), O_RDONLY);
+void CopyFileTo(const AbsolutePath& dest, const AbsolutePath& source) {
+  int fd_from = open(source.path.c_str(), O_RDONLY);
   if (fd_from < 0)
     return;
 
-  int fd_to = open(dest.c_str(), O_WRONLY | O_CREAT, 0666);
+  int fd_to = open(dest.path.c_str(), O_WRONLY | O_CREAT, 0666);
   if (fd_to < 0)
     goto out_error;
 
@@ -254,9 +253,9 @@ out_error:
     close(fd_to);
 }
 
-bool IsSymLink(const std::string& path) {
+bool IsSymLink(const AbsolutePath& path) {
   struct stat buf;
-  return lstat(path.c_str(), &buf) == 0 && S_ISLNK(buf.st_mode);
+  return lstat(path.path.c_str(), &buf) == 0 && S_ISLNK(buf.st_mode);
 }
 
 std::vector<const char*> GetPlatformClangArguments() {

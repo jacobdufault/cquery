@@ -226,7 +226,7 @@ static void GetFilesInFolderHelper(
         if (file.is_dir) {
           if (recursive) {
             std::string child_dir = q.front().second + file.name + "/";
-            if (!IsSymLink(file.path))
+            if (!IsSymLink(AbsolutePath(file.path)))
               q.push(make_pair(file.path, child_dir));
           }
         } else {
@@ -427,7 +427,12 @@ std::string GetDefaultResourceDirectory() {
     result = resource_directory;
   }
 
-  return NormalizePath(result);
+  auto normalized_result = NormalizePath(result);
+  if (!normalized_result) {
+    LOG_S(WARNING) << "Resource directory " << result << " does not exist";
+    return result;
+  }
+  return normalized_result->path;
 }
 
 std::string UpdateToRnNewlines(std::string output) {

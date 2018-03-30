@@ -172,26 +172,29 @@ void IncludeComplete::AddFile(const std::string& absolute_path) {
     lock.unlock();
 }
 
-void IncludeComplete::InsertIncludesFromDirectory(std::string directory,
+void IncludeComplete::InsertIncludesFromDirectory(std::string directory0,
                                                   bool use_angle_brackets) {
-  directory = NormalizePath(directory);
-  EnsureEndsInSlash(directory);
-  if (match_ && !match_->IsMatch(directory)) {
+  optional<AbsolutePath> directory = NormalizePath(directory0);
+  if (!directory)
+    return;
+
+  EnsureEndsInSlash(directory->path);
+  if (match_ && !match_->IsMatch(directory->path)) {
     // Don't even enter the directory if it fails the patterns.
     return;
   }
 
   std::vector<CompletionCandidate> results;
   GetFilesInFolder(
-      directory, true /*recursive*/, false /*add_folder_to_path*/,
+      directory->path, true /*recursive*/, false /*add_folder_to_path*/,
       [&](const std::string& path) {
         if (!EndsWithAny(path, config_->completion.includeSuffixWhitelist))
           return;
-        if (match_ && !match_->IsMatch(directory + path))
+        if (match_ && !match_->IsMatch(directory->path + path))
           return;
 
         CompletionCandidate candidate;
-        candidate.absolute_path = directory + path;
+        candidate.absolute_path = directory->path + path;
         candidate.completion_item = BuildCompletionItem(
             config_, path, use_angle_brackets, false /*is_stl*/);
         results.push_back(candidate);

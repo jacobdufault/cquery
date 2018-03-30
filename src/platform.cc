@@ -50,17 +50,15 @@ PlatformScopedMutexLock::~PlatformScopedMutexLock() = default;
 
 PlatformSharedMemory::~PlatformSharedMemory() = default;
 
-void MakeDirectoryRecursive(std::string path) {
-  path = NormalizePath(path);
-
+void MakeDirectoryRecursive(const AbsolutePath& path) {
   if (TryMakeDirectory(path))
     return;
 
   std::string prefix = "";
-  if (path[0] == '/')
+  if (path.path[0] == '/')
     prefix = "/";
 
-  std::vector<std::string> components = Split(path, '/');
+  std::vector<std::string> components = Split(path.path, '/');
 
   // Find first parent directory which doesn't exist.
   int first_success = -1;
@@ -73,14 +71,14 @@ void MakeDirectoryRecursive(std::string path) {
   }
 
   if (first_success == -1) {
-    LOG_S(FATAL) << "Failed to make any parent directory for " << path;
+    LOG_S(FATAL) << "Failed to make any parent directory for " << path.path;
     exit(1);
   }
 
   // Make all child directories.
   for (size_t i = first_success + 1; i <= components.size(); ++i) {
     if (TryMakeDirectory(prefix + Join(components, '/', i)) == false) {
-      LOG_S(FATAL) << "Failed making directory for " << path
+      LOG_S(FATAL) << "Failed making directory for " << path.path
                    << " even after creating parent directories";
       exit(1);
     }

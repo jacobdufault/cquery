@@ -28,37 +28,34 @@ void PlatformInit() {
 
 // See
 // https://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
-std::string GetExecutablePath() {
+AbsolutePath GetExecutablePath() {
   char result[MAX_PATH] = {0};
   GetModuleFileName(NULL, result, MAX_PATH);
-  return NormalizePath(result);
+  return *NormalizePath(result);
 }
 
 // See http://stackoverflow.com/a/19535628
-std::string GetWorkingDirectory() {
+AbsolutePath GetWorkingDirectory() {
   char result[MAX_PATH];
   std::string binary_path(result, GetModuleFileName(NULL, result, MAX_PATH));
-  return binary_path.substr(0, binary_path.find_last_of("\\/") + 1);
+  return *NormalizePath(GetDirName(binary_path));
 }
 
-std::string NormalizePath(const std::string& path) {
-  DWORD retval = 0;
+optional<AbsolutePath> NormalizePath(const std::string& path) {
   TCHAR buffer[MAX_PATH] = TEXT("");
-  TCHAR** lpp_part = {NULL};
+  TCHAR** lpp_part = {0};
+  DWORD len = GetFullPathName(path.c_str(), MAX_PATH, buffer, lpp_part);
+  if (!len)
+    return nullopt;
 
-  retval = GetFullPathName(path.c_str(), MAX_PATH, buffer, lpp_part);
-  // fail, return original
-  if (retval == 0)
-    return path;
-
-  std::string result = buffer;
+  std::string result(buffer, len);
   std::replace(result.begin(), result.end(), '\\', '/');
-  // std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-  return result;
+  std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+  return AbsolutePath::Build(result);
 }
 
-bool TryMakeDirectory(const std::string& absolute_path) {
-  if (_mkdir(absolute_path.c_str()) == -1) {
+bool TryMakeDirectory(const AbsolutePath& absolute_path) {
+  if (_mkdir(absolute_path.path.c_str()) == -1) {
     // Success if the directory exists.
     return errno == EEXIST;
   }
@@ -95,9 +92,9 @@ void SetCurrentThreadName(const std::string& thread_name) {
   }
 }
 
-optional<int64_t> GetLastModificationTime(const std::string& absolute_path) {
+optional<int64_t> GetLastModificationTime(const AbsolutePath& absolute_path) {
   struct _stat buf;
-  if (_stat(absolute_path.c_str(), &buf) != 0) {
+  if (_stat(absolute_path.path.c_str(), &buf) != 0) {
     switch (errno) {
       case ENOENT:
         // std::cerr << "GetLastModificationTime: unable to find file " <<
@@ -117,15 +114,15 @@ optional<int64_t> GetLastModificationTime(const std::string& absolute_path) {
   return buf.st_mtime;
 }
 
-void MoveFileTo(const std::string& destination, const std::string& source) {
-  MoveFile(source.c_str(), destination.c_str());
+void MoveFileTo(const AbsolutePath& destination, const AbsolutePath& source) {
+  MoveFile(source.path.c_str(), destination.path.c_str());
 }
 
-void CopyFileTo(const std::string& destination, const std::string& source) {
-  CopyFile(source.c_str(), destination.c_str(), false /*failIfExists*/);
+void CopyFileTo(const AbsolutePath& destination, const AbsolutePath& source) {
+  CopyFile(source.path.c_str(), destination.path.c_str(), false /*failIfExists*/);
 }
 
-bool IsSymLink(const std::string& path) {
+bool IsSymLink(const AbsolutePath& path) {
   return false;
 }
 

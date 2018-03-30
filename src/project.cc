@@ -46,7 +46,12 @@ std::string NormalizePathWithTestOptOut(const std::string& path) {
     // Add a & so we can test to verify a path is normalized.
     return "&" + path;
   }
-  return NormalizePath(path);
+  optional<AbsolutePath> normalized = NormalizePath(path);
+  if (!normalized) {
+    LOG_S(WARNING) << "Failed to normalize " << path;
+    return path;
+  }
+  return *normalized;
 }
 
 bool IsUnixAbsolutePath(const std::string& path) {
@@ -367,10 +372,12 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* init_opts,
       auto it = folder_args.find(cur);
       if (it != folder_args.end())
         return it->second;
-      std::string normalized = NormalizePath(cur);
+      optional<AbsolutePath> normalized = NormalizePath(cur);
+      if (!normalized)
+        break;
       // Break if outside of the project root.
-      if (normalized.size() <= config->project_dir.size() ||
-          normalized.compare(0, config->project_dir.size(),
+      if (normalized->path.size() <= config->project_dir.size() ||
+          normalized->path.compare(0, config->project_dir.size(),
                              config->project_dir) != 0)
         break;
     }

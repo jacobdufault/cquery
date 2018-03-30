@@ -480,6 +480,13 @@ struct Out_InitializeResponse : public lsOutMessage<Out_InitializeResponse> {
 MAKE_REFLECT_STRUCT(Out_InitializeResponse::InitializeResult, capabilities);
 MAKE_REFLECT_STRUCT(Out_InitializeResponse, jsonrpc, id, result);
 
+std::string NormalizePathOrAbort(std::string path) {
+  optional<AbsolutePath> normalized = NormalizePath(path);
+  if (!normalized)
+    ABORT_S() << "Unable to normalize path " << path;
+  return normalized->path;
+}
+
 struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
   MethodType GetMethodType() const override { return kMethodType; }
 
@@ -493,7 +500,7 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
 
     if (request->params.rootUri) {
       std::string project_path =
-          NormalizePath(request->params.rootUri->GetPath());
+          NormalizePathOrAbort(request->params.rootUri->GetPath());
       LOG_S(INFO) << "[querydb] Initialize in directory " << project_path
                   << " with uri " << request->params.rootUri->raw_uri;
 
@@ -518,7 +525,7 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
           LOG_S(ERROR) << "cacheDirectory cannot be empty.";
           exit(1);
         } else {
-          config->cacheDirectory = NormalizePath(config->cacheDirectory);
+          config->cacheDirectory = NormalizePathOrAbort(config->cacheDirectory);
           EnsureEndsInSlash(config->cacheDirectory);
         }
       }

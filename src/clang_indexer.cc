@@ -2167,7 +2167,7 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
 optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
     Config* config,
     FileConsumerSharedState* file_consumer_shared,
-    std::string file,
+    const std::string& file0,
     const std::vector<std::string>& args,
     const std::vector<FileContents>& file_contents,
     PerformanceImportFile* perf,
@@ -2176,7 +2176,11 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   if (!config->index.enabled)
     return nullopt;
 
-  file = NormalizePath(file);
+  optional<AbsolutePath> file = NormalizePath(file0);
+  if (!file) {
+    LOG_S(WARNING) << "Cannot index " << file0 << " because it can not be found";
+    return nullopt;
+  }
 
   Timer timer;
 
@@ -2190,7 +2194,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   }
 
   std::unique_ptr<ClangTranslationUnit> tu = ClangTranslationUnit::Create(
-      index, file, args, unsaved_files,
+      index, file->path, args, unsaved_files,
       CXTranslationUnit_KeepGoing |
           CXTranslationUnit_DetailedPreprocessingRecord);
   if (!tu)
@@ -2201,7 +2205,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   if (dump_ast)
     Dump(clang_getTranslationUnitCursor(tu->cx_tu));
 
-  return ParseWithTu(config, file_consumer_shared, perf, tu.get(), index, file,
+  return ParseWithTu(config, file_consumer_shared, perf, tu.get(), index, file->path,
                      args, unsaved_files);
 }
 

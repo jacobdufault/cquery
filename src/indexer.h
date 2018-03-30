@@ -522,7 +522,7 @@ struct NamespaceHelper {
 optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
     Config* config,
     FileConsumerSharedState* file_consumer_shared,
-    std::string file,
+    const std::string& file,
     const std::vector<std::string>& args,
     const std::vector<FileContents>& file_contents,
     PerformanceImportFile* perf,

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "file_types.h"
+
 #include <optional.h>
 #include <string_view.h>
 
@@ -22,24 +24,25 @@ struct PlatformSharedMemory {
 
 void PlatformInit();
 
-std::string GetExecutablePath();
-std::string GetWorkingDirectory();
-std::string NormalizePath(const std::string& path);
+AbsolutePath GetExecutablePath();
+AbsolutePath GetWorkingDirectory();
+optional<AbsolutePath> NormalizePath(const std::string& path);
+
 // Creates a directory at |path|. Creates directories recursively if needed.
-void MakeDirectoryRecursive(std::string path);
+void MakeDirectoryRecursive(const AbsolutePath& path);
 // Tries to create the directory given by |absolute_path|. Returns true if
 // successful or if the directory already exists. Returns false otherwise. This
 // does not attempt to recursively create directories.
-bool TryMakeDirectory(const std::string& absolute_path);
+bool TryMakeDirectory(const AbsolutePath& path);
 
 void SetCurrentThreadName(const std::string& thread_name);
 
-optional<int64_t> GetLastModificationTime(const std::string& absolute_path);
+optional<int64_t> GetLastModificationTime(const AbsolutePath& absolute_path);
 
-void MoveFileTo(const std::string& destination, const std::string& source);
-void CopyFileTo(const std::string& destination, const std::string& source);
+void MoveFileTo(const AbsolutePath& destination, const AbsolutePath& source);
+void CopyFileTo(const AbsolutePath& destination, const AbsolutePath& source);
 
-bool IsSymLink(const std::string& path);
+bool IsSymLink(const AbsolutePath& path);
 
 // Returns any clang arguments that are specific to the current platform.
 std::vector<const char*> GetPlatformClangArguments();

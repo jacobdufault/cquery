@@ -3,6 +3,7 @@
 #include "platform.h"
 
 #include <doctest/doctest.h>
+#include <loguru.hpp>
 
 namespace {
 
@@ -134,7 +135,13 @@ std::vector<lsTextEdit> ConvertClangReplacementsIntoTextEdits(
 std::string FileName(CXFile file) {
   CXString cx_name = clang_getFileName(file);
   std::string name = ToString(cx_name);
-  return NormalizePath(name);
+  optional<AbsolutePath> normalized = NormalizePath(name);
+  if (!normalized) {
+    // FIXME: make this return optional
+    LOG_S(INFO) << "Failed to normalize " << name;
+    return name;
+  }
+  return normalized->path;
 }
 
 std::string ToString(CXString cx_string) {
