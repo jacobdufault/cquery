@@ -141,12 +141,12 @@ AbsolutePath GetExecutablePath() {
   size_t len = sizeof(path);
   path[0] = '\0';
   (void)sysctl(name, 4, path, &len, NULL, 0);
-  return std::string(path);
+  return AbsolutePath(path);
 #else
   char buffer[PATH_MAX] = {0};
   if (-1 == readlink("/proc/self/exe", buffer, PATH_MAX))
-    return "";
-  return buffer;
+    return AbsolutePath("");
+  return AbsolutePath(buffer);
 #endif
 }
 
