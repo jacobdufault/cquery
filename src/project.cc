@@ -341,11 +341,6 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* init_opts,
                                                      ProjectConfig* config) {
   std::vector<Project::Entry> result;
   config->mode = ProjectMode::DotCquery;
-  LOG_IF_S(WARNING, !FileExists(config->project_dir + "/.cquery") &&
-                        config->extra_flags.empty())
-      << "cquery has no clang arguments. Considering adding either a "
-         "compile_commands.json or .cquery file. See the cquery README for "
-         "more information.";
 
   std::unordered_map<std::string, std::vector<std::string>> folder_args;
   std::vector<std::string> files;
@@ -361,6 +356,11 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* init_opts,
                                            ReadCompilerArgumentsFromFile(path));
                      }
                    });
+
+  LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty())
+    << "cquery has no clang arguments. Considering adding either a "
+        "compile_commands.json or .cquery file. See the cquery README for "
+        "more information.";
 
   const auto& project_dir_args = folder_args[config->project_dir];
   LOG_IF_S(INFO, !project_dir_args.empty())
@@ -435,20 +435,26 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 #endif
   }
 
+  CXCompilationDatabase_Error cx_db_load_error = CXCompilationDatabase_CanNotLoadDatabase;
+  CXCompilationDatabase cx_db = nullptr;
   LOG_S(INFO) << "Trying to load compile_commands.json";
-  CXCompilationDatabase_Error cx_db_load_error;
-  CXCompilationDatabase cx_db = clang_CompilationDatabase_fromDirectory(
+  EnsureEndsInSlash(comp_db_dir);
+  // Do not call clang_CompilationDatabase_fromDirectory if
+  // compile_commands.json does not exist; it will report an error on stderr.
+  if (!FileExists(comp_db_dir + "compile_commands.json")) {
+    cx_db = clang_CompilationDatabase_fromDirectory(
       comp_db_dir.c_str(), &cx_db_load_error);
+  }
   if (!config->compilationDatabaseCommand.empty()) {
 #ifdef _WIN32
-  // TODO
+    // TODO
 #else
     unlink((comp_db_dir + "/compile_commands.json").c_str());
     rmdir(comp_db_dir.c_str());
 #endif
   }
 
-  if (cx_db_load_error == CXCompilationDatabase_CanNotLoadDatabase) {
+  if (cx_db_load_error != CXCompilationDatabase_NoError) {
     LOG_S(INFO) << "Unable to load compile_commands.json located at \""
                 << comp_db_dir << "\"; using directory listing instead.";
     return LoadFromDirectoryListing(config, project);
