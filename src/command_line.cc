@@ -433,9 +433,10 @@ int main(int argc, char** argv) {
     language_server = false;
     Project project;
     Config config;
+    config.resourceDirectory = GetDefaultResourceDirectory();
     project.Load(&config, GetWorkingDirectory().path);
     Project::Entry entry = project.FindCompilationEntryForFile(path->path);
-    LOG_S(INFO) << "Using arguments " << StringJoin(entry.args);
+    LOG_S(INFO) << "Using arguments " << StringJoin(entry.args, " ");
     ClangSanityCheck(entry);
     return 0;
   }
