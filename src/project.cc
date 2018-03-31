@@ -176,8 +176,8 @@ const std::vector<std::string>& GetSystemIncludes(Config* config, ProjectConfig*
   }
   
   // FIXME
-  project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"", language_string, working_directory, extra_flags);
-  //project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("clang++", language_string, working_directory, extra_flags);
+  //project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"", language_string, working_directory, extra_flags);
+  project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("clang++", language_string, working_directory, extra_flags);
   LOG_S(INFO) << "Using system include directory flags\n  " << StringJoin(project_config->discovered_system_includes[language], "\n  ");
   LOG_S(INFO) << "To disable this pass flags in extraClangArguments initialization options";
 

@@ -387,9 +387,9 @@ void LanguageServerMain(const std::string& bin_name,
 int main(int argc, char** argv) {
 
   //std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v" };
-  std::vector<std::string> flags = { "\"C:/Program Files/LLVM/bin/clang++.exe\"", "-E", "-x", "c++", "-", "-v" };
-  std::string clang_output = GetExternalCommandOutput(flags, "");
-  std::cerr << clang_output;
+  //std::vector<std::string> flags = { "\"C:/Program Files/LLVM/bin/clang++.exe\"", "-E", "-x", "c++", "-", "-v" };
+  //std::string clang_output = GetExternalCommandOutput(flags, "");
+  //std::cerr << clang_output;
 
   TraceMe();
 
