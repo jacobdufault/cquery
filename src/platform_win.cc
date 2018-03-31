@@ -5,7 +5,6 @@
 
 #include <loguru.hpp>
 
-#include <shlwapi.h>
 #include <Windows.h>
 #include <direct.h>
 #include <fcntl.h>
@@ -18,8 +17,6 @@
 #include <cassert>
 #include <iostream>
 #include <string>
-
-#pragma comment(lib, "Shlwapi.lib")
 
 void PlatformInit() {
   // We need to write to stdout in binary mode because in Windows, writing
