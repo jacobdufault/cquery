@@ -186,10 +186,12 @@ std::vector<std::string> SplitString(const std::string& str,
 
 std::string LowerPathIfCaseInsensitive(const std::string& path) {
   std::string result = path;
+  /*
 #if defined(_WIN32)
   for (size_t i = 0; i < result.size(); ++i)
     result[i] = (char)tolower(result[i]);
 #endif
+  */
   return result;
 }
 

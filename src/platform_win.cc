@@ -5,6 +5,7 @@
 
 #include <loguru.hpp>
 
+#include <shlwapi.h>
 #include <Windows.h>
 #include <direct.h>
 #include <fcntl.h>
@@ -17,6 +18,8 @@
 #include <cassert>
 #include <iostream>
 #include <string>
+
+#pragma comment(lib, "Shlwapi.lib")
 
 void PlatformInit() {
   // We need to write to stdout in binary mode because in Windows, writing
@@ -41,17 +44,53 @@ AbsolutePath GetWorkingDirectory() {
   return *NormalizePath(GetDirName(binary_path));
 }
 
-optional<AbsolutePath> NormalizePath(const std::string& path) {
+optional<AbsolutePath> NormalizePath(const std::string& path0) {
+  // Requires Windows 8
+  /*
+  if (!PathCanonicalize(buffer, path.c_str()))
+    return nullopt;
+  */
+
+  // Returns the volume name, ie, c:/
+  /*
+  if (!GetVolumePathName(path.c_str(), buffer, MAX_PATH))
+    return nullopt;
+  */
+
+  std::string path = path0;
+
   TCHAR buffer[MAX_PATH] = TEXT("");
-  TCHAR** lpp_part = {0};
-  DWORD len = GetFullPathName(path.c_str(), MAX_PATH, buffer, lpp_part);
+
+  // Normalize the path name, ie, resolve `..`.
+  DWORD len = GetFullPathName(path.c_str(), MAX_PATH, buffer, nullptr);
   if (!len)
     return nullopt;
+  path = std::string(buffer, len);
 
-  std::string result(buffer, len);
-  std::replace(result.begin(), result.end(), '\\', '/');
-  std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-  return AbsolutePath::Build(result);
+  // Get the actual casing of the path, ie, if the file on disk is `C:\FooBar`
+  // and this function is called with `c:\fooBar` this will return `c:\FooBar`.
+  // (drive casing is lowercase).
+  len = GetLongPathName(path.c_str(), buffer, MAX_PATH);
+  if (!len)
+    return nullopt;
+  path = std::string(buffer, len);
+
+  // Empty paths have no meaning.
+  if (path.empty())
+    return nullopt;
+
+  // We may need to normalize the drive name to upper-case; at the moment
+  // vscode sends lower-case path names.
+  /*
+  path[0] = toupper(path[0]);
+  */
+
+  // cquery assumes forward-slashes.
+  std::replace(path.begin(), path.end(), '\\', '/');
+
+  LOG_S(ERROR) << path;
+
+  return path;
 }
 
 bool TryMakeDirectory(const AbsolutePath& absolute_path) {
