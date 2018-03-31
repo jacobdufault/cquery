@@ -48,7 +48,7 @@ AbsolutePath GetWorkingDirectory() {
   return *NormalizePath(GetDirName(binary_path));
 }
 
-optional<AbsolutePath> NormalizePath(const std::string& path0) {
+optional<AbsolutePath> NormalizePath(const std::string& path0, bool ensure_exists) {
   // Requires Windows 8
   /*
   if (!PathCanonicalize(buffer, path.c_str()))
@@ -74,10 +74,12 @@ optional<AbsolutePath> NormalizePath(const std::string& path0) {
   // Get the actual casing of the path, ie, if the file on disk is `C:\FooBar`
   // and this function is called with `c:\fooBar` this will return `c:\FooBar`.
   // (drive casing is lowercase).
-  len = GetLongPathName(path.c_str(), buffer, MAX_PATH);
-  if (!len)
-    return nullopt;
-  path = std::string(buffer, len);
+  if (ensure_exists) {
+    len = GetLongPathName(path.c_str(), buffer, MAX_PATH);
+    if (!len)
+      return nullopt;
+    path = std::string(buffer, len);
+  }
 
   // Empty paths have no meaning.
   if (path.empty())
@@ -198,6 +200,8 @@ void TraceMe() {}
 
 std::string GetExternalCommandOutput(const std::vector<std::string>& command,
                                      std::string_view input) {
+  // FIXME: quote the first argument of command if it is not quoted and it contains spaces
+
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms682499(v=vs.85).aspx
   HANDLE handle_child_stdin_write = nullptr;
   HANDLE handle_child_stdin_read = nullptr;

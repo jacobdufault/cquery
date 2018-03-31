@@ -141,6 +141,7 @@ bool QueryDbMainLoop(Config* config,
                      CodeCompleteCache* global_code_complete_cache,
                      CodeCompleteCache* non_global_code_complete_cache,
                      CodeCompleteCache* signature_cache) {
+
   auto* queue = QueueManager::instance();
   std::vector<std::unique_ptr<InMessage>> messages =
       queue->for_querydb.DequeueAll();
@@ -384,6 +385,12 @@ void LanguageServerMain(const std::string& bin_name,
 // MAIN ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
+
+  //std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v" };
+  std::vector<std::string> flags = { "\"C:/Program Files/LLVM/bin/clang++.exe\"", "-E", "-x", "c++", "-", "-v" };
+  std::string clang_output = GetExternalCommandOutput(flags, "");
+  std::cerr << clang_output;
+
   TraceMe();
 
   std::unordered_map<std::string, std::string> options =

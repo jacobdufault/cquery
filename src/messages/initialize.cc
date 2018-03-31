@@ -525,7 +525,10 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
           LOG_S(ERROR) << "cacheDirectory cannot be empty.";
           exit(1);
         } else {
-          config->cacheDirectory = NormalizePathOrAbort(config->cacheDirectory);
+          optional<AbsolutePath> cacheDir = NormalizePath(config->cacheDirectory, false /*ensure_exists*/);
+          if (!cacheDir)
+            ABORT_S() << "Cannot find cache directory " << config->cacheDirectory;
+          config->cacheDirectory = *cacheDir;
           EnsureEndsInSlash(config->cacheDirectory);
         }
       }

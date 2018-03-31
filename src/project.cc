@@ -67,9 +67,58 @@ bool IsWindowsAbsolutePath(const std::string& path) {
          (path[2] == '/' || path[2] == '\\') && is_drive_letter(path[0]);
 }
 
+// Run clang specified by `clang_binary` and return the set of system includes it uses.
+std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_binary, const std::string& language, const std::string& working_directory, const std::vector<std::string>& extra_flags) {
+  // TODO/FIXME: enable on macos
+#if defined(__APPLE__)
+  return {};
+#endif
+
+  if (g_disable_normalize_path_for_test)
+    return {};
+
+  //
+  // Parse the output of ie, `clang++ -E -xc++ - -v < nul`. We are looking for a section like this:
+  //
+  // ...
+  // #include "..." search starts here:
+  // #include <...> search starts here:
+  //  C:\Program Files\LLVM\lib\clang\6.0.0\include
+  //  C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\include
+  //  C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\ucrt
+  //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\shared
+  //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\um
+  //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\winrt
+  // End of search list.
+  // ...
+  //
+
+  std::vector<std::string> flags = { clang_binary, "-E", "-x", language, "-", "-v", "-working-directory=" + working_directory };
+  AddRange(&flags, extra_flags);
+  
+  std::string clang_output = GetExternalCommandOutput(flags, "");
+
+  std::vector<std::string> lines = SplitString(clang_output, "\n");
+  std::vector<std::string> output;
+  bool in_output = false;
+  for (auto& line : lines) {
+    TrimInPlace(line);
+    if (!in_output) {
+      in_output = line == "#include <...> search starts here:";
+      continue;
+    }
+    if (line == "End of search list.")
+      break;
+    output.push_back("-isystem" + line);
+  }
+
+  return output;
+}
+
 enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
 
 struct ProjectConfig {
+  std::unordered_map<LanguageId, std::vector<std::string>> discovered_system_includes;
   std::unordered_set<std::string> quote_dirs;
   std::unordered_set<std::string> angle_dirs;
   std::vector<std::string> extra_flags;
@@ -77,6 +126,63 @@ struct ProjectConfig {
   std::string resource_dir;
   ProjectMode mode = ProjectMode::CompileCommandsJson;
 };
+
+const std::vector<std::string>& GetSystemIncludes(Config* config, ProjectConfig* project_config, LanguageId language, const std::string& working_directory, const std::vector<std::string>& flags) {
+  auto it = project_config->discovered_system_includes.find(language);
+  if (it != project_config->discovered_system_includes.end())
+    return it->second;
+
+  if (!config->extraClangArguments.empty()) {
+    project_config->discovered_system_includes[language] = {};
+    return project_config->discovered_system_includes[language];
+  }
+
+  std::string language_string;
+  switch (language) {
+    case LanguageId::Unknown:
+      language_string = "c++";
+      break;
+    case LanguageId::C:
+      language_string = "c";
+      break;
+    case LanguageId::Cpp:
+      language_string = "c++";
+      break;
+    case LanguageId::ObjC:
+      language_string = "objective-c";
+      break;
+    case LanguageId::ObjCpp:
+      language_string = "objective-c++";
+      break;
+  }
+
+  // Capture these flags in |extra_flags|, since they may change system include directories.
+  static std::vector<std::string> kFlagsToPass = {"--gcc-toolchain", "--sysroot"};
+  std::vector<std::string> extra_flags;
+  bool capture_next = false;
+  for (const std::string& flag : flags) {
+    if (capture_next) {
+      extra_flags.push_back(flag);
+      capture_next = false;
+    }
+
+    for (const std::string& to_pass_flag : kFlagsToPass) {
+      if (!StartsWith(flag, to_pass_flag))
+        continue;
+      extra_flags.push_back(flag);
+      capture_next = flag.size() != to_pass_flag.size();
+      break;
+    }
+  }
+  
+  // FIXME
+  project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"", language_string, working_directory, extra_flags);
+  //project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("clang++", language_string, working_directory, extra_flags);
+  LOG_S(INFO) << "Using system include directory flags\n  " << StringJoin(project_config->discovered_system_includes[language], "\n  ");
+  LOG_S(INFO) << "To disable this pass flags in extraClangArguments initialization options";
+
+  return project_config->discovered_system_includes[language];
+}
 
 // TODO: See
 // https://github.com/Valloric/ycmd/blob/master/ycmd/completers/cpp/flags.py.
@@ -321,6 +427,10 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
       !AnyStartsWith(result.args, "-fparse-all-comments")) {
     result.args.push_back("-fparse-all-comments");
   }
+
+  const auto& system_includes = GetSystemIncludes(init_opts, config, lang, entry.directory, result.args);
+  for (const auto& flag : system_includes)
+    result.args.push_back(flag);
 
   return result;
 }
