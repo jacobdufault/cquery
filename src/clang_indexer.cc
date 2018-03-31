@@ -2338,14 +2338,32 @@ void ClangSanityCheck(const Project::Entry& entry) {
   std::vector<CXUnsavedFile> unsaved;
   unsigned int flags = 0;
   std::unique_ptr<ClangTranslationUnit> tu = ClangTranslationUnit::Create(&index, entry.filename, entry.args, unsaved, 0);
-  assert(tu);
+  if (!tu)
+    ABORT_S() << "Creating translation unit failed";
+
+  struct ClientData {
+    int num_diagnostics = 0;
+  };
 
   IndexerCallbacks callback = {0};
   callback.abortQuery = [](CXClientData client_data, void* reserved) {
     return 0;
   };
   callback.diagnostic = [](CXClientData client_data,
-                           CXDiagnosticSet diagnostics, void* reserved) {};
+                           CXDiagnosticSet diagnostics, void* reserved) {
+    ((ClientData*)client_data)->num_diagnostics += clang_getNumDiagnosticsInSet(diagnostics);
+    for (unsigned i = 0; i < clang_getNumDiagnosticsInSet(diagnostics); ++i) {
+      CXDiagnostic diagnostic = clang_getDiagnosticInSet(diagnostics, i);
+
+      // Get db so we can attribute diagnostic to the right indexed file.
+      CXFile file;
+      unsigned int line, column;
+      CXSourceLocation diag_loc = clang_getDiagnosticLocation(diagnostic);
+      clang_getSpellingLocation(diag_loc, &file, &line, &column, nullptr);
+      LOG_S(WARNING) << FileName(file) << line << ":" << column << " " << ToString(clang_getDiagnosticSpelling(diagnostic));
+      clang_disposeDiagnostic(diagnostic);
+    }
+  };
   callback.enteredMainFile = [](CXClientData client_data, CXFile mainFile,
                                 void* reserved) -> CXIdxClientFile {
     return nullptr;
@@ -2371,11 +2389,13 @@ void ClangSanityCheck(const Project::Entry& entry) {
 
   const unsigned kIndexOpts = 0;
   CXIndexAction index_action = clang_IndexAction_create(tu->cx_tu);
-  int index_param = 0;
+  ClientData index_param;
   clang_toggleCrashRecovery(0);
   clang_indexTranslationUnit(index_action, &index_param, &callback,
                              sizeof(IndexerCallbacks), kIndexOpts, tu->cx_tu);
   clang_IndexAction_dispose(index_action);
+
+  LOG_S(INFO) << "Got " << index_param.num_diagnostics << " diagnostics";
 }
 
 std::string GetClangVersion() {
