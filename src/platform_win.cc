@@ -5,10 +5,11 @@
 
 #include <loguru.hpp>
 
-#include <Windows.h>
 #include <direct.h>
 #include <fcntl.h>
 #include <io.h>
+#include <windows.h>
+
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -17,6 +18,12 @@
 #include <cassert>
 #include <iostream>
 #include <string>
+
+namespace {
+void ExitWith(const std::string& message) {
+  ABORT_S() << message << " (errorcode=" << GetLastError() << ")";
+}
+}  // namespace
 
 void PlatformInit() {
   // We need to write to stdout in binary mode because in Windows, writing
@@ -153,7 +160,8 @@ void MoveFileTo(const AbsolutePath& destination, const AbsolutePath& source) {
 }
 
 void CopyFileTo(const AbsolutePath& destination, const AbsolutePath& source) {
-  CopyFile(source.path.c_str(), destination.path.c_str(), false /*failIfExists*/);
+  CopyFile(source.path.c_str(), destination.path.c_str(),
+           false /*failIfExists*/);
 }
 
 bool IsSymLink(const AbsolutePath& path) {
@@ -190,7 +198,123 @@ void TraceMe() {}
 
 std::string GetExternalCommandOutput(const std::vector<std::string>& command,
                                      std::string_view input) {
-  return "";
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms682499(v=vs.85).aspx
+  HANDLE handle_child_stdin_write = nullptr;
+  HANDLE handle_child_stdin_read = nullptr;
+  HANDLE handle_child_stdout_write = nullptr;
+  HANDLE handle_child_stdout_read = nullptr;
+
+  // Set the bInheritHandle flag so pipe handles are inherited.
+  SECURITY_ATTRIBUTES saAttr;
+  saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+  saAttr.bInheritHandle = true;
+  saAttr.lpSecurityDescriptor = nullptr;
+
+  // Create a pipe for the child process's STDOUT and STDIN.
+  if (!CreatePipe(&handle_child_stdout_read, &handle_child_stdout_write,
+                  &saAttr, 0))
+    ExitWith("CreatePipe");
+  // Ensure the read handle to the pipe for STDOUT is not inherited.
+  if (!SetHandleInformation(handle_child_stdout_read, HANDLE_FLAG_INHERIT, 0))
+    ExitWith("SetHandleInformation handle_child_stdout_read");
+  if (!CreatePipe(&handle_child_stdin_read, &handle_child_stdin_write, &saAttr,
+                  0))
+    ExitWith("CreatePipe");
+  // Ensure the write handle to the pipe for STDIN is not inherited.
+  if (!SetHandleInformation(handle_child_stdin_write, HANDLE_FLAG_INHERIT, 0))
+    ExitWith("SetHandleInformation handle_child_stdin_write");
+
+  // Create a child process that uses the previously created pipes for STDIN and
+  // STDOUT.
+  std::string cmdline = StringJoin(command, " ");
+  PROCESS_INFORMATION proc_info = {0};
+  STARTUPINFO start_info = {0};
+  start_info.cb = sizeof(STARTUPINFO);
+  start_info.hStdInput = handle_child_stdin_read;
+  start_info.hStdOutput = handle_child_stdout_write;
+  start_info.hStdError = handle_child_stdout_write;
+  start_info.dwFlags |= STARTF_USESTDHANDLES;
+
+  // Create the child process.
+  bool success =
+      CreateProcess(nullptr,                             // application name
+                    const_cast<char*>(cmdline.c_str()),  // command line
+                    nullptr,      // process security attributes
+                    nullptr,      // primary thread security attributes
+                    true,         // handles are inherited
+                    0,            // creation flags
+                    nullptr,      // use parent's environment
+                    nullptr,      // use parent's current directory
+                    &start_info,  // STARTUPINFO pointer
+                    &proc_info);  // receives PROCESS_INFORMATION
+  if (!success)
+    ExitWith("CreateProcess");
+
+  // Write the the child stdin.
+  const char* start = input.data();
+  size_t remaining = input.length();
+  while (remaining > 0) {
+    DWORD written;
+    bool success = WriteFile(handle_child_stdin_write, start, remaining,
+                             &written, nullptr);
+    if (!success)
+      ExitWith("WriteFile");
+    remaining -= written;
+  }
+  // Make sure to close the stdin handle after writing stdin, otherwise the
+  // child may block indefinately since it thinks it may have more input.
+  if (!CloseHandle(handle_child_stdin_write))
+    ExitWith("CloseHandle handle_child_stdin_write");
+
+  // Read all of the content in the child stdout pipe.
+  std::string output;
+  auto read_from_stdout_pipe = [&]() {
+    while (true) {
+      constexpr int kBufSize = 4096;
+
+      // If there is nothing available in the child pipe, ReadFile will block
+      // (possibly forever if the child has exited).
+      DWORD bytes_available = 0;
+      if (!PeekNamedPipe(handle_child_stdout_read, nullptr, 0, nullptr,
+                         &bytes_available, nullptr))
+        ExitWith("PeekNamedPipe");
+      if (bytes_available == 0)
+        break;
+
+      DWORD bytes_read;
+      char buffer[kBufSize];
+      bool success = ReadFile(handle_child_stdout_read, buffer, kBufSize,
+                              &bytes_read, NULL);
+      if (!success || bytes_read == 0)
+        break;
+
+      for (int i = 0; i < bytes_read; ++i)
+        output += buffer[i];
+    }
+  };
+  // Wait for the process to finish. While running consume output from the pipe
+  // so it does not block.
+  while (true) {
+    // Keep looping until the process exits
+    if (WaitForSingleObject(proc_info.hProcess, 0) == WAIT_OBJECT_0)
+      break;
+    read_from_stdout_pipe();
+  }
+  read_from_stdout_pipe();
+
+  // Close handles.
+  if (!CloseHandle(handle_child_stdin_read))
+    ExitWith("handle_child_stdin_read");
+  if (!CloseHandle(handle_child_stdout_write))
+    ExitWith("handle_child_stdout_write");
+  if (!CloseHandle(handle_child_stdout_read))
+    ExitWith("CloseHandle handle_child_stdout_read");
+  if (!CloseHandle(proc_info.hProcess))
+    ExitWith("CloseHandle proc_info.hProcess");
+  if (!CloseHandle(proc_info.hThread))
+    ExitWith("CloseHandle proc_info.hThread");
+
+  return output;
 }
 
 #endif
