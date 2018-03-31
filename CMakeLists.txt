@@ -180,6 +180,7 @@ target_sources(cquery PRIVATE
                src/diagnostics_engine.cc
                src/file_consumer.cc
                src/file_contents.cc
+               src/file_types.cc
                src/fuzzy_match.cc
                src/iindexer.cc
                src/import_manager.cc
