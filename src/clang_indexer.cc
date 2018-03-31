@@ -2336,7 +2336,6 @@ void ClangSanityCheck(const Project::Entry& entry) {
   std::vector<const char*> args;
   ClangIndex index;
   std::vector<CXUnsavedFile> unsaved;
-  unsigned int flags = 0;
   std::unique_ptr<ClangTranslationUnit> tu = ClangTranslationUnit::Create(&index, entry.filename, entry.args, unsaved, 0);
   if (!tu)
     ABORT_S() << "Creating translation unit failed";
