@@ -85,8 +85,6 @@ optional<AbsolutePath> NormalizePath(const std::string& path0) {
   // cquery assumes forward-slashes.
   std::replace(path.begin(), path.end(), '\\', '/');
 
-  LOG_S(ERROR) << path;
-
   return path;
 }
 
