@@ -457,6 +457,19 @@ std::string UpdateToRnNewlines(std::string output) {
   return output;
 };
 
+TEST_SUITE("GetDirName") {
+  TEST_CASE("all") {
+    REQUIRE(GetDirName("") == "./");
+    REQUIRE(GetDirName("./") == "./");
+    REQUIRE(GetDirName("foo") == "./");
+    REQUIRE(GetDirName("foo/") == "./");
+    REQUIRE(GetDirName("foo/bar") == "foo/");
+    REQUIRE(GetDirName("foo/bar/") == "foo/");
+    REQUIRE(GetDirName(GetDirName("foo/bar")) == "./");
+    REQUIRE(GetDirName(GetDirName("foo/bar/")) == "./");
+  }
+}
+
 TEST_SUITE("Update \\n to \\r\\n") {
   TEST_CASE("all") {
     REQUIRE(UpdateToRnNewlines("\n") == "\r\n");
