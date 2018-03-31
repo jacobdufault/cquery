@@ -70,9 +70,11 @@ void PrintHelp() {
       << R"help(cquery is a low-latency C/C++/Objective-C language server.
 
 Mode:
-  --clang-sanity-check
-                Run a simple index test. Verifies basic clang functionality.
-                Needs to be executed from the cquery root checkout directory.
+  --check <path>
+                Load the project and try to create a translation unit for path.
+                This can be used to quickly test to see if your project
+                configuration will work. The current directory is used as the
+                project directory.
   --test-unit   Run unit tests.
   --test-index <opt_filter_path>
                 Run index tests. opt_filter_path can be used to specify which
@@ -87,10 +89,14 @@ Other command line options:
          https://github.com/cquery-project/cquery/wiki/Initialization-options
   --record <path>
                 Writes stdin to <path>.in and stdout to <path>.out
-  --log-file <path>    Logging file for diagnostics
-  --log-file-append <path>    Like --log-file, but appending
-  --log-all-to-stderr  Write all log messages to STDERR.
-  --wait-for-input     Wait for an '[Enter]' before exiting
+  --log-file <path>
+                Logging file for diagnostics
+  --log-file-append <path>
+                Like --log-file, but appending
+  --log-all-to-stderr
+                Write all log messages to STDERR.
+  --wait-for-input
+                Wait for an '[Enter]' before exiting
   --help        Print this help information.
   --ci          Prevents tests from prompting the user for input. Used for
                 continuous integration so it can fail faster instead of timing
@@ -416,9 +422,22 @@ int main(int argc, char** argv) {
   if (HasOption(options, "--record"))
     EnableRecording(options["--record"]);
 
-  if (HasOption(options, "--clang-sanity-check")) {
+  if (HasOption(options, "--check")) {
+    loguru::g_stderr_verbosity = loguru::Verbosity_MAX;
+
+    optional<AbsolutePath> path = NormalizePath(options["--check"]);
+    if (!path)
+      ABORT_S() << "Cannot find path \"" << options["--check"] << "\"";
+    LOG_S(INFO) << "Using path " << path->path;
+
     language_server = false;
-    ClangSanityCheck();
+    Project project;
+    Config config;
+    project.Load(&config, GetWorkingDirectory().path);
+    Project::Entry entry = project.FindCompilationEntryForFile(path->path);
+    LOG_S(INFO) << "Using arguments " << StringJoin(entry.args);
+    ClangSanityCheck(entry);
+    return 0;
   }
 
   if (HasOption(options, "--test-unit")) {

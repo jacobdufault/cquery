@@ -2332,13 +2332,12 @@ void IndexInit() {
     clang_toggleCrashRecovery(1);
 }
 
-void ClangSanityCheck() {
-  std::vector<const char*> args = {"clang", "index_tests/vars/class_member.cc"};
-  unsigned opts = 0;
-  CXIndex index = clang_createIndex(0, 1);
-  CXTranslationUnit tu;
-  clang_parseTranslationUnit2FullArgv(index, nullptr, args.data(), args.size(),
-                                      nullptr, 0, opts, &tu);
+void ClangSanityCheck(const Project::Entry& entry) {
+  std::vector<const char*> args;
+  ClangIndex index;
+  std::vector<CXUnsavedFile> unsaved;
+  unsigned int flags = 0;
+  std::unique_ptr<ClangTranslationUnit> tu = ClangTranslationUnit::Create(&index, entry.filename, entry.args, unsaved, 0);
   assert(tu);
 
   IndexerCallbacks callback = {0};
@@ -2371,15 +2370,12 @@ void ClangSanityCheck() {
                                      const CXIdxEntityRefInfo* ref) {};
 
   const unsigned kIndexOpts = 0;
-  CXIndexAction index_action = clang_IndexAction_create(index);
+  CXIndexAction index_action = clang_IndexAction_create(tu->cx_tu);
   int index_param = 0;
   clang_toggleCrashRecovery(0);
   clang_indexTranslationUnit(index_action, &index_param, &callback,
-                             sizeof(IndexerCallbacks), kIndexOpts, tu);
+                             sizeof(IndexerCallbacks), kIndexOpts, tu->cx_tu);
   clang_IndexAction_dispose(index_action);
-
-  clang_disposeTranslationUnit(tu);
-  clang_disposeIndex(index);
 }
 
 std::string GetClangVersion() {

@@ -12,6 +12,7 @@
 #include "nt_string.h"
 #include "performance.h"
 #include "position.h"
+#include "project.h"
 #include "serializer.h"
 #include "symbol.h"
 #include "utils.h"
@@ -542,6 +543,6 @@ void ConcatTypeAndName(std::string& type, const std::string& name);
 
 void IndexInit();
 
-void ClangSanityCheck();
+void ClangSanityCheck(const Project::Entry& entry);
 
 std::string GetClangVersion();
