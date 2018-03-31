@@ -437,8 +437,8 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 
   CXCompilationDatabase_Error cx_db_load_error = CXCompilationDatabase_CanNotLoadDatabase;
   CXCompilationDatabase cx_db = nullptr;
-  LOG_S(INFO) << "Trying to load compile_commands.json";
   EnsureEndsInSlash(comp_db_dir);
+  LOG_S(INFO) << "Trying to load " << comp_db_dir << "compile_commands.json";
   // Do not call clang_CompilationDatabase_fromDirectory if
   // compile_commands.json does not exist; it will report an error on stderr.
   if (!FileExists(comp_db_dir + "compile_commands.json")) {
