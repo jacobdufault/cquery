@@ -44,6 +44,7 @@ set(CLANG_ARCHIVE_HASH_FILE
 set(CLANG_ROOT ${CLANG_ARCHIVE_EXTRACT_DIR})
 find_package(Clang ${CLANG_VERSION} QUIET)
 if(Clang_FOUND)
+  message(STATUS "Clang already downloaded")
   return()
 endif()
 
