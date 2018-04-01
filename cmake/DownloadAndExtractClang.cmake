@@ -45,6 +45,7 @@ set(CLANG_ROOT ${CLANG_ARCHIVE_EXTRACT_DIR})
 find_package(Clang ${CLANG_VERSION} QUIET)
 if(Clang_FOUND)
   message(STATUS "Clang already downloaded")
+  set(DOWNLOADED_CLANG_DIR ${CLANG_ARCHIVE_EXTRACT_DIR} PARENT_SCOPE)
   return()
 endif()
 
