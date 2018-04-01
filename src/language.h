@@ -7,3 +7,4 @@
 // encounters a c++ declaration.
 enum class LanguageId { Unknown = 0, C = 1, Cpp = 2, ObjC = 3, ObjCpp = 4 };
 MAKE_REFLECT_TYPE_PROXY(LanguageId);
+MAKE_ENUM_HASHABLE(LanguageId);
