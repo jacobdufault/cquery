@@ -44,6 +44,7 @@ void foo<float, 9, Enum0, kOnst + 7>(float Value);
 
 /*
 EXTRA_FLAGS:
+-fms-compatibility
 -fdelayed-template-parsing
 
 OUTPUT:
