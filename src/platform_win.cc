@@ -31,6 +31,14 @@ void PlatformInit() {
   // \r\r\n split request.
   _setmode(_fileno(stdout), O_BINARY);
   _setmode(_fileno(stdin), O_BINARY);
+
+  // `clang++ -E -x c++ - -v < nul` will not find system include directories if
+  // ProgramData is not set.
+  if (!getenv("ProgramData")) {
+    LOG_S(WARNING) << "The \"ProgramData\" environment variable is not set. "
+                   << "System includes like <vector> may not be resolved "
+                   << "properly.";
+  }
 }
 
 // See
