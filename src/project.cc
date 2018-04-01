@@ -67,16 +67,7 @@ bool IsWindowsAbsolutePath(const std::string& path) {
          (path[2] == '/' || path[2] == '\\') && is_drive_letter(path[0]);
 }
 
-// Run clang specified by `clang_binary` and return the set of system includes it uses.
-std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_binary, const std::string& language, const std::string& working_directory, const std::vector<std::string>& extra_flags) {
-  // TODO/FIXME: enable on macos
-#if defined(__APPLE__)
-  return {};
-#endif
-
-  if (g_disable_normalize_path_for_test)
-    return {};
-
+std::vector<std::string> ExtractSystemIncludePaths(const std::string& clang_output) {
   //
   // Parse the output of ie, `clang++ -E -xc++ - -v < nul`. We are looking for a section like this:
   //
@@ -89,30 +80,58 @@ std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_b
   //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\shared
   //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\um
   //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\winrt
+  //  C:\Foobar (framework directory)
   // End of search list.
   // ...
   //
+
+  // On macOS, clang will add ` (framework directory)` to some of the lines.
+  // That should be removed.
+  constexpr const char kIncludePostfixToRemove[] = " (framework directory)";
+
+  std::vector<std::string> lines = SplitString(clang_output, "\n");
+  std::vector<std::string> output;
+  bool in_system_include_search_section = false;
+  for (auto& line : lines) {
+    TrimInPlace(line);
+    if (!in_system_include_search_section) {
+      in_system_include_search_section = line == "#include <...> search starts here:";
+      continue;
+    }
+    if (line == "End of search list.") {
+      in_system_include_search_section = false;
+      break;
+    }
+    if (EndsWith(line, kIncludePostfixToRemove)) {
+      line = line.substr(0, line.size() - sizeof(kIncludePostfixToRemove) + 1);
+    }
+    output.push_back("-isystem" + line);
+  }
+
+  // We did not see an "End of search list.", so don't return data.
+  if (in_system_include_search_section) {
+    LOG_S(WARNING) << "Unable to parse clang output\n" << clang_output;
+    return {};
+  }
+
+  return output;
+}
+
+// Run clang specified by `clang_binary` and return the set of system includes it uses.
+std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_binary, const std::string& language, const std::string& working_directory, const std::vector<std::string>& extra_flags) {
+  // TODO/FIXME: enable on macos
+#if defined(__APPLE__)
+  return {};
+#endif
+
+  if (g_disable_normalize_path_for_test)
+    return {};
 
   std::vector<std::string> flags = { clang_binary, "-E", "-x", language, "-", "-v", "-working-directory=" + working_directory };
   AddRange(&flags, extra_flags);
   
   std::string clang_output = GetExternalCommandOutput(flags, "");
-
-  std::vector<std::string> lines = SplitString(clang_output, "\n");
-  std::vector<std::string> output;
-  bool in_output = false;
-  for (auto& line : lines) {
-    TrimInPlace(line);
-    if (!in_output) {
-      in_output = line == "#include <...> search starts here:";
-      continue;
-    }
-    if (line == "End of search list.")
-      break;
-    output.push_back("-isystem" + line);
-  }
-
-  return output;
+  return ExtractSystemIncludePaths(clang_output);
 }
 
 enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
@@ -1751,5 +1770,36 @@ TEST_SUITE("Project") {
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg3"});
     }
+  }
+
+  TEST_CASE("clang system include directory extraction") {
+    std::vector<std::string> paths = ExtractSystemIncludePaths(
+        "asdfasdf\n"
+        "   #include <...> search starts here:  \n"
+        "one\n"
+        "  two\r\n"
+        "three \r\n"
+        "four\n"
+        "  five (framework directory)  \n"
+        "six\n"
+        "End of search list.\n"
+        "asdfasdf");
+    REQUIRE(paths == std::vector<std::string>{
+        "-isystemone",
+        "-isystemtwo",
+        "-isystemthree",
+        "-isystemfour",
+        "-isystemfive",
+        "-isystemsix",
+    });
+
+    // Same thing, but do not have a proper end of search list.
+    paths = ExtractSystemIncludePaths(
+      "asdfasdf\n"
+      "   #include <...> search starts here:  \n"
+      "one\n"
+      "Enasdfd of search list.\n"
+      "asdfasdf");
+    REQUIRE(paths == std::vector<std::string>{});
   }
 }
