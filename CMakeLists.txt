@@ -3,13 +3,14 @@ project(cquery LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 include(DefaultCMakeBuildType)
-include(DownloadAndExtractLLVM)
 
-set(CLANG_VERSION 6.0.0 CACHE STRING "Clang version (6.0.0)")
+set(CLANG_VERSION 6.0.0 CACHE STRING "Clang version")
+set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR} 
+    CACHE STRING "Downloaded Clang location")
 option(SYSTEM_CLANG "Use system Clang instead of downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(CLANG_CXX "Build with Clang C++ api required by some cquery \
-features (warning: not available in LLVM Windows downloads)" OFF)
+features (warning: not available in Clang downloads for Windows)" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -80,9 +81,8 @@ endif()
 ### Download Clang if required
 
 if(NOT SYSTEM_CLANG)
-  download_and_extract_llvm(${CLANG_VERSION})
-  # Used by FindClang
-  set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
+  include(DownloadAndExtractClang)
+  download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_DIR})
 endif()
 
 ### Libraries
@@ -145,7 +145,7 @@ target_include_directories(cquery PRIVATE
 
 install(TARGETS cquery RUNTIME DESTINATION bin)
 
-# We don't need to install libclang on Windows if we are using downloaded LLVM
+# We don't need to install libclang on Windows if we are using downloaded Clang
 # since libclang is distributed as a static library on Windows
 if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
