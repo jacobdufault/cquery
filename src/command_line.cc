@@ -51,6 +51,7 @@
 // items per second completed and scales up/down number of running threads.
 
 std::string g_init_options;
+extern char** environ;
 
 namespace {
 
@@ -101,9 +102,19 @@ Other command line options:
   --ci          Prevents tests from prompting the user for input. Used for
                 continuous integration so it can fail faster instead of timing
                 out.
+  --print-env   Print all environment variables cquery is running with.
 
 See more on https://github.com/cquery-project/cquery/wiki
 )help";
+}
+
+// Writes the environment to stdcerr.
+void PrintEnvironment() {
+  char** s = environ;
+  while (*s) {
+    std::cerr << *s << std::endl;
+    ++s;
+  }
 }
 
 }  // namespace
@@ -367,23 +378,6 @@ void LanguageServerMain(const std::string& bin_name,
   RunQueryDbThread(bin_name, config, querydb_waiter, indexer_waiter);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// MAIN ////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
   //std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v" };
@@ -395,6 +389,16 @@ int main(int argc, char** argv) {
 
   std::unordered_map<std::string, std::string> options =
       ParseOptions(argc, argv);
+
+  // Setup logging ASAP.
+  if (HasOption(options, "--log-file")) {
+    loguru::add_file(options["--log-file"].c_str(), loguru::Truncate,
+      loguru::Verbosity_MAX);
+  }
+  if (HasOption(options, "--log-file-append")) {
+    loguru::add_file(options["--log-file-append"].c_str(), loguru::Append,
+      loguru::Verbosity_MAX);
+  }
 
   if (HasOption(options, "-h") || HasOption(options, "--help")) {
     PrintHelp();
@@ -412,19 +416,15 @@ int main(int argc, char** argv) {
   MultiQueueWaiter querydb_waiter, indexer_waiter, stdout_waiter;
   QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
 
+  bool language_server = true;
+
+
+
   PlatformInit();
   IndexInit();
 
-  bool language_server = true;
-
-  if (HasOption(options, "--log-file")) {
-    loguru::add_file(options["--log-file"].c_str(), loguru::Truncate,
-                     loguru::Verbosity_MAX);
-  }
-  if (HasOption(options, "--log-file-append")) {
-    loguru::add_file(options["--log-file-append"].c_str(), loguru::Append,
-                     loguru::Verbosity_MAX);
-  }
+  if (HasOption(options, "--print-env"))
+    PrintEnvironment();
 
   if (HasOption(options, "--record"))
     EnableRecording(options["--record"]);
