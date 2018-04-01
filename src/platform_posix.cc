@@ -160,7 +160,6 @@ AbsolutePath GetWorkingDirectory() {
 }
 
 optional<AbsolutePath> NormalizePath(const std::string& path, bool ensure_exists) {
-  // FIXME: honor |ensure_exists|
   return RealPathNotExpandSymlink(path, ensure_exists);
 }
 
