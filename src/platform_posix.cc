@@ -49,7 +49,7 @@ namespace {
 // Returns the canonicalized absolute pathname, without expanding symbolic
 // links. This is a variant of realpath(2), C++ rewrite of
 // https://github.com/freebsd/freebsd/blob/master/lib/libc/stdlib/realpath.c
-optional<AbsolutePath> RealPathNotExpandSymlink(std::string path) {
+optional<AbsolutePath> RealPathNotExpandSymlink(std::string path, bool ensure_exists) {
   if (path.empty()) {
     errno = EINVAL;
     return nullopt;
@@ -69,7 +69,7 @@ optional<AbsolutePath> RealPathNotExpandSymlink(std::string path) {
     resolved = "/";
     i = 1;
   } else {
-    if (!getcwd(tmp, sizeof tmp))
+    if (ensure_exists && !getcwd(tmp, sizeof tmp))
       return nullopt;
     resolved = tmp;
   }
@@ -95,9 +95,9 @@ optional<AbsolutePath> RealPathNotExpandSymlink(std::string path) {
     // Here we differ from realpath(3), we use stat(2) instead of
     // lstat(2) because we do not want to resolve symlinks.
     resolved += next_token;
-    if (stat(resolved.c_str(), &sb) != 0)
+    if (ensure_exists && stat(resolved.c_str(), &sb) != 0)
       return nullopt;
-    if (!S_ISDIR(sb.st_mode) && j < path.size()) {
+    if (ensure_exists && !S_ISDIR(sb.st_mode) && j < path.size()) {
       errno = ENOTDIR;
       return nullopt;
     }
@@ -161,7 +161,7 @@ AbsolutePath GetWorkingDirectory() {
 
 optional<AbsolutePath> NormalizePath(const std::string& path, bool ensure_exists) {
   // FIXME: honor |ensure_exists|
-  return RealPathNotExpandSymlink(path);
+  return RealPathNotExpandSymlink(path, ensure_exists);
 }
 
 bool TryMakeDirectory(const AbsolutePath& absolute_path) {
