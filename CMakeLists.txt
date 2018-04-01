@@ -81,10 +81,14 @@ endif()
 ### Download Clang if required
 
 if(NOT SYSTEM_CLANG)
+  message(STATUS "Using downloaded Clang")
+  
   include(DownloadAndExtractClang)
   download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_LOCATION})
   # Used by FindClang
   set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
+else()
+  message(STATUS "Using system Clang")
 endif()
 
 ### Libraries

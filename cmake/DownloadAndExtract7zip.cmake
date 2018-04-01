@@ -16,6 +16,7 @@ set(7ZIP_URL https://www.7-zip.org/a/${7ZIP_FULL_NAME})
 find_program(7ZIP_EXECUTABLE 7z NO_DEFAULT_PATH
              PATHS ${7ZIP_EXTRACT_DIR}/Files/7-Zip)
 if(7ZIP_EXECUTABLE)
+  message(STATUS "7-Zip already downloaded")
   return()
 endif()
 
