@@ -82,7 +82,9 @@ endif()
 
 if(NOT SYSTEM_CLANG)
   include(DownloadAndExtractClang)
-  download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_DIR})
+  download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_LOCATION})
+  # Used by FindClang
+  set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
 endif()
 
 ### Libraries
