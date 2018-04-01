@@ -168,6 +168,17 @@ if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   install(FILES ${LIBCLANG_PLUS_SYMLINKS} DESTINATION lib)
 endif()
 
+# Allow running from build Windows by copying libclang.dll to build directory
+
+if(NOT SYSTEM_CLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+  add_custom_command(
+      TARGET cquery
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy 
+      ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll $<TARGET_FILE_DIR:cquery>
+  )
+endif()
+
 ### Sources
 
 target_sources(cquery PRIVATE third_party/siphash.cc)
