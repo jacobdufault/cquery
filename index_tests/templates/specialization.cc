@@ -43,6 +43,9 @@ template <>
 void foo<float, 9, Enum0, kOnst + 7>(float Value);
 
 /*
+EXTRA_FLAGS:
+-fdelayed-template-parsing
+
 OUTPUT:
 {
   "includes": [],
@@ -314,7 +317,7 @@ OUTPUT:
           "param_spellings": ["43:44-43:49"]
         }],
       "spell": "39:6-39:9|-1|1|2",
-      "extent": "39:1-39:21|-1|1|0",
+      "extent": "39:1-39:18|-1|1|0",
       "bases": [],
       "derived": [],
       "vars": [7],
