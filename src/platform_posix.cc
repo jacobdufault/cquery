@@ -286,41 +286,75 @@ void TraceMe() {
 
 std::string GetExternalCommandOutput(const std::vector<std::string>& command,
                                      std::string_view input) {
-  int pin[2], pout[2];
-  if (pipe(pin) < 0)
-    return "";
-  if (pipe(pout) < 0) {
-    close(pin[0]);
-    close(pin[1]);
+  // See https://stackoverflow.com/a/12839498
+  constexpr int kPipeRead = 0;
+  constexpr int kPipeWrite = 1;
+
+  // Create pipes for input and output.
+  int pipe_stdin[2], pipe_stdout[2];
+  if (pipe(pipe_stdin) < 0) {
+    perror("pipe(pipe_stdin)");
     return "";
   }
+  if (pipe(pipe_stdout) < 0) {
+    perror("pipe(pipe_stdout)");
+    close(pipe_stdin[kPipeRead]);
+    close(pipe_stdin[kPipeWrite]);
+    return "";
+  }
+
   pid_t child = fork();
+  // fork returns 0 for the child, non-zero for the parent process.
   if (child == 0) {
-    dup2(pout[0], 0);
-    dup2(pin[1], 1);
-    close(pin[0]);
-    close(pin[1]);
-    close(pout[0]);
-    close(pout[1]);
+    // Redirect stdin/stdout/stderr to the pipes.
+    if (dup2(pipe_stdin[kPipeRead], STDIN_FILENO) < 0)
+      exit(errno);
+    if (dup2(pipe_stdout[kPipeWrite], STDOUT_FILENO) < 0)
+      exit(errno);
+    if (dup2(pipe_stdout[kPipeWrite], STDERR_FILENO) < 0)
+      exit(errno);
+
+    // These pipes should be used only by the parent.
+    close(pipe_stdin[kPipeRead]);
+    close(pipe_stdin[kPipeWrite]);
+    close(pipe_stdout[kPipeRead]);
+    close(pipe_stdout[kPipeWrite]);
+
+    // Build argv
     auto argv = new char*[command.size() + 1];
     for (size_t i = 0; i < command.size(); i++)
       argv[i] = const_cast<char*>(command[i].c_str());
     argv[command.size()] = nullptr;
-    execvp(argv[0], argv);
-    _Exit(127);
+
+    int exec_result = execvp(argv[0], argv);
+    exit(exec_result); // Should not be possible.
   }
-  close(pin[1]);
-  close(pout[0]);
+
+  // The parent cannot read from stdin and can not write to stdout.
+  close(pipe_stdin[kPipeRead]);
+  close(pipe_stdout[kPipeWrite]);
+
   // O_NONBLOCK is disabled, write(2) blocks until all bytes are written.
-  (void)write(pout[1], input.data(), input.size());
-  close(pout[1]);
-  std::string ret;
-  char buf[4096];
+  ssize_t bytes_written = write(pipe_stdin[kPipeWrite], input.data(), input.size());
+  if (bytes_written != input.size()) {
+    perror("Not all input written");
+    ABORT_S() << "Not all input written";
+  }
+  close(pipe_stdin[kPipeWrite]);
+
+  // Capture all output from the child process.
+  std::string result;
+  const int kBufSize = 4096;
+  char buf[kBufSize];
   ssize_t n;
-  while ((n = read(pin[0], buf, sizeof buf)) > 0)
-    ret.append(buf, n);
-  waitpid(child, NULL, 0);
-  return ret;
+  while ((n = read(pipe_stdout[kPipeRead], buf, kBufSize)) > 0) {
+    result.append(buf, n);
+  }
+  close(pipe_stdout[kPipeRead]);
+
+  waitpid(child, nullptr, 0);
+
+  return result;
 }
 
 #endif
