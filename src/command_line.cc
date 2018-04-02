@@ -60,15 +60,13 @@ std::vector<std::string> kEmptyArgs;
 // This function returns true if e2e timing should be displayed for the given
 // MethodId.
 bool ShouldDisplayMethodTiming(MethodType type) {
-  return
-    type != kMethodType_TextDocumentPublishDiagnostics &&
-    type != kMethodType_CqueryPublishInactiveRegions &&
-    type != kMethodType_Unknown;
+  return type != kMethodType_TextDocumentPublishDiagnostics &&
+         type != kMethodType_CqueryPublishInactiveRegions &&
+         type != kMethodType_Unknown;
 }
 
 void PrintHelp() {
-  std::cout
-      << R"help(cquery is a low-latency C/C++/Objective-C language server.
+  std::cout << R"help(cquery is a low-latency C/C++/Objective-C language server.
 
 Mode:
   --check <path>
@@ -152,7 +150,6 @@ bool QueryDbMainLoop(Config* config,
                      CodeCompleteCache* global_code_complete_cache,
                      CodeCompleteCache* non_global_code_complete_cache,
                      CodeCompleteCache* signature_cache) {
-
   auto* queue = QueueManager::instance();
   std::vector<std::unique_ptr<InMessage>> messages =
       queue->for_querydb.DequeueAll();
@@ -379,10 +376,9 @@ void LanguageServerMain(const std::string& bin_name,
 }
 
 int main(int argc, char** argv) {
-
-  //std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v" };
-  //std::string clang_output = GetExternalCommandOutput(flags, "");
-  //std::cerr << "\n\n!! clang_output is\n\n" << clang_output;
+  // std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v"
+  // }; std::string clang_output = GetExternalCommandOutput(flags, ""); std::cerr
+  // << "\n\n!! clang_output is\n\n" << clang_output;
 
   TraceMe();
 
@@ -392,11 +388,11 @@ int main(int argc, char** argv) {
   // Setup logging ASAP.
   if (HasOption(options, "--log-file")) {
     loguru::add_file(options["--log-file"].c_str(), loguru::Truncate,
-      loguru::Verbosity_MAX);
+                     loguru::Verbosity_MAX);
   }
   if (HasOption(options, "--log-file-append")) {
     loguru::add_file(options["--log-file-append"].c_str(), loguru::Append,
-      loguru::Verbosity_MAX);
+                     loguru::Verbosity_MAX);
   }
 
   if (HasOption(options, "-h") || HasOption(options, "--help")) {

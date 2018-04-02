@@ -26,7 +26,8 @@ void PlatformInit();
 
 AbsolutePath GetExecutablePath();
 AbsolutePath GetWorkingDirectory();
-optional<AbsolutePath> NormalizePath(const std::string& path, bool ensure_exists = true);
+optional<AbsolutePath> NormalizePath(const std::string& path,
+                                     bool ensure_exists = true);
 
 // Creates a directory at |path|. Creates directories recursively if needed.
 void MakeDirectoryRecursive(const AbsolutePath& path);

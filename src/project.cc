@@ -67,20 +67,23 @@ bool IsWindowsAbsolutePath(const std::string& path) {
          (path[2] == '/' || path[2] == '\\') && is_drive_letter(path[0]);
 }
 
-std::vector<std::string> ExtractSystemIncludePaths(const std::string& clang_output) {
+std::vector<std::string> ExtractSystemIncludePaths(
+    const std::string& clang_output) {
   //
-  // Parse the output of ie, `clang++ -E -xc++ - -v < nul`. We are looking for a section like this:
+  // Parse the output of ie, `clang++ -E -xc++ - -v < nul`. We are looking for a
+  // section like this:
   //
   // ...
   // #include "..." search starts here:
   // #include <...> search starts here:
   //  C:\Program Files\LLVM\lib\clang\6.0.0\include
-  //  C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\include
-  //  C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\ucrt
-  //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\shared
-  //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\um
-  //  C:\Program Files (x86)\Windows Kits\10\include\10.0.15063.0\winrt
-  //  C:\Foobar (framework directory)
+  //  C:\Program Files (x86)\Microsoft Visual
+  //  Studio\2017\Community\VC\Tools\MSVC\14.12.25827\include C:\Program Files
+  //  (x86)\Windows Kits\10\Include\10.0.15063.0\ucrt C:\Program Files
+  //  (x86)\Windows Kits\10\include\10.0.15063.0\shared C:\Program Files
+  //  (x86)\Windows Kits\10\include\10.0.15063.0\um C:\Program Files
+  //  (x86)\Windows Kits\10\include\10.0.15063.0\winrt C:\Foobar (framework
+  //  directory)
   // End of search list.
   // ...
   //
@@ -95,7 +98,8 @@ std::vector<std::string> ExtractSystemIncludePaths(const std::string& clang_outp
   for (auto& line : lines) {
     TrimInPlace(line);
     if (!in_system_include_search_section) {
-      in_system_include_search_section = line == "#include <...> search starts here:";
+      in_system_include_search_section =
+          line == "#include <...> search starts here:";
       continue;
     }
     if (line == "End of search list.") {
@@ -119,12 +123,23 @@ std::vector<std::string> ExtractSystemIncludePaths(const std::string& clang_outp
   return output;
 }
 
-// Run clang specified by `clang_binary` and return the set of system includes it uses.
-std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_binary, const std::string& language, const std::string& working_directory, const std::vector<std::string>& extra_flags) {
+// Run clang specified by `clang_binary` and return the set of system includes
+// it uses.
+std::vector<std::string> FindSystemIncludeDirectories(
+    const std::string& clang_binary,
+    const std::string& language,
+    const std::string& working_directory,
+    const std::vector<std::string>& extra_flags) {
   if (g_disable_normalize_path_for_test)
     return {};
 
-  std::vector<std::string> flags = { clang_binary, "-E", "-x", language, "-", "-v", "-working-directory=" + working_directory };
+  std::vector<std::string> flags = {clang_binary,
+                                    "-E",
+                                    "-x",
+                                    language,
+                                    "-",
+                                    "-v",
+                                    "-working-directory=" + working_directory};
   AddRange(&flags, extra_flags);
 
   std::string clang_output = GetExternalCommandOutput(flags, "");
@@ -134,7 +149,8 @@ std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_b
 enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
 
 struct ProjectConfig {
-  std::unordered_map<LanguageId, std::vector<std::string>> discovered_system_includes;
+  std::unordered_map<LanguageId, std::vector<std::string>>
+      discovered_system_includes;
   std::unordered_set<std::string> quote_dirs;
   std::unordered_set<std::string> angle_dirs;
   std::vector<std::string> extra_flags;
@@ -143,7 +159,12 @@ struct ProjectConfig {
   ProjectMode mode = ProjectMode::CompileCommandsJson;
 };
 
-const std::vector<std::string>& GetSystemIncludes(Config* config, ProjectConfig* project_config, LanguageId language, const std::string& working_directory, const std::vector<std::string>& flags) {
+const std::vector<std::string>& GetSystemIncludes(
+    Config* config,
+    ProjectConfig* project_config,
+    LanguageId language,
+    const std::string& working_directory,
+    const std::vector<std::string>& flags) {
   auto it = project_config->discovered_system_includes.find(language);
   if (it != project_config->discovered_system_includes.end())
     return it->second;
@@ -172,8 +193,10 @@ const std::vector<std::string>& GetSystemIncludes(Config* config, ProjectConfig*
       break;
   }
 
-  // Capture these flags in |extra_flags|, since they may change system include directories.
-  static std::vector<std::string> kFlagsToPass = {"--gcc-toolchain", "--sysroot"};
+  // Capture these flags in |extra_flags|, since they may change system include
+  // directories.
+  static std::vector<std::string> kFlagsToPass = {"--gcc-toolchain",
+                                                  "--sysroot"};
   std::vector<std::string> extra_flags;
   bool capture_next = false;
   for (const std::string& flag : flags) {
@@ -192,27 +215,36 @@ const std::vector<std::string>& GetSystemIncludes(Config* config, ProjectConfig*
   }
 
   // FIXME
-  //project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"", language_string, working_directory, extra_flags);
-  project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("clang++", language_string, working_directory, extra_flags);
-  LOG_S(INFO) << "Using system include directory flags\n  " << StringJoin(project_config->discovered_system_includes[language], "\n  ");
-  LOG_S(INFO) << "To disable this pass flags in extraClangArguments initialization options";
+  // project_config->discovered_system_includes[language] =
+  // FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"",
+  // language_string, working_directory, extra_flags);
+  project_config->discovered_system_includes[language] =
+      FindSystemIncludeDirectories("clang++", language_string,
+                                   working_directory, extra_flags);
+  LOG_S(INFO) << "Using system include directory flags\n  "
+              << StringJoin(
+                     project_config->discovered_system_includes[language],
+                     "\n  ");
+  LOG_S(INFO) << "To disable this pass flags in extraClangArguments "
+                 "initialization options";
 
   return project_config->discovered_system_includes[language];
 }
 
 // TODO: See
 // https://github.com/Valloric/ycmd/blob/master/ycmd/completers/cpp/flags.py.
-// Flags '-include' and '-include-pch' are blacklisted here cause libclang returns error in case when
-// precompiled header was generated by a different compiler (even two different builds of same version
-// of clang for the same platform are incompatible). Note that libclang always generate it's own pch
+// Flags '-include' and '-include-pch' are blacklisted here cause libclang
+// returns error in case when precompiled header was generated by a different
+// compiler (even two different builds of same version of clang for the same
+// platform are incompatible). Note that libclang always generate it's own pch
 // internally. For details, see https://github.com/Valloric/ycmd/issues/892 .
 std::vector<std::string> kBlacklistMulti = {
-    "-MF", "-MT", "-MQ", "-o", "--serialize-diagnostics", "-Xclang", "-include", "-include-pch"};
+    "-MF",     "-MT",      "-MQ",         "-o", "--serialize-diagnostics",
+    "-Xclang", "-include", "-include-pch"};
 
 // Blacklisted flags which are always removed from the command line.
 std::vector<std::string> kBlacklist = {
-    "-c", "-MP", "-MD", "-MMD", "--fcolor-diagnostics", "-showIncludes"
-};
+    "-c", "-MP", "-MD", "-MMD", "--fcolor-diagnostics", "-showIncludes"};
 
 // Arguments which are followed by a potentially relative path. We need to make
 // all relative paths absolute, otherwise libclang will not resolve them.
@@ -444,7 +476,8 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     result.args.push_back("-fparse-all-comments");
   }
 
-  const auto& system_includes = GetSystemIncludes(init_opts, config, lang, entry.directory, result.args);
+  const auto& system_includes =
+      GetSystemIncludes(init_opts, config, lang, entry.directory, result.args);
   for (const auto& flag : system_includes)
     result.args.push_back(flag);
 
@@ -484,9 +517,9 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* init_opts,
                    });
 
   LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty())
-    << "cquery has no clang arguments. Considering adding either a "
-        "compile_commands.json or .cquery file. See the cquery README for "
-        "more information.";
+      << "cquery has no clang arguments. Considering adding either a "
+         "compile_commands.json or .cquery file. See the cquery README for "
+         "more information.";
 
   const auto& project_dir_args = folder_args[config->project_dir];
   LOG_IF_S(INFO, !project_dir_args.empty())
@@ -504,7 +537,7 @@ std::vector<Project::Entry> LoadFromDirectoryListing(Config* init_opts,
       // Break if outside of the project root.
       if (normalized->path.size() <= config->project_dir.size() ||
           normalized->path.compare(0, config->project_dir.size(),
-                             config->project_dir) != 0)
+                                   config->project_dir) != 0)
         break;
     }
     return folder_args[config->project_dir];
@@ -561,11 +594,12 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 #endif
   }
 
-  CXCompilationDatabase_Error cx_db_load_error = CXCompilationDatabase_CanNotLoadDatabase;
+  CXCompilationDatabase_Error cx_db_load_error =
+      CXCompilationDatabase_CanNotLoadDatabase;
   CXCompilationDatabase cx_db = nullptr;
 
   if (!IsUnixAbsolutePath(comp_db_dir) && !IsWindowsAbsolutePath(comp_db_dir)) {
-    comp_db_dir = 
+    comp_db_dir =
         NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
   }
 
@@ -575,8 +609,8 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
   // Do not call clang_CompilationDatabase_fromDirectory if
   // compile_commands.json does not exist; it will report an error on stderr.
   if (FileExists(comp_db_dir + "compile_commands.json")) {
-    cx_db = clang_CompilationDatabase_fromDirectory(
-      comp_db_dir.c_str(), &cx_db_load_error);
+    cx_db = clang_CompilationDatabase_fromDirectory(comp_db_dir.c_str(),
+                                                    &cx_db_load_error);
   }
   if (!config->compilationDatabaseCommand.empty()) {
 #ifdef _WIN32
@@ -719,9 +753,8 @@ void Project::Load(Config* config, const std::string& root_directory) {
     absolute_path_to_entry_index_[entries[i].filename] = i;
 }
 
-void Project::SetFlagsForFile(
-    const std::vector<std::string>& flags,
-    const std::string& path) {
+void Project::SetFlagsForFile(const std::vector<std::string>& flags,
+                              const std::string& path) {
   auto it = absolute_path_to_entry_index_.find(path);
   if (it != absolute_path_to_entry_index_.end()) {
     // The entry already exists in the project, just set the flags.
@@ -1789,21 +1822,21 @@ TEST_SUITE("Project") {
         "End of search list.\n"
         "asdfasdf");
     REQUIRE(paths == std::vector<std::string>{
-        "-isystemone",
-        "-isystemtwo",
-        "-isystemthree",
-        "-isystemfour",
-        "-iframeworkfive",
-        "-isystemsix",
-    });
+                         "-isystemone",
+                         "-isystemtwo",
+                         "-isystemthree",
+                         "-isystemfour",
+                         "-iframeworkfive",
+                         "-isystemsix",
+                     });
 
     // Same thing, but do not have a proper end of search list.
     paths = ExtractSystemIncludePaths(
-      "asdfasdf\n"
-      "   #include <...> search starts here:  \n"
-      "one\n"
-      "Enasdfd of search list.\n"
-      "asdfasdf");
+        "asdfasdf\n"
+        "   #include <...> search starts here:  \n"
+        "one\n"
+        "Enasdfd of search list.\n"
+        "asdfasdf");
     REQUIRE(paths == std::vector<std::string>{});
   }
 }

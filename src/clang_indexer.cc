@@ -1679,9 +1679,9 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
       // indexing the definition, then there will not be any (ie) outline
       // information.
       if (!is_template_specialization) {
-      // Build detailed name. The type desc looks like void (void *). We
-      // insert the qualified name before the first '('.
-      // FIXME GetFunctionSignature should set index
+        // Build detailed name. The type desc looks like void (void *). We
+        // insert the qualified name before the first '('.
+        // FIXME GetFunctionSignature should set index
 #if CINDEX_HAVE_PRETTY
         func->def.detailed_name = param->PrettyPrintCursor(decl->cursor);
 #else
@@ -2067,18 +2067,17 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
       // libclang doesn't provide a nice api to check if the given function
       // call is implicit. ref->kind should probably work (it's either direct
       // or implicit), but libclang only supports implicit for objective-c.
-      bool is_implicit =
-          CanBeCalledImplicitly(ref->referencedEntity->kind) &&
-          // Treats empty short_name as an implicit call like implicit move
-          // constructor in `vector<int> a = f();`
-          (short_name.empty() ||
-           // For explicit destructor call, ref->cursor may be "~" while
-           // called->def.short_name is "~A"
-           // "~A" is not a substring of ref->cursor, but we should take this
-           // case as not `is_implicit`.
-           (short_name[0] != '~' &&
-            !CursorSpellingContainsString(ref->cursor, param->tu->cx_tu,
-                                          short_name)));
+      bool is_implicit = CanBeCalledImplicitly(ref->referencedEntity->kind) &&
+                         // Treats empty short_name as an implicit call like
+                         // implicit move constructor in `vector<int> a = f();`
+                         (short_name.empty() ||
+                          // For explicit destructor call, ref->cursor may be
+                          // "~" while called->def.short_name is "~A"
+                          // "~A" is not a substring of ref->cursor, but we
+                          // should take this case as not `is_implicit`.
+                          (short_name[0] != '~' &&
+                           !CursorSpellingContainsString(
+                               ref->cursor, param->tu->cx_tu, short_name)));
 
       // Extents have larger ranges and thus less specific, and will be
       // overriden by other functions if exist.
@@ -2178,7 +2177,8 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
 
   optional<AbsolutePath> file = NormalizePath(file0);
   if (!file) {
-    LOG_S(WARNING) << "Cannot index " << file0 << " because it can not be found";
+    LOG_S(WARNING) << "Cannot index " << file0
+                   << " because it can not be found";
     return nullopt;
   }
 
@@ -2205,8 +2205,8 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   if (dump_ast)
     Dump(clang_getTranslationUnitCursor(tu->cx_tu));
 
-  return ParseWithTu(config, file_consumer_shared, perf, tu.get(), index, file->path,
-                     args, unsaved_files);
+  return ParseWithTu(config, file_consumer_shared, perf, tu.get(), index,
+                     file->path, args, unsaved_files);
 }
 
 optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
@@ -2336,7 +2336,8 @@ void ClangSanityCheck(const Project::Entry& entry) {
   std::vector<const char*> args;
   ClangIndex index;
   std::vector<CXUnsavedFile> unsaved;
-  std::unique_ptr<ClangTranslationUnit> tu = ClangTranslationUnit::Create(&index, entry.filename, entry.args, unsaved, 0);
+  std::unique_ptr<ClangTranslationUnit> tu = ClangTranslationUnit::Create(
+      &index, entry.filename, entry.args, unsaved, 0);
   if (!tu)
     ABORT_S() << "Creating translation unit failed";
 
@@ -2350,7 +2351,8 @@ void ClangSanityCheck(const Project::Entry& entry) {
   };
   callback.diagnostic = [](CXClientData client_data,
                            CXDiagnosticSet diagnostics, void* reserved) {
-    ((ClientData*)client_data)->num_diagnostics += clang_getNumDiagnosticsInSet(diagnostics);
+    ((ClientData*)client_data)->num_diagnostics +=
+        clang_getNumDiagnosticsInSet(diagnostics);
     for (unsigned i = 0; i < clang_getNumDiagnosticsInSet(diagnostics); ++i) {
       CXDiagnostic diagnostic = clang_getDiagnosticInSet(diagnostics, i);
 
@@ -2359,7 +2361,8 @@ void ClangSanityCheck(const Project::Entry& entry) {
       unsigned int line, column;
       CXSourceLocation diag_loc = clang_getDiagnosticLocation(diagnostic);
       clang_getSpellingLocation(diag_loc, &file, &line, &column, nullptr);
-      LOG_S(WARNING) << FileName(file) << line << ":" << column << " " << ToString(clang_getDiagnosticSpelling(diagnostic));
+      LOG_S(WARNING) << FileName(file) << line << ":" << column << " "
+                     << ToString(clang_getDiagnosticSpelling(diagnostic));
       clang_disposeDiagnostic(diagnostic);
     }
   };

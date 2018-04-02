@@ -276,7 +276,7 @@ MAKE_REFLECT_STRUCT(Config,
                     index,
                     workspaceSymbol,
                     xref,
-                    
+
                     enableIndexOnDidChange,
 
                     dumpAST);

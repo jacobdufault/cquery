@@ -804,15 +804,15 @@ std::shared_ptr<CompletionSession> ClangCompleteManager::TryGetSession(
 }
 
 void ClangCompleteManager::FlushSession(const std::string& filename) {
-	std::lock_guard<std::mutex> lock(sessions_lock_);
+  std::lock_guard<std::mutex> lock(sessions_lock_);
 
-	preloaded_sessions_.TryTake(filename);
-	completion_sessions_.TryTake(filename);
+  preloaded_sessions_.TryTake(filename);
+  completion_sessions_.TryTake(filename);
 }
 
 void ClangCompleteManager::FlushAllSessions() {
-	std::lock_guard<std::mutex> lock(sessions_lock_);
+  std::lock_guard<std::mutex> lock(sessions_lock_);
 
-	preloaded_sessions_.Clear();
-	completion_sessions_.Clear();
+  preloaded_sessions_.Clear();
+  completion_sessions_.Clear();
 }

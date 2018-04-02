@@ -49,7 +49,8 @@ namespace {
 // Returns the canonicalized absolute pathname, without expanding symbolic
 // links. This is a variant of realpath(2), C++ rewrite of
 // https://github.com/freebsd/freebsd/blob/master/lib/libc/stdlib/realpath.c
-optional<AbsolutePath> RealPathNotExpandSymlink(std::string path, bool ensure_exists) {
+optional<AbsolutePath> RealPathNotExpandSymlink(std::string path,
+                                                bool ensure_exists) {
   if (path.empty()) {
     errno = EINVAL;
     return nullopt;
@@ -159,7 +160,8 @@ AbsolutePath GetWorkingDirectory() {
   return working_dir;
 }
 
-optional<AbsolutePath> NormalizePath(const std::string& path, bool ensure_exists) {
+optional<AbsolutePath> NormalizePath(const std::string& path,
+                                     bool ensure_exists) {
   return RealPathNotExpandSymlink(path, ensure_exists);
 }
 
@@ -327,7 +329,7 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
     argv[command.size()] = nullptr;
 
     int exec_result = execvp(argv[0], argv);
-    exit(exec_result); // Should not be possible.
+    exit(exec_result);  // Should not be possible.
   }
 
   // The parent cannot read from stdin and can not write to stdout.
@@ -335,7 +337,8 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
   close(pipe_stdout[kPipeWrite]);
 
   // O_NONBLOCK is disabled, write(2) blocks until all bytes are written.
-  ssize_t bytes_written = write(pipe_stdin[kPipeWrite], input.data(), input.size());
+  ssize_t bytes_written =
+      write(pipe_stdin[kPipeWrite], input.data(), input.size());
   if (bytes_written != input.size()) {
     perror("Not all input written");
     return "";
