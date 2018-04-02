@@ -297,4 +297,5 @@ target_sources(cquery PRIVATE
                src/messages/text_document_type_definition.cc
                src/messages/workspace_did_change_configuration.cc
                src/messages/workspace_did_change_watched_files.cc
+               src/messages/workspace_execute_command.cc
                src/messages/workspace_symbol.cc)
