@@ -119,17 +119,12 @@ std::vector<std::string> ExtractSystemIncludePaths(const std::string& clang_outp
 
 // Run clang specified by `clang_binary` and return the set of system includes it uses.
 std::vector<std::string> FindSystemIncludeDirectories(const std::string& clang_binary, const std::string& language, const std::string& working_directory, const std::vector<std::string>& extra_flags) {
-  // TODO/FIXME: enable on macos
-#if defined(__APPLE__)
-  return {};
-#endif
-
   if (g_disable_normalize_path_for_test)
     return {};
 
   std::vector<std::string> flags = { clang_binary, "-E", "-x", language, "-", "-v", "-working-directory=" + working_directory };
   AddRange(&flags, extra_flags);
-  
+
   std::string clang_output = GetExternalCommandOutput(flags, "");
   return ExtractSystemIncludePaths(clang_output);
 }
@@ -193,7 +188,7 @@ const std::vector<std::string>& GetSystemIncludes(Config* config, ProjectConfig*
       break;
     }
   }
-  
+
   // FIXME
   //project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"", language_string, working_directory, extra_flags);
   project_config->discovered_system_includes[language] = FindSystemIncludeDirectories("clang++", language_string, working_directory, extra_flags);

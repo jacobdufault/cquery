@@ -381,9 +381,8 @@ void LanguageServerMain(const std::string& bin_name,
 int main(int argc, char** argv) {
 
   //std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v" };
-  //std::vector<std::string> flags = { "\"C:/Program Files/LLVM/bin/clang++.exe\"", "-E", "-x", "c++", "-", "-v" };
   //std::string clang_output = GetExternalCommandOutput(flags, "");
-  //std::cerr << clang_output;
+  //std::cerr << "\n\n!! clang_output is\n\n" << clang_output;
 
   TraceMe();
 
@@ -417,8 +416,6 @@ int main(int argc, char** argv) {
   QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
 
   bool language_server = true;
-
-
 
   PlatformInit();
   IndexInit();
