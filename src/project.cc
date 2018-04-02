@@ -561,7 +561,14 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 
   CXCompilationDatabase_Error cx_db_load_error = CXCompilationDatabase_CanNotLoadDatabase;
   CXCompilationDatabase cx_db = nullptr;
+
+  if (!IsUnixAbsolutePath(comp_db_dir) && !IsWindowsAbsolutePath(comp_db_dir)) {
+    comp_db_dir = 
+        NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
+  }
+
   EnsureEndsInSlash(comp_db_dir);
+
   LOG_S(INFO) << "Trying to load " << comp_db_dir << "compile_commands.json";
   // Do not call clang_CompilationDatabase_fromDirectory if
   // compile_commands.json does not exist; it will report an error on stderr.
@@ -573,7 +580,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 #ifdef _WIN32
     // TODO
 #else
-    unlink((comp_db_dir + "/compile_commands.json").c_str());
+    unlink((comp_db_dir + "compile_commands.json").c_str());
     rmdir(comp_db_dir.c_str());
 #endif
   }
