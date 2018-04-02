@@ -104,8 +104,10 @@ std::vector<std::string> ExtractSystemIncludePaths(const std::string& clang_outp
     }
     if (EndsWith(line, kIncludePostfixToRemove)) {
       line = line.substr(0, line.size() - sizeof(kIncludePostfixToRemove) + 1);
+      output.push_back("-iframework" + line);
+    } else {
+      output.push_back("-isystem" + line);
     }
-    output.push_back("-isystem" + line);
   }
 
   // We did not see an "End of search list.", so don't return data.
@@ -1791,7 +1793,7 @@ TEST_SUITE("Project") {
         "-isystemtwo",
         "-isystemthree",
         "-isystemfour",
-        "-isystemfive",
+        "-iframeworkfive",
         "-isystemsix",
     });
 
