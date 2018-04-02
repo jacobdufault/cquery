@@ -8,6 +8,7 @@
 #
 #   Clang_FOUND         - True if headers and requested libraries were found
 #   Clang_EXECUTABLE    - Clang executable
+#   Clang_FORMAT        - Clang-format executable
 #   Clang_RESOURCE_DIR  - Clang resource directory
 #   Clang_VERSION       - Clang version as reported by Clang executable
 #
@@ -96,6 +97,7 @@ if(CLANG_CXX)
   _Clang_find_and_add_cxx_lib(LLVMDemangle llvm/Demangle/Demangle.h)
 endif()
 
+_Clang_find_program(Clang_FORMAT clang-format)
 _Clang_find_program(Clang_EXECUTABLE clang)
 if(Clang_EXECUTABLE)
   # Find Clang resource directory with Clang executable
