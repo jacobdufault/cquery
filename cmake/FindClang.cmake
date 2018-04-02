@@ -99,9 +99,16 @@ endif()
 _Clang_find_program(Clang_EXECUTABLE clang)
 if(Clang_EXECUTABLE)
   # Find Clang resource directory with Clang executable
-  execute_process(COMMAND ${Clang_EXECUTABLE} -print-resource-dir 
+  execute_process(COMMAND ${Clang_EXECUTABLE} -print-resource-dir
+                  RESULT_VARIABLE _Clang_FIND_RESOURCE_DIR_RESULT
                   OUTPUT_VARIABLE Clang_RESOURCE_DIR
+                  ERROR_VARIABLE _Clang_FIND_RESOURCE_DIR_ERROR
                   OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+  if(_Clang_FIND_RESOURCE_DIR_RESULT)
+    message(FATAL_ERROR "Error retrieving Clang resource directory with Clang \
+executable. Output:\n ${_Clang_FIND_RESOURCE_DIR_ERROR}")
+  endif()
 
   # Find Clang version
   set(_Clang_VERSION_REGEX "([0-9]+)\\.([0-9]+)\\.([0-9]+)")
