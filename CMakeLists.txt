@@ -4,6 +4,8 @@ project(cquery LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 include(DefaultCMakeBuildType)
 
+# Required Clang version (note that FindClang sets Clang_VERSION which is a 
+# different variable containing the actual Clang version)
 set(CLANG_VERSION 6.0.0 CACHE STRING "Clang version")
 set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR} 
     CACHE STRING "Downloaded Clang location")
@@ -169,14 +171,40 @@ if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 endif()
 
 # Allow running from build Windows by copying libclang.dll to build directory
-
 if(NOT SYSTEM_CLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-  add_custom_command(
-      TARGET cquery
-      POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy 
-      ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll $<TARGET_FILE_DIR:cquery>
-  )
+  add_custom_command(TARGET cquery
+                     POST_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E copy 
+                     ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll 
+                     $<TARGET_FILE_DIR:cquery>
+                     COMMENT "Copying libclang.dll to build directory ...")
+endif()
+
+### Tools
+
+# We use glob here since source files are already manually added with
+# target_sources further down
+file(GLOB_RECURSE SOURCES src/*.cc src/*.h)
+
+if(Clang_FORMAT AND ${Clang_VERSION} STREQUAL 6.0.0)
+  add_custom_target(format
+                    COMMAND ${Clang_FORMAT} -i ${SOURCES}
+                    # .clang-format is located in the cquery root project dir
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    COMMENT "Running clang-format ...")
+else()
+  # Set error message depending on which condition was false
+  if (NOT Clang_FORMAT)
+    set(Clang_FORMAT_ERROR "Error: clang-format executable not found")
+  elseif(NOT ${Clang_VERSION} STREQUAL 6.0.0)
+    set(Clang_FORMAT_ERROR "Error: clang-format version does not match \
+6.0.0. Due to differences in clang-format output between versions we only \
+support clang-format 6.0.0")
+  endif()
+
+  add_custom_target(format 
+                    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --red --bold
+                    ${Clang_FORMAT_ERROR})
 endif()
 
 ### Sources
