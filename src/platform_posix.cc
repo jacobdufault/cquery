@@ -338,7 +338,7 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
   ssize_t bytes_written = write(pipe_stdin[kPipeWrite], input.data(), input.size());
   if (bytes_written != input.size()) {
     perror("Not all input written");
-    ABORT_S() << "Not all input written";
+    return "";
   }
   close(pipe_stdin[kPipeWrite]);
 

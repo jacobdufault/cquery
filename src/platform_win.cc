@@ -20,8 +20,8 @@
 #include <string>
 
 namespace {
-void ExitWith(const std::string& message) {
-  ABORT_S() << message << " (errorcode=" << GetLastError() << ")";
+void EmitError(const std::string& message) {
+  LOG_S(ERROR) << message << " (errorcode=" << GetLastError() << ")";
 }
 }  // namespace
 
@@ -224,17 +224,25 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
 
   // Create a pipe for the child process's STDOUT and STDIN.
   if (!CreatePipe(&handle_child_stdout_read, &handle_child_stdout_write,
-                  &saAttr, 0))
-    ExitWith("CreatePipe");
+                  &saAttr, 0)) {
+    EmitError("CreatePipe");
+    return "";
+  }
   // Ensure the read handle to the pipe for STDOUT is not inherited.
-  if (!SetHandleInformation(handle_child_stdout_read, HANDLE_FLAG_INHERIT, 0))
-    ExitWith("SetHandleInformation handle_child_stdout_read");
+  if (!SetHandleInformation(handle_child_stdout_read, HANDLE_FLAG_INHERIT, 0)) {
+    EmitError("SetHandleInformation handle_child_stdout_read");
+    return "";
+  }
   if (!CreatePipe(&handle_child_stdin_read, &handle_child_stdin_write, &saAttr,
-                  0))
-    ExitWith("CreatePipe");
+                  0)) {
+    EmitError("CreatePipe");
+    return "";
+  }
   // Ensure the write handle to the pipe for STDIN is not inherited.
-  if (!SetHandleInformation(handle_child_stdin_write, HANDLE_FLAG_INHERIT, 0))
-    ExitWith("SetHandleInformation handle_child_stdin_write");
+  if (!SetHandleInformation(handle_child_stdin_write, HANDLE_FLAG_INHERIT, 0)) {
+    EmitError("SetHandleInformation handle_child_stdin_write");
+    return "";
+  }
 
   // Create a child process that uses the previously created pipes for STDIN and
   // STDOUT.
@@ -259,8 +267,10 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
                     nullptr,      // use parent's current directory
                     &start_info,  // STARTUPINFO pointer
                     &proc_info);  // receives PROCESS_INFORMATION
-  if (!success)
-    ExitWith("CreateProcess");
+  if (!success) {
+    EmitError("CreateProcess");
+    return "";
+  }
 
   // Write the the child stdin.
   const char* start = input.data();
@@ -269,14 +279,18 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
     DWORD written;
     bool success = WriteFile(handle_child_stdin_write, start, remaining,
                              &written, nullptr);
-    if (!success)
-      ExitWith("WriteFile");
+    if (!success) {
+      EmitError("WriteFile");
+      return "";
+    }
     remaining -= written;
   }
   // Make sure to close the stdin handle after writing stdin, otherwise the
   // child may block indefinately since it thinks it may have more input.
-  if (!CloseHandle(handle_child_stdin_write))
-    ExitWith("CloseHandle handle_child_stdin_write");
+  if (!CloseHandle(handle_child_stdin_write)) {
+    EmitError("CloseHandle handle_child_stdin_write");
+    return "";
+  }
 
   // Read all of the content in the child stdout pipe.
   std::string output;
@@ -288,8 +302,9 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
       // (possibly forever if the child has exited).
       DWORD bytes_available = 0;
       if (!PeekNamedPipe(handle_child_stdout_read, nullptr, 0, nullptr,
-                         &bytes_available, nullptr))
-        ExitWith("PeekNamedPipe");
+                         &bytes_available, nullptr)) {
+        EmitError("PeekNamedPipe");
+      }
       if (bytes_available == 0)
         break;
 
@@ -316,15 +331,15 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
 
   // Close handles.
   if (!CloseHandle(handle_child_stdin_read))
-    ExitWith("handle_child_stdin_read");
+    EmitError("handle_child_stdin_read");
   if (!CloseHandle(handle_child_stdout_write))
-    ExitWith("handle_child_stdout_write");
+    EmitError("handle_child_stdout_write");
   if (!CloseHandle(handle_child_stdout_read))
-    ExitWith("CloseHandle handle_child_stdout_read");
+    EmitError("CloseHandle handle_child_stdout_read");
   if (!CloseHandle(proc_info.hProcess))
-    ExitWith("CloseHandle proc_info.hProcess");
+    EmitError("CloseHandle proc_info.hProcess");
   if (!CloseHandle(proc_info.hThread))
-    ExitWith("CloseHandle proc_info.hThread");
+    EmitError("CloseHandle proc_info.hThread");
 
   return output;
 }
