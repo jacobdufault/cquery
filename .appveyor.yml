@@ -19,7 +19,7 @@ before_build:
   - cmake -DCMAKE_GENERATOR_PLATFORM=x64 .
 
 build:
-  project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
+  project: cquery.sln
 
 test_script:
   - .\Release\cquery.exe --ci --log-all-to-stderr --test-unit
