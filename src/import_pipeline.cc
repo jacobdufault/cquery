@@ -53,12 +53,8 @@ struct IterationLoop {
   const int kIterationSize = 100;
   int count = 0;
 
-  bool Next() {
-    return count++ < kIterationSize;
-  }
-  void Reset() {
-    count = 0;
-  }
+  bool Next() { return count++ < kIterationSize; }
+  void Reset() { count = 0; }
 };
 
 struct IModificationTimestampFetcher {
@@ -491,12 +487,12 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
           response->current->file->last_modification_time);
     }
 
-  #if false
-  #define PRINT_SECTION(name)                                                    \
-    if (response->perf.name) {                                                   \
-      total += response->perf.name;                                              \
-      output << " " << #name << ": " << FormatMicroseconds(response->perf.name); \
-    }
+#if false
+#define PRINT_SECTION(name)                                                    \
+  if (response->perf.name) {                                                   \
+    total += response->perf.name;                                              \
+    output << " " << #name << ": " << FormatMicroseconds(response->perf.name); \
+  }
     std::stringstream output;
     long long total = 0;
     output << "[perf]";
@@ -509,11 +505,11 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
     output << "\n       total: " << FormatMicroseconds(total);
     output << " path: " << response->current_index->path;
     LOG_S(INFO) << output.rdbuf();
-  #undef PRINT_SECTION
+#undef PRINT_SECTION
 
     if (response->is_interactive)
       LOG_S(INFO) << "Applying IndexUpdate" << std::endl << update.ToString();
-  #endif
+#endif
 
     Index_OnIndexed reply(std::move(update), response->perf);
     queue->on_indexed.PushBack(std::move(reply), response->is_interactive);

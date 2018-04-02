@@ -130,6 +130,6 @@ void LruCache<TKey, TValue>::IncrementScore() {
 
 template <typename TKey, typename TValue>
 void LruCache<TKey, TValue>::Clear(void) {
-	entries_.clear();
-	next_score_ = 0;
+  entries_.clear();
+  next_score_ = 0;
 }

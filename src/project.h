@@ -50,9 +50,8 @@ struct Project {
   // If the client has overridden the flags, or specified them for a file
   // that is not in the compilation_database.json make sure those changes
   // are permanent.
-  void SetFlagsForFile(
-      const std::vector<std::string>& flags,
-      const std::string& path);
+  void SetFlagsForFile(const std::vector<std::string>& flags,
+                       const std::string& path);
 
   // Run |action| on every file in the project.
   void ForAllFilteredFiles(

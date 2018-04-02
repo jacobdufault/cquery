@@ -41,7 +41,6 @@ struct In_CqueryCallHierarchy : public RequestInMessage {
     int levels = 1;
   };
   Params params;
-
 };
 MAKE_REFLECT_STRUCT(In_CqueryCallHierarchy::Params,
                     textDocument,

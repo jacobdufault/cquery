@@ -1,7 +1,7 @@
 #include "file_types.h"
 
-#include "utils.h"
 #include "platform.h"
+#include "utils.h"
 
 // static
 AbsolutePath AbsolutePath::Build(const std::string& path) {
@@ -11,8 +11,7 @@ AbsolutePath AbsolutePath::Build(const std::string& path) {
 
 AbsolutePath::AbsolutePath() {}
 
-AbsolutePath::AbsolutePath(const std::string& path)
-  : path(path) {}
+AbsolutePath::AbsolutePath(const std::string& path) : path(path) {}
 
 AbsolutePath::operator std::string() const {
   return path;

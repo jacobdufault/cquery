@@ -10,7 +10,6 @@
 #include <io.h>
 #include <windows.h>
 
-
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -56,7 +55,8 @@ AbsolutePath GetWorkingDirectory() {
   return *NormalizePath(GetDirName(binary_path));
 }
 
-optional<AbsolutePath> NormalizePath(const std::string& path0, bool ensure_exists) {
+optional<AbsolutePath> NormalizePath(const std::string& path0,
+                                     bool ensure_exists) {
   // Requires Windows 8
   /*
   if (!PathCanonicalize(buffer, path.c_str()))
@@ -208,7 +208,8 @@ void TraceMe() {}
 
 std::string GetExternalCommandOutput(const std::vector<std::string>& command,
                                      std::string_view input) {
-  // FIXME: quote the first argument of command if it is not quoted and it contains spaces
+  // FIXME: quote the first argument of command if it is not quoted and it
+  // contains spaces
 
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms682499(v=vs.85).aspx
   HANDLE handle_child_stdin_write = nullptr;
