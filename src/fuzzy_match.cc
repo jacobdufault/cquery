@@ -24,7 +24,7 @@ void CalculateRoles(std::string_view s, int roles[], int* class_set) {
     *class_set = 0;
     return;
   }
-  CharClass pre = Other, cur = GetCharClass(s[0]), suc;
+  CharClass pre = Other, cur = GetCharClass(s[0]), suc = Lower;
   *class_set = 1 << cur;
   auto fn = [&]() {
     if (cur == Other)
