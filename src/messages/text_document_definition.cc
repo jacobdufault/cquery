@@ -152,7 +152,7 @@ struct Handler_TextDocumentDefinition
             continue;
           if (Maybe<Use> use = GetDefinitionSpell(db, db->symbols[i])) {
             std::tuple<int, int, bool, int> score{
-                int(name.size() - short_query.size()), -pos,
+                int(name.size()) - int(short_query.size()), -pos,
                 use->file != file_id,
                 std::abs(use->range.start.line - position.line)};
             // Update the score with qualified name if the qualified name
