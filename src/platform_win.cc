@@ -316,7 +316,7 @@ std::string GetExternalCommandOutput(const std::vector<std::string>& command,
       if (!success || bytes_read == 0)
         break;
 
-      for (int i = 0; i < bytes_read; ++i)
+      for (uint i = 0; i < bytes_read; ++i)
         output += buffer[i];
     }
   };
