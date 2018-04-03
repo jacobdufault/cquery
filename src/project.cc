@@ -1836,5 +1836,16 @@ TEST_SUITE("Project") {
         "Enasdfd of search list.\n"
         "asdfasdf");
     REQUIRE(paths == std::vector<std::string>{});
+
+    // Empty input
+    paths = ExtractSystemIncludePaths("");
+    REQUIRE(paths == std::vector<std::string>{});
+
+    // Input without a include search section.
+    paths = ExtractSystemIncludePaths(
+      "foobar1\n"
+      "End of search list.\n"
+      "foobar2");
+    REQUIRE(paths == std::vector<std::string>{});
   }
 }
