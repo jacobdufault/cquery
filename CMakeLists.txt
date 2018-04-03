@@ -187,8 +187,6 @@ endif()
 file(GLOB SOURCES src/*.cc src/*.h src/serializers/*.cc src/serializers/*.h
                   src/messages/*.h src/messages/*.cc)
 
-message("${SOURCES}")
-
 if(Clang_FORMAT AND ${Clang_VERSION} STREQUAL 6.0.0)
   add_custom_target(format
                     COMMAND ${Clang_FORMAT} -i ${SOURCES}
