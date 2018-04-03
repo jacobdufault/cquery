@@ -71,7 +71,7 @@ before_install:
   - eval "${INSTALL}"
 
 script:
-  - cmake .
+  - cmake -DCI=ON .
   - cmake --build . -- -j 3
   - ./cquery --ci --log-all-to-stderr --test-unit
   - ./cquery --ci --log-all-to-stderr --test-index

@@ -16,7 +16,7 @@ matrix:
   fast_finish: true # Immediately finish build if one of the jobs fails.
 
 before_build: 
-  - cmake -DCMAKE_GENERATOR_PLATFORM=x64 .
+  - cmake -DCI=ON -DCMAKE_GENERATOR_PLATFORM=x64 .
 
 build:
   project: cquery.sln
