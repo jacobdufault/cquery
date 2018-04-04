@@ -51,7 +51,6 @@
 // items per second completed and scales up/down number of running threads.
 
 std::string g_init_options;
-extern char** environ;
 
 namespace {
 
@@ -107,8 +106,8 @@ See more on https://github.com/cquery-project/cquery/wiki
 }
 
 // Writes the environment to stdcerr.
-void PrintEnvironment() {
-  char** s = environ;
+void PrintEnvironment(char **envp) {
+  char** s = envp;
   while (*s) {
     std::cerr << *s << std::endl;
     ++s;
@@ -375,7 +374,7 @@ void LanguageServerMain(const std::string& bin_name,
   RunQueryDbThread(bin_name, config, querydb_waiter, indexer_waiter);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv, char **envp) {
   // std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v"
   // }; std::string clang_output = GetExternalCommandOutput(flags, ""); std::cerr
   // << "\n\n!! clang_output is\n\n" << clang_output;
@@ -417,7 +416,7 @@ int main(int argc, char** argv) {
   IndexInit();
 
   if (HasOption(options, "--print-env"))
-    PrintEnvironment();
+    PrintEnvironment(envp);
 
   if (HasOption(options, "--record"))
     EnableRecording(options["--record"]);
