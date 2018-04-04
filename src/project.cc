@@ -209,7 +209,7 @@ const std::vector<std::string>& GetSystemIncludes(
       if (!StartsWith(flag, to_pass_flag))
         continue;
       extra_flags.push_back(flag);
-      capture_next = flag.size() != to_pass_flag.size();
+      capture_next = flag.size() == to_pass_flag.size();
       break;
     }
   }
