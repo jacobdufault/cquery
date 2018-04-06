@@ -9,9 +9,9 @@ include(DefaultCMakeBuildType)
 set(CLANG_VERSION 6.0.0 CACHE STRING "Clang version")
 set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR} 
     CACHE STRING "Downloaded Clang location")
-option(SYSTEM_CLANG "Use system Clang instead of downloading Clang" OFF)
+option(SYSTEM_CLANG "Use system libclang instead of downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
-option(CLANG_CXX "Build with Clang C++ api required by some cquery \
+option(LIBCLANG_CXX "Build with Clang C++ api required by some cquery \
 features (warning: not available in Clang downloads for Windows)" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
@@ -66,7 +66,7 @@ else()
                            $<$<CONFIG:Debug>:-fno-limit-debug-info>)
   endif()
 
-  if(CLANG_CXX)
+  if(LIBCLANG_CXX)
     # -Wno-comment: include/clang/Format/Format.h error: multi-line comment
     # -fno-rtti: # Without -fno-rtti, some Clang C++ functions may report
     # `undefined references to typeinfo`
@@ -82,7 +82,7 @@ endif()
 
 ### Download Clang if required
 
-if(NOT SYSTEM_CLANG)
+if(NOT SYSTEM_LIBCLANG)
   message(STATUS "Using downloaded Clang")
   
   include(DownloadAndExtractClang)
@@ -120,7 +120,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   target_link_libraries(cquery PRIVATE Psapi)
 endif()
 
-if(CLANG_CXX)
+if(LIBCLANG_CXX)
   # Clang C++ api uses ncurses
   find_package(Curses REQUIRED)
   target_link_libraries(cquery PRIVATE ${CURSES_LIBRARIES})
@@ -134,7 +134,7 @@ target_compile_definitions(cquery PRIVATE
                            LOGURU_THREADNAME_WIDTH=13
                            DEFAULT_RESOURCE_DIRECTORY="${Clang_RESOURCE_DIR}")
 
-if(CLANG_CXX)
+if(LIBCLANG_CXX)
   target_compile_definitions(cquery PRIVATE USE_CLANG_CXX=1 LOGURU_RTTI=0)
 endif()
 
@@ -153,9 +153,8 @@ target_include_directories(cquery PRIVATE
 
 install(TARGETS cquery RUNTIME DESTINATION bin)
 
-# We don't need to install libclang on Windows if we are using downloaded Clang
-# since libclang is distributed as a static library on Windows
-if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+# TODO: install libclang.dll on Windows as well
+if(NOT SYSTEM_LIBCLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
   if(${CMAKE_SYSTEM_NAME} MATCHES Linux|FreeBSD)
     set_property(TARGET cquery APPEND PROPERTY
@@ -171,7 +170,7 @@ if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 endif()
 
 # Allow running from build Windows by copying libclang.dll to build directory
-if(NOT SYSTEM_CLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+if(NOT SYSTEM_LIBCLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   add_custom_command(TARGET cquery
                      POST_BUILD
                      COMMAND ${CMAKE_COMMAND} -E copy 
