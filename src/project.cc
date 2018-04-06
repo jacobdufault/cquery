@@ -594,26 +594,22 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
       CXCompilationDatabase_CanNotLoadDatabase;
   CXCompilationDatabase cx_db = nullptr;
 
-  if (!opt_compilation_db_dir.empty()) {
-    comp_db_dir = opt_compilation_db_dir;
+  comp_db_dir = opt_compilation_db_dir;
 
-    if (!IsUnixAbsolutePath(comp_db_dir) &&
-        !IsWindowsAbsolutePath(comp_db_dir)) {
-      comp_db_dir =
-          NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
-    }
-
-    EnsureEndsInSlash(comp_db_dir);
-
-    LOG_S(INFO) << "Trying to load " << comp_db_dir << "compile_commands.json";
-    // Do not call clang_CompilationDatabase_fromDirectory if
-    // compile_commands.json does not exist; it will report an error on stderr.
-    if (FileExists(comp_db_dir + "compile_commands.json")) {
-      cx_db = clang_CompilationDatabase_fromDirectory(comp_db_dir.c_str(),
-                                                      &cx_db_load_error);
-    }
+  if (!IsUnixAbsolutePath(comp_db_dir) && !IsWindowsAbsolutePath(comp_db_dir)) {
+    comp_db_dir =
+        NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
   }
-  if (!cx_db) {
+
+  EnsureEndsInSlash(comp_db_dir);
+
+  LOG_S(INFO) << "Trying to load " << comp_db_dir << "compile_commands.json";
+  // Do not call clang_CompilationDatabase_fromDirectory if
+  // compile_commands.json does not exist; it will report an error on stderr.
+  if (FileExists(comp_db_dir + "compile_commands.json")) {
+    cx_db = clang_CompilationDatabase_fromDirectory(comp_db_dir.c_str(),
+                                                    &cx_db_load_error);
+  } else {
     LOG_S(INFO) << "Trying to load " << project->project_dir
                 << "compile_commands.json";
     if (FileExists(project->project_dir + "compile_commands.json")) {
@@ -740,7 +736,10 @@ void Project::Load(Config* config, const std::string& root_directory) {
   project.project_dir = root_directory;
   project.resource_dir = config->resourceDirectory;
   entries = LoadCompilationEntriesFromDirectory(
-      config, &project, config->compilationDatabaseDirectory);
+      config, &project,
+      config->compilationDatabaseDirectory.empty()
+          ? "build"
+          : config->compilationDatabaseDirectory);
 
   // Cleanup / postprocess include directories.
   quote_include_directories.assign(project.quote_dirs.begin(),
