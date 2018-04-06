@@ -569,8 +569,6 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
   if (config->compilationDatabaseCommand.empty()) {
     project->mode = ProjectMode::CompileCommandsJson;
     // Try to load compile_commands.json, but fallback to a project listing.
-    comp_db_dir = opt_compilation_db_dir.empty() ? project->project_dir
-                                                 : opt_compilation_db_dir;
   } else {
     project->mode = ProjectMode::ExternalCommand;
 #ifdef _WIN32
@@ -596,19 +594,32 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
       CXCompilationDatabase_CanNotLoadDatabase;
   CXCompilationDatabase cx_db = nullptr;
 
-  if (!IsUnixAbsolutePath(comp_db_dir) && !IsWindowsAbsolutePath(comp_db_dir)) {
-    comp_db_dir =
-        NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
+  if (!opt_compilation_db_dir.empty()) {
+    comp_db_dir = opt_compilation_db_dir;
+
+    if (!IsUnixAbsolutePath(comp_db_dir) &&
+        !IsWindowsAbsolutePath(comp_db_dir)) {
+      comp_db_dir =
+          NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
+    }
+
+    EnsureEndsInSlash(comp_db_dir);
+
+    LOG_S(INFO) << "Trying to load " << comp_db_dir << "compile_commands.json";
+    // Do not call clang_CompilationDatabase_fromDirectory if
+    // compile_commands.json does not exist; it will report an error on stderr.
+    if (FileExists(comp_db_dir + "compile_commands.json")) {
+      cx_db = clang_CompilationDatabase_fromDirectory(comp_db_dir.c_str(),
+                                                      &cx_db_load_error);
+    }
   }
-
-  EnsureEndsInSlash(comp_db_dir);
-
-  LOG_S(INFO) << "Trying to load " << comp_db_dir << "compile_commands.json";
-  // Do not call clang_CompilationDatabase_fromDirectory if
-  // compile_commands.json does not exist; it will report an error on stderr.
-  if (FileExists(comp_db_dir + "compile_commands.json")) {
-    cx_db = clang_CompilationDatabase_fromDirectory(comp_db_dir.c_str(),
-                                                    &cx_db_load_error);
+  if (!cx_db) {
+    LOG_S(INFO) << "Trying to load " << project->project_dir
+                << "compile_commands.json";
+    if (FileExists(project->project_dir + "compile_commands.json")) {
+      cx_db = clang_CompilationDatabase_fromDirectory(
+          project->project_dir.c_str(), &cx_db_load_error);
+    }
   }
   if (!config->compilationDatabaseCommand.empty()) {
 #ifdef _WIN32
