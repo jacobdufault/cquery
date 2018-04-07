@@ -13,6 +13,7 @@ option(SYSTEM_CLANG "Use system libclang instead of downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(LIBCLANG_CXX "Build with Clang C++ api required by some cquery \
 features (warning: not available in Clang downloads for Windows)" OFF)
+option(CI "Add -Werror or equivalent to compiler options" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -37,25 +38,27 @@ endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   # Common MSVC/Clang(Windows) options
-  target_compile_options(cquery PRIVATE
-                         /nologo
-                         /EHsc
-                         /W3 # roughly -Wall
-                         /wd4996 # disable loguru unsafe warnings
-                         /wd4722 # ignores warning C4722
-                                 # (destructor never returns) in loguru
-                         /wd4267 # ignores warning C4267
-                                 # (conversion from 'size_t' to 'type'),
-                                 # roughly -Wno-sign-compare
-                         /wd4800
-                         $<$<CONFIG:Debug>:/FS>
-                         )
+  target_compile_options(
+    cquery PRIVATE
+    /nologo
+    /EHsc
+    /W3 # roughly -Wall
+    /wd4996 # disable loguru unsafe warnings
+    /wd4722 # ignores warning C4722 (destructor never returns) in loguru
+    /wd4267 # ignores warning C4267 (conversion from 'size_t' to 'type'),
+            # roughly -Wno-sign-compare
+    /wd4800
+    $<$<CONFIG:Debug>:/FS>
+    $<$<BOOL:${CI}>:/WX>
+  )
 else()
   # Common GCC/Clang(Linux) options
-  target_compile_options(cquery PRIVATE
-                         -Wall
-                         -Wno-sign-compare
-                         )
+  target_compile_options(
+    cquery PRIVATE
+    -Wall
+    -Wno-sign-compare
+    $<$<BOOL:${CI}>:-Werror>
+  )
 
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     target_compile_options(cquery PRIVATE -Wno-return-type -Wno-unused-result)
