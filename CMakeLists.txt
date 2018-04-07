@@ -4,15 +4,15 @@ project(cquery LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 include(DefaultCMakeBuildType)
 
-# Required Clang version (note that FindClang sets Clang_VERSION which is a 
-# different variable containing the actual Clang version)
-set(CLANG_VERSION 6.0.0 CACHE STRING "Clang version")
-set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR} 
-    CACHE STRING "Downloaded Clang location")
-option(SYSTEM_CLANG "Use system libclang instead of downloading Clang" OFF)
+# Required libclang version
+set(LIBCLANG_VERSION 6.0.0 CACHE STRING "libclang version")
+set(LIBCLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR} 
+    CACHE STRING "Downloaded libclang location")
+option(SYSTEM_LIBCLANG "Use system installation of libclang instead of \
+       downloading libclang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
-option(LIBCLANG_CXX "Build with Clang C++ api required by some cquery \
-features (warning: not available in Clang downloads for Windows)" OFF)
+option(LIBCLANG_CXX "Build with libclang C++ api required by some cquery \
+features (warning: not available in libclang downloads for Windows)" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -80,23 +80,24 @@ else()
   endif()
 endif()
 
-### Download Clang if required
+### Download libclang if required
 
 if(NOT SYSTEM_LIBCLANG)
-  message(STATUS "Using downloaded Clang")
+  message(STATUS "Using downloaded libclang")
   
   include(DownloadAndExtractClang)
-  download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_LOCATION})
+  download_and_extract_clang(${LIBCLANG_VERSION} ${LIBCLANG_DOWNLOAD_LOCATION})
   # Used by FindClang
   set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
 else()
-  message(STATUS "Using system Clang")
+  message(STATUS "Using system libclang")
 endif()
 
 ### Libraries
 
+set(CLANG_CXX ${LIBCLANG_CXX})
 # See cmake/FindClang.cmake
-find_package(Clang ${CLANG_VERSION} REQUIRED)
+find_package(Clang ${LIBCLANG_VERSION} REQUIRED)
 target_link_libraries(cquery PRIVATE Clang::Clang)
 
 # Enable threading support

@@ -19,7 +19,7 @@
 # This module reads hints about which libraries to look for and where to find
 # them from the following variables::
 #
-#   LIBCLANG_CXX        - Search for and add Clang C++ libraries
+#   CLANG_CXX           - Search for and add Clang C++ libraries
 #   CLANG_ROOT          - If set, only look for Clang components in CLANG_ROOT
 #
 # Example to link against Clang target::
@@ -80,7 +80,7 @@ set(_Clang_REQUIRED_VARS Clang_LIBRARY Clang_INCLUDE_DIR Clang_EXECUTABLE
 _Clang_find_library(Clang_LIBRARY clang)
 _Clang_find_path(Clang_INCLUDE_DIR clang-c/Index.h)
 
-if(LIBCLANG_CXX)
+if(CLANG_CXX)
   # The order is derived by topological sorting LINK_LIBS in 
   # clang/lib/*/CMakeLists.txt
   _Clang_find_and_add_cxx_lib(clangFormat clang/Format/Format.h)
