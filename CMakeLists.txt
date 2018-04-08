@@ -35,7 +35,8 @@ if(NOT CYGWIN)
   set_property(TARGET cquery PROPERTY CXX_EXTENSIONS OFF)
 endif()
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+# CMake sets MSVC for both MSVC and Clang(Windows)
+if(MSVC)
   # Common MSVC/Clang(Windows) options
   target_compile_options(cquery PRIVATE
                          /nologo
