@@ -481,9 +481,7 @@ struct Handler_TextDocumentCodeAction
               include_complete->FindCompletionItemForAbsolutePath(path);
           if (!item)
             continue;
-          if (item->textEdit)
-            include_insert_strings.insert(item->textEdit->newText);
-          else if (!item->insertText.empty())
+          if (!item->insertText.empty())
             include_insert_strings.insert(item->insertText);
           else {
             // FIXME https://github.com/cquery-project/cquery/issues/463

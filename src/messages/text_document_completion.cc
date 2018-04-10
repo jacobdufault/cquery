@@ -89,8 +89,7 @@ void DecorateIncludePaths(const std::smatch& match,
     else
       quote0 = quote1 = '"';
 
-    item.textEdit->newText =
-        prefix + quote0 + item.textEdit->newText + quote1 + suffix;
+    item.insertText = prefix + quote0 + item.insertText + quote1 + suffix;
     item.label = prefix + quote0 + item.label + quote1 + suffix;
     item.filterText = nullopt;
   }
@@ -131,10 +130,9 @@ std::vector<lsCompletionItem> preprocessorKeywordCompletionItems(
     lsCompletionItem item;
     item.label = keyword;
     item.priority_ = (keyword == "include" ? 2 : 1);
-    item.textEdit = lsTextEdit();
     std::string space = (keyword == "else" || keyword == "endif") ? "" : " ";
-    item.textEdit->newText = match[1].str() + "#" + match[2].str() + keyword +
-                             space + match[6].str();
+    item.insertText = match[1].str() + "#" + match[2].str() + keyword + space +
+                      match[6].str();
     item.insertTextFormat = lsInsertTextFormat::PlainText;
     items.push_back(item);
   }
@@ -308,10 +306,11 @@ struct Handler_TextDocumentCompletion : MessageHandler {
 
     bool is_global_completion = false;
     std::string existing_completion;
+    lsPosition end_pos = request->params.position;
     if (file) {
       request->params.position = file->FindStableCompletionSource(
           request->params.position, &is_global_completion,
-          &existing_completion);
+          &existing_completion, &end_pos);
     }
 
     ParseIncludeLineResult result = ParseIncludeLine(buffer_line);
@@ -346,16 +345,18 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       }
 
       for (lsCompletionItem& item : out.result.items) {
-        item.textEdit->range.start.line = request->params.position.line;
-        item.textEdit->range.start.character = 0;
-        item.textEdit->range.end.line = request->params.position.line;
-        item.textEdit->range.end.character = (int)buffer_line.size();
+        lsRange range;
+        range.start.line = request->params.position.line;
+        range.start.character = 0;
+        range.end.line = request->params.position.line;
+        range.end.character = (int)buffer_line.size();
+        item.range = range;
       }
 
       QueueManager::WriteStdout(kMethodType, out);
     } else {
       ClangCompleteManager::OnComplete callback = std::bind(
-          [this, is_global_completion, existing_completion, request](
+          [this, is_global_completion, existing_completion, end_pos, request](
               const std::vector<lsCompletionItem>& results,
               bool is_cached_result) {
             Out_TextDocumentComplete out;
@@ -365,6 +366,11 @@ struct Handler_TextDocumentCompletion : MessageHandler {
             // Emit completion results.
             FilterAndSortCompletionResponse(&out, existing_completion,
                                             config->completion.filterAndSort);
+            // Update ranges of inserts to include the whole token from start
+            // to end.
+            for (auto& item : out.result.items) {
+              item.range.emplace(request->params.position, end_pos);
+            }
             QueueManager::WriteStdout(kMethodType, out);
 
             // Cache completion results.

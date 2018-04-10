@@ -94,12 +94,17 @@ struct lsCompletionItem {
   // property and the `newText` property of a provided `textEdit`.
   lsInsertTextFormat insertTextFormat = lsInsertTextFormat::PlainText;
 
-  // An edit which is applied to a document when selecting this completion. When
-  // an edit is provided the value of `insertText` is ignored.
+  // A range of text that should be replaced by this completion item.
   //
-  // *Note:* The range of the edit must be a single line range and it must
-  // contain the position at which completion has been requested.
-  optional<lsTextEdit> textEdit;
+  // Defaults to a range from the start of the current word to the current
+  // position.
+  //
+  // *Note:* The range must be a single line and it must contain the position at
+  // which completion has been requested.
+  optional<lsRange> range;
+
+  // deprecated - Use CompletionItem.insertText and CompletionItem.range instead.
+  // optional<lsTextEdit> textEdit;
 
   // An optional array of additional text edits that are applied when
   // selecting this completion. Edits must not overlap with the main edit
@@ -115,11 +120,8 @@ struct lsCompletionItem {
   // data ? : any
 
   // Use this helper to figure out what content the completion item will insert
-  // into the document, as it could live in either |textEdit|, |insertText|, or
-  // |label|.
+  // into the document, as it could live in either |insertText| or |label|.
   const std::string& InsertedContent() const {
-    if (textEdit)
-      return textEdit->newText;
     if (!insertText.empty())
       return insertText;
     return label;
@@ -134,4 +136,4 @@ MAKE_REFLECT_STRUCT(lsCompletionItem,
                     insertText,
                     filterText,
                     insertTextFormat,
-                    textEdit);
+                    range);
