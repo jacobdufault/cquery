@@ -407,8 +407,7 @@ std::string WorkingFile::FindClosestCallNameInBuffer(
 lsPosition WorkingFile::FindStableCompletionSource(
     lsPosition position,
     bool* is_global_completion,
-    std::string* existing_completion,
-    lsPosition* replace_end_position) const {
+    std::string* existing_completion) const {
   *is_global_completion = true;
 
   int start_offset = GetOffsetForPosition(position, buffer_content);
@@ -432,16 +431,6 @@ lsPosition WorkingFile::FindStableCompletionSource(
       break;
     }
     --offset;
-  }
-
-  *replace_end_position = position;
-  int end_offset = start_offset;
-  while (end_offset < buffer_content.size()) {
-    char c = buffer_content[end_offset];
-    if (!isalnum(c) && c != '_') break;
-    ++end_offset;
-    // We know that replace_end_position and position are on the same line.
-    ++replace_end_position->character;
   }
 
   *existing_completion = buffer_content.substr(offset, start_offset - offset);
@@ -623,58 +612,40 @@ TEST_SUITE("WorkingFile") {
   }
 
   TEST_CASE("existing completion") {
-    WorkingFile f("foo.cc", "zzz.asdf ");
+    WorkingFile f("foo.cc", "zzz.asdf");
     bool is_global_completion;
     std::string existing_completion;
-    lsPosition end_pos;
 
     f.FindStableCompletionSource(CharPos(f, '.'), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "zzz");
-    REQUIRE(end_pos.line == CharPos(f, '.').line);
-    REQUIRE(end_pos.character == CharPos(f, '.').character);
     f.FindStableCompletionSource(CharPos(f, 'a', 1), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "a");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
     f.FindStableCompletionSource(CharPos(f, 's', 1), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "as");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
     f.FindStableCompletionSource(CharPos(f, 'd', 1), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "asd");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
     f.FindStableCompletionSource(CharPos(f, 'f', 1), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "asdf");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
   }
 
   TEST_CASE("existing completion underscore") {
-    WorkingFile f("foo.cc", "ABC_DEF ");
+    WorkingFile f("foo.cc", "ABC_DEF");
     bool is_global_completion;
     std::string existing_completion;
-    lsPosition end_pos;
 
     f.FindStableCompletionSource(CharPos(f, 'C'), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "AB");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
     f.FindStableCompletionSource(CharPos(f, '_'), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "ABC");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
     f.FindStableCompletionSource(CharPos(f, 'D'), &is_global_completion,
-                                 &existing_completion, &end_pos);
+                                 &existing_completion);
     REQUIRE(existing_completion == "ABC_");
-    REQUIRE(end_pos.line == CharPos(f, ' ').line);
-    REQUIRE(end_pos.character == CharPos(f, ' ').character);
   }
 }

@@ -67,12 +67,9 @@ struct WorkingFile {
   // global completion.
   // The out param |existing_completion| is set to any existing completion
   // content the user has entered.
-  // The out param |replace_end_position| is set to the end of the existing
-  // identifier, including characters after the original position.
   lsPosition FindStableCompletionSource(lsPosition position,
                                         bool* is_global_completion,
-                                        std::string* existing_completion,
-                                        lsPosition* replace_end_position) const;
+                                        std::string* existing_completion) const;
 
  private:
   // Compute index_to_buffer and buffer_to_index.

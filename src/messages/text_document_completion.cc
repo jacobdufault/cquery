@@ -308,11 +308,10 @@ struct Handler_TextDocumentCompletion : MessageHandler {
 
     bool is_global_completion = false;
     std::string existing_completion;
-    lsPosition end_pos = request->params.position;
     if (file) {
       request->params.position = file->FindStableCompletionSource(
           request->params.position, &is_global_completion,
-          &existing_completion, &end_pos);
+          &existing_completion);
     }
 
     ParseIncludeLineResult result = ParseIncludeLine(buffer_line);
@@ -356,7 +355,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       QueueManager::WriteStdout(kMethodType, out);
     } else {
       ClangCompleteManager::OnComplete callback = std::bind(
-          [this, is_global_completion, existing_completion, end_pos, request](
+          [this, is_global_completion, existing_completion, request](
               const std::vector<lsCompletionItem>& results,
               bool is_cached_result) {
             Out_TextDocumentComplete out;
@@ -366,13 +365,6 @@ struct Handler_TextDocumentCompletion : MessageHandler {
             // Emit completion results.
             FilterAndSortCompletionResponse(&out, existing_completion,
                                             config->completion.filterAndSort);
-            // Change inserts to edits.
-            for (auto& item : out.result.items) {
-              if (!item.insertText.empty()) {
-                item.textEdit = lsTextEdit{lsRange(request->params.position, end_pos), ""};
-                item.textEdit->newText.swap(item.insertText);
-              }
-            }
             QueueManager::WriteStdout(kMethodType, out);
 
             // Cache completion results.
