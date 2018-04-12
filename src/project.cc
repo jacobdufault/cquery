@@ -274,7 +274,7 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
   // iterates in reverse to find the last one as soon as possible
   // in case of multiple --driver-mode flags.
   for (int i = args.size() - 1; i >= 0; --i) {
-    if (strstr(args[i].c_str(), "--dirver-mode=")) {
+    if (strstr(args[i].c_str(), "--driver-mode=")) {
       clang_cl = clang_cl || strstr(args[i].c_str(), "--driver-mode=cl");
       break;
     }
