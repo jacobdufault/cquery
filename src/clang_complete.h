@@ -148,7 +148,7 @@ struct ClangCompleteManager {
 
   // Request a code completion at the given location.
   ThreadedQueue<std::unique_ptr<CompletionRequest>> completion_request_;
-  AtomicObject<DiagnosticRequest> diagnostics_request_;
+  ThreadedQueue<std::unique_ptr<DiagnosticRequest>> diagnostics_request_;
   // Parse requests. The path may already be parsed, in which case it should be
   // reparsed.
   ThreadedQueue<PreloadRequest> preload_requests_;

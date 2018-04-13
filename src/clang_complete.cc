@@ -519,8 +519,8 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
     timer.Reset();
     // TODO: investigate using CXCodeComplete_SkipPreamble. Requires
     // CINDEX_VERSION_MINOR >= 48.
-    unsigned const kCompleteOptions = CXCodeComplete_IncludeMacros |
-                                      CXCodeComplete_IncludeBriefComments;
+    unsigned const kCompleteOptions =
+        CXCodeComplete_IncludeMacros | CXCodeComplete_IncludeBriefComments;
     CXCodeCompleteResults* cx_results = clang_codeCompleteAt(
         session->completion.tu->cx_tu, session->file.filename.c_str(), line,
         column, unsaved.data(), (unsigned)unsaved.size(), kCompleteOptions);
@@ -618,7 +618,7 @@ void DiagnosticsQueryMain(ClangCompleteManager* completion_manager) {
   while (true) {
     // Fetching the completion request blocks until we have a request.
     std::unique_ptr<ClangCompleteManager::DiagnosticRequest> request =
-        completion_manager->diagnostics_request_.Take();
+        completion_manager->diagnostics_request_.Dequeue();
     if (!request)
       continue;
 
@@ -740,7 +740,16 @@ void ClangCompleteManager::CodeComplete(
 
 void ClangCompleteManager::DiagnosticsUpdate(
     const lsTextDocumentIdentifier& document) {
-  diagnostics_request_.Set(std::make_unique<DiagnosticRequest>(document));
+  bool has = false;
+  diagnostics_request_.Iterate(
+      [&](const std::unique_ptr<DiagnosticRequest>& request) {
+        if (request->document.uri == document.uri)
+          has = true;
+      });
+  if (!has) {
+    diagnostics_request_.PushBack(std::make_unique<DiagnosticRequest>(document),
+                                  true /*priority*/);
+  }
 }
 
 void ClangCompleteManager::NotifyView(const std::string& filename) {
@@ -772,6 +781,9 @@ void ClangCompleteManager::NotifySave(const std::string& filename) {
 
   EnsureCompletionOrCreatePreloadSession(filename);
   preload_requests_.PushBack(PreloadRequest(filename), true /*priority*/);
+
+  DiagnosticsUpdate(
+      lsTextDocumentIdentifier{lsDocumentUri::FromPath(filename)});
 }
 
 void ClangCompleteManager::NotifyClose(const std::string& filename) {
