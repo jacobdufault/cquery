@@ -265,7 +265,8 @@ void BuildDetailString(CXCompletionString completion_string,
                        bool& do_insert,
                        lsInsertTextFormat& format,
                        std::vector<std::string>* parameters,
-                       bool include_snippets) {
+                       bool include_snippets,
+                       int& angle_stack) {
   int num_chunks = clang_getNumCompletionChunks(completion_string);
   auto append = [&](const char* text) {
     detail += text;
@@ -280,8 +281,11 @@ void BuildDetailString(CXCompletionString completion_string,
       case CXCompletionChunk_Optional: {
         CXCompletionString nested =
             clang_getCompletionChunkCompletionString(completion_string, i);
-        BuildDetailString(nested, label, detail, insert, do_insert, format,
-                          parameters, include_snippets);
+        // Do not add text to insert string if we're in angle brackets.
+        bool should_insert = do_insert && angle_stack == 0;
+        BuildDetailString(nested, label, detail, insert,
+                          should_insert /*do_insert*/, format, parameters,
+                          include_snippets, angle_stack);
         break;
       }
 
@@ -291,7 +295,7 @@ void BuildDetailString(CXCompletionString completion_string,
         parameters->push_back(text);
         detail += text;
         // Add parameter declarations as snippets if enabled
-        if (include_snippets) {
+        if (do_insert && include_snippets) {
           insert +=
               "${" + std::to_string(parameters->size()) + ":" + text + "}";
           format = lsInsertTextFormat::Snippet;
@@ -336,20 +340,44 @@ void BuildDetailString(CXCompletionString completion_string,
         break;
       }
 
-      // clang-format off
-      case CXCompletionChunk_LeftParen: append("("); break;
-      case CXCompletionChunk_RightParen: append(")"); break;
-      case CXCompletionChunk_LeftBracket: append("["); break;
-      case CXCompletionChunk_RightBracket: append("]"); break;
-      case CXCompletionChunk_LeftBrace: append("{"); break;
-      case CXCompletionChunk_RightBrace: append("}"); break;
-      case CXCompletionChunk_LeftAngle: append("<"); break;
-      case CXCompletionChunk_RightAngle: append(">"); break;
-      case CXCompletionChunk_Comma: append(", "); break;
-      case CXCompletionChunk_Colon: append(":"); break;
-      case CXCompletionChunk_SemiColon: append(";"); break;
-      case CXCompletionChunk_Equal: append("="); break;
-      // clang-format on
+      case CXCompletionChunk_LeftParen:
+        append("(");
+        break;
+      case CXCompletionChunk_RightParen:
+        append(")");
+        break;
+      case CXCompletionChunk_LeftBracket:
+        append("[");
+        break;
+      case CXCompletionChunk_RightBracket:
+        append("]");
+        break;
+      case CXCompletionChunk_LeftBrace:
+        append("{");
+        break;
+      case CXCompletionChunk_RightBrace:
+        append("}");
+        break;
+      case CXCompletionChunk_LeftAngle:
+        ++angle_stack;
+        append("<");
+        break;
+      case CXCompletionChunk_RightAngle:
+        --angle_stack;
+        append(">");
+        break;
+      case CXCompletionChunk_Comma:
+        append(", ");
+        break;
+      case CXCompletionChunk_Colon:
+        append(":");
+        break;
+      case CXCompletionChunk_SemiColon:
+        append(";");
+        break;
+      case CXCompletionChunk_Equal:
+        append("=");
+        break;
       case CXCompletionChunk_HorizontalSpace:
       case CXCompletionChunk_VerticalSpace:
         append(" ");
@@ -553,12 +581,14 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
         }
       } else {
         bool do_insert = true;
-        BuildDetailString(result.CompletionString, ls_completion_item.label,
-                          ls_completion_item.detail,
-                          ls_completion_item.insertText, do_insert,
-                          ls_completion_item.insertTextFormat,
-                          &ls_completion_item.parameters_,
-                          completion_manager->config_->client.snippetSupport);
+        int angle_stack = 0;
+        BuildDetailString(
+            result.CompletionString, ls_completion_item.label,
+            ls_completion_item.detail, ls_completion_item.insertText, do_insert,
+            ls_completion_item.insertTextFormat,
+            &ls_completion_item.parameters_,
+            completion_manager->config_->client.snippetSupport, angle_stack);
+        assert(angle_stack == 0);
         if (completion_manager->config_->client.snippetSupport &&
             ls_completion_item.insertTextFormat ==
                 lsInsertTextFormat::Snippet) {
