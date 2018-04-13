@@ -83,7 +83,8 @@ lsCompletionItem BuildCompletionItem(Config* config,
   lsCompletionItem item;
   item.label = ElideLongPath(config, path);
   item.detail = path;  // the include path, used in de-duplicating
-  item.insertText = path;
+  item.textEdit = lsTextEdit();
+  item.textEdit->newText = path;
   item.insertTextFormat = lsInsertTextFormat::PlainText;
   item.use_angle_brackets_ = use_angle_brackets;
   if (is_stl) {
