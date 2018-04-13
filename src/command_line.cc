@@ -206,8 +206,8 @@ void RunQueryDbThread(const std::string& bin_name,
           out.id = id;
           out.error.code = lsErrorCodes::InternalError;
           out.error.message =
-              "Dropping completion request; a newer request "
-              "has come in that will be serviced instead.";
+              "Dropping completion request; a newer request has come in that"
+              "will be serviced instead. This is not an error.";
           QueueManager::WriteStdout(kMethodType_Unknown, out);
         }
       });
