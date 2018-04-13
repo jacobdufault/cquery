@@ -517,8 +517,9 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
     unsigned column = request->position.character + 1;
 
     timer.Reset();
-    unsigned const kCompleteOptions =
-        CXCodeComplete_IncludeMacros | CXCodeComplete_IncludeBriefComments;
+    unsigned const kCompleteOptions = CXCodeComplete_IncludeMacros |
+                                      CXCodeComplete_IncludeBriefComments |
+                                      CXCodeComplete_SkipPreamble;
     CXCodeCompleteResults* cx_results = clang_codeCompleteAt(
         session->completion.tu->cx_tu, session->file.filename.c_str(), line,
         column, unsaved.data(), (unsigned)unsaved.size(), kCompleteOptions);
