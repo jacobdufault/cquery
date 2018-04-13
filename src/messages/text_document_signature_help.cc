@@ -102,14 +102,14 @@ struct Handler_TextDocumentSignatureHelp : MessageHandler {
     if (search.empty())
       return;
 
-    ClangCompleteManager::OnComplete callback = std::bind(
-        [this](InMessage* message, std::string search, int active_param,
-               const std::vector<lsCompletionItem>& results,
-               bool is_cached_result) {
-          auto msg = static_cast<In_TextDocumentSignatureHelp*>(message);
-
+    In_TextDocumentSignatureHelp* msg =
+        static_cast<In_TextDocumentSignatureHelp*>(message.release());
+    ClangCompleteManager::OnComplete callback =
+        [this, msg, search, active_param](
+            const lsRequestId& id, const std::vector<lsCompletionItem>& results,
+            bool is_cached_result) {
           Out_TextDocumentSignatureHelp out;
-          out.id = msg->id;
+          out.id = id;
 
           for (auto& result : results) {
             if (result.label != search)
@@ -155,14 +155,13 @@ struct Handler_TextDocumentSignatureHelp : MessageHandler {
             });
           }
 
-          delete message;
-        },
-        message.release(), search, active_param, std::placeholders::_1,
-        std::placeholders::_2);
+          delete msg;
+        };
 
     if (signature_cache->IsCacheValid(params)) {
       signature_cache->WithLock([&]() {
-        callback(signature_cache->cached_results_, true /*is_cached_result*/);
+        callback(request->id, signature_cache->cached_results_,
+                 true /*is_cached_result*/);
       });
     } else {
       clang_complete->CodeComplete(request->id, params, std::move(callback));

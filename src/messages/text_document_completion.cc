@@ -309,8 +309,8 @@ struct Handler_TextDocumentCompletion : MessageHandler {
     lsPosition end_pos = request->params.position;
     if (file) {
       request->params.position = file->FindStableCompletionSource(
-          request->params.position, &is_global_completion,
-          &existing_completion, &end_pos);
+          request->params.position, &is_global_completion, &existing_completion,
+          &end_pos);
     }
 
     ParseIncludeLineResult result = ParseIncludeLine(buffer_line);
@@ -355,9 +355,9 @@ struct Handler_TextDocumentCompletion : MessageHandler {
 
       QueueManager::WriteStdout(kMethodType, out);
     } else {
-      ClangCompleteManager::OnComplete callback = std::bind(
-          [this, is_global_completion, existing_completion, end_pos, request](
-              const std::vector<lsCompletionItem>& results,
+      ClangCompleteManager::OnComplete callback =
+          [this, request, existing_completion, end_pos, is_global_completion](
+              const lsRequestId& id, std::vector<lsCompletionItem> results,
               bool is_cached_result) {
             Out_TextDocumentComplete out;
             out.id = request->id;
@@ -390,8 +390,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
                 });
               }
             }
-          },
-          std::placeholders::_1, std::placeholders::_2);
+          };
 
       bool is_cache_match = false;
       global_code_complete_cache->WithLock([&]() {
@@ -401,7 +400,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       });
       if (is_cache_match) {
         ClangCompleteManager::OnComplete freshen_global =
-            [this](std::vector<lsCompletionItem> results,
+            [this](const lsRequestId& id, std::vector<lsCompletionItem> results,
                    bool is_cached_result) {
               assert(!is_cached_result);
 
@@ -412,7 +411,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
             };
 
         global_code_complete_cache->WithLock([&]() {
-          callback(global_code_complete_cache->cached_results_,
+          callback(request->id, global_code_complete_cache->cached_results_,
                    true /*is_cached_result*/);
         });
         clang_complete->CodeComplete(request->id, request->params,
@@ -420,7 +419,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       } else if (non_global_code_complete_cache->IsCacheValid(
                      request->params)) {
         non_global_code_complete_cache->WithLock([&]() {
-          callback(non_global_code_complete_cache->cached_results_,
+          callback(request->id, non_global_code_complete_cache->cached_results_,
                    true /*is_cached_result*/);
         });
       } else {

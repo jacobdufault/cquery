@@ -52,7 +52,8 @@ struct ClangCompleteManager {
                                      const std::string& path,
                                      const std::vector<std::string>& args)>;
   using OnComplete =
-      std::function<void(const std::vector<lsCompletionItem>& results,
+      std::function<void(const lsRequestId& id,
+                         const std::vector<lsCompletionItem>& results,
                          bool is_cached_result)>;
   using OnDropped = std::function<void(lsRequestId request_id)>;
 

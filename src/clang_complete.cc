@@ -496,7 +496,7 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
         column, unsaved.data(), (unsigned)unsaved.size(), kCompleteOptions);
     timer.ResetAndPrint("[complete] clangCodeCompleteAt");
     if (!cx_results) {
-      request->on_complete({}, false /*is_cached_result*/);
+      request->on_complete(request->id, {}, false /*is_cached_result*/);
       continue;
     }
 
@@ -575,7 +575,7 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
                         std::to_string(ls_result.size()) +
                         " completion results");
 
-    request->on_complete(ls_result, false /*is_cached_result*/);
+    request->on_complete(request->id, ls_result, false /*is_cached_result*/);
 
     // Make sure |ls_results| is destroyed before clearing |cx_results|.
     clang_disposeCodeCompleteResults(cx_results);
