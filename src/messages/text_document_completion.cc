@@ -410,19 +410,27 @@ struct Handler_TextDocumentCompletion : MessageHandler {
               });
             };
 
+        // Reply immediately with the cache, and then send a new completion
+        // request in the background that will be freshen the global index.
         global_code_complete_cache->WithLock([&]() {
           callback(request->id, global_code_complete_cache->cached_results_,
                    true /*is_cached_result*/);
         });
-        clang_complete->CodeComplete(request->id, request->params,
+        // Do not pass the request id, since we've already sent a response for
+        // the id.
+        clang_complete->CodeComplete(std::monostate(), request->params,
                                      freshen_global);
       } else if (non_global_code_complete_cache->IsCacheValid(
                      request->params)) {
+        // Don't bother updating a non-global completion request, since cache
+        // hits are much less likely and the cache is much more likely to be up
+        // to date.
         non_global_code_complete_cache->WithLock([&]() {
           callback(request->id, non_global_code_complete_cache->cached_results_,
                    true /*is_cached_result*/);
         });
       } else {
+        // No cache hit.
         clang_complete->CodeComplete(request->id, request->params, callback);
       }
     }
