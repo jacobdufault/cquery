@@ -123,7 +123,7 @@ static const std::vector<std::string> preprocessorKeywords = {
     "define", "undef", "include", "if",   "ifdef", "ifndef",
     "else",   "elif",  "endif",   "line", "error", "pragma"};
 
-std::vector<lsCompletionItem> preprocessorKeywordCompletionItems(
+std::vector<lsCompletionItem> PreprocessorKeywordCompletionItems(
     const std::smatch& match) {
   std::vector<lsCompletionItem> items;
   for (auto& keyword : preprocessorKeywords) {
@@ -326,7 +326,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
                          [&result](std::string_view k) {
                            return k == result.keyword;
                          })) {
-          out.result.items = preprocessorKeywordCompletionItems(result.match);
+          out.result.items = PreprocessorKeywordCompletionItems(result.match);
           FilterAndSortCompletionResponse(&out, result.keyword,
                                           config->completion.filterAndSort);
         }
