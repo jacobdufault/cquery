@@ -9,6 +9,7 @@
 
 #include "lex_utils.h"
 
+#include <doctest/doctest.h>
 #include <loguru.hpp>
 
 #include <regex>
@@ -160,6 +161,7 @@ char* tofixedbase64(T input, char* out) {
 void FilterAndSortCompletionResponse(
     Out_TextDocumentComplete* complete_response,
     const std::string& complete_text,
+    bool has_open_paren,
     bool enable) {
   if (!enable)
     return;
@@ -187,6 +189,12 @@ void FilterAndSortCompletionResponse(
     if (items.size() > kMaxResultSize) {
       items.resize(kMaxResultSize);
       complete_response->result.isIncomplete = true;
+    }
+
+    if (has_open_paren) {
+      for (auto& item : items) {
+        item.insertText = item.label;
+      }
     }
 
     // Set sortText. Note that this happens after resizing - we could do it
@@ -234,6 +242,31 @@ void FilterAndSortCompletionResponse(
 
   // Trim result.
   finalize();
+}
+
+// Returns true if position is an points to a '(' character in |lines|. Skips
+// whitespace.
+bool IsOpenParen(const std::vector<std::string>& lines,
+                 const lsPosition& position) {
+  // TODO: refactor this logic to be in the style of `optional<char>
+  // GetNextNonWhitespaceToken(lines, position)`
+  int c = position.character;
+  int l = position.line;
+  while (l < lines.size()) {
+    std::string_view line = lines[l];
+    if (line[c] == '(')
+      return true;
+    if (isspace(line[c])) {
+      c++;
+      if (c >= line.size()) {
+        c = 0;
+        l += 1;
+      }
+      continue;
+    }
+    break;
+  }
+  return false;
 }
 
 struct Handler_TextDocumentCompletion : MessageHandler {
@@ -314,6 +347,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
     }
 
     ParseIncludeLineResult result = ParseIncludeLine(buffer_line);
+    bool has_open_paren = IsOpenParen(file->buffer_lines, end_pos);
 
     if (result.ok) {
       Out_TextDocumentComplete out;
@@ -327,7 +361,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
                            return k == result.keyword;
                          })) {
           out.result.items = PreprocessorKeywordCompletionItems(result.match);
-          FilterAndSortCompletionResponse(&out, result.keyword,
+          FilterAndSortCompletionResponse(&out, result.keyword, has_open_paren,
                                           config->completion.filterAndSort);
         }
       } else if (result.keyword.compare("include") == 0) {
@@ -339,7 +373,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
             lock.lock();
           out.result.items = include_complete->completion_items;
         }
-        FilterAndSortCompletionResponse(&out, result.pattern,
+        FilterAndSortCompletionResponse(&out, result.pattern, has_open_paren,
                                         config->completion.filterAndSort);
         DecorateIncludePaths(result.match, &out.result.items);
       }
@@ -356,15 +390,17 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       QueueManager::WriteStdout(kMethodType, out);
     } else {
       ClangCompleteManager::OnComplete callback =
-          [this, request, existing_completion, end_pos, is_global_completion](
-              const lsRequestId& id, std::vector<lsCompletionItem> results,
-              bool is_cached_result) {
+          [this, request, existing_completion, end_pos, is_global_completion,
+           has_open_paren](const lsRequestId& id,
+                           std::vector<lsCompletionItem> results,
+                           bool is_cached_result) {
             Out_TextDocumentComplete out;
             out.id = request->id;
             out.result.items = results;
 
             // Emit completion results.
             FilterAndSortCompletionResponse(&out, existing_completion,
+                                            has_open_paren,
                                             config->completion.filterAndSort);
             // Update ranges of inserts to include the whole token from start
             // to end.
@@ -438,4 +474,24 @@ struct Handler_TextDocumentCompletion : MessageHandler {
 };
 REGISTER_MESSAGE_HANDLER(Handler_TextDocumentCompletion);
 
+TEST_SUITE("Completion lexing") {
+  TEST_CASE("NextCharIsOpenParen") {
+    auto check = [](std::vector<std::string> lines, int line, int character) {
+      return IsOpenParen(lines, lsPosition(line, character));
+    };
+    REQUIRE(!check(std::vector<std::string>{"abc"}, 0, 0));
+    REQUIRE(!check(std::vector<std::string>{"abc"}, 0, 0));
+    REQUIRE(!check(std::vector<std::string>{"    "}, 0, 0));
+    REQUIRE(!check(std::vector<std::string>{"    ", "   "}, 0, 0));
+    REQUIRE(!check(std::vector<std::string>{}, 0, 0));
+    REQUIRE(!check(std::vector<std::string>{"abc"}, 1, 0));
+    REQUIRE(!check(std::vector<std::string>{"a("}, 1, 1));
+    REQUIRE(!check(std::vector<std::string>{"a("}, 0, 0));
+    REQUIRE(check(std::vector<std::string>{"a("}, 0, 1));
+    REQUIRE(check(std::vector<std::string>{"a    ("}, 0, 1));
+    REQUIRE(check(std::vector<std::string>{"    ("}, 0, 0));
+    REQUIRE(check(std::vector<std::string>{"    ", "   ("}, 0, 0));
+    REQUIRE(!check(std::vector<std::string>{"    ", " a  ("}, 0, 0));
+  }
+}
 }  // namespace
