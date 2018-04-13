@@ -246,15 +246,15 @@ void FilterAndSortCompletionResponse(
 
 // Returns true if position is an points to a '(' character in |lines|. Skips
 // whitespace.
-bool IsOpenParen(const std::vector<std::string>& lines,
-                 const lsPosition& position) {
+bool IsOpenParenOrBracket(const std::vector<std::string>& lines,
+                          const lsPosition& position) {
   // TODO: refactor this logic to be in the style of `optional<char>
   // GetNextNonWhitespaceToken(lines, position)`
   int c = position.character;
   int l = position.line;
   while (l < lines.size()) {
     std::string_view line = lines[l];
-    if (line[c] == '(')
+    if (line[c] == '(' || line[c] == '<')
       return true;
     if (isspace(line[c])) {
       c++;
@@ -347,7 +347,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
     }
 
     ParseIncludeLineResult result = ParseIncludeLine(buffer_line);
-    bool has_open_paren = IsOpenParen(file->buffer_lines, end_pos);
+    bool has_open_paren = IsOpenParenOrBracket(file->buffer_lines, end_pos);
 
     if (result.ok) {
       Out_TextDocumentComplete out;
@@ -477,7 +477,7 @@ REGISTER_MESSAGE_HANDLER(Handler_TextDocumentCompletion);
 TEST_SUITE("Completion lexing") {
   TEST_CASE("NextCharIsOpenParen") {
     auto check = [](std::vector<std::string> lines, int line, int character) {
-      return IsOpenParen(lines, lsPosition(line, character));
+      return IsOpenParenOrBracket(lines, lsPosition(line, character));
     };
     REQUIRE(!check(std::vector<std::string>{"abc"}, 0, 0));
     REQUIRE(!check(std::vector<std::string>{"abc"}, 0, 0));
@@ -492,6 +492,7 @@ TEST_SUITE("Completion lexing") {
     REQUIRE(check(std::vector<std::string>{"    ("}, 0, 0));
     REQUIRE(check(std::vector<std::string>{"    ", "   ("}, 0, 0));
     REQUIRE(!check(std::vector<std::string>{"    ", " a  ("}, 0, 0));
+    REQUIRE(check(std::vector<std::string>{"    ", "   <  "}, 0, 0));
   }
 }
 }  // namespace
