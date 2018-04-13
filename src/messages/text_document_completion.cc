@@ -390,7 +390,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       QueueManager::WriteStdout(kMethodType, out);
     } else {
       ClangCompleteManager::OnComplete callback =
-          [this, request, existing_completion, is_global_completion,
+          [this, request, existing_completion, end_pos, is_global_completion,
            has_open_paren](const lsRequestId& id,
                            std::vector<lsCompletionItem> results,
                            bool is_cached_result) {
@@ -402,6 +402,13 @@ struct Handler_TextDocumentCompletion : MessageHandler {
             FilterAndSortCompletionResponse(&out, existing_completion,
                                             has_open_paren,
                                             g_config->completion.filterAndSort);
+            // Add text edits with the same text, but whose ranges include the
+            // whole token from start to end.
+            for (auto& item : out.result.items) {
+              item.textEdit = lsTextEdit{
+                  lsRange(request->params.position, end_pos), item.insertText};
+            }
+
             QueueManager::WriteStdout(kMethodType, out);
 
             // Cache completion results.
