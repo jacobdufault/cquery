@@ -14,6 +14,9 @@ extern MethodType kMethodType_CqueryPublishSemanticHighlighting;
 
 using lsRequestId = std::variant<std::monostate, int64_t, std::string>;
 
+// Debug method to convert an id to a string.
+std::string ToString(const lsRequestId& id);
+
 struct InMessage {
   virtual ~InMessage();
 

@@ -9,6 +9,16 @@ MethodType kMethodType_CqueryPublishInactiveRegions =
 MethodType kMethodType_CqueryPublishSemanticHighlighting =
     "$cquery/publishSemanticHighlighting";
 
+std::string ToString(const lsRequestId& id) {
+  if (std::holds_alternative<std::string>(id)) {
+    return std::get<std::string>(id);
+  } else if (std::holds_alternative<int64_t>(id)) {
+    return std::to_string(std::get<int64_t>(id));
+  } else {
+    return "";
+  }
+}
+
 InMessage::~InMessage() = default;
 
 lsRequestId RequestInMessage::GetRequestId() const {
