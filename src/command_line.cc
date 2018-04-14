@@ -376,10 +376,6 @@ void LanguageServerMain(const std::string& bin_name,
 }
 
 int main(int argc, char** argv) {
-  // std::vector<std::string> flags = { "clang++", "-E", "-x", "c++", "-", "-v"
-  // }; std::string clang_output = GetExternalCommandOutput(flags, ""); std::cerr
-  // << "\n\n!! clang_output is\n\n" << clang_output;
-
   TraceMe();
 
   std::unordered_map<std::string, std::string> options =

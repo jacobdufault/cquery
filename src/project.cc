@@ -235,8 +235,7 @@ const std::vector<std::string>& GetSystemIncludes(
 // https://github.com/Valloric/ycmd/issues/892 and
 // https://github.com/cquery-project/cquery/pull/558.
 std::vector<std::string> kBlacklistMulti = {
-    "-MF",     "-MT",      "-MQ",         "-o", "--serialize-diagnostics",
-    "-Xclang" };
+    "-MF", "-MT", "-MQ", "-o", "--serialize-diagnostics", "-Xclang"};
 
 // Blacklisted flags which are always removed from the command line.
 std::vector<std::string> kBlacklist = {
@@ -1857,9 +1856,9 @@ TEST_SUITE("Project") {
 
     // Input without a include search section.
     paths = ExtractSystemIncludePaths(
-      "foobar1\n"
-      "End of search list.\n"
-      "foobar2");
+        "foobar1\n"
+        "End of search list.\n"
+        "foobar2");
     REQUIRE(paths == std::vector<std::string>{});
   }
 }

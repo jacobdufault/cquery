@@ -438,7 +438,8 @@ lsPosition WorkingFile::FindStableCompletionSource(
   int end_offset = start_offset;
   while (end_offset < buffer_content.size()) {
     char c = buffer_content[end_offset];
-    if (!isalnum(c) && c != '_') break;
+    if (!isalnum(c) && c != '_')
+      break;
     ++end_offset;
     // We know that replace_end_position and position are on the same line.
     ++replace_end_position->character;
