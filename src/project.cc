@@ -214,10 +214,6 @@ const std::vector<std::string>& GetSystemIncludes(
     }
   }
 
-  // FIXME
-  // project_config->discovered_system_includes[language] =
-  // FindSystemIncludeDirectories("\"C:/Program Files/LLVM/bin/clang-cl.exe\"",
-  // language_string, working_directory, extra_flags);
   project_config->discovered_system_includes[language] =
       FindSystemIncludeDirectories("clang++", language_string,
                                    working_directory, extra_flags);
@@ -363,8 +359,12 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
             !args[i].compare(dot + 1, 3, "exe")))
       ++i;
   }
-  // Compiler driver.
-  result.args.push_back(args[i - 1]);
+
+  // Compiler driver. If it looks like a path normalize it.
+  std::string compiler_driver = args[i - 1];
+  if (FindAnyPartial(compiler_driver, {"/", ".."}))
+    compiler_driver = cleanup_maybe_relative_path(compiler_driver);
+  result.args.push_back(compiler_driver);
 
   // Add -working-directory if not provided.
   if (!AnyStartsWith(args, "-working-directory"))
@@ -1157,7 +1157,8 @@ TEST_SUITE("Project") {
         },
 
         /* expected */
-        {"../../third_party/llvm-build/Release+Asserts/bin/clang++",
+        {"&/w/c/s/out/Release/../../third_party/llvm-build/Release+Asserts/bin/"
+         "clang++",
          "-working-directory=/w/c/s/out/Release",
          "-DV8_DEPRECATION_WARNINGS",
          "-DDCHECK_ALWAYS_ON=1",
@@ -1491,7 +1492,8 @@ TEST_SUITE("Project") {
          "../../apps/app_lifetime_monitor.cc"},
 
         /* expected */
-        {"../../third_party/llvm-build/Release+Asserts/bin/clang++",
+        {"&/w/c/s/out/Release/../../third_party/llvm-build/Release+Asserts/bin/"
+         "clang++",
          "-working-directory=/w/c/s/out/Release",
          "-DV8_DEPRECATION_WARNINGS",
          "-DDCHECK_ALWAYS_ON=1",
