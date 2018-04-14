@@ -38,6 +38,6 @@ struct SemanticHighlightSymbolCache {
   std::unique_ptr<GroupMatch> match_;
 
   SemanticHighlightSymbolCache();
-  void Init(Config*);
+  void Init();
   std::shared_ptr<Entry> GetCacheForFile(const std::string& path);
 };

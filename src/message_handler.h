@@ -69,7 +69,6 @@ MAKE_REFLECT_STRUCT(Out_CqueryPublishSemanticHighlighting,
   static type type##message_handler_instance_;
 
 struct MessageHandler {
-  Config* config = nullptr;
   QueryDatabase* db = nullptr;
   MultiQueueWaiter* waiter = nullptr;
   Project* project = nullptr;

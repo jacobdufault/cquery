@@ -7,14 +7,13 @@ struct ClangIndexer : IIndexer {
   ~ClangIndexer() override = default;
 
   optional<std::vector<std::unique_ptr<IndexFile>>> Index(
-      Config* config,
       FileConsumerSharedState* file_consumer_shared,
       std::string file,
       const std::vector<std::string>& args,
       const std::vector<FileContents>& file_contents,
       PerformanceImportFile* perf) override {
-    return Parse(config, file_consumer_shared, file, args, file_contents, perf,
-                 &index, false /*dump_ast*/);
+    return Parse(file_consumer_shared, file, args, file_contents, perf, &index,
+                 false /*dump_ast*/);
   }
 
   // Note: constructing this acquires a global lock
@@ -45,7 +44,6 @@ struct TestIndexer : IIndexer {
   ~TestIndexer() override = default;
 
   optional<std::vector<std::unique_ptr<IndexFile>>> Index(
-      Config* config,
       FileConsumerSharedState* file_consumer_shared,
       std::string file,
       const std::vector<std::string>& args,

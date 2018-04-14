@@ -25,7 +25,7 @@ struct Handler_TextDocumentDidChange
   void Run(In_TextDocumentDidChange* request) override {
     std::string path = request->params.textDocument.uri.GetPath();
     working_files->OnChange(request->params);
-    if (config->enableIndexOnDidChange) {
+    if (g_config->enableIndexOnDidChange) {
       optional<std::string> content = ReadContent(path);
       if (!content) {
         LOG_S(ERROR) << "Unable to read file content after saving " << path;
@@ -33,7 +33,7 @@ struct Handler_TextDocumentDidChange
         Project::Entry entry = project->FindCompilationEntryForFile(path);
         QueueManager::instance()->index_request.PushBack(
             Index_Request(entry.filename, entry.args, true /*is_interactive*/,
-                          *content, ICacheManager::Make(config)),
+                          *content, ICacheManager::Make()),
             true);
       }
     }

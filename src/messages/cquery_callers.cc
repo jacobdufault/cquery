@@ -36,8 +36,8 @@ struct Handler_CqueryCallers : BaseMessageHandler<In_CqueryCallers> {
         for (Use func_ref : GetUsesForAllDerived(db, func))
           uses.push_back(func_ref);
         out.result =
-            GetLsLocationExs(db, working_files, uses, config->xref.container,
-                             config->xref.maxNum);
+            GetLsLocationExs(db, working_files, uses, g_config->xref.container,
+                             g_config->xref.maxNum);
         break;
       }
     }

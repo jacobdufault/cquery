@@ -136,7 +136,7 @@ struct Handler_CqueryRandom : BaseMessageHandler<In_CqueryRandom> {
         if (!use)
           continue;
         if (auto ls_loc = GetLsLocationEx(db, working_files, *use,
-                                          config->xref.container))
+                                          g_config->xref.container))
           out.result.push_back(*ls_loc);
         break;
       }

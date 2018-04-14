@@ -364,7 +364,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
                          })) {
           out.result.items = PreprocessorKeywordCompletionItems(result.match);
           FilterAndSortCompletionResponse(&out, result.keyword, has_open_paren,
-                                          config->completion.filterAndSort);
+                                          g_config->completion.filterAndSort);
         }
       } else if (result.keyword.compare("include") == 0) {
         {
@@ -376,7 +376,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
           out.result.items = include_complete->completion_items;
         }
         FilterAndSortCompletionResponse(&out, result.pattern, has_open_paren,
-                                        config->completion.filterAndSort);
+                                        g_config->completion.filterAndSort);
         DecorateIncludePaths(result.match, &out.result.items);
       }
 
@@ -401,7 +401,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
             // Emit completion results.
             FilterAndSortCompletionResponse(&out, existing_completion,
                                             has_open_paren,
-                                            config->completion.filterAndSort);
+                                            g_config->completion.filterAndSort);
             QueueManager::WriteStdout(kMethodType, out);
 
             // Cache completion results.

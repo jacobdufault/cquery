@@ -45,7 +45,7 @@ struct Handler_CqueryVars : BaseMessageHandler<In_CqueryVars> {
           QueryType& type = db->types[id.id];
           out.result = GetLsLocationExs(
               db, working_files, GetDeclarations(db, type.instances),
-              config->xref.container, config->xref.maxNum);
+              g_config->xref.container, g_config->xref.maxNum);
           break;
         }
       }

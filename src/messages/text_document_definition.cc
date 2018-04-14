@@ -105,9 +105,9 @@ struct Handler_TextDocumentDefinition
         if (uses.empty() && on_def)
           uses.push_back(*on_def);
       }
-      AddRange(&out.result,
-               GetLsLocationExs(db, working_files, uses, config->xref.container,
-                                config->xref.maxNum));
+      AddRange(&out.result, GetLsLocationExs(db, working_files, uses,
+                                             g_config->xref.container,
+                                             g_config->xref.maxNum));
       if (!out.result.empty())
         break;
     }
@@ -172,7 +172,7 @@ struct Handler_TextDocumentDefinition
           Maybe<Use> use = GetDefinitionSpell(db, db->symbols[best_i]);
           assert(use);
           if (auto ls_loc = GetLsLocationEx(db, working_files, *use,
-                                            config->xref.container))
+                                            g_config->xref.container))
             out.result.push_back(*ls_loc);
         }
       }

@@ -507,32 +507,32 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
 
       {
         if (request->params.initializationOptions)
-          *config = *request->params.initializationOptions;
+          *g_config = *request->params.initializationOptions;
         else
-          *config = Config();
+          *g_config = Config();
         rapidjson::Document reader;
         reader.Parse(g_init_options.c_str());
         if (!reader.HasParseError()) {
           JsonReader json_reader{&reader};
           try {
-            Reflect(json_reader, *config);
+            Reflect(json_reader, *g_config);
           } catch (std::invalid_argument&) {
             // This will not trigger because parse error is handled in
             // MessageRegistry::Parse in lsp.cc
           }
         }
 
-        if (config->cacheDirectory.empty()) {
+        if (g_config->cacheDirectory.empty()) {
           LOG_S(ERROR) << "cacheDirectory cannot be empty.";
           exit(1);
         } else {
           optional<AbsolutePath> cacheDir =
-              NormalizePath(config->cacheDirectory, false /*ensure_exists*/);
+              NormalizePath(g_config->cacheDirectory, false /*ensure_exists*/);
           if (!cacheDir)
             ABORT_S() << "Cannot find cache directory "
-                      << config->cacheDirectory;
-          config->cacheDirectory = *cacheDir;
-          EnsureEndsInSlash(config->cacheDirectory);
+                      << g_config->cacheDirectory;
+          g_config->cacheDirectory = *cacheDir;
+          EnsureEndsInSlash(g_config->cacheDirectory);
         }
       }
 
@@ -540,21 +540,21 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       if (request->params.capabilities.textDocument) {
         const auto& cap = *request->params.capabilities.textDocument;
         if (cap.completion && cap.completion->completionItem)
-          config->client.snippetSupport =
+          g_config->client.snippetSupport =
               cap.completion->completionItem->snippetSupport.value_or(false);
       }
 
       // Check client version.
-      if (config->clientVersion.has_value() &&
-          *config->clientVersion != kExpectedClientVersion) {
+      if (g_config->clientVersion.has_value() &&
+          *g_config->clientVersion != kExpectedClientVersion) {
         Out_ShowLogMessage out;
         out.display_type = Out_ShowLogMessage::DisplayType::Show;
         out.params.type = lsMessageType::Error;
         out.params.message =
-            "cquery client (v" + std::to_string(*config->clientVersion) +
+            "cquery client (v" + std::to_string(*g_config->clientVersion) +
             ") and server (v" + std::to_string(kExpectedClientVersion) +
             ") version mismatch. Please update ";
-        if (config->clientVersion > kExpectedClientVersion)
+        if (g_config->clientVersion > kExpectedClientVersion)
           out.params.message += "the cquery binary.";
         else
           out.params.message +=
@@ -565,9 +565,9 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       }
 
       // Ensure there is a resource directory.
-      if (config->resourceDirectory.empty())
-        config->resourceDirectory = GetDefaultResourceDirectory();
-      LOG_S(INFO) << "Using -resource-dir=" << config->resourceDirectory;
+      if (g_config->resourceDirectory.empty())
+        g_config->resourceDirectory = GetDefaultResourceDirectory();
+      LOG_S(INFO) << "Using -resource-dir=" << g_config->resourceDirectory;
 
       // Send initialization before starting indexers, so we don't send a
       // status update too early.
@@ -595,41 +595,41 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
 
       // Set project root.
       EnsureEndsInSlash(project_path);
-      config->projectRoot = project_path;
+      g_config->projectRoot = project_path;
       // Create two cache directories for files inside and outside of the
       // project.
-      MakeDirectoryRecursive(config->cacheDirectory +
-                             EscapeFileName(config->projectRoot));
-      MakeDirectoryRecursive(config->cacheDirectory + '@' +
-                             EscapeFileName(config->projectRoot));
+      MakeDirectoryRecursive(g_config->cacheDirectory +
+                             EscapeFileName(g_config->projectRoot));
+      MakeDirectoryRecursive(g_config->cacheDirectory + '@' +
+                             EscapeFileName(g_config->projectRoot));
 
       Timer time;
-      diag_engine->Init(config);
-      semantic_cache->Init(config);
+      diag_engine->Init();
+      semantic_cache->Init();
 
       // Open up / load the project.
-      project->Load(config, project_path);
+      project->Load(project_path);
       time.ResetAndPrint("[perf] Loaded compilation entries (" +
                          std::to_string(project->entries.size()) + " files)");
 
       // Start indexer threads. Start this after loading the project, as that
       // may take a long time. Indexer threads will emit status/progress
       // reports.
-      if (config->index.threads == 0) {
+      if (g_config->index.threads == 0) {
         // If the user has not specified how many indexers to run, try to
         // guess an appropriate value. Default to 80% utilization.
         const float kDefaultTargetUtilization = 0.8f;
-        config->index.threads = (int)(std::thread::hardware_concurrency() *
-                                      kDefaultTargetUtilization);
-        if (config->index.threads <= 0)
-          config->index.threads = 1;
+        g_config->index.threads = (int)(std::thread::hardware_concurrency() *
+                                        kDefaultTargetUtilization);
+        if (g_config->index.threads <= 0)
+          g_config->index.threads = 1;
       }
-      LOG_S(INFO) << "Starting " << config->index.threads << " indexers";
-      for (int i = 0; i < config->index.threads; ++i) {
+      LOG_S(INFO) << "Starting " << g_config->index.threads << " indexers";
+      for (int i = 0; i < g_config->index.threads; ++i) {
         WorkThread::StartThread("indexer" + std::to_string(i), [=]() {
-          Indexer_Main(config, diag_engine, file_consumer_shared,
-                       timestamp_manager, import_manager,
-                       import_pipeline_status, project, working_files, waiter);
+          Indexer_Main(diag_engine, file_consumer_shared, timestamp_manager,
+                       import_manager, import_pipeline_status, project,
+                       working_files, waiter);
         });
       }
 
@@ -638,8 +638,7 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       include_complete->Rescan();
 
       time.Reset();
-      project->Index(config, QueueManager::instance(), working_files,
-                     request->id);
+      project->Index(QueueManager::instance(), working_files, request->id);
       // We need to support multiple concurrent index processes.
       time.ResetAndPrint("[perf] Dispatched initial index requests");
     }

@@ -36,7 +36,7 @@ struct Handler_CqueryIndexFile : BaseMessageHandler<In_CqueryIndexFile> {
     LOG_S(INFO) << "Indexing file " << request->params.path;
     QueueManager::instance()->index_request.PushBack(Index_Request(
         path->path, request->params.args, request->params.is_interactive,
-        request->params.contents, ICacheManager::Make(config)));
+        request->params.contents, ICacheManager::Make()));
   }
 };
 REGISTER_MESSAGE_HANDLER(Handler_CqueryIndexFile);

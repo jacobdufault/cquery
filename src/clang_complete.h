@@ -80,8 +80,7 @@ struct ClangCompleteManager {
     lsTextDocumentIdentifier document;
   };
 
-  ClangCompleteManager(Config* config,
-                       Project* project,
+  ClangCompleteManager(Project* project,
                        WorkingFiles* working_files,
                        OnDiagnostic on_diagnostic,
                        OnIndex on_index,
@@ -127,7 +126,6 @@ struct ClangCompleteManager {
   const int kMaxCompletionSessions = 5;
 
   // Global state.
-  Config* config_;
   Project* project_;
   WorkingFiles* working_files_;
   OnDiagnostic on_diagnostic_;

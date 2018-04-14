@@ -35,7 +35,6 @@ struct IIndexer {
 
   virtual ~IIndexer() = default;
   virtual optional<std::vector<std::unique_ptr<IndexFile>>> Index(
-      Config* config,
       FileConsumerSharedState* file_consumer_shared,
       std::string file,
       const std::vector<std::string>& args,

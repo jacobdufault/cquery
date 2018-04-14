@@ -285,3 +285,5 @@ MAKE_REFLECT_STRUCT(Config,
 
 // Expected client version. We show an error if this doesn't match.
 constexpr const int kExpectedClientVersion = 3;
+
+extern Config* g_config;

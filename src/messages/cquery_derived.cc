@@ -32,13 +32,13 @@ struct Handler_CqueryDerived : BaseMessageHandler<In_CqueryDerived> {
         QueryType& type = db->GetType(sym);
         out.result = GetLsLocationExs(
             db, working_files, GetDeclarations(db, type.derived),
-            config->xref.container, config->xref.maxNum);
+            g_config->xref.container, g_config->xref.maxNum);
         break;
       } else if (sym.kind == SymbolKind::Func) {
         QueryFunc& func = db->GetFunc(sym);
         out.result = GetLsLocationExs(
             db, working_files, GetDeclarations(db, func.derived),
-            config->xref.container, config->xref.maxNum);
+            g_config->xref.container, g_config->xref.maxNum);
         break;
       }
     }

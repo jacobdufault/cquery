@@ -51,6 +51,8 @@
 // items per second completed and scales up/down number of running threads.
 
 std::string g_init_options;
+Config* g_config;
+
 extern char** environ;
 
 namespace {
@@ -135,8 +137,7 @@ void PrintEnvironment() {
 // QUERYDB MAIN ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-bool QueryDbMainLoop(Config* config,
-                     QueryDatabase* db,
+bool QueryDbMainLoop(QueryDatabase* db,
                      MultiQueueWaiter* waiter,
                      Project* project,
                      FileConsumerSharedState* file_consumer_shared,
@@ -172,7 +173,7 @@ bool QueryDbMainLoop(Config* config,
   // TODO: consider rate-limiting and checking for IPC messages so we don't
   // block requests / we can serve partial requests.
 
-  if (QueryDb_ImportMain(config, db, import_manager, status, semantic_cache,
+  if (QueryDb_ImportMain(db, import_manager, status, semantic_cache,
                          working_files)) {
     did_work = true;
   }
@@ -181,7 +182,6 @@ bool QueryDbMainLoop(Config* config,
 }
 
 void RunQueryDbThread(const std::string& bin_name,
-                      Config* config,
                       MultiQueueWaiter* querydb_waiter,
                       MultiQueueWaiter* indexer_waiter) {
   Project project;
@@ -191,14 +191,14 @@ void RunQueryDbThread(const std::string& bin_name,
   DiagnosticsEngine diag_engine;
 
   ClangCompleteManager clang_complete(
-      config, &project, &working_files,
+      &project, &working_files,
       [&](std::string path, std::vector<lsDiagnostic> diagnostics) {
         diag_engine.Publish(&working_files, path, diagnostics);
       },
       [&](ClangTranslationUnit* tu, const std::vector<CXUnsavedFile>& unsaved,
           const std::string& path, const std::vector<std::string>& args) {
-        IndexWithTuFromCodeCompletion(config, &file_consumer_shared, tu,
-                                      unsaved, path, args);
+        IndexWithTuFromCodeCompletion(&file_consumer_shared, tu, unsaved, path,
+                                      args);
       },
       [](lsRequestId id) {
         if (!std::holds_alternative<std::monostate>(id)) {
@@ -212,7 +212,7 @@ void RunQueryDbThread(const std::string& bin_name,
         }
       });
 
-  IncludeComplete include_complete(config, &project);
+  IncludeComplete include_complete(&project);
   auto global_code_complete_cache = std::make_unique<CodeCompleteCache>();
   auto non_global_code_complete_cache = std::make_unique<CodeCompleteCache>();
   auto signature_cache = std::make_unique<CodeCompleteCache>();
@@ -223,7 +223,6 @@ void RunQueryDbThread(const std::string& bin_name,
 
   // Setup shared references.
   for (MessageHandler* handler : *MessageHandler::message_handlers) {
-    handler->config = config;
     handler->db = &db;
     handler->waiter = indexer_waiter;
     handler->project = &project;
@@ -246,9 +245,9 @@ void RunQueryDbThread(const std::string& bin_name,
   SetCurrentThreadName("querydb");
   while (true) {
     bool did_work = QueryDbMainLoop(
-        config, &db, querydb_waiter, &project, &file_consumer_shared,
-        &import_manager, &import_pipeline_status, &timestamp_manager,
-        &semantic_cache, &working_files, &clang_complete, &include_complete,
+        &db, querydb_waiter, &project, &file_consumer_shared, &import_manager,
+        &import_pipeline_status, &timestamp_manager, &semantic_cache,
+        &working_files, &clang_complete, &include_complete,
         global_code_complete_cache.get(), non_global_code_complete_cache.get(),
         signature_cache.get());
 
@@ -286,8 +285,7 @@ void RunQueryDbThread(const std::string& bin_name,
 // blocks.
 //
 // |ipc| is connected to a server.
-void LaunchStdinLoop(Config* config,
-                     std::unordered_map<MethodType, Timer>* request_times) {
+void LaunchStdinLoop(std::unordered_map<MethodType, Timer>* request_times) {
   // If flushing cin requires flushing cout there could be deadlocks in some
   // clients.
   std::cin.tie(nullptr);
@@ -358,13 +356,12 @@ void LaunchStdoutThread(std::unordered_map<MethodType, Timer>* request_times,
 }
 
 void LanguageServerMain(const std::string& bin_name,
-                        Config* config,
                         MultiQueueWaiter* querydb_waiter,
                         MultiQueueWaiter* indexer_waiter,
                         MultiQueueWaiter* stdout_waiter) {
   std::unordered_map<MethodType, Timer> request_times;
 
-  LaunchStdinLoop(config, &request_times);
+  LaunchStdinLoop(&request_times);
 
   // We run a dedicated thread for writing to stdout because there can be an
   // unknown number of delays when output information.
@@ -372,10 +369,12 @@ void LanguageServerMain(const std::string& bin_name,
 
   // Start querydb which takes over this thread. The querydb will launch
   // indexer threads as needed.
-  RunQueryDbThread(bin_name, config, querydb_waiter, indexer_waiter);
+  RunQueryDbThread(bin_name, querydb_waiter, indexer_waiter);
 }
 
 int main(int argc, char** argv) {
+  g_config = new Config();
+
   TraceMe();
 
   std::unordered_map<std::string, std::string> options =
@@ -433,7 +432,7 @@ int main(int argc, char** argv) {
     Project project;
     Config config;
     config.resourceDirectory = GetDefaultResourceDirectory();
-    project.Load(&config, GetWorkingDirectory().path);
+    project.Load(GetWorkingDirectory().path);
     Project::Entry entry = project.FindCompilationEntryForFile(path->path);
     LOG_S(INFO) << "Using arguments " << StringJoin(entry.args, " ");
     ClangSanityCheck(entry);
@@ -481,8 +480,7 @@ int main(int argc, char** argv) {
     }
 
     // std::cerr << "Running language server" << std::endl;
-    auto config = std::make_unique<Config>();
-    LanguageServerMain(argv[0], config.get(), &querydb_waiter, &indexer_waiter,
+    LanguageServerMain(argv[0], &querydb_waiter, &indexer_waiter,
                        &stdout_waiter);
   }
 

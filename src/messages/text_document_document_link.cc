@@ -44,7 +44,7 @@ struct Handler_TextDocumentDocumentLink
     Out_TextDocumentDocumentLink out;
     out.id = request->id;
 
-    if (config->showDocumentLinksOnIncludes) {
+    if (g_config->showDocumentLinksOnIncludes) {
       QueryFile* file;
       if (!FindFileOrFail(db, project, request->id,
                           request->params.textDocument.uri.GetPath(), &file)) {

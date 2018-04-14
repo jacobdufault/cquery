@@ -43,7 +43,7 @@ struct Handler_TextDocumentDidOpen
     if (ShouldIgnoreFileForIndexing(path))
       return;
 
-    std::shared_ptr<ICacheManager> cache_manager = ICacheManager::Make(config);
+    std::shared_ptr<ICacheManager> cache_manager = ICacheManager::Make();
     WorkingFile* working_file = working_files->OnOpen(params.textDocument);
     optional<std::string> cached_file_contents =
         cache_manager->LoadCachedFileContents(path);
