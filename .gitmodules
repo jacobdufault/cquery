@@ -13,3 +13,6 @@
 [submodule "third_party/msgpack-c"]
 	path = third_party/msgpack-c
 	url = https://github.com/msgpack/msgpack-c
+[submodule "third_party/pugixml"]
+	path = third_party/pugixml
+	url = https://github.com/zeux/pugixml

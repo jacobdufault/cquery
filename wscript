@@ -331,7 +331,7 @@ def configure(ctx):
   ctx.msg('Clang library dir', ctx.env.LIBPATH_clang)
 
 def build(bld):
-  cc_files = bld.path.ant_glob(['src/*.cc', 'src/messages/*.cc', 'third_party/*.cc'])
+  cc_files = bld.path.ant_glob(['src/*.cc', 'src/messages/*.cc', 'third_party/*.cc', 'third_party/pugixml/src/*.cpp'])
   if bld.env['use_clang_cxx']:
     cc_files += bld.path.ant_glob(['src/clang_cxx/*.cc'])
 

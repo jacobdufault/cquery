@@ -144,11 +144,12 @@ endif()
 target_include_directories(cquery PRIVATE
                            src
                            third_party
-                           third_party/rapidjson/include
-                           third_party/sparsepp
-                           third_party/loguru
                            third_party/doctest
-                           third_party/msgpack-c/include)
+                           third_party/loguru
+                           third_party/msgpack-c/include
+                           third_party/pugixml/src
+                           third_party/rapidjson/include
+                           third_party/sparsepp)
 
 ### Install
 
@@ -247,7 +248,9 @@ endif()
 
 ### Sources
 
-target_sources(cquery PRIVATE third_party/siphash.cc)
+target_sources(cquery PRIVATE
+               third_party/siphash.cc
+               third_party/pugixml/src/pugixml.cpp)
 
 target_sources(cquery PRIVATE
                src/cache_manager.cc
