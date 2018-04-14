@@ -23,15 +23,19 @@ initialization options specified by the client. For example, in shell syntax:
 struct Config {
   // Root directory of the project. **Not available for configuration**
   std::string projectRoot;
+
   // If specified, this option overrides compile_commands.json and this
   // external command will be executed with an option |projectRoot|.
   // The initialization options will be provided as stdin.
   // The stdout of the command should be the JSON compilation database.
   std::string compilationDatabaseCommand;
+
   // Directory containing compile_commands.json.
   std::string compilationDatabaseDirectory;
+
   // Cache directory for indexed files.
   std::string cacheDirectory;
+
   // Cache serialization format.
   //
   // "json" generates `cacheDirectory/.../xxx.json` files which can be pretty
@@ -43,6 +47,7 @@ struct Config {
   // msgpack does not store map keys and you need to re-index whenever a struct
   // member has changed.
   SerializeFormat cacheFormat = SerializeFormat::Json;
+
   // Value to use for clang -resource-dir if not present in
   // compile_commands.json.
   //
@@ -85,7 +90,8 @@ struct Config {
   struct CodeLens {
     // Enables code lens on parameter and function variables.
     bool localVariables = true;
-  } codeLens;
+  };
+  CodeLens codeLens;
 
   struct Completion {
     // Some completion UI, such as Emacs' completion-at-point and company-lsp,
@@ -120,12 +126,6 @@ struct Config {
     // that implement their own filtering and sorting logic.
     bool filterAndSort = true;
 
-    // Regex patterns to match include completion candidates against. They
-    // receive the absolute file path.
-    //
-    // For example, to hide all files in a /CACHE/ folder, use ".*/CACHE/.*"
-    std::vector<std::string> includeBlacklist;
-
     // Maximum path length to show in completion results. Paths longer than this
     // will be elided with ".." put at the front. Set to 0 or a negative number
     // to disable eliding.
@@ -138,13 +138,20 @@ struct Config {
     // This is significantly faster than using a regex.
     std::vector<std::string> includeSuffixWhitelist = {".h", ".hpp", ".hh"};
 
+    // Regex patterns to match include completion candidates against. They
+    // receive the absolute file path.
+    //
+    // For example, to hide all files in a /CACHE/ folder, use ".*/CACHE/.*"
+    std::vector<std::string> includeBlacklist;
     std::vector<std::string> includeWhitelist;
-  } completion;
+  };
+  Completion completion;
 
   struct Diagnostics {
     // Like index.{whitelist,blacklist}, don't publish diagnostics to
     // blacklisted files.
     std::vector<std::string> blacklist;
+    std::vector<std::string> whitelist;
 
     // How often should cquery publish diagnostics in completion?
     //  -1: never
@@ -154,18 +161,17 @@ struct Config {
 
     // If true, diagnostics from a full document parse will be reported.
     bool onParse = true;
-
-    std::vector<std::string> whitelist;
-  } diagnostics;
+  };
+  Diagnostics diagnostics;
 
   // Semantic highlighting
   struct Highlight {
     // Like index.{whitelist,blacklist}, don't publish semantic highlighting to
     // blacklisted files.
     std::vector<std::string> blacklist;
-
     std::vector<std::string> whitelist;
-  } highlight;
+  };
+  Highlight highlight;
 
   struct Index {
     // Attempt to convert calls of make* functions to constructors based on
@@ -201,7 +207,8 @@ struct Config {
     int threads = 0;
 
     std::vector<std::string> whitelist;
-  } index;
+  };
+  Index index;
 
   struct WorkspaceSymbol {
     // Maximum workspace search results.
@@ -210,7 +217,8 @@ struct Config {
     // as the search progresses. Some clients do their own ordering and assume
     // that the results stay sorted in the same order as the search progresses.
     bool sort = true;
-  } workspaceSymbol;
+  };
+  WorkspaceSymbol workspaceSymbol;
 
   // Allow indexing on textDocument/didChange.
   // May be too slow for big projects, so it is off by default.
@@ -221,31 +229,32 @@ struct Config {
     bool container = false;
     // Maximum number of definition/reference/... results.
     int maxNum = 2000;
-  } xref;
+  };
+  Xref xref;
 };
 MAKE_REFLECT_STRUCT(Config::ClientCapability, snippetSupport);
 MAKE_REFLECT_STRUCT(Config::CodeLens, localVariables);
 MAKE_REFLECT_STRUCT(Config::Completion,
                     detailedLabel,
                     filterAndSort,
-                    includeBlacklist,
                     includeMaxPathSize,
                     includeSuffixWhitelist,
+                    includeBlacklist,
                     includeWhitelist);
 MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     blacklist,
+                    whitelist,
                     frequencyMs,
-                    onParse,
-                    whitelist)
+                    onParse)
 MAKE_REFLECT_STRUCT(Config::Highlight, blacklist, whitelist)
 MAKE_REFLECT_STRUCT(Config::Index,
                     attributeMakeCallsToCtor,
                     blacklist,
+                    whitelist,
                     comments,
                     enabled,
                     logSkippedPaths,
-                    threads,
-                    whitelist);
+                    threads);
 MAKE_REFLECT_STRUCT(Config::WorkspaceSymbol, maxNum, sort);
 MAKE_REFLECT_STRUCT(Config::Xref, container, maxNum);
 MAKE_REFLECT_STRUCT(Config,
