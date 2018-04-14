@@ -84,6 +84,7 @@ struct ProjectConfig {
 const std::vector<std::string>& GetSystemIncludes(
     Config* config,
     ProjectConfig* project_config,
+    const std::string& compiler_driver,
     LanguageId language,
     const std::string& working_directory,
     const std::vector<std::string>& flags) {
@@ -137,8 +138,14 @@ const std::vector<std::string>& GetSystemIncludes(
     }
   }
 
+  std::vector<std::string> compiler_drivers = {"clang++", "g++"};
+  if (IsUnixAbsolutePath(compiler_driver) ||
+      IsWindowsAbsolutePath(compiler_driver)) {
+    compiler_drivers.insert(compiler_drivers.begin(), compiler_driver);
+  }
+
   project_config->discovered_system_includes[language] =
-      FindSystemIncludeDirectories("clang++", language_string,
+      FindSystemIncludeDirectories(compiler_drivers, language_string,
                                    working_directory, extra_flags);
   LOG_S(INFO) << "Using system include directory flags\n  "
               << StringJoin(
@@ -396,8 +403,8 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     result.args.push_back("-fparse-all-comments");
   }
 
-  const auto& system_includes =
-      GetSystemIncludes(init_opts, config, lang, entry.directory, result.args);
+  const auto& system_includes = GetSystemIncludes(
+      init_opts, config, compiler_driver, lang, entry.directory, result.args);
   for (const auto& flag : system_includes)
     result.args.push_back(flag);
 

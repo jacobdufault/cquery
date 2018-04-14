@@ -68,23 +68,30 @@ std::vector<std::string> ExtractSystemIncludePaths(
 // Run clang specified by `clang_binary` and return the set of system includes
 // it uses.
 std::vector<std::string> FindSystemIncludeDirectories(
-    const std::string& clang_binary,
+    const std::vector<std::string>& compiler_drivers,
     const std::string& language,
     const std::string& working_directory,
     const std::vector<std::string>& extra_flags) {
-  std::vector<std::string> flags = {clang_binary,
-                                    "-E",
-                                    "-x",
-                                    language,
-                                    "-",
-                                    "-v",
-                                    "-working-directory=" + working_directory};
-  AddRange(&flags, extra_flags);
+  LOG_S(INFO) << "Using compiler drivers " << StringJoin(compiler_drivers);
+  for (const std::string& compiler_driver : compiler_drivers) {
+    std::vector<std::string> flags = {
+        compiler_driver,
+        "-E",
+        "-x",
+        language,
+        "-",
+        "-v",
+        "-working-directory=" + working_directory};
+    AddRange(&flags, extra_flags);
 
-  LOG_S(INFO) << "Running " << StringJoin(flags, " ");
-  std::string clang_output = GetExternalCommandOutput(flags, "");
-  LOG_S(INFO) << "Output:\n" << Trim(clang_output);
-  return ExtractSystemIncludePaths(clang_output);
+    LOG_S(INFO) << "Running " << StringJoin(flags, " ");
+    std::string clang_output = GetExternalCommandOutput(flags, "");
+    LOG_S(INFO) << "Output:\n" << Trim(clang_output);
+    std::vector<std::string> paths = ExtractSystemIncludePaths(clang_output);
+    if (!paths.empty())
+      return paths;
+  }
+  return {};
 }
 
 TEST_SUITE("System include extraction") {
