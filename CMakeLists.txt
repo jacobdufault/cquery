@@ -4,15 +4,15 @@ project(cquery LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 include(DefaultCMakeBuildType)
 
-# Required libclang version
-set(LIBCLANG_VERSION 6.0.0 CACHE STRING "libclang version")
-set(LIBCLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
-    CACHE STRING "Downloaded libclang location")
-option(SYSTEM_LIBCLANG "Use system installation of libclang instead of \
-       downloading libclang" OFF)
+# Required Clang version
+set(CLANG_VERSION 6.0.0 CACHE STRING "Clang version")
+set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
+    CACHE STRING "Downloaded Clang location")
+option(SYSTEM_CLANG "Use system installation of Clang instead of \
+       downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
-option(LIBCLANG_CXX "Build with libclang C++ api required by some cquery \
-features (warning: not available in libclang downloads for Windows)" OFF)
+option(CLANG_CXX "Build with Clang C++ api required by some cquery \
+features (warning: not available in Clang downloads for Windows)" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -67,7 +67,7 @@ else()
                            $<$<CONFIG:Debug>:-fno-limit-debug-info>)
   endif()
 
-  if(LIBCLANG_CXX)
+  if(CLANG_CXX)
     # -Wno-comment: include/clang/Format/Format.h error: multi-line comment
     # -fno-rtti: # Without -fno-rtti, some Clang C++ functions may report
     # `undefined references to typeinfo`
@@ -81,24 +81,23 @@ else()
   endif()
 endif()
 
-### Download libclang if required
+### Download Clang if required
 
-if(NOT SYSTEM_LIBCLANG)
-  message(STATUS "Using downloaded libclang")
+if(NOT SYSTEM_CLANG)
+  message(STATUS "Using downloaded Clang")
 
   include(DownloadAndExtractClang)
-  download_and_extract_clang(${LIBCLANG_VERSION} ${LIBCLANG_DOWNLOAD_LOCATION})
+  download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_LOCATION})
   # Used by FindClang
   set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
 else()
-  message(STATUS "Using system libclang")
+  message(STATUS "Using system Clang")
 endif()
 
 ### Libraries
 
-set(CLANG_CXX ${LIBCLANG_CXX})
 # See cmake/FindClang.cmake
-find_package(Clang ${LIBCLANG_VERSION} REQUIRED)
+find_package(Clang ${CLANG_VERSION} REQUIRED)
 target_link_libraries(cquery PRIVATE Clang::Clang)
 
 # Enable threading support
@@ -122,7 +121,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   target_link_libraries(cquery PRIVATE Psapi)
 endif()
 
-if(LIBCLANG_CXX)
+if(CLANG_CXX)
   # Clang C++ api uses ncurses
   find_package(Curses REQUIRED)
   target_link_libraries(cquery PRIVATE ${CURSES_LIBRARIES})
@@ -136,7 +135,7 @@ target_compile_definitions(cquery PRIVATE
                            LOGURU_THREADNAME_WIDTH=13
                            DEFAULT_RESOURCE_DIRECTORY="${Clang_RESOURCE_DIR}")
 
-if(LIBCLANG_CXX)
+if(CLANG_CXX)
   target_compile_definitions(cquery PRIVATE USE_CLANG_CXX=1 LOGURU_RTTI=0)
 endif()
 
@@ -155,8 +154,8 @@ target_include_directories(cquery PRIVATE
 
 install(TARGETS cquery RUNTIME DESTINATION bin)
 
-# Install cquery-clang, cquery-clang-format when not using system clang.
-if(NOT SYSTEM_LIBCLANG)
+# Install cquery-clang, cquery-clang-format when not using system Clang.
+if(NOT SYSTEM_CLANG)
   # When installing files the .exe suffix needs to be added on Windows.
   if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
     set(EXE ".exe")
@@ -193,7 +192,7 @@ if(NOT SYSTEM_LIBCLANG)
 endif()
 
 # TODO: install libclang.dll on Windows as well
-if(NOT SYSTEM_LIBCLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
   if(${CMAKE_SYSTEM_NAME} MATCHES Linux|FreeBSD)
     set_property(TARGET cquery APPEND PROPERTY
@@ -209,7 +208,7 @@ if(NOT SYSTEM_LIBCLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 endif()
 
 # Allow running from build Windows by copying libclang.dll to build directory
-if(NOT SYSTEM_LIBCLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+if(NOT SYSTEM_CLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   add_custom_command(TARGET cquery
                      POST_BUILD
                      COMMAND ${CMAKE_COMMAND} -E copy
