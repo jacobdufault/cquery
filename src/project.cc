@@ -142,7 +142,9 @@ std::vector<std::string> FindSystemIncludeDirectories(
                                     "-working-directory=" + working_directory};
   AddRange(&flags, extra_flags);
 
+  LOG_S(INFO) << "Running " << StringJoin(flags, " ");
   std::string clang_output = GetExternalCommandOutput(flags, "");
+  LOG_S(INFO) << "Output:\n" << Trim(clang_output);
   return ExtractSystemIncludePaths(clang_output);
 }
 
