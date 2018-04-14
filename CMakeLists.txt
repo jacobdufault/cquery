@@ -6,7 +6,7 @@ include(DefaultCMakeBuildType)
 
 # Required libclang version
 set(LIBCLANG_VERSION 6.0.0 CACHE STRING "libclang version")
-set(LIBCLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR} 
+set(LIBCLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
     CACHE STRING "Downloaded libclang location")
 option(SYSTEM_LIBCLANG "Use system installation of libclang instead of \
        downloading libclang" OFF)
@@ -85,7 +85,7 @@ endif()
 
 if(NOT SYSTEM_LIBCLANG)
   message(STATUS "Using downloaded libclang")
-  
+
   include(DownloadAndExtractClang)
   download_and_extract_clang(${LIBCLANG_VERSION} ${LIBCLANG_DOWNLOAD_LOCATION})
   # Used by FindClang
@@ -175,8 +175,8 @@ endif()
 if(NOT SYSTEM_LIBCLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   add_custom_command(TARGET cquery
                      POST_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy 
-                     ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll 
+                     COMMAND ${CMAKE_COMMAND} -E copy
+                     ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll
                      $<TARGET_FILE_DIR:cquery>
                      COMMENT "Copying libclang.dll to build directory ...")
 endif()
@@ -204,7 +204,7 @@ else()
 support clang-format 6.0.0")
   endif()
 
-  add_custom_target(format 
+  add_custom_target(format
                     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --red --bold
                     ${Clang_FORMAT_ERROR})
 endif()
@@ -220,6 +220,7 @@ target_sources(cquery PRIVATE
                src/clang_format.cc
                src/clang_index.cc
                src/clang_indexer.cc
+               src/clang_system_include_extractor.cc
                src/clang_translation_unit.cc
                src/clang_utils.cc
                src/code_complete_cache.cc
