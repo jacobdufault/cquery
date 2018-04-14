@@ -155,6 +155,43 @@ target_include_directories(cquery PRIVATE
 
 install(TARGETS cquery RUNTIME DESTINATION bin)
 
+# Install cquery-clang, cquery-clang-format when not using system clang.
+if(NOT SYSTEM_LIBCLANG)
+  # When installing files the .exe suffix needs to be added on Windows.
+  if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+    set(EXE ".exe")
+  else()
+    set(EXE "")
+  endif()
+
+  # ${Clang_EXECUTABLE} may be a symlink, resolve it before passing to install.
+  get_filename_component(Clang_EXECUTABLE_REALPATH "${Clang_EXECUTABLE}" REALPATH)
+
+  # Copy cquery-clang, cquery-clang-format to build directory.
+  add_custom_command(TARGET cquery
+                     POST_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E copy
+                     ${Clang_EXECUTABLE_REALPATH}
+                     $<TARGET_FILE_DIR:cquery>/cquery-clang${EXE}
+                     COMMENT "Copying clang (as cquery-clang) to build directory ...")
+  add_custom_command(TARGET cquery
+                     POST_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E copy
+                     ${Clang_FORMAT}
+                     $<TARGET_FILE_DIR:cquery>/cquery-clang-format${EXE}
+                     COMMENT "Copying clang-format (as cquery-clang-format) to build directory ...")
+
+  # Install cquery-clang, cquery-clang-format to install directory.
+  install(FILES "${Clang_EXECUTABLE_REALPATH}"
+          PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
+          DESTINATION bin
+          RENAME "cquery-clang${EXE}")
+  install(FILES "${Clang_FORMAT}"
+          PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
+          DESTINATION bin
+          RENAME "cquery-clang-format${EXE}")
+endif()
+
 # TODO: install libclang.dll on Windows as well
 if(NOT SYSTEM_LIBCLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
