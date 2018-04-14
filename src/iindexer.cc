@@ -13,14 +13,8 @@ struct ClangIndexer : IIndexer {
       const std::vector<std::string>& args,
       const std::vector<FileContents>& file_contents,
       PerformanceImportFile* perf) override {
-    bool dump_ast = false;
-    for (const std::string& pattern : config->dumpAST)
-      if (file.find(pattern) != std::string::npos) {
-        dump_ast = true;
-        break;
-      }
     return Parse(config, file_consumer_shared, file, args, file_contents, perf,
-                 &index, dump_ast);
+                 &index, false /*dump_ast*/);
   }
 
   // Note: constructing this acquires a global lock

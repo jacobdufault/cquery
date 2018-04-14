@@ -17,7 +17,7 @@ cquery_diagnostics.log
 cquery_log.txt
 Debug
 e2e_cache
-foo
+foo*
 libcxx
 vscode-extension.vsix
 waf-*

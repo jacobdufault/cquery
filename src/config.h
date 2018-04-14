@@ -169,7 +169,7 @@ struct Config {
 
   struct Index {
     // Attempt to convert calls of make* functions to constructors based on
-    // hueristics.
+    // heuristics.
     //
     // For example, this will show constructor calls for std::make_unique
     // invocations. Specifically, cquery will try to attribute a ctor call
@@ -222,11 +222,6 @@ struct Config {
     // Maximum number of definition/reference/... results.
     int maxNum = 2000;
   } xref;
-
-  //// For debugging
-
-  // Dump AST after parsing if some pattern matches the source filename.
-  std::vector<std::string> dumpAST;
 };
 MAKE_REFLECT_STRUCT(Config::ClientCapability, snippetSupport);
 MAKE_REFLECT_STRUCT(Config::CodeLens, localVariables);
@@ -277,9 +272,7 @@ MAKE_REFLECT_STRUCT(Config,
                     workspaceSymbol,
                     xref,
 
-                    enableIndexOnDidChange,
-
-                    dumpAST);
+                    enableIndexOnDidChange);
 
 // Expected client version. We show an error if this doesn't match.
 constexpr const int kExpectedClientVersion = 3;
