@@ -1,5 +1,7 @@
 #pragma once
 
+#include "file_types.h"
+
 #include <optional.h>
 #include <string_view.h>
 
@@ -171,3 +173,6 @@ std::string GetDefaultResourceDirectory();
 
 // Makes sure all newlines in |output| are in \r\n format.
 std::string UpdateToRnNewlines(std::string output);
+
+// Get an executable located next to the cquery binary.
+AbsolutePath GetExecutablePathNextToCqueryBinary(const std::string& name);

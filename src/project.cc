@@ -137,7 +137,8 @@ const std::vector<std::string>& GetSystemIncludes(
     }
   }
 
-  std::vector<std::string> compiler_drivers = {"clang++", "g++"};
+  std::vector<std::string> compiler_drivers = {
+      GetExecutablePathNextToCqueryBinary("cquery-clang"), "clang++", "g++"};
   if (IsUnixAbsolutePath(compiler_driver) ||
       IsWindowsAbsolutePath(compiler_driver)) {
     compiler_drivers.insert(compiler_drivers.begin(), compiler_driver);

@@ -455,7 +455,13 @@ std::string UpdateToRnNewlines(std::string output) {
   }
 
   return output;
-};
+}
+
+AbsolutePath GetExecutablePathNextToCqueryBinary(const std::string& name) {
+  std::string executable_path = GetExecutablePath();
+  size_t pos = executable_path.find_last_of('/');
+  return AbsolutePath(executable_path.substr(0, pos + 1) + name);
+}
 
 TEST_SUITE("GetDirName") {
   TEST_CASE("all") {

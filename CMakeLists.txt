@@ -148,20 +148,6 @@ if(NOT SYSTEM_CLANG)
   # ${Clang_EXECUTABLE} may be a symlink, resolve it before passing to install.
   get_filename_component(Clang_EXECUTABLE_REALPATH "${Clang_EXECUTABLE}" REALPATH)
 
-  # Copy cquery-clang, cquery-clang-format to build directory.
-  add_custom_command(TARGET cquery
-                     POST_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy
-                     ${Clang_EXECUTABLE_REALPATH}
-                     $<TARGET_FILE_DIR:cquery>/cquery-clang${EXE}
-                     COMMENT "Copying clang (as cquery-clang) to build directory ...")
-  add_custom_command(TARGET cquery
-                     POST_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy
-                     ${Clang_FORMAT}
-                     $<TARGET_FILE_DIR:cquery>/cquery-clang-format${EXE}
-                     COMMENT "Copying clang-format (as cquery-clang-format) to build directory ...")
-
   # Install cquery-clang, cquery-clang-format to install directory.
   install(FILES "${Clang_EXECUTABLE_REALPATH}"
           PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
@@ -171,6 +157,26 @@ if(NOT SYSTEM_CLANG)
           PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
           DESTINATION bin
           RENAME "cquery-clang-format${EXE}")
+
+
+  #
+  # cquery-clang will search for these directories to resolve system includes.
+  # We need to install them.
+  #
+  #  - (which cquery-clang)/../include/c++/v1
+  #  - (which cquery-clang)/../lib/clang/6.0.0/include   (or current clang version)
+  #
+
+  # lib/clang/*/include changes with the version, ie, lib/clang/6.0.0/include.
+  # Find the current value for * and then remove the ${DOWNLOADED_CLANG_DIR}
+  # prefix.
+  file(GLOB CLANG_INCLUDE_DIR "${DOWNLOADED_CLANG_DIR}/lib/clang/*/include/")
+  string(REPLACE "${DOWNLOADED_CLANG_DIR}/" "" CLANG_INCLUDE_DIR "${CLANG_INCLUDE_DIR}")
+
+  install(DIRECTORY "${DOWNLOADED_CLANG_DIR}/include/c++/v1/"
+          DESTINATION include/c++/v1)
+  install(DIRECTORY "${DOWNLOADED_CLANG_DIR}/${CLANG_INCLUDE_DIR}/"
+          DESTINATION "${CLANG_INCLUDE_DIR}")
 endif()
 
 # TODO: install libclang.dll on Windows as well
