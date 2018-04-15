@@ -9,6 +9,10 @@
 
 // Utility method to map |position| to an offset inside of |content|.
 int GetOffsetForPosition(lsPosition position, std::string_view content);
+
+// Finds the position for an |offset| in |content|.
+lsPosition GetPositionForOffset(int offset, std::string_view content);
+
 // Utility method to find a position for the given character.
 lsPosition CharPos(std::string_view search,
                    char character,

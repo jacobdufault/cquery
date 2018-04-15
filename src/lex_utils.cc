@@ -12,7 +12,7 @@
 int GetOffsetForPosition(lsPosition position, std::string_view content) {
   size_t i = 0;
   // Iterate lines until we have found the correct line.
-  while (position.line > 0 && i< content.size()) {
+  while (position.line > 0 && i < content.size()) {
     if (content[i] == '\n')
       position.line--;
     i++;
@@ -28,6 +28,19 @@ int GetOffsetForPosition(lsPosition position, std::string_view content) {
     position.character--;
   }
   return int(i);
+}
+
+lsPosition GetPositionForOffset(int offset, std::string_view content) {
+  lsPosition result;
+  for (int i = 0; i < offset && i < content.length(); ++i) {
+    if (content[i] == '\n') {
+      result.line++;
+      result.character = 0;
+    } else {
+      result.character++;
+    }
+  }
+  return result;
 }
 
 lsPosition CharPos(std::string_view search,
@@ -223,6 +236,36 @@ TEST_SUITE("Offset") {
   TEST_CASE("at end of content") {
     REQUIRE(GetOffsetForPosition(lsPosition(0, 0), "") == 0);
     REQUIRE(GetOffsetForPosition(lsPosition(0, 1), "a") == 1);
+  }
+}
+
+TEST_SUITE("offset") {
+  TEST_CASE("some") {
+    REQUIRE(GetPositionForOffset(0, "012345\n012345") == lsPosition(0, 0));
+    REQUIRE(GetPositionForOffset(1, "012345\n012345") == lsPosition(0, 1));
+    REQUIRE(GetPositionForOffset(2, "012345\n012345") == lsPosition(0, 2));
+    REQUIRE(GetPositionForOffset(3, "012345\n012345") == lsPosition(0, 3));
+    REQUIRE(GetPositionForOffset(4, "012345\n012345") == lsPosition(0, 4));
+    REQUIRE(GetPositionForOffset(5, "012345\n012345") == lsPosition(0, 5));
+    REQUIRE(GetPositionForOffset(6, "012345\n012345") == lsPosition(0, 6));
+    REQUIRE(GetPositionForOffset(7, "012345\n012345") == lsPosition(1, 0));
+    REQUIRE(GetPositionForOffset(8, "012345\n012345") == lsPosition(1, 1));
+    REQUIRE(GetPositionForOffset(9, "012345\n012345") == lsPosition(1, 2));
+    REQUIRE(GetPositionForOffset(10, "012345\n012345") == lsPosition(1, 3));
+    REQUIRE(GetPositionForOffset(11, "012345\n012345") == lsPosition(1, 4));
+    REQUIRE(GetPositionForOffset(12, "012345\n012345") == lsPosition(1, 5));
+
+    // Overflow
+    REQUIRE(GetPositionForOffset(13, "012345\n012345") == lsPosition(1, 6));
+    REQUIRE(GetPositionForOffset(100, "012345\n012345") == lsPosition(1, 6));
+  }
+
+  TEST_CASE("overflow") {
+    REQUIRE(GetOffsetForPosition(lsPosition(0, 0), "a") == 0);
+    REQUIRE(GetOffsetForPosition(lsPosition(0, 1), "a") == 1);
+    REQUIRE(GetPositionForOffset(0, "0") == lsPosition(0, 0));
+    REQUIRE(GetPositionForOffset(1, "0") == lsPosition(0, 1));
+    REQUIRE(GetPositionForOffset(5, "0") == lsPosition(0, 1));
   }
 }
 
