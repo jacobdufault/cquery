@@ -11,16 +11,22 @@
 // This is good enough and fails only for UTF-16 surrogate pairs.
 int GetOffsetForPosition(lsPosition position, std::string_view content) {
   size_t i = 0;
-  for (; position.line > 0 && i < content.size(); i++)
+  // Iterate lines until we have found the correct line.
+  while (position.line > 0 && i< content.size()) {
     if (content[i] == '\n')
       position.line--;
-  for (; position.character > 0 && i < content.size(); position.character--)
+    i++;
+  }
+  // Iterate characters on the target line.
+  while (position.character > 0 && i < content.size()) {
     if (uint8_t(content[i++]) >= 128) {
       // Skip 0b10xxxxxx
       while (i < content.size() && uint8_t(content[i]) >= 128 &&
              uint8_t(content[i]) < 192)
         i++;
     }
+    position.character--;
+  }
   return int(i);
 }
 
