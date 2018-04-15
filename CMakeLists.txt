@@ -11,8 +11,6 @@ set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
 option(SYSTEM_CLANG "Use system installation of Clang instead of \
        downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
-option(CLANG_CXX "Build with Clang C++ api required by some cquery \
-features (warning: not available in Clang downloads for Windows)" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -67,13 +65,6 @@ else()
                            $<$<CONFIG:Debug>:-fno-limit-debug-info>)
   endif()
 
-  if(CLANG_CXX)
-    # -Wno-comment: include/clang/Format/Format.h error: multi-line comment
-    # -fno-rtti: # Without -fno-rtti, some Clang C++ functions may report
-    # `undefined references to typeinfo`
-    target_compile_options(cquery PRIVATE -Wno-comment -fno-rtti)
-  endif()
-
   if(ASAN)
     target_compile_options(cquery PRIVATE -fsanitize=address,undefined)
     # target_link_libraries also takes linker flags
@@ -121,12 +112,6 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   target_link_libraries(cquery PRIVATE Psapi)
 endif()
 
-if(CLANG_CXX)
-  # Clang C++ api uses ncurses
-  find_package(Curses REQUIRED)
-  target_link_libraries(cquery PRIVATE ${CURSES_LIBRARIES})
-endif()
-
 ### Definitions
 
 target_compile_definitions(cquery PRIVATE
@@ -134,10 +119,6 @@ target_compile_definitions(cquery PRIVATE
                            LOGURU_FILENAME_WIDTH=18
                            LOGURU_THREADNAME_WIDTH=13
                            DEFAULT_RESOURCE_DIRECTORY="${Clang_RESOURCE_DIR}")
-
-if(CLANG_CXX)
-  target_compile_definitions(cquery PRIVATE USE_CLANG_CXX=1 LOGURU_RTTI=0)
-endif()
 
 ### Includes
 
