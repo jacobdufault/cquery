@@ -1,7 +1,7 @@
 version: "{build}"
 image: Visual Studio 2017
 platform: x64
-configuration: Release
+configuration: Debug
 
 install:
   - git submodule update --init
@@ -22,8 +22,8 @@ build:
   project: cquery.sln
 
 test_script:
-  - .\Release\cquery.exe --ci --log-all-to-stderr --test-unit
-  - .\Release\cquery.exe --ci --log-all-to-stderr --test-index
+  - .\Debug\cquery.exe --ci --log-all-to-stderr --test-unit
+  - .\Debug\cquery.exe --ci --log-all-to-stderr --test-index
 
 cache:
   - C:\projects\cquery\build\LLVM-6.0.0-win64\
