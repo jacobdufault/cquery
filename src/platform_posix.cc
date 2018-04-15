@@ -286,8 +286,8 @@ void TraceMe() {
     raise(SIGTSTP);
 }
 
-std::string RunExecutable(const std::vector<std::string>& command,
-                          std::string_view input) {
+optional<std::string> RunExecutable(const std::vector<std::string>& command,
+                                    std::string_view input) {
   // See https://stackoverflow.com/a/12839498
   constexpr int kPipeRead = 0;
   constexpr int kPipeWrite = 1;
@@ -296,13 +296,13 @@ std::string RunExecutable(const std::vector<std::string>& command,
   int pipe_stdin[2], pipe_stdout[2];
   if (pipe(pipe_stdin) < 0) {
     perror("pipe(pipe_stdin)");
-    return "";
+    return nullopt;
   }
   if (pipe(pipe_stdout) < 0) {
     perror("pipe(pipe_stdout)");
     close(pipe_stdin[kPipeRead]);
     close(pipe_stdin[kPipeWrite]);
-    return "";
+    return nullopt;
   }
 
   pid_t child = fork();
@@ -341,7 +341,7 @@ std::string RunExecutable(const std::vector<std::string>& command,
       write(pipe_stdin[kPipeWrite], input.data(), input.size());
   if (bytes_written != input.size()) {
     perror("Not all input written");
-    return "";
+    return nullopt;
   }
   close(pipe_stdin[kPipeWrite]);
 

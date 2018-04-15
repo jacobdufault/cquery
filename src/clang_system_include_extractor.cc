@@ -85,9 +85,12 @@ std::vector<std::string> FindSystemIncludeDirectories(
     AddRange(&flags, extra_flags);
 
     LOG_S(INFO) << "Running " << StringJoin(flags, " ");
-    std::string clang_output = RunExecutable(flags, "");
-    LOG_S(INFO) << "Output:\n" << Trim(clang_output);
-    std::vector<std::string> paths = ExtractSystemIncludePaths(clang_output);
+    optional<std::string> clang_output = RunExecutable(flags, "");
+    if (!clang_output || clang_output->empty())
+      continue;
+
+    LOG_S(INFO) << "Output:\n" << Trim(*clang_output);
+    std::vector<std::string> paths = ExtractSystemIncludePaths(*clang_output);
     if (!paths.empty())
       return paths;
   }

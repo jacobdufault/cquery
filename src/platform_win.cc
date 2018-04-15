@@ -206,8 +206,8 @@ bool RunObjectiveCIndexTests() {
 // TODO Wait for debugger to attach
 void TraceMe() {}
 
-std::string RunExecutable(const std::vector<std::string>& command,
-                          std::string_view input) {
+optional<std::string> RunExecutable(const std::vector<std::string>& command,
+                                    std::string_view input) {
   // FIXME: quote the first argument of command if it is not quoted and it
   // contains spaces
 
@@ -227,22 +227,22 @@ std::string RunExecutable(const std::vector<std::string>& command,
   if (!CreatePipe(&handle_child_stdout_read, &handle_child_stdout_write,
                   &saAttr, 0)) {
     EmitError("CreatePipe");
-    return "";
+    return nullopt;
   }
   // Ensure the read handle to the pipe for STDOUT is not inherited.
   if (!SetHandleInformation(handle_child_stdout_read, HANDLE_FLAG_INHERIT, 0)) {
     EmitError("SetHandleInformation handle_child_stdout_read");
-    return "";
+    return nullopt;
   }
   if (!CreatePipe(&handle_child_stdin_read, &handle_child_stdin_write, &saAttr,
                   0)) {
     EmitError("CreatePipe");
-    return "";
+    return nullopt;
   }
   // Ensure the write handle to the pipe for STDIN is not inherited.
   if (!SetHandleInformation(handle_child_stdin_write, HANDLE_FLAG_INHERIT, 0)) {
     EmitError("SetHandleInformation handle_child_stdin_write");
-    return "";
+    return nullopt;
   }
 
   // Create a child process that uses the previously created pipes for STDIN and
@@ -270,7 +270,7 @@ std::string RunExecutable(const std::vector<std::string>& command,
                     &proc_info);  // receives PROCESS_INFORMATION
   if (!success) {
     EmitError("CreateProcess");
-    return "";
+    return nullopt;
   }
 
   // Write the the child stdin.
@@ -282,7 +282,7 @@ std::string RunExecutable(const std::vector<std::string>& command,
                              &written, nullptr);
     if (!success) {
       EmitError("WriteFile");
-      return "";
+      return nullopt;
     }
     remaining -= written;
   }
@@ -290,7 +290,7 @@ std::string RunExecutable(const std::vector<std::string>& command,
   // child may block indefinately since it thinks it may have more input.
   if (!CloseHandle(handle_child_stdin_write)) {
     EmitError("CloseHandle handle_child_stdin_write");
-    return "";
+    return nullopt;
   }
 
   // Read all of the content in the child stdout pipe.

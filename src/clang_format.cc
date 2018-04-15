@@ -85,13 +85,13 @@ std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
       args.push_back("-length=" + std::to_string(*end_offset - *start_offset));
     }
 
-    std::string output = RunExecutable(args, file_contents);
-    if (output.empty())
+    optional<std::string> output = RunExecutable(args, file_contents);
+    if (!output || output->empty())
       continue;
     // Do not check if replacements is empty, since that may happen if there are
     // no formatting changes.
     std::vector<Replacement> replacements =
-        ParseClangFormatReplacements(output);
+        ParseClangFormatReplacements(*output);
     return ConvertReplacementsToTextEdits(file_contents, replacements);
   }
   return {};

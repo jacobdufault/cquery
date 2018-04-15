@@ -57,5 +57,5 @@ bool RunObjectiveCIndexTests();
 // Stop self and wait for SIGCONT.
 void TraceMe();
 
-std::string RunExecutable(const std::vector<std::string>& command,
-                          std::string_view input);
+optional<std::string> RunExecutable(const std::vector<std::string>& command,
+                                    std::string_view input);
