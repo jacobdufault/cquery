@@ -4,7 +4,7 @@
 #include "indexer.h"
 
 optional<int64_t> TimestampManager::GetLastCachedModificationTime(
-    ICacheManager* cache_manager,
+    IndexCache* cache_manager,
     const std::string& path) {
   {
     std::lock_guard<std::mutex> guard(mutex_);
@@ -12,7 +12,7 @@ optional<int64_t> TimestampManager::GetLastCachedModificationTime(
     if (it != timestamps_.end())
       return it->second;
   }
-  IndexFile* file = cache_manager->TryLoad(path);
+  IndexFile* file = cache_manager->TryLoad(NormalizedPath(path));
   if (!file)
     return nullopt;
 

@@ -4,6 +4,8 @@
 
 #include <string>
 
+struct ICacheStore;
+
 /*
 The language client plugin needs to send initialization options in the
 `initialize` request to the cquery language server. The only required option is
@@ -35,6 +37,9 @@ struct Config {
 
   // Cache directory for indexed files.
   std::string cacheDirectory;
+
+  std::string cacheType = "unqlite";
+  std::shared_ptr<ICacheStore> cacheStore;
 
   // Cache serialization format.
   //
@@ -272,6 +277,7 @@ MAKE_REFLECT_STRUCT(Config,
                     compilationDatabaseCommand,
                     compilationDatabaseDirectory,
                     cacheDirectory,
+                    cacheType,
                     cacheFormat,
                     resourceDirectory,
 

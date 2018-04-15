@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(cquery LANGUAGES CXX)
+project(cquery LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 include(DefaultCMakeBuildType)
@@ -86,6 +86,10 @@ else()
 endif()
 
 ### Libraries
+
+# unqlite
+add_subdirectory(third_party/unqlite)
+target_link_libraries(cquery PRIVATE unqlite)
 
 # See cmake/FindClang.cmake
 find_package(Clang ${CLANG_VERSION} REQUIRED)

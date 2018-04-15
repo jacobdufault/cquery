@@ -7,7 +7,7 @@
 
 #include <memory>
 
-struct ICacheManager;
+struct IndexCache;
 struct lsBaseOutMessage;
 
 struct Stdout_Request {
@@ -21,21 +21,21 @@ struct Index_Request {
   std::vector<std::string> args;
   bool is_interactive;
   std::string contents;  // Preloaded contents.
-  std::shared_ptr<ICacheManager> cache_manager;
+  std::shared_ptr<IndexCache> cache_manager;
   lsRequestId id;
 
   Index_Request(const std::string& path,
                 const std::vector<std::string>& args,
                 bool is_interactive,
                 const std::string& contents,
-                const std::shared_ptr<ICacheManager>& cache_manager,
+                const std::shared_ptr<IndexCache>& cache_manager,
                 lsRequestId id = {});
 };
 
 struct Index_DoIdMap {
   std::unique_ptr<IndexFile> current;
   std::unique_ptr<IndexFile> previous;
-  std::shared_ptr<ICacheManager> cache_manager;
+  std::shared_ptr<IndexCache> cache_manager;
 
   PerformanceImportFile perf;
   bool is_interactive = false;
@@ -43,7 +43,7 @@ struct Index_DoIdMap {
   bool load_previous = false;
 
   Index_DoIdMap(std::unique_ptr<IndexFile> current,
-                const std::shared_ptr<ICacheManager>& cache_manager,
+                const std::shared_ptr<IndexCache>& cache_manager,
                 PerformanceImportFile perf,
                 bool is_interactive,
                 bool write_to_disk);
@@ -59,13 +59,13 @@ struct Index_OnIdMapped {
 
   std::unique_ptr<File> previous;
   std::unique_ptr<File> current;
-  std::shared_ptr<ICacheManager> cache_manager;
+  std::shared_ptr<IndexCache> cache_manager;
 
   PerformanceImportFile perf;
   bool is_interactive;
   bool write_to_disk;
 
-  Index_OnIdMapped(const std::shared_ptr<ICacheManager>& cache_manager,
+  Index_OnIdMapped(const std::shared_ptr<IndexCache>& cache_manager,
                    PerformanceImportFile perf,
                    bool is_interactive,
                    bool write_to_disk);

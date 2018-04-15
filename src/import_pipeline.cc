@@ -149,7 +149,7 @@ ShouldParse FileNeedsParse(
     TimestampManager* timestamp_manager,
     IModificationTimestampFetcher* modification_timestamp_fetcher,
     ImportManager* import_manager,
-    const std::shared_ptr<ICacheManager>& cache_manager,
+    const std::shared_ptr<IndexCache>& cache_manager,
     IndexFile* opt_previous_index,
     const AbsolutePath& path,
     const std::vector<std::string>& args,
@@ -212,13 +212,13 @@ CacheLoadResult TryLoadFromCache(
     TimestampManager* timestamp_manager,
     IModificationTimestampFetcher* modification_timestamp_fetcher,
     ImportManager* import_manager,
-    const std::shared_ptr<ICacheManager>& cache_manager,
+    const std::shared_ptr<IndexCache>& cache_manager,
     bool is_interactive,
     const Project::Entry& entry,
     const AbsolutePath& path_to_index) {
   // Always run this block, even if we are interactive, so we can check
   // dependencies and reset files in |file_consumer_shared|.
-  IndexFile* previous_index = cache_manager->TryLoad(path_to_index);
+  IndexFile* previous_index = cache_manager->TryLoad(NormalizedPath{path_to_index});
   if (!previous_index)
     return CacheLoadResult::Parse;
 
@@ -269,7 +269,7 @@ CacheLoadResult TryLoadFromCache(
   PerformanceImportFile perf;
 
   std::vector<Index_DoIdMap> result;
-  result.push_back(Index_DoIdMap(cache_manager->TakeOrLoad(path_to_index),
+  result.push_back(Index_DoIdMap(cache_manager->TryTakeOrLoad(NormalizedPath{path_to_index}),
                                  cache_manager, perf, is_interactive,
                                  false /*write_to_disk*/));
   for (const AbsolutePath& dependency : previous_index->dependencies) {
@@ -284,7 +284,7 @@ CacheLoadResult TryLoadFromCache(
                 << previous_index->path << ")";
 
     std::unique_ptr<IndexFile> dependency_index =
-        cache_manager->TryTakeOrLoad(dependency);
+        cache_manager->TryTakeOrLoad(NormalizedPath{dependency});
 
     // |dependency_index| may be null if there is no cache for it but
     // another file has already started importing it.
@@ -301,7 +301,7 @@ CacheLoadResult TryLoadFromCache(
 }
 
 std::vector<FileContents> PreloadFileContents(
-    const std::shared_ptr<ICacheManager>& cache_manager,
+    const std::shared_ptr<IndexCache>& cache_manager,
     const Project::Entry& entry,
     const std::string& entry_contents,
     const AbsolutePath& path_to_index) {
@@ -365,7 +365,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // FIXME: don't use absolute path
   AbsolutePath path_to_index = entry.filename;
   if (entry.is_inferred) {
-    IndexFile* entry_cache = request.cache_manager->TryLoad(entry.filename);
+    IndexFile* entry_cache = request.cache_manager->TryLoad(NormalizedPath{entry.filename});
     if (entry_cache)
       path_to_index = entry_cache->import_file;
   }
@@ -476,7 +476,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
       LOG_S(INFO) << "Writing cached index to disk for "
                   << response->current->file->path;
       time.Reset();
-      response->cache_manager->WriteToCache(*response->current->file);
+      response->cache_manager->Write(*response->current->file);
       response->perf.index_save_to_disk = time.ElapsedMicrosecondsAndReset();
       timestamp_manager->UpdateCachedModificationTime(
           response->current->file->path,
@@ -521,7 +521,7 @@ bool IndexMain_LoadPreviousIndex() {
     return false;
 
   response->previous =
-      response->cache_manager->TryTakeOrLoad(response->current->path);
+      response->cache_manager->TryTakeOrLoad(NormalizedPath{response->current->path});
   LOG_IF_S(ERROR, !response->previous)
       << "Unable to load previous index for already imported index "
       << response->current->path;
@@ -584,7 +584,7 @@ void IndexWithTuFromCodeCompletion(
   for (std::unique_ptr<IndexFile>& new_index : *indexes) {
     Timer time;
 
-    std::shared_ptr<ICacheManager> cache_manager;
+    std::shared_ptr<IndexCache> cache_manager;
     assert(false && "FIXME cache_manager");
     // When main thread does IdMap request it will request the previous index if
     // needed.
@@ -782,7 +782,7 @@ TEST_SUITE("ImportPipeline") {
       QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
 
       queue = QueueManager::instance();
-      cache_manager = ICacheManager::MakeFake({});
+      //cache_manager = IndexCache::MakeFake({});
       indexer = IIndexer::MakeTestIndexer({});
       diag_engine.Init();
     }
@@ -813,7 +813,7 @@ TEST_SUITE("ImportPipeline") {
     TimestampManager timestamp_manager;
     FakeModificationTimestampFetcher modification_timestamp_fetcher;
     ImportManager import_manager;
-    std::shared_ptr<ICacheManager> cache_manager;
+    std::shared_ptr<IndexCache> cache_manager;
     std::unique_ptr<IIndexer> indexer;
   };
 

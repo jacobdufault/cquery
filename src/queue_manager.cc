@@ -11,7 +11,7 @@ Index_Request::Index_Request(
     const std::vector<std::string>& args,
     bool is_interactive,
     const std::string& contents,
-    const std::shared_ptr<ICacheManager>& cache_manager,
+    const std::shared_ptr<IndexCache>& cache_manager,
     lsRequestId id)
     : path(path),
       args(args),
@@ -22,7 +22,7 @@ Index_Request::Index_Request(
 
 Index_DoIdMap::Index_DoIdMap(
     std::unique_ptr<IndexFile> current,
-    const std::shared_ptr<ICacheManager>& cache_manager,
+    const std::shared_ptr<IndexCache>& cache_manager,
     PerformanceImportFile perf,
     bool is_interactive,
     bool write_to_disk)
@@ -39,7 +39,7 @@ Index_OnIdMapped::File::File(std::unique_ptr<IndexFile> file,
     : file(std::move(file)), ids(std::move(ids)) {}
 
 Index_OnIdMapped::Index_OnIdMapped(
-    const std::shared_ptr<ICacheManager>& cache_manager,
+    const std::shared_ptr<IndexCache>& cache_manager,
     PerformanceImportFile perf,
     bool is_interactive,
     bool write_to_disk)

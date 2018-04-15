@@ -15,6 +15,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "platform.h"
+
 // TODO: Make all copy constructors explicit.
 
 namespace {
@@ -742,7 +744,7 @@ std::string IndexUpdate::ToString() {
 }
 
 NormalizedPath::NormalizedPath(const std::string& path)
-    : path(LowerPathIfCaseInsensitive(path)) {}
+    : path(*NormalizePath(path)) {}
 
 bool NormalizedPath::operator==(const NormalizedPath& rhs) const {
   return path == rhs.path;
