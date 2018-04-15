@@ -1,9 +1,12 @@
 #include "clang_format.h"
 #include "message_handler.h"
+#include "platform.h"
 #include "queue_manager.h"
 #include "working_files.h"
 
+#include <doctest/doctest.h>
 #include <loguru.hpp>
+#include <pugixml.hpp>
 
 namespace {
 MethodType kMethodType = "textDocument/formatting";
@@ -33,27 +36,11 @@ struct Handler_TextDocumentFormatting
   void Run(In_TextDocumentFormatting* request) override {
     Out_TextDocumentFormatting response;
     response.id = request->id;
-#if USE_CLANG_CXX
-    QueryFile* file;
-    if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file)) {
-      return;
-    }
 
-    WorkingFile* working_file =
-        working_files->GetFileByFilename(file->def->path);
-
-    response.result = ConvertClangReplacementsIntoTextEdits(
-        working_file->buffer_content,
-        ClangFormatDocument(working_file, 0,
-                            working_file->buffer_content.size(),
-                            request->params.options));
-#else
-    LOG_S(WARNING) << "You must compile cquery with --use-clang-cxx to use "
-                      "textDocument/formatting.";
-    // TODO: Fallback to execute the clang-format binary?
-    response.result = {};
-#endif
+    WorkingFile* working_file = working_files->GetFileByFilename(
+        request->params.textDocument.uri.GetPath());
+    response.result =
+        RunClangFormat(working_file->filename, working_file->buffer_content);
 
     QueueManager::WriteStdout(kMethodType, response);
   }

@@ -158,7 +158,7 @@ struct lsServerCapabilities {
   // The server provides code lens.
   lsCodeLensOptions codeLensProvider;
   // The server provides document formatting.
-  bool documentFormattingProvider = false;
+  bool documentFormattingProvider = true;
   // The server provides document range formatting.
   bool documentRangeFormattingProvider = false;
   // The server provides document formatting on typing.
@@ -587,7 +587,6 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       // true;
 
 #if USE_CLANG_CXX
-      out.result.capabilities.documentFormattingProvider = true;
       out.result.capabilities.documentRangeFormattingProvider = true;
 #endif
 

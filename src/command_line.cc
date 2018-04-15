@@ -373,6 +373,12 @@ void LanguageServerMain(const std::string& bin_name,
 }
 
 int main(int argc, char** argv) {
+  // `clang-format` will not output anything if PATH is not set.
+  if (!getenv("PATH")) {
+    LOG_S(WARNING) << "The \"PATH\" environment variable is not set. "
+                   << "Formatting will not work.";
+  }
+
   g_config = new Config();
 
   TraceMe();

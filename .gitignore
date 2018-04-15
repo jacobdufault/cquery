@@ -12,7 +12,7 @@
 *.vcxproj.filters
 *.vcxproj.user
 **/*.pyc
-build
+build*
 cquery_diagnostics.log
 cquery_log.txt
 Debug

@@ -1,117 +1,146 @@
-#if USE_CLANG_CXX
-
 #include "clang_format.h"
-#include "working_files.h"
+
+#include "lex_utils.h"
+#include "platform.h"
+#include "utils.h"
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
-
-using namespace clang;
-using clang::format::FormatStyle;
+#include <pugixml.hpp>
 
 namespace {
 
-// TODO Objective-C 'header/interface' files may use .h, we should get this from
-// project information.
-FormatStyle::LanguageKind getLanguageKindFromFilename(
-    llvm::StringRef filename) {
-  if (filename.endswith(".m") || filename.endswith(".mm")) {
-    return FormatStyle::LK_ObjC;
+struct Replacement {
+  int offset = 0;
+  int length = 0;
+  std::string text;
+};
+
+// Parses the output of `clang-format -output-replacements-xml`.
+std::vector<Replacement> ParseClangFormatReplacements(const std::string& xml) {
+  //
+  // Output looks like this:
+  //
+  //   <?xml version='1.0'?>
+  //   <replacements xml:space='preserve' incomplete_format='false'>
+  //   <replacement offset='780' length='82'>abc</replacement>
+  //   <replacement offset='1448' length='0'>def</replacement>
+  //   </replacements>
+  //
+  std::vector<Replacement> result;
+
+  pugi::xml_document doc;
+  unsigned int flags = pugi::parse_default;
+  // parse the space in <replacement>  </replacement>
+  flags |= pugi::parse_ws_pcdata_single;
+  doc.load_string(xml.c_str(), flags);
+  for (auto child : doc.child("replacements").children("replacement")) {
+    Replacement r;
+    r.offset = child.attribute("offset").as_int();
+    r.length = child.attribute("length").as_int();
+    r.text = child.text().as_string();
+    result.push_back(r);
   }
-  return FormatStyle::LK_Cpp;
+
+  return result;
+}
+
+std::vector<lsTextEdit> ConvertReplacementsToTextEdits(
+    const std::string& document,
+    const std::vector<Replacement>& replacements) {
+  std::vector<lsTextEdit> edits;
+  for (const Replacement& replacement : replacements) {
+    lsTextEdit edit;
+    edit.range.start = GetPositionForOffset(replacement.offset, document);
+    edit.range.end =
+        GetPositionForOffset(replacement.offset + replacement.length, document);
+    edit.newText = replacement.text;
+    LOG_S(INFO) << "Text edit from " << edit.range.start.ToString() << " to "
+                << edit.range.end.ToString() << " with text |" << edit.newText
+                << "|";
+    edits.push_back(edit);
+  }
+  return edits;
 }
 
 }  // namespace
 
-std::vector<tooling::Replacement> ClangFormatDocument(
-    WorkingFile* working_file,
-    int start,
-    int end,
-    lsFormattingOptions options) {
-  const auto language_kind =
-      getLanguageKindFromFilename(working_file->filename);
-  FormatStyle predefined_style;
-  getPredefinedStyle("chromium", language_kind, &predefined_style);
-  llvm::Expected<FormatStyle> style =
-      format::getStyle("file", working_file->filename, "chromium");
-  if (!style) {
-    // If, for some reason, we cannot get a format style, use Chromium's with
-    // tab configuration provided by the client editor.
-    LOG_S(ERROR) << llvm::toString(style.takeError());
-    predefined_style.UseTab = options.insertSpaces
-                                  ? FormatStyle::UseTabStyle::UT_Never
-                                  : FormatStyle::UseTabStyle::UT_Always;
-    predefined_style.IndentWidth = options.tabSize;
+std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
+                                       const std::string& file_contents) {
+  std::vector<std::string> clang_format_drivers = {"clang-format"};
+  for (const std::string& clang_format_driver : clang_format_drivers) {
+    std::vector<std::string> args = {clang_format_driver,
+                                     "-output-replacements-xml",
+                                     "-assume-filename", filename};
+    LOG_S(INFO) << "Running " << StringJoin(args, " ");
+    std::string output = GetExternalCommandOutput(args, file_contents);
+    LOG_S(INFO) << "stdin:\n" << file_contents;
+    LOG_S(INFO) << "stdout\n" << output;
+    if (output.empty())
+      continue;
+    // Do not check if replacements is empty, since that may happen if there are
+    // no formatting changes.
+    std::vector<Replacement> replacements =
+        ParseClangFormatReplacements(output);
+    return ConvertReplacementsToTextEdits(file_contents, replacements);
   }
-
-  auto format_result = reformat(
-      style ? *style : predefined_style, working_file->buffer_content,
-      llvm::ArrayRef<tooling::Range>(tooling::Range(start, end - start)),
-      working_file->filename);
-  return std::vector<tooling::Replacement>(format_result.begin(),
-                                           format_result.end());
+  return {};
 }
 
-TEST_SUITE("ClangFormat") {
-  TEST_CASE("entireDocument") {
-    const std::string sample_document = "int main() { int *i = 0; return 0; }";
-    WorkingFile* file = new WorkingFile("foo.cc", sample_document);
-    lsFormattingOptions formatting_options;
-    formatting_options.insertSpaces = true;
-    const auto replacements = ClangFormatDocument(
-        file, 0, sample_document.size(), formatting_options);
+TEST_SUITE("clang-format output parsing") {
+  TEST_CASE("correct output") {
+    // clang-format off
+    std::vector<Replacement> replacements = ParseClangFormatReplacements(
+      "<?xml version='1.0'?>"
+      "<replacements xml:space='preserve' incomplete_format='false'>"
+      "<replacement offset='780' length='82'>#include &lt;doctest/doctest.h>&#10;#include &lt;loguru.hpp>&#10;</replacement>"
+      "<replacement offset='1448' length='0'> bar foo </replacement>"
+      "<replacement offset='1449' length='1'>  </replacement>"
+      "<replacement offset='1' length='2'>\t</replacement>"
+      "<replacement offset='1' length='2'> \t </replacement>"
+      "</replacements>");
+    // clang-format on
 
-    // echo "int main() { int *i = 0; return 0; }" | clang-format
-    // -style=Chromium -output-replacements-xml
-    //
-    // <?xml version='1.0'?>
-    // <replacements xml:space='preserve' incomplete_format='false'>
-    // <replacement offset='12' length='1'>&#10;  </replacement>
-    // <replacement offset='16' length='1'></replacement>
-    // <replacement offset='18' length='0'> </replacement>
-    // <replacement offset='24' length='1'>&#10;  </replacement>
-    // <replacement offset='34' length='1'>&#10;</replacement>
-    // </replacements>
+    auto c = [](Replacement r, int offset, int length,
+                const std::string& text) {
+      REQUIRE(r.offset == offset);
+      REQUIRE(r.length == length);
+      REQUIRE(r.text == text);
+    };
 
     REQUIRE(replacements.size() == 5);
-    REQUIRE(replacements[0].getOffset() == 12);
-    REQUIRE(replacements[0].getLength() == 1);
-    REQUIRE(replacements[0].getReplacementText() == "\n  ");
-
-    REQUIRE(replacements[1].getOffset() == 16);
-    REQUIRE(replacements[1].getLength() == 1);
-    REQUIRE(replacements[1].getReplacementText() == "");
-
-    REQUIRE(replacements[2].getOffset() == 18);
-    REQUIRE(replacements[2].getLength() == 0);
-    REQUIRE(replacements[2].getReplacementText() == " ");
-
-    REQUIRE(replacements[3].getOffset() == 24);
-    REQUIRE(replacements[3].getLength() == 1);
-    REQUIRE(replacements[3].getReplacementText() == "\n  ");
-
-    REQUIRE(replacements[4].getOffset() == 34);
-    REQUIRE(replacements[4].getLength() == 1);
-    REQUIRE(replacements[4].getReplacementText() == "\n");
+    c(replacements[0], 780, 82,
+      "#include <doctest/doctest.h>\n#include <loguru.hpp>\n");
+    c(replacements[1], 1448, 0, " bar foo ");
+    c(replacements[2], 1449, 1, "  ");
+    c(replacements[3], 1, 2, "\t");
+    c(replacements[4], 1, 2, " \t ");
   }
 
-  TEST_CASE("range") {
-    const std::string sampleDocument = "int main() { int *i = 0; return 0; }";
-    WorkingFile* file = new WorkingFile("foo.cc", sampleDocument);
-    lsFormattingOptions formattingOptions;
-    formattingOptions.insertSpaces = true;
-    const auto replacements =
-        ClangFormatDocument(file, 30, sampleDocument.size(), formattingOptions);
+  TEST_CASE("no replacements") {
+    std::vector<Replacement> replacements = ParseClangFormatReplacements(R"(
+      <?xml version='1.0'?>
+      <replacements xml:space='preserve' incomplete_format='false'>
+      </replacements>
+    )");
+    REQUIRE(replacements.empty());
+  }
 
-    REQUIRE(replacements.size() == 2);
-    REQUIRE(replacements[0].getOffset() == 24);
-    REQUIRE(replacements[0].getLength() == 1);
-    REQUIRE(replacements[0].getReplacementText() == "\n  ");
+  TEST_CASE("invalid output") {
+    std::vector<Replacement> replacements = ParseClangFormatReplacements(R"(
+      <?xml version='1.0'?>
+      <reAAAAplacements xml:space='preserve' incomplete_format='false'>
+      <replacement offset='780' length='82'>#include &lt;doctest/doctest.h>&#10;#include &lt;loguru.hpp>&#10;</replacement>
+      <replacement offset='1448' length='0'>barfoo</replacement>
+      <replacement offset='1449' length='1'></replacement>
+      </replacements>
+    )");
+    REQUIRE(replacements.empty());
 
-    REQUIRE(replacements[1].getOffset() == 34);
-    REQUIRE(replacements[1].getLength() == 1);
-    REQUIRE(replacements[1].getReplacementText() == "\n");
+    replacements = ParseClangFormatReplacements("basd");
+    REQUIRE(replacements.empty());
+
+    replacements = ParseClangFormatReplacements("");
+    REQUIRE(replacements.empty());
   }
 }
-
-#endif

@@ -1,5 +1,13 @@
 #pragma once
 
+#include "lsp.h"
+
+#include <string>
+#include <vector>
+
+std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
+                                       const std::string& file_contents);
+
 #if USE_CLANG_CXX
 
 #include "lsp.h"
