@@ -69,7 +69,7 @@ std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
                                        const std::string& file_contents,
                                        optional<int> start_offset,
                                        optional<int> end_offset) {
-  assert(start.has_value() == end.has_value());
+  assert(start_offset.has_value() == end_offset.has_value());
 
   std::vector<std::string> clang_format_drivers = {"clang-format"};
   for (const std::string& clang_format_driver : clang_format_drivers) {
