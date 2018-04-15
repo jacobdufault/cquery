@@ -84,8 +84,6 @@ def options(opt):
   opt.load('compiler_cxx')
   grp = opt.add_option_group('Configuration options related to use of clang from the system (not recommended)')
   grp.add_option('--enable-assert', action='store_true')
-  grp.add_option('--use-clang-cxx', dest='use_clang_cxx', default=False, action='store_true',
-                 help='use clang C++ API')
   grp.add_option('--bundled-clang', dest='bundled_clang', default='6.0.0',
                  help='bundled clang version, downloaded from https://releases.llvm.org/ , e.g. 5.0.1 6.0.0')
   grp.add_option('--llvm-config', dest='llvm_config',
@@ -175,12 +173,6 @@ def configure(ctx):
     if all(not x.startswith('-std=') for x in ctx.env.CXXFLAGS):
       cxxflags.append('-std=c++14')
 
-    if ctx.options.use_clang_cxx:
-      # include/clang/Format/Format.h error: multi-line comment
-      cxxflags.append('-Wno-comment')
-      # Without -fno-rtti, some Clang C++ functions may report `undefined references to typeinfo`
-      cxxflags.append('-fno-rtti')
-
     if 'asan' in ctx.options.variant:
       cxxflags.append('-fsanitize=address,undefined')
       ldflags.append('-fsanitize=address,undefined')
@@ -204,7 +196,6 @@ def configure(ctx):
 
   ctx.load('clang_compilation_database', tooldir='.')
 
-  ctx.env['use_clang_cxx'] = ctx.options.use_clang_cxx
   ctx.env['llvm_config'] = ctx.options.llvm_config
   ctx.env['bundled_clang'] = ctx.options.bundled_clang
   def libname(lib):
@@ -332,8 +323,6 @@ def configure(ctx):
 
 def build(bld):
   cc_files = bld.path.ant_glob(['src/*.cc', 'src/messages/*.cc', 'third_party/*.cc', 'third_party/pugixml/src/*.cpp'])
-  if bld.env['use_clang_cxx']:
-    cc_files += bld.path.ant_glob(['src/clang_cxx/*.cc'])
 
   lib = []
   if sys.platform.startswith('linux'):
@@ -355,25 +344,6 @@ def build(bld):
   elif sys.platform == 'msys':
     lib.append('psapi') # GetProcessMemoryInfo
 
-  if bld.env['use_clang_cxx']:
-    # -fno-rtti is required for object files using clang/llvm C++ API
-
-    # The order is derived by topological sorting LINK_LIBS in clang/lib/*/CMakeLists.txt
-    lib.append('clangFormat')
-    lib.append('clangToolingCore')
-    lib.append('clangRewrite')
-    lib.append('clangAST')
-    lib.append('clangLex')
-    lib.append('clangBasic')
-
-    # The order is derived from llvm-config --libs core
-    lib.append('LLVMCore')
-    lib.append('LLVMBinaryFormat')
-    lib.append('LLVMSupport')
-    lib.append('LLVMDemangle')
-
-    lib.append('ncurses')
-
   # https://waf.io/apidocs/tools/c_aliases.html#waflib.Tools.c_aliases.program
   bld.program(
       source=cc_files,
@@ -386,16 +356,12 @@ def build(bld):
         'third_party/msgpack-c/include',
         'third_party/pugixml/src/',
         'third_party/rapidjson/include/',
-        'third_party/sparsepp/'] +
-        (['libclang'] if bld.env['use_clang_cxx'] else []),
+        'third_party/sparsepp/']
       defines=[
         'LOGURU_WITH_STREAMS=1',
         'LOGURU_FILENAME_WIDTH=18',
         'LOGURU_THREADNAME_WIDTH=13',
-        'DEFAULT_RESOURCE_DIRECTORY="' + bld.env.get_flat('default_resource_directory') + '"'] +
-        (['USE_CLANG_CXX=1', 'LOGURU_RTTI=0']
-            if bld.env['use_clang_cxx']
-            else []),
+        'DEFAULT_RESOURCE_DIRECTORY="' + bld.env.get_flat('default_resource_directory') + '"']
       lib=lib,
       rpath=bld.env.rpath,
       target='bin/cquery')
