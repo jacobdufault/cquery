@@ -507,7 +507,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     rapidjson::Writer<rapidjson::StringBuffer> writer(input);
     JsonWriter json_writer(&writer);
     Reflect(json_writer, *g_config);
-    std::string contents = GetExternalCommandOutput(
+    std::string contents = RunExecutable(
         std::vector<std::string>{g_config->compilationDatabaseCommand,
                                  project->project_dir},
         input.GetString());

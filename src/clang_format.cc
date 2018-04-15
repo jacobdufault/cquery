@@ -85,7 +85,7 @@ std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
       args.push_back("-length=" + std::to_string(*end_offset - *start_offset));
     }
 
-    std::string output = GetExternalCommandOutput(args, file_contents);
+    std::string output = RunExecutable(args, file_contents);
     if (output.empty())
       continue;
     // Do not check if replacements is empty, since that may happen if there are

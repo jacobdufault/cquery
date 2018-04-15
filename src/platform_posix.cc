@@ -286,8 +286,8 @@ void TraceMe() {
     raise(SIGTSTP);
 }
 
-std::string GetExternalCommandOutput(const std::vector<std::string>& command,
-                                     std::string_view input) {
+std::string RunExecutable(const std::vector<std::string>& command,
+                          std::string_view input) {
   // See https://stackoverflow.com/a/12839498
   constexpr int kPipeRead = 0;
   constexpr int kPipeWrite = 1;

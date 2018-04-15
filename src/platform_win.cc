@@ -206,8 +206,8 @@ bool RunObjectiveCIndexTests() {
 // TODO Wait for debugger to attach
 void TraceMe() {}
 
-std::string GetExternalCommandOutput(const std::vector<std::string>& command,
-                                     std::string_view input) {
+std::string RunExecutable(const std::vector<std::string>& command,
+                          std::string_view input) {
   // FIXME: quote the first argument of command if it is not quoted and it
   // contains spaces
 
