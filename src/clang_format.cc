@@ -71,7 +71,10 @@ std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
                                        optional<int> end_offset) {
   assert(start_offset.has_value() == end_offset.has_value());
 
-  std::vector<std::string> clang_format_drivers = {"clang-format"};
+  std::vector<std::string> clang_format_drivers = {
+      GetExecutablePathNextToCqueryBinary("cquery-clang-format"),
+      "clang-format"};
+
   for (const std::string& clang_format_driver : clang_format_drivers) {
     std::vector<std::string> args = {clang_format_driver,
                                      "-output-replacements-xml",
