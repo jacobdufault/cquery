@@ -71,7 +71,7 @@ before_install:
   - eval "${INSTALL}"
 
 script:
-  - cmake .
+  - cmake -DCMAKE_BUILD_TYPE=Debug .
   - cmake --build . -- -j 3
   - ./cquery --ci --log-all-to-stderr --test-unit
   - ./cquery --ci --log-all-to-stderr --test-index
