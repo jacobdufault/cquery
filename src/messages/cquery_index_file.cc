@@ -35,11 +35,11 @@ struct Handler_CqueryIndexFile : BaseMessageHandler<In_CqueryIndexFile> {
 
     LOG_S(INFO) << "Indexing file " << request->params.path;
 
-    auto store = OpenOrConnectFileStore(config, NormalizedPath{config->projectRoot});
+    auto store = OpenOrConnectFileStore(NormalizedPath{g_config->projectRoot});
 
     QueueManager::instance()->index_request.PushBack(Index_Request(
         path->path, request->params.args, request->params.is_interactive,
-        request->params.contents, MakeIndexCache(config, std::move(store))));
+        request->params.contents, MakeIndexCache(std::move(store))));
   }
 };
 REGISTER_MESSAGE_HANDLER(Handler_CqueryIndexFile);

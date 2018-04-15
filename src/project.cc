@@ -789,7 +789,7 @@ void Project::Index(QueueManager* queue,
         working_files->GetFileByFilename(entry.filename) != nullptr;
     queue->index_request.PushBack(
         Index_Request(entry.filename, entry.args, is_interactive, *content,
-                      MakeIndexCache(config, config->cacheStore), id));
+                      MakeIndexCache(g_config->cacheStore), id));
   });
 }
 

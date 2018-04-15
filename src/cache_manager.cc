@@ -21,7 +21,7 @@ namespace {
 struct FileBasedCacheDriver : public ICacheStore
 {
     FileBasedCacheDriver(Config* config, std::string projectDir, std::string externalsDir)
-        : config_(config), projectDir_(projectDir), externalsDir_(externalsDir)
+        : projectDir_(projectDir), externalsDir_(externalsDir)
     {
     }
 
@@ -30,14 +30,14 @@ struct FileBasedCacheDriver : public ICacheStore
         assert(!config_->cacheDirectory.empty());
         std::string cache_file;
 
-        size_t len = config_->projectRoot.size();
-        if (StartsWith(key, config_->projectRoot)) {
+        size_t len = g_config->projectRoot.size();
+        if (StartsWith(key, g_config->projectRoot)) {
           cache_file = projectDir_ + '/' + EscapeFileName(key.substr(len));
         } else {
           cache_file = externalsDir_ + '/' + EscapeFileName(key);
         }
 
-        return config_->cacheDirectory + cache_file;
+        return g_config->cacheDirectory + cache_file;
     }
 
     optional<std::string> Read(const std::string& key) override
@@ -55,7 +55,6 @@ struct FileBasedCacheDriver : public ICacheStore
 private:
     std::string projectDir_;
     std::string externalsDir_;
-    Config* config_;
 };
 
 void UnqliteHandleResult(std::string operation, unqlite* database, int ret)
@@ -129,7 +128,6 @@ struct UnqliteCacheDriver : public ICacheStore
     }
     
     unqlite* database_;
-    Config* config_;
 };
 
 std::string SerializationFormatToSuffix(SerializeFormat format) {
@@ -145,8 +143,8 @@ std::string SerializationFormatToSuffix(SerializeFormat format) {
 
 }
 
-IndexCache::IndexCache(Config* config, std::shared_ptr<ICacheStore> driver)
-    : config_(config), driver_(std::move(driver))
+IndexCache::IndexCache(std::shared_ptr<ICacheStore> driver)
+    : driver_(std::move(driver))
 {
 }
 
@@ -180,12 +178,12 @@ optional<std::string> IndexCache::TryLoadContent(const NormalizedPath& path)
 std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(const NormalizedPath& file)
 {
     optional<std::string> file_content               = ReadContent(file.path);
-    optional<std::string> serialized_indexed_content = ReadContent(file.path + SerializationFormatToSuffix(config_->cacheFormat));
+    optional<std::string> serialized_indexed_content = ReadContent(file.path + SerializationFormatToSuffix(g_config->cacheFormat));
     
     if (!file_content || !serialized_indexed_content)
         return nullptr;
 
-    return Deserialize(config_->cacheFormat, file.path, *serialized_indexed_content,
+    return Deserialize(g_config->cacheFormat, file.path, *serialized_indexed_content,
                        *file_content, IndexFile::kMajorVersion);
 }
 
@@ -194,7 +192,7 @@ std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(const NormalizedPa
 void IndexCache::Write(IndexFile& file)
 {
     driver_->Write(file.path, file.file_contents);
-    driver_->Write(file.path + SerializationFormatToSuffix(config_->cacheFormat), Serialize(config_->cacheFormat, file));
+    driver_->Write(file.path + SerializationFormatToSuffix(g_config->cacheFormat), Serialize(g_config->cacheFormat, file));
 }
 
 // Iterate over all loaded caches.
@@ -206,29 +204,29 @@ void IndexCache::IterateLoadedCaches(std::function<void(IndexFile*)> fn)
     }
 }
 
-std::shared_ptr<IndexCache> MakeIndexCache(Config* config, std::shared_ptr<ICacheStore> store)
+std::shared_ptr<IndexCache> MakeIndexCache(std::shared_ptr<ICacheStore> store)
 {
-    return std::make_shared<IndexCache>(config, config->cacheStore);
+    return std::make_shared<IndexCache>(g_config->cacheStore);
 }
 
 // Returns null if the given root path does not exist
-std::shared_ptr<ICacheStore> OpenOrConnectFileStore(Config* config, const NormalizedPath& path)
+std::shared_ptr<ICacheStore> OpenOrConnectFileStore(const NormalizedPath& path)
 {
-    const std::string projectDirName   = EscapeFileName(config->projectRoot);
-    const std::string externalsDirName = '@' + EscapeFileName(config->projectRoot);
+    const std::string projectDirName   = EscapeFileName(g_config->projectRoot);
+    const std::string externalsDirName = '@' + EscapeFileName(g_config->projectRoot);
 
-    MakeDirectoryRecursive(config->cacheDirectory + projectDirName);
-    MakeDirectoryRecursive(config->cacheDirectory + externalsDirName);
+    MakeDirectoryRecursive(g_config->cacheDirectory + projectDirName);
+    MakeDirectoryRecursive(g_config->cacheDirectory + externalsDirName);
 
     LOG_S(INFO) << "Connecting to file storage in directory \"" << path.path << "\".";
 
-    return std::make_shared<FileBasedCacheDriver>(config, projectDirName, externalsDirName);
+    return std::make_shared<FileBasedCacheDriver>(g_config, projectDirName, externalsDirName);
 }
 
 // Return null if the given file path does not exists and cannot be created
-std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(Config* config, const NormalizedPath& path_to_db)
+std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(const NormalizedPath& path_to_db)
 {
-    std::string databaseFile = config->cacheDirectory + EscapeFileName(config->projectRoot) + ".db";
+    std::string databaseFile = g_config->cacheDirectory + EscapeFileName(g_config->projectRoot) + ".db";
     unqlite* database = nullptr;
 
     LOG_S(INFO) << "Connecting to unqlite storage in directory \"" << databaseFile << "\".";
@@ -238,7 +236,7 @@ std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(Config* config, const Nor
     if (ret != UNQLITE_OK)
         LOG_S(WARNING) << "Unqlite: unqlite_open reported error condition " << ret << ".";
 
-    if (ret == UNQLITE_OK) return std::make_shared<UnqliteCacheDriver>(config, database);
+    if (ret == UNQLITE_OK) return std::make_shared<UnqliteCacheDriver>(g_config, database);
     else return nullptr;
 }
 
