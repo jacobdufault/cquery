@@ -216,8 +216,7 @@ CacheLoadResult TryLoadFromCache(
     const AbsolutePath& path_to_index) {
   // Always run this block, even if we are interactive, so we can check
   // dependencies and reset files in |file_consumer_shared|.
-  IndexFile* previous_index =
-      cache_manager->TryLoad(NormalizedPath{path_to_index});
+  IndexFile* previous_index = cache_manager->TryLoad(path_to_index);
   if (!previous_index)
     return CacheLoadResult::Parse;
 
@@ -265,7 +264,11 @@ CacheLoadResult TryLoadFromCache(
   LOG_S(INFO) << "Skipping parse; no timestamp change for " << path_to_index;
 
   std::vector<Index_DoIdMap> result;
+<<<<<<< HEAD
   result.push_back(Index_DoIdMap(cache_manager->TryTakeOrLoad(path_to_index),
+=======
+  result.push_back(Index_DoIdMap(cache_manager->TryTakeOrLoad(NormalizedPath{path_to_index}),
+>>>>>>> Experimental unqlite commit
                                  cache_manager, is_interactive,
                                  false /*write_to_disk*/));
   for (const AbsolutePath& dependency : previous_index->dependencies) {
@@ -367,8 +370,12 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // FIXME: don't use absolute path
   AbsolutePath path_to_index = entry.filename;
   if (entry.is_inferred) {
+<<<<<<< HEAD
     IndexFile* entry_cache =
         request.cache_manager->TryLoad(NormalizedPath{entry.filename});
+=======
+    IndexFile* entry_cache = request.cache_manager->TryLoad(NormalizedPath{entry.filename});
+>>>>>>> Experimental unqlite commit
     if (entry_cache)
       path_to_index = entry_cache->import_file;
   }
@@ -724,10 +731,14 @@ TEST_SUITE("ImportPipeline") {
       QueueManager::Init();
 
       queue = QueueManager::instance();
+<<<<<<< HEAD
 
       cache_store = std::make_shared<TestStore>();
       cache_manager = MakeIndexCache(cache_store);
 
+=======
+      //cache_manager = IndexCache::MakeFake({});
+>>>>>>> Experimental unqlite commit
       indexer = IIndexer::MakeTestIndexer({});
       diag_engine.Init();
     }
@@ -755,7 +766,10 @@ TEST_SUITE("ImportPipeline") {
     TimestampManager timestamp_manager;
     FakeModificationTimestampFetcher modification_timestamp_fetcher;
     ImportManager import_manager;
+<<<<<<< HEAD
     std::shared_ptr<ICacheStore> cache_store;
+=======
+>>>>>>> Experimental unqlite commit
     std::shared_ptr<IndexCache> cache_manager;
     std::unique_ptr<IIndexer> indexer;
   };

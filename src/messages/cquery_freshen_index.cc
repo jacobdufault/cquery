@@ -40,8 +40,7 @@ struct Handler_CqueryFreshenIndex : BaseMessageHandler<In_CqueryFreshenIndex> {
     GroupMatch matcher(request->params.whitelist, request->params.blacklist);
 
     // Unmark all files whose timestamp has changed.
-    std::shared_ptr<IndexCache> cache_manager =
-        MakeIndexCache(g_config->cacheStore);
+    std::shared_ptr<IndexCache> cache_manager = MakeIndexCache(g_config->cacheStore);
 
     std::queue<const QueryFile*> q;
     // |need_index| stores every filename ever enqueued.

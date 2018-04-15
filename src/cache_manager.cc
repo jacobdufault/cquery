@@ -7,6 +7,7 @@
 
 #include <loguru/loguru.hpp>
 
+
 #include <algorithm>
 #include <unordered_map>
 
@@ -35,8 +36,11 @@ struct FileBasedCacheDriver : public ICacheStore {
       cache_file = externalsDir_ + '/' + EscapeFileName(key);
     }
 
-    return g_config->cacheDirectory + cache_file;
-  }
+    optional<std::string> Read(const std::string& key) override
+    {
+        std::string file_path = KeyToFilePath(key);
+        return ReadContent(file_path);
+    }
 
   optional<std::string> Read(const std::string& key) override {
     std::string file_path = KeyToFilePath(key);
