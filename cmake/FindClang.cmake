@@ -60,14 +60,15 @@ endmacro()
 
 ### Start
 
-set(_Clang_REQUIRED_VARS Clang_LIBRARY Clang_INCLUDE_DIR Clang_EXECUTABLE 
-                         Clang_RESOURCE_DIR Clang_VERSION)
+set(_Clang_REQUIRED_VARS _libclang_LIBRARY _libclang_INCLUDE_DIR 
+                         Clang_EXECUTABLE Clang_RESOURCE_DIR Clang_VERSION)
 
-_Clang_find_library(Clang_LIBRARY clang)
-_Clang_find_path(Clang_INCLUDE_DIR clang-c/Index.h)
+_Clang_find_library(_libclang_LIBRARY clang)
+_Clang_find_path(_libclang_INCLUDE_DIR clang-c/Index.h)
 
 _Clang_find_program(Clang_FORMAT clang-format)
 _Clang_find_program(Clang_EXECUTABLE clang)
+
 if(Clang_EXECUTABLE)
   # Find Clang resource directory with Clang executable
   execute_process(COMMAND ${Clang_EXECUTABLE} -print-resource-dir
@@ -97,6 +98,6 @@ find_package_handle_standard_args(Clang
 if(Clang_FOUND AND NOT TARGET Clang::Clang)
   add_library(Clang::Clang UNKNOWN IMPORTED)
   set_target_properties(Clang::Clang PROPERTIES
-                        IMPORTED_LOCATION ${Clang_LIBRARY}
-                        INTERFACE_INCLUDE_DIRECTORIES ${Clang_INCLUDE_DIR})
+                        IMPORTED_LOCATION ${_libclang_LIBRARY}
+                        INTERFACE_INCLUDE_DIRECTORIES ${_libclang_INCLUDE_DIR})
 endif()

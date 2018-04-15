@@ -136,8 +136,32 @@ target_include_directories(cquery PRIVATE
 
 install(TARGETS cquery RUNTIME DESTINATION bin)
 
-# Install cquery-clang, cquery-clang-format when not using system Clang.
+# If downloaded Clang is used we have to bundle the required files from 
+# the downloaded Clang along with the cquery executable
 if(NOT SYSTEM_CLANG)
+
+  # On Linux/FreeBSD/Darwin we set the rpath so cquery can find 
+  # libclang.[so,dylib]. On Windows we install libclang.dll to the bin directory
+  # to do the same.
+
+  if(${CMAKE_SYSTEM_NAME} MATCHES Linux|FreeBSD)
+    set_property(TARGET cquery APPEND PROPERTY
+                 INSTALL_RPATH $ORIGIN/../lib)
+  elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+    set_property(TARGET cquery APPEND PROPERTY
+                 INSTALL_RPATH @loader_path/../lib)
+  elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+    install(FILES ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll DESTINATION bin) 
+  endif()
+
+  # Install libclang.[so,lib,dylib] to lib directory
+
+  file(GLOB LIBCLANG_PLUS_SYMLINKS
+       ${DOWNLOADED_CLANG_DIR}/lib/libclang.[so,lib,dylib]*)
+  install(FILES ${LIBCLANG_PLUS_SYMLINKS} DESTINATION lib)
+
+  # Install cquery-clang, cquery-clang-format to bin directory
+
   # When installing files the .exe suffix needs to be added on Windows.
   if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
     set(EXE ".exe")
@@ -146,63 +170,44 @@ if(NOT SYSTEM_CLANG)
   endif()
 
   # ${Clang_EXECUTABLE} may be a symlink, resolve it before passing to install.
-  get_filename_component(Clang_EXECUTABLE_REALPATH "${Clang_EXECUTABLE}" REALPATH)
+  get_filename_component(Clang_EXECUTABLE_REALPATH ${Clang_EXECUTABLE}
+                         REALPATH)
 
   # Install cquery-clang, cquery-clang-format to install directory.
-  install(FILES "${Clang_EXECUTABLE_REALPATH}"
+  install(FILES ${Clang_EXECUTABLE_REALPATH}
           PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
           DESTINATION bin
-          RENAME "cquery-clang${EXE}")
-  install(FILES "${Clang_FORMAT}"
+          RENAME cquery-clang${EXE})
+  install(FILES ${Clang_FORMAT}
           PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
           DESTINATION bin
-          RENAME "cquery-clang-format${EXE}")
+          RENAME cquery-clang-format${EXE})
 
-
-  #
   # cquery-clang will search for these directories to resolve system includes.
   # We need to install them.
   #
+  #  - (which cquery-clang)/../lib/clang/6.0.0/include (or current clang version)
   #  - (which cquery-clang)/../include/c++/v1
-  #  - (which cquery-clang)/../lib/clang/6.0.0/include   (or current clang version)
-  #
 
   # lib/clang/*/include changes with the version, ie, lib/clang/6.0.0/include.
   # Find the current value for * and then remove the ${DOWNLOADED_CLANG_DIR}
   # prefix.
-  file(GLOB CLANG_INCLUDE_DIR "${DOWNLOADED_CLANG_DIR}/lib/clang/*/include/")
-  string(REPLACE "${DOWNLOADED_CLANG_DIR}/" "" CLANG_INCLUDE_DIR "${CLANG_INCLUDE_DIR}")
 
-  install(DIRECTORY "${DOWNLOADED_CLANG_DIR}/include/c++/v1/"
-          DESTINATION include/c++/v1)
-  install(DIRECTORY "${DOWNLOADED_CLANG_DIR}/${CLANG_INCLUDE_DIR}/"
-          DESTINATION "${CLANG_INCLUDE_DIR}")
-endif()
+  file(GLOB CLANG_INCLUDE_DIR ${DOWNLOADED_CLANG_DIR}/lib/clang/*/include)
+  string(REPLACE ${DOWNLOADED_CLANG_DIR}/ "" 
+         CLANG_INCLUDE_DIR ${CLANG_INCLUDE_DIR})
 
-# TODO: install libclang.dll on Windows as well
-if(NOT SYSTEM_CLANG AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-
-  if(${CMAKE_SYSTEM_NAME} MATCHES Linux|FreeBSD)
-    set_property(TARGET cquery APPEND PROPERTY
-                 INSTALL_RPATH $ORIGIN/../lib)
-  elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-    set_property(TARGET cquery APPEND PROPERTY
-                 INSTALL_RPATH @loader_path/../lib)
+  # Add trailing slash to overwrite destination directory instead of putting the
+  # directory inside the destination directory
+  install(DIRECTORY ${DOWNLOADED_CLANG_DIR}/${CLANG_INCLUDE_DIR}/
+          DESTINATION ${CLANG_INCLUDE_DIR})
+  
+  # include/c++/v1 is not included in every Clang download (Windows) so we check 
+  # if it exists first
+  if(IS_DIRECTORY ${DOWNLOADED_CLANG_DIR}/include/c++/v1)
+    install(DIRECTORY ${DOWNLOADED_CLANG_DIR}/include/c++/v1/
+            DESTINATION include/c++/v1)
   endif()
-
-  file(GLOB LIBCLANG_PLUS_SYMLINKS
-       ${DOWNLOADED_CLANG_DIR}/lib/libclang.[so,dylib]*)
-  install(FILES ${LIBCLANG_PLUS_SYMLINKS} DESTINATION lib)
-endif()
-
-# Allow running from build Windows by copying libclang.dll to build directory
-if(NOT SYSTEM_CLANG AND ${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-  add_custom_command(TARGET cquery
-                     POST_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy
-                     ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll
-                     $<TARGET_FILE_DIR:cquery>
-                     COMMENT "Copying libclang.dll to build directory ...")
 endif()
 
 ### Tools
