@@ -40,7 +40,8 @@ struct Handler_TextDocumentFormatting
     WorkingFile* working_file = working_files->GetFileByFilename(
         request->params.textDocument.uri.GetPath());
     response.result =
-        RunClangFormat(working_file->filename, working_file->buffer_content);
+        RunClangFormat(working_file->filename, working_file->buffer_content,
+                       nullopt /*start_offset*/, nullopt /*end_offset*/);
 
     QueueManager::WriteStdout(kMethodType, response);
   }

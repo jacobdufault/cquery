@@ -40,29 +40,17 @@ struct Handler_TextDocumentRangeFormatting
   void Run(In_TextDocumentRangeFormatting* request) override {
     Out_TextDocumentRangeFormatting response;
     response.id = request->id;
-#if USE_CLANG_CXX
-    QueryFile* file;
-    if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file)) {
-      return;
-    }
 
-    WorkingFile* working_file =
-        working_files->GetFileByFilename(file->def->path);
+    WorkingFile* working_file = working_files->GetFileByFilename(
+        request->params.textDocument.uri.GetPath());
 
-    int start = GetOffsetForPosition(request->params.range.start,
-                                     working_file->buffer_content),
-        end = GetOffsetForPosition(request->params.range.end,
-                                   working_file->buffer_content);
-    response.result = ConvertClangReplacementsIntoTextEdits(
-        working_file->buffer_content,
-        ClangFormatDocument(working_file, start, end, request->params.options));
-#else
-    LOG_S(WARNING) << "You must compile cquery with --use-clang-cxx to use "
-                      "textDocument/rangeFormatting.";
-    // TODO: Fallback to execute the clang-format binary?
-    response.result = {};
-#endif
+    int start_offset = GetOffsetForPosition(request->params.range.start,
+                                            working_file->buffer_content);
+    int end_offset = GetOffsetForPosition(request->params.range.end,
+                                          working_file->buffer_content);
+    response.result =
+        RunClangFormat(working_file->filename, working_file->buffer_content,
+                       start_offset, end_offset);
 
     QueueManager::WriteStdout(kMethodType, response);
   }

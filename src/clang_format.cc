@@ -66,16 +66,23 @@ std::vector<lsTextEdit> ConvertReplacementsToTextEdits(
 }  // namespace
 
 std::vector<lsTextEdit> RunClangFormat(const std::string& filename,
-                                       const std::string& file_contents) {
+                                       const std::string& file_contents,
+                                       optional<int> start_offset,
+                                       optional<int> end_offset) {
+  assert(start.has_value() == end.has_value());
+
   std::vector<std::string> clang_format_drivers = {"clang-format"};
   for (const std::string& clang_format_driver : clang_format_drivers) {
     std::vector<std::string> args = {clang_format_driver,
                                      "-output-replacements-xml",
                                      "-assume-filename", filename};
-    LOG_S(INFO) << "Running " << StringJoin(args, " ");
+
+    if (start_offset.has_value()) {
+      args.push_back("-offset=" + std::to_string(*start_offset));
+      args.push_back("-length=" + std::to_string(*end_offset - *start_offset));
+    }
+
     std::string output = GetExternalCommandOutput(args, file_contents);
-    LOG_S(INFO) << "stdin:\n" << file_contents;
-    LOG_S(INFO) << "stdout\n" << output;
     if (output.empty())
       continue;
     // Do not check if replacements is empty, since that may happen if there are

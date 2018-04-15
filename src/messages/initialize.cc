@@ -160,7 +160,7 @@ struct lsServerCapabilities {
   // The server provides document formatting.
   bool documentFormattingProvider = true;
   // The server provides document range formatting.
-  bool documentRangeFormattingProvider = false;
+  bool documentRangeFormattingProvider = true;
   // The server provides document formatting on typing.
   optional<lsDocumentOnTypeFormattingOptions> documentOnTypeFormattingProvider;
   // The server provides rename support.
@@ -585,10 +585,6 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       // out.result.capabilities.textDocumentSync->willSave = true;
       // out.result.capabilities.textDocumentSync->willSaveWaitUntil =
       // true;
-
-#if USE_CLANG_CXX
-      out.result.capabilities.documentRangeFormattingProvider = true;
-#endif
 
       QueueManager::WriteStdout(kMethodType, out);
 
