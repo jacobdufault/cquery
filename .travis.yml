@@ -70,7 +70,8 @@ before_install:
   - eval "${INSTALL}"
 
 script:
-  - cmake -DCMAKE_BUILD_TYPE=Debug .
+  - cmake -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Debug .
   - cmake --build . -- -j 3
-  - ./cquery --ci --log-all-to-stderr --test-unit
-  - ./cquery --ci --log-all-to-stderr --test-index
+  - cmake --build . --target install
+  - ./install/cquery/bin/cquery --ci --log-all-to-stderr --test-unit
+  - ./install/cquery/bin/cquery --ci --log-all-to-stderr --test-index
