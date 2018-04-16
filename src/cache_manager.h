@@ -23,6 +23,7 @@ struct ICacheStore
 {
     virtual optional<std::string> Read(const std::string& key) = 0;
     virtual void Write(const std::string& key, const std::string& value) = 0;
+    virtual void Close() {}
     virtual ~ICacheStore() {}
 };
 

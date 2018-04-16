@@ -73,9 +73,11 @@ void UnqliteHandleResult(std::string operation, unqlite* database, int ret)
 // Storing index+content in an unqlite database (possibly shared between multiple cquery caches, since it could be a user-setting)
 struct UnqliteCacheDriver : public ICacheStore
 {
-    UnqliteCacheDriver(Config* config, unqlite* database)
+    UnqliteCacheDriver(unqlite* database)
         : database_(database)
     {}
+
+    UnqliteCacheDriver(UnqliteCacheDriver&) = delete;
 
     optional<std::string> Read(const std::string& key) override
     {
@@ -103,19 +105,9 @@ struct UnqliteCacheDriver : public ICacheStore
         {
             UnqliteHandleResult("unqlite_kv_store", database_, ret);
         }
-
-        if (ret == UNQLITE_OK && (++commit_counter % 10) == 0)
-        {
-            ret = unqlite_commit(database_);
-
-            if (ret != UNQLITE_OK)
-            {
-                UnqliteHandleResult("unqlite_commit", database_, ret);
-            }
-        }
     }
 
-    ~UnqliteCacheDriver()
+    void Close() override
     {
         LOG_S(INFO) << "Unqlite: Closing the store.";
         int ret;
@@ -125,6 +117,10 @@ struct UnqliteCacheDriver : public ICacheStore
         {
             UnqliteHandleResult("unqlite_close", database_, ret);
         }
+    }
+
+    ~UnqliteCacheDriver() override
+    {
     }
     
     unqlite* database_;
@@ -206,7 +202,7 @@ void IndexCache::IterateLoadedCaches(std::function<void(IndexFile*)> fn)
 
 std::shared_ptr<IndexCache> MakeIndexCache(std::shared_ptr<ICacheStore> store)
 {
-    return std::make_shared<IndexCache>(g_config->cacheStore);
+    return std::make_shared<IndexCache>(std::move(store));
 }
 
 // Returns null if the given root path does not exist
@@ -236,7 +232,8 @@ std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(const NormalizedPath& pat
     if (ret != UNQLITE_OK)
         LOG_S(WARNING) << "Unqlite: unqlite_open reported error condition " << ret << ".";
 
-    if (ret == UNQLITE_OK) return std::make_shared<UnqliteCacheDriver>(g_config, database);
+    //if (ret == UNQLITE_OK) return std::make_shared<UnqliteCacheDriver>(database);
+    if (ret == UNQLITE_OK) return std::shared_ptr<ICacheStore>(new UnqliteCacheDriver(database) );
     else return nullptr;
 }
 

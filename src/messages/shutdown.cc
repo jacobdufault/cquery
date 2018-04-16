@@ -1,6 +1,9 @@
 #include "message_handler.h"
 #include "queue_manager.h"
 
+#include "config.h"
+#include "cache_manager.h"
+
 namespace {
 MethodType kMethodType = "shutdown";
 
@@ -19,6 +22,7 @@ MAKE_REFLECT_STRUCT(Out_Shutdown, jsonrpc, id, result);
 struct Handler_Shutdown : BaseMessageHandler<In_Shutdown> {
   MethodType GetMethodType() const override { return kMethodType; }
   void Run(In_Shutdown* request) override {
+    g_config->cacheStore->Close();
     Out_Shutdown out;
     out.id = request->id;
     QueueManager::WriteStdout(kMethodType, out);
