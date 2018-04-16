@@ -356,12 +356,12 @@ def build(bld):
         'third_party/msgpack-c/include',
         'third_party/pugixml/src/',
         'third_party/rapidjson/include/',
-        'third_party/sparsepp/']
+        'third_party/sparsepp/'],
       defines=[
         'LOGURU_WITH_STREAMS=1',
         'LOGURU_FILENAME_WIDTH=18',
         'LOGURU_THREADNAME_WIDTH=13',
-        'DEFAULT_RESOURCE_DIRECTORY="' + bld.env.get_flat('default_resource_directory') + '"']
+        'DEFAULT_RESOURCE_DIRECTORY="' + bld.env.get_flat('default_resource_directory') + '"'],
       lib=lib,
       rpath=bld.env.rpath,
       target='bin/cquery')
