@@ -73,5 +73,5 @@ script:
   - cmake -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Debug .
   - cmake --build . -- -j 3
   - cmake --build . --target install
-  - ./install/cquery/bin/cquery --ci --log-all-to-stderr --test-unit
-  - ./install/cquery/bin/cquery --ci --log-all-to-stderr --test-index
+  - ./install/bin/cquery --ci --log-all-to-stderr --test-unit
+  - ./install/bin/cquery --ci --log-all-to-stderr --test-index

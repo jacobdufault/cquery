@@ -25,8 +25,8 @@ after_build:
   - cmake --build . --target install
 
 test_script:
-  - .\install\cquery\bin\cquery.exe --ci --log-all-to-stderr --test-unit
-  - .\install\cquery\bin\cquery.exe --ci --log-all-to-stderr --test-index
+  - .\install\bin\cquery.exe --ci --log-all-to-stderr --test-unit
+  - .\install\bin\cquery.exe --ci --log-all-to-stderr --test-index
 
 cache:
   - C:\projects\cquery\build\LLVM-6.0.0-win64\
