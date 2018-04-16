@@ -264,11 +264,7 @@ CacheLoadResult TryLoadFromCache(
   LOG_S(INFO) << "Skipping parse; no timestamp change for " << path_to_index;
 
   std::vector<Index_DoIdMap> result;
-<<<<<<< HEAD
   result.push_back(Index_DoIdMap(cache_manager->TryTakeOrLoad(path_to_index),
-=======
-  result.push_back(Index_DoIdMap(cache_manager->TryTakeOrLoad(NormalizedPath{path_to_index}),
->>>>>>> Experimental unqlite commit
                                  cache_manager, is_interactive,
                                  false /*write_to_disk*/));
   for (const AbsolutePath& dependency : previous_index->dependencies) {
@@ -370,12 +366,8 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // FIXME: don't use absolute path
   AbsolutePath path_to_index = entry.filename;
   if (entry.is_inferred) {
-<<<<<<< HEAD
     IndexFile* entry_cache =
-        request.cache_manager->TryLoad(NormalizedPath{entry.filename});
-=======
-    IndexFile* entry_cache = request.cache_manager->TryLoad(NormalizedPath{entry.filename});
->>>>>>> Experimental unqlite commit
+        request.cache_manager->TryLoad(entry.filename);
     if (entry_cache)
       path_to_index = entry_cache->import_file;
   }
@@ -710,6 +702,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
   return did_work;
 }
 
+<<<<<<< HEAD
 struct TestStore : public ICacheStore {
   optional<std::string> Read(const std::string& key) override {
     auto it = elements_.find(key);
@@ -723,6 +716,26 @@ struct TestStore : public ICacheStore {
   ~TestStore() {}
 
   std::unordered_map<std::string, std::string> elements_;
+=======
+struct TestStore : public ICacheStore
+{
+    optional<std::string> Read(const std::string& key) override
+    {
+        auto it = elements_.find(key);
+        return it != elements_.end() ? it->second : optional<std::string>{};
+    }
+
+    void Write(const std::string& key, const std::string& value)
+    {
+        elements_.insert_or_assign(key, value);
+    }
+
+    ~TestStore()
+    {
+    }
+
+    std::unordered_map< std::string, std::string > elements_;
+>>>>>>> Interim fixes to the tests
 };
 
 TEST_SUITE("ImportPipeline") {
@@ -732,13 +745,19 @@ TEST_SUITE("ImportPipeline") {
 
       queue = QueueManager::instance();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Interim fixes to the tests
 
       cache_store = std::make_shared<TestStore>();
       cache_manager = MakeIndexCache(cache_store);
 
+<<<<<<< HEAD
 =======
       //cache_manager = IndexCache::MakeFake({});
 >>>>>>> Experimental unqlite commit
+=======
+>>>>>>> Interim fixes to the tests
       indexer = IIndexer::MakeTestIndexer({});
       diag_engine.Init();
     }
@@ -767,9 +786,13 @@ TEST_SUITE("ImportPipeline") {
     FakeModificationTimestampFetcher modification_timestamp_fetcher;
     ImportManager import_manager;
 <<<<<<< HEAD
+<<<<<<< HEAD
     std::shared_ptr<ICacheStore> cache_store;
 =======
 >>>>>>> Experimental unqlite commit
+=======
+    std::shared_ptr<ICacheStore> cache_store;
+>>>>>>> Interim fixes to the tests
     std::shared_ptr<IndexCache> cache_manager;
     std::unique_ptr<IIndexer> indexer;
   };
