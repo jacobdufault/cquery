@@ -606,7 +606,7 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
         LOG_S(INFO) << "Invalid cache type \"" << g_config->cacheType << "\".";
       }
 
-      assert(config->cacheStore);
+      assert(g_config->cacheStore);
 
       Timer time;
       diag_engine->Init();

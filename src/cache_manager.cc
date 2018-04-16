@@ -27,7 +27,7 @@ struct FileBasedCacheDriver : public ICacheStore
 
     std::string KeyToFilePath(const std::string& key)
     {
-        assert(!config_->cacheDirectory.empty());
+        assert(!g_config->cacheDirectory.empty());
         std::string cache_file;
 
         size_t len = g_config->projectRoot.size();

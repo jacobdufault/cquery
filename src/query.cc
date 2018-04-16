@@ -744,7 +744,7 @@ std::string IndexUpdate::ToString() {
 }
 
 NormalizedPath::NormalizedPath(const std::string& path)
-    : path(*NormalizePath(path)) {}
+    : path(NormalizePath(path).value_or(path)) {}
 
 bool NormalizedPath::operator==(const NormalizedPath& rhs) const {
   return path == rhs.path;

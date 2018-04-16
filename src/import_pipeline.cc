@@ -776,13 +776,36 @@ bool QueryDb_ImportMain(QueryDatabase* db,
   return did_work;
 }
 
+struct TestStore : public ICacheStore
+{
+    optional<std::string> Read(const std::string& key) override
+    {
+        auto it = elements_.find(key);
+        return it != elements_.end() ? it->second : optional<std::string>{};
+    }
+
+    void Write(const std::string& key, const std::string& value)
+    {
+        elements_.insert_or_assign(key, value);
+    }
+
+    ~TestStore()
+    {
+    }
+
+    std::unordered_map< std::string, std::string > elements_;
+};
+
 TEST_SUITE("ImportPipeline") {
   struct Fixture {
     Fixture() {
       QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
 
       queue = QueueManager::instance();
-      //cache_manager = IndexCache::MakeFake({});
+
+      cache_store = std::make_shared<TestStore>();
+      cache_manager = MakeIndexCache(cache_store);
+
       indexer = IIndexer::MakeTestIndexer({});
       diag_engine.Init();
     }
@@ -813,6 +836,7 @@ TEST_SUITE("ImportPipeline") {
     TimestampManager timestamp_manager;
     FakeModificationTimestampFetcher modification_timestamp_fetcher;
     ImportManager import_manager;
+    std::shared_ptr<ICacheStore> cache_store;
     std::shared_ptr<IndexCache> cache_manager;
     std::unique_ptr<IIndexer> indexer;
   };
