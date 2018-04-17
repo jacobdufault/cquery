@@ -97,10 +97,8 @@ struct UnqliteCacheDriver : public ICacheStore
 
     void Write(const std::string& key, const std::string& value) override
     {
-        static int commit_counter = 0;
-
         int ret;
-        while(ret = unqlite_kv_store(database_, key.data(), key.size(), value.data(), value.size()) == UNQLITE_BUSY);
+        while((ret = unqlite_kv_store(database_, key.data(), key.size(), value.data(), value.size())) == UNQLITE_BUSY);
         if (ret != UNQLITE_OK)
         {
             UnqliteHandleResult("unqlite_kv_store", database_, ret);

@@ -786,7 +786,7 @@ struct TestStore : public ICacheStore
 
     void Write(const std::string& key, const std::string& value)
     {
-        elements_.insert_or_assign(key, value);
+        elements_[key] = value;
     }
 
     ~TestStore()
