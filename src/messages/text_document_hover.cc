@@ -9,7 +9,7 @@ MethodType kMethodType = "textDocument/hover";
 optional<lsMarkedString> GetComments(QueryDatabase* db, SymbolRef sym) {
   auto make = [](std::string_view comment) -> optional<lsMarkedString> {
     lsMarkedString result;
-    result.value = comment;
+    result.value = std::string(comment.data(), comment.length());
     return result;
   };
 
