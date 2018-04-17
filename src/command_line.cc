@@ -432,6 +432,12 @@ int main(int argc, char** argv) {
     optional<AbsolutePath> path = NormalizePath(options["--check"]);
     if (!path)
       ABORT_S() << "Cannot find path \"" << options["--check"] << "\"";
+    optional<std::string> content = ReadContent(*path);
+    if (!content || content->empty()) {
+      ABORT_S()
+          << "Cannot read file content at \"" << path->path
+          << "\". Make sure to pass a specific cc/cpp file, not a directory.";
+    }
     LOG_S(INFO) << "Using path " << path->path;
 
     language_server = false;
