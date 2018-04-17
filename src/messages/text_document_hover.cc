@@ -52,7 +52,7 @@ optional<lsMarkedString> GetHoverOrName(QueryDatabase* db,
   auto make = [&](std::string_view comment) {
     lsMarkedString result;
     result.language = language;
-    result.value = comment;
+    result.value = std::string(comment.data(), comment.length());
     return result;
   };
 
