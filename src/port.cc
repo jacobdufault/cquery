@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void cquery_unreachable_internal(const char* msg, const char* file, int line) {
-  fprintf(stderr, "unreachable %s:%d %s\n", file, line, msg);
+void cquery_unreachable_internal(const char* file, int line) {
+  fprintf(stderr, "unreachable %s:%d\n", file, line);
   CQUERY_BUILTIN_UNREACHABLE;
   abort();
 }

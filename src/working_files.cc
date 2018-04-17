@@ -505,9 +505,8 @@ void WorkingFiles::OnChange(const lsTextDocumentDidChangeParams& change) {
     return;
   }
 
-  // version: number | null
-  if (std::holds_alternative<int>(change.textDocument.version))
-    file->version = std::get<int>(change.textDocument.version);
+  if (change.textDocument.version)
+    file->version = *change.textDocument.version;
 
   for (const lsTextDocumentContentChangeEvent& diff : change.contentChanges) {
     // Per the spec replace everything if the rangeLength and range are not set.

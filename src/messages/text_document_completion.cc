@@ -449,7 +449,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
         });
         // Do not pass the request id, since we've already sent a response for
         // the id.
-        clang_complete->CodeComplete(std::monostate(), request->params,
+        clang_complete->CodeComplete(lsRequestId(), request->params,
                                      freshen_global);
       } else if (non_global_code_complete_cache->IsCacheValid(
                      request->params)) {

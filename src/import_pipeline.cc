@@ -387,8 +387,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
                                 file_contents, &perf);
 
   if (!indexes) {
-    if (g_config->index.enabled &&
-        !std::holds_alternative<std::monostate>(request.id)) {
+    if (g_config->index.enabled && request.id.has_value()) {
       Out_Error out;
       out.id = request.id;
       out.error.code = lsErrorCodes::InternalError;

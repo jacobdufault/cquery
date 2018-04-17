@@ -16,7 +16,7 @@ REGISTER_IN_MESSAGE(In_WorkspaceExecuteCommand);
 struct Out_WorkspaceExecuteCommand
     : public lsOutMessage<Out_WorkspaceExecuteCommand> {
   lsRequestId id;
-  std::variant<std::vector<lsLocation>, CommandArgs> result;
+  std::vector<lsLocation> result;
 };
 MAKE_REFLECT_STRUCT(Out_WorkspaceExecuteCommand, jsonrpc, id, result);
 

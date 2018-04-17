@@ -201,7 +201,7 @@ void RunQueryDbThread(const std::string& bin_name,
                                       args);
       },
       [](lsRequestId id) {
-        if (!std::holds_alternative<std::monostate>(id)) {
+        if (id.has_value()) {
           Out_Error out;
           out.id = id;
           out.error.code = lsErrorCodes::InternalError;
@@ -303,7 +303,7 @@ void LaunchStdinLoop(std::unordered_map<MethodType, Timer>* request_times) {
         // Emit an error ResponseMessage if |id| is available.
         if (message) {
           lsRequestId id = message->GetRequestId();
-          if (!std::holds_alternative<std::monostate>(id)) {
+          if (id.has_value()) {
             Out_Error out;
             out.id = id;
             out.error.code = lsErrorCodes::InvalidParams;

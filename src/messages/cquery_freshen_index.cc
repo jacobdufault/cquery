@@ -87,7 +87,7 @@ struct Handler_CqueryFreshenIndex : BaseMessageHandler<In_CqueryFreshenIndex> {
 
     Timer time;
     // Send index requests for every file.
-    project->Index(QueueManager::instance(), working_files, std::monostate());
+    project->Index(QueueManager::instance(), working_files, lsRequestId());
     time.ResetAndPrint("[perf] Dispatched $cquery/freshenIndex index requests");
   }
 };

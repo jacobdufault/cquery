@@ -5,41 +5,93 @@
 namespace {
 MethodType kMethodType = "textDocument/hover";
 
-std::pair<std::string_view, std::string_view> GetCommentsAndHover(
-    QueryDatabase* db,
-    SymbolRef sym) {
+// Find the comments for |sym|, if any.
+optional<lsMarkedString> GetComments(QueryDatabase* db, SymbolRef sym) {
+  auto make = [](std::string_view comment) -> optional<lsMarkedString> {
+    lsMarkedString result;
+    result.value = comment;
+    return result;
+  };
+
   switch (sym.kind) {
     case SymbolKind::Type: {
       if (const auto* def = db->GetType(sym).AnyDef()) {
-        return {def->comments, !def->hover.empty()
-                                   ? std::string_view(def->hover)
-                                   : std::string_view(def->detailed_name)};
+        if (!def->comments.empty())
+          return make(def->comments);
       }
-      break;
+      return nullopt;
     }
     case SymbolKind::Func: {
       if (const auto* def = db->GetFunc(sym).AnyDef()) {
-        return {def->comments, !def->hover.empty()
-                                   ? std::string_view(def->hover)
-                                   : std::string_view(def->detailed_name)};
+        if (!def->comments.empty())
+          return make(def->comments);
       }
-      break;
+      return nullopt;
     }
     case SymbolKind::Var: {
       if (const auto* def = db->GetVar(sym).AnyDef()) {
-        return {def->comments, !def->hover.empty()
-                                   ? std::string_view(def->hover)
-                                   : std::string_view(def->detailed_name)};
+        if (!def->comments.empty())
+          return make(def->comments);
       }
-      break;
+      return nullopt;
     }
     case SymbolKind::File:
     case SymbolKind::Invalid: {
-      assert(false && "unexpected");
+      CQUERY_UNREACHABLE();
       break;
     }
   }
-  return {"", ""};
+  CQUERY_UNREACHABLE();
+  return nullopt;
+}
+
+// Returns the hover or detailed name for `sym`, if any.
+optional<lsMarkedString> GetHoverOrName(QueryDatabase* db,
+                                        const std::string& language,
+                                        SymbolRef sym) {
+  auto make = [&](std::string_view comment) {
+    lsMarkedString result;
+    result.language = language;
+    result.value = comment;
+    return result;
+  };
+
+  switch (sym.kind) {
+    case SymbolKind::Type: {
+      if (const auto* def = db->GetType(sym).AnyDef()) {
+        if (!def->hover.empty())
+          return make(def->hover);
+        if (!def->detailed_name.empty())
+          return make(def->detailed_name);
+      }
+      return nullopt;
+    }
+    case SymbolKind::Func: {
+      if (const auto* def = db->GetFunc(sym).AnyDef()) {
+        if (!def->hover.empty())
+          return make(def->hover);
+        if (!def->detailed_name.empty())
+          return make(def->detailed_name);
+      }
+      return nullopt;
+    }
+    case SymbolKind::Var: {
+      if (const auto* def = db->GetVar(sym).AnyDef()) {
+        if (!def->hover.empty())
+          return make(def->hover);
+        if (!def->detailed_name.empty())
+          return make(def->detailed_name);
+      }
+      return nullopt;
+    }
+    case SymbolKind::File:
+    case SymbolKind::Invalid: {
+      CQUERY_UNREACHABLE();
+      break;
+    }
+  }
+  CQUERY_UNREACHABLE();
+  return nullopt;
 }
 
 struct In_TextDocumentHover : public RequestInMessage {
@@ -97,18 +149,16 @@ struct Handler_TextDocumentHover : BaseMessageHandler<In_TextDocumentHover> {
       if (!ls_range)
         continue;
 
-      std::pair<std::string_view, std::string_view> comments_hover =
-          GetCommentsAndHover(db, sym);
-      if (comments_hover.first.size() || comments_hover.second.size()) {
+      optional<lsMarkedString> comments = GetComments(db, sym);
+      optional<lsMarkedString> hover =
+          GetHoverOrName(db, file->def->language, sym);
+      if (comments || hover) {
         out.result = Out_TextDocumentHover::Result();
-        if (comments_hover.first.size()) {
-          out.result->contents.emplace_back(comments_hover.first);
-        }
-        if (comments_hover.second.size()) {
-          out.result->contents.emplace_back(lsMarkedString1{
-              std::string_view(file->def->language), comments_hover.second});
-        }
         out.result->range = *ls_range;
+        if (comments)
+          out.result->contents.push_back(*comments);
+        if (hover)
+          out.result->contents.push_back(*hover);
         break;
       }
     }

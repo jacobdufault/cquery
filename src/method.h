@@ -12,7 +12,18 @@ extern MethodType kMethodType_TextDocumentPublishDiagnostics;
 extern MethodType kMethodType_CqueryPublishInactiveRegions;
 extern MethodType kMethodType_CqueryPublishSemanticHighlighting;
 
-using lsRequestId = std::variant<std::monostate, int64_t, std::string>;
+struct lsRequestId {
+  // The client can send the request id as an int or a string. We should output
+  // the same format we received.
+  enum Type { kNone, kInt, kString };
+  Type type = kNone;
+
+  int value = -1;
+
+  bool has_value() const { return type != kNone; }
+};
+void Reflect(Reader& visitor, lsRequestId& value);
+void Reflect(Writer& visitor, lsRequestId& value);
 
 // Debug method to convert an id to a string.
 std::string ToString(const lsRequestId& id);

@@ -19,10 +19,10 @@
 #define CQUERY_BUILTIN_UNREACHABLE
 #endif
 
-void cquery_unreachable_internal(const char* msg, const char* file, int line);
+void cquery_unreachable_internal(const char* file, int line);
 #ifndef NDEBUG
-#define CQUERY_UNREACHABLE(msg) \
-  cquery_unreachable_internal(msg, __FILE__, __LINE__)
+#define CQUERY_UNREACHABLE() \
+  cquery_unreachable_internal(__FILE__, __LINE__)
 #else
-#define CQUERY_UNREACHABLE(msg)
+#define CQUERY_UNREACHABLE()
 #endif
