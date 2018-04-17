@@ -5,7 +5,6 @@
 
 #include <optional.h>
 #include <sparsepp/spp.h>
-#include <variant.h>
 
 #include <functional>
 #include <mutex>

@@ -21,8 +21,7 @@
 
 void cquery_unreachable_internal(const char* file, int line);
 #ifndef NDEBUG
-#define CQUERY_UNREACHABLE() \
-  cquery_unreachable_internal(__FILE__, __LINE__)
+#define CQUERY_UNREACHABLE() cquery_unreachable_internal(__FILE__, __LINE__)
 #else
 #define CQUERY_UNREACHABLE()
 #endif

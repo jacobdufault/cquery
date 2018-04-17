@@ -7,7 +7,6 @@
 #include <macro_map.h>
 #include <optional.h>
 #include <string_view.h>
-#include <variant.h>
 
 #include <cassert>
 #include <memory>
