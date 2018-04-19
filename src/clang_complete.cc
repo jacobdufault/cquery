@@ -487,7 +487,7 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
       request = completion_manager->completion_request_.Dequeue();
     }
 
-    std::string path = request->document.uri.GetPath();
+    std::string path = request->path;
 
     std::shared_ptr<CompletionSession> session =
         completion_manager->TryGetSession(path, true /*mark_as_completion*/,
@@ -621,7 +621,7 @@ void DiagnosticsQueryMain(ClangCompleteManager* completion_manager) {
     if (!request)
       continue;
 
-    std::string path = request->document.uri.GetPath();
+    std::string path = request->path;
 
     std::shared_ptr<CompletionSession> session =
         completion_manager->TryGetSession(path, true /*mark_as_completion*/,
@@ -694,17 +694,14 @@ ClangCompleteManager::PreloadRequest::PreloadRequest(const std::string& path)
 
 ClangCompleteManager::CompletionRequest::CompletionRequest(
     const lsRequestId& id,
-    const lsTextDocumentIdentifier& document,
+    const std::string& path,
     const lsPosition& position,
     const OnComplete& on_complete)
-    : id(id),
-      document(document),
-      position(position),
-      on_complete(on_complete) {}
+    : id(id), path(path), position(position), on_complete(on_complete) {}
 
 ClangCompleteManager::DiagnosticRequest::DiagnosticRequest(
-    const lsTextDocumentIdentifier& document)
-    : document(document) {}
+    const std::string& path)
+    : path(path) {}
 
 ClangCompleteManager::ClangCompleteManager(Project* project,
                                            WorkingFiles* working_files,
@@ -731,20 +728,19 @@ void ClangCompleteManager::CodeComplete(
     const lsTextDocumentPositionParams& completion_location,
     const OnComplete& on_complete) {
   completion_request_.PushBack(std::make_unique<CompletionRequest>(
-      id, completion_location.textDocument, completion_location.position,
-      on_complete));
+      id, completion_location.textDocument.uri.GetPath(),
+      completion_location.position, on_complete));
 }
 
-void ClangCompleteManager::DiagnosticsUpdate(
-    const lsTextDocumentIdentifier& document) {
+void ClangCompleteManager::DiagnosticsUpdate(const std::string& path) {
   bool has = false;
   diagnostics_request_.Iterate(
       [&](const std::unique_ptr<DiagnosticRequest>& request) {
-        if (request->document.uri == document.uri)
+        if (request->path == path)
           has = true;
       });
   if (!has) {
-    diagnostics_request_.PushBack(std::make_unique<DiagnosticRequest>(document),
+    diagnostics_request_.PushBack(std::make_unique<DiagnosticRequest>(path),
                                   true /*priority*/);
   }
 }
@@ -778,9 +774,6 @@ void ClangCompleteManager::NotifySave(const std::string& filename) {
 
   EnsureCompletionOrCreatePreloadSession(filename);
   preload_requests_.PushBack(PreloadRequest(filename), true /*priority*/);
-
-  DiagnosticsUpdate(
-      lsTextDocumentIdentifier{lsDocumentUri::FromPath(filename)});
 }
 
 void ClangCompleteManager::NotifyClose(const std::string& filename) {

@@ -30,6 +30,8 @@ struct Handler_CqueryDidView
       return;
 
     clang_complete->NotifyView(path);
+    clang_complete->DiagnosticsUpdate(path);
+
     if (file->def) {
       EmitInactiveLines(working_file, file->def->inactive_regions);
       EmitSemanticHighlighting(db, semantic_cache, working_file, file);

@@ -38,8 +38,7 @@ struct Handler_TextDocumentDidChange
       }
     }
     clang_complete->NotifyEdit(path);
-    clang_complete->DiagnosticsUpdate(
-        request->params.textDocument.AsTextDocumentIdentifier());
+    clang_complete->DiagnosticsUpdate(path);
   }
 };
 REGISTER_MESSAGE_HANDLER(Handler_TextDocumentDidChange);

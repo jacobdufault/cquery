@@ -65,19 +65,19 @@ struct ClangCompleteManager {
   };
   struct CompletionRequest {
     CompletionRequest(const lsRequestId& id,
-                      const lsTextDocumentIdentifier& document,
+                      const std::string& path,
                       const lsPosition& position,
                       const OnComplete& on_complete);
 
     lsRequestId id;
-    lsTextDocumentIdentifier document;
+    std::string path;
     lsPosition position;
     OnComplete on_complete;
   };
   struct DiagnosticRequest {
-    DiagnosticRequest(const lsTextDocumentIdentifier& document);
+    DiagnosticRequest(const std::string& path);
 
-    lsTextDocumentIdentifier document;
+    std::string path;
   };
 
   ClangCompleteManager(Project* project,
@@ -93,7 +93,7 @@ struct ClangCompleteManager {
                     const lsTextDocumentPositionParams& completion_location,
                     const OnComplete& on_complete);
   // Request a diagnostics update.
-  void DiagnosticsUpdate(const lsTextDocumentIdentifier& document);
+  void DiagnosticsUpdate(const std::string& path);
 
   // Notify the completion manager that |filename| has been viewed and we
   // should begin preloading completion data.

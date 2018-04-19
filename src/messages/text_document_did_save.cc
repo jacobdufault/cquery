@@ -63,6 +63,7 @@ struct Handler_TextDocumentDidSave
     }
 
     clang_complete->NotifySave(path);
+    clang_complete->DiagnosticsUpdate(path);
   }
 };
 REGISTER_MESSAGE_HANDLER(Handler_TextDocumentDidSave);
