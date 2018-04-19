@@ -342,7 +342,7 @@ std::vector<FileContents> PreloadFileContents(
   std::vector<FileContents> file_contents;
   file_contents.push_back(FileContents(entry.filename, entry_contents));
   cache_manager->IterateLoadedCaches([&](IndexFile* index) {
-    if (index->path.path == entry.filename)
+    if (index->path == entry.filename)
       return;
     file_contents.push_back(FileContents(
         index->path,
@@ -366,7 +366,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // directly (ie, a header file, which are not listed in the project). If this
   // file is inferred, then try to use the file which originally imported it.
   // FIXME: don't use absolute path
-  AbsolutePath path_to_index = AbsolutePath(entry.filename);
+  AbsolutePath path_to_index = entry.filename;
   if (entry.is_inferred) {
     IndexFile* entry_cache = request.cache_manager->TryLoad(entry.filename);
     if (entry_cache)

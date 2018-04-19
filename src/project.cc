@@ -44,28 +44,28 @@ bool g_disable_normalize_path_for_test = false;
 
 struct NormalizationCache {
   // input path -> normalized path
-  std::unordered_map<std::string, std::string> paths;
+  std::unordered_map<std::string, AbsolutePath> paths;
 
-  std::string Get(const std::string& path) {
+  AbsolutePath Get(const std::string& path) {
     auto it = paths.find(path);
     if (it != paths.end())
       return it->second;
 
     if (g_disable_normalize_path_for_test) {
       // Add a & so we can test to verify a path is normalized.
-      paths[path] = "&" + path;
+      paths[path] = AbsolutePath("&" + path);
       return paths[path];
     }
 
     optional<AbsolutePath> normalized = NormalizePath(path);
     if (normalized) {
-      paths[path] = normalized->path;
-      return normalized->path;
+      paths[path] = *normalized;
+      return *normalized;
     }
 
     LOG_S(WARNING) << "Failed to normalize " << path;
-    paths[path] = path;
-    return path;
+    paths[path] = AbsolutePath(path);
+    return AbsolutePath(path);
   }
 };
 
@@ -670,7 +670,7 @@ int ComputeGuessScore(const std::string& a, const std::string& b) {
 
 }  // namespace
 
-void Project::Load(const std::string& root_directory) {
+void Project::Load(const AbsolutePath& root_directory) {
   // Load data.
   ProjectConfig project;
   project.extra_flags = g_config->extraClangArguments;
@@ -702,7 +702,7 @@ void Project::Load(const std::string& root_directory) {
 }
 
 void Project::SetFlagsForFile(const std::vector<std::string>& flags,
-                              const std::string& path) {
+                              const AbsolutePath& path) {
   auto it = absolute_path_to_entry_index_.find(path);
   if (it != absolute_path_to_entry_index_.end()) {
     // The entry already exists in the project, just set the flags.
@@ -718,7 +718,7 @@ void Project::SetFlagsForFile(const std::vector<std::string>& flags,
 }
 
 Project::Entry Project::FindCompilationEntryForFile(
-    const std::string& filename) {
+    const AbsolutePath& filename) {
   auto it = absolute_path_to_entry_index_.find(filename);
   if (it != absolute_path_to_entry_index_.end())
     return entries[it->second];
@@ -748,7 +748,7 @@ Project::Entry Project::FindCompilationEntryForFile(
     // that path to the new filename.
     std::string best_entry_base_name = GetBaseName(best_entry->filename);
     for (std::string& arg : result.args) {
-      if (arg == best_entry->filename ||
+      if (arg == best_entry->filename.path ||
           GetBaseName(arg) == best_entry_base_name) {
         arg = filename;
       }
@@ -769,7 +769,7 @@ void Project::ForAllFilteredFiles(
     else {
       if (g_config->index.logSkippedPaths) {
         LOG_S(INFO) << "[" << i + 1 << "/" << entries.size() << "]: Failed "
-                    << failure_reason << "; skipping " << entry.filename;
+                    << failure_reason << "; skipping " << entry.filename.path;
       }
     }
   }
@@ -780,7 +780,7 @@ void Project::Index(QueueManager* queue, WorkingFiles* wfiles, lsRequestId id) {
     optional<std::string> content = ReadContent(entry.filename);
     if (!content) {
       LOG_S(ERROR) << "When loading project, canont read file "
-                   << entry.filename;
+                   << entry.filename.path;
       return;
     }
     bool is_interactive = wfiles->GetFileByFilename(entry.filename) != nullptr;
@@ -1629,20 +1629,20 @@ TEST_SUITE("Project") {
     {
       Project::Entry e;
       e.args = {"arg1"};
-      e.filename = "/a/b/c/d/bar.cc";
+      e.filename = AbsolutePath("/a/b/c/d/bar.cc");
       p.entries.push_back(e);
     }
     {
       Project::Entry e;
       e.args = {"arg2"};
-      e.filename = "/a/b/c/baz.cc";
+      e.filename = AbsolutePath("/a/b/c/baz.cc");
       p.entries.push_back(e);
     }
 
     // Guess at same directory level, when there are parent directories.
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("/a/b/c/d/new.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("/a/b/c/d/new.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg1"});
     }
@@ -1650,7 +1650,7 @@ TEST_SUITE("Project") {
     // Guess at same directory level, when there are child directories.
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("/a/b/c/new.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("/a/b/c/new.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg2"});
     }
@@ -1658,7 +1658,7 @@ TEST_SUITE("Project") {
     // Guess at new directory (use the closest parent directory).
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("/a/b/c/new/new.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("/a/b/c/new/new.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg2"});
     }
@@ -1669,12 +1669,13 @@ TEST_SUITE("Project") {
     {
       Project::Entry e;
       e.args = {"a", "b", "aaaa.cc", "d"};
-      e.filename = "absolute/aaaa.cc";
+      e.filename = AbsolutePath("absolute/aaaa.cc");
       p.entries.push_back(e);
     }
 
     {
-      optional<Project::Entry> entry = p.FindCompilationEntryForFile("ee.cc");
+      optional<Project::Entry> entry =
+          p.FindCompilationEntryForFile(AbsolutePath("ee.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"a", "b", "ee.cc", "d"});
     }
@@ -1702,44 +1703,44 @@ TEST_SUITE("Project") {
     {
       Project::Entry e;
       e.args = {"arg1"};
-      e.filename = "common/simple_browsertest.cc";
+      e.filename = AbsolutePath("common/simple_browsertest.cc");
       p.entries.push_back(e);
     }
     {
       Project::Entry e;
       e.args = {"arg2"};
-      e.filename = "common/simple_unittest.cc";
+      e.filename = AbsolutePath("common/simple_unittest.cc");
       p.entries.push_back(e);
     }
     {
       Project::Entry e;
       e.args = {"arg3"};
-      e.filename = "common/a/simple_unittest.cc";
+      e.filename = AbsolutePath("common/a/simple_unittest.cc");
       p.entries.push_back(e);
     }
 
     // Prefer files with the same ending.
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("my_browsertest.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("my_browsertest.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg1"});
     }
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("my_unittest.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("my_unittest.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg2"});
     }
     {
-      optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("common/my_browsertest.cc");
+      optional<Project::Entry> entry = p.FindCompilationEntryForFile(
+          AbsolutePath("common/my_browsertest.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg1"});
     }
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("common/my_unittest.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("common/my_unittest.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg2"});
     }
@@ -1747,7 +1748,7 @@ TEST_SUITE("Project") {
     // Prefer the same directory over matching file-ending.
     {
       optional<Project::Entry> entry =
-          p.FindCompilationEntryForFile("common/a/foo.cc");
+          p.FindCompilationEntryForFile(AbsolutePath("common/a/foo.cc"));
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"arg3"});
     }

@@ -419,7 +419,7 @@ void TryEnsureDocumentParsed(ClangCompleteManager* manager,
     *tu = ClangTranslationUnit::Reparse(std::move(*tu), unsaved);
     if (!*tu) {
       LOG_S(ERROR) << "Reparsing translation unit for diagnostics failed for "
-                   << session->file.filename;
+                   << session->file.filename.path;
       return;
     }
 
@@ -522,8 +522,9 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
     unsigned const kCompleteOptions =
         CXCodeComplete_IncludeMacros | CXCodeComplete_IncludeBriefComments;
     CXCodeCompleteResults* cx_results = clang_codeCompleteAt(
-        session->completion.tu->cx_tu, session->file.filename.c_str(), line,
-        column, unsaved.data(), (unsigned)unsaved.size(), kCompleteOptions);
+        session->completion.tu->cx_tu, session->file.filename.path.c_str(),
+        line, column, unsaved.data(), (unsigned)unsaved.size(),
+        kCompleteOptions);
     timer.ResetAndPrint("[complete] clangCodeCompleteAt");
     if (!cx_results) {
       request->on_complete(request->id, {}, false /*is_cached_result*/);
@@ -852,6 +853,8 @@ void ClangCompleteManager::FlushSession(const std::string& filename) {
 
   preloaded_sessions_.TryTake(filename);
   completion_sessions_.TryTake(filename);
+
+  LOG_S(INFO) << "Flushed completion sessions for " << filename;
 }
 
 void ClangCompleteManager::FlushAllSessions() {
