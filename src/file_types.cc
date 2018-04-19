@@ -25,6 +25,13 @@ bool AbsolutePath::operator!=(const AbsolutePath& rhs) const {
   return path != rhs.path;
 }
 
+void Reflect(Reader& visitor, AbsolutePath& value) {
+  value.path = visitor.GetString();
+}
+void Reflect(Writer& visitor, AbsolutePath& value) {
+  visitor.String(value.path.c_str(), value.path.length());
+}
+
 Directory::Directory(const std::string& path) : Directory(AbsolutePath(path)) {}
 
 Directory::Directory(const AbsolutePath& path) : path(path) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "serializer.h"
+
 #include <string>
 
 struct AbsolutePath {
@@ -18,6 +20,9 @@ struct AbsolutePath {
 
   std::string path;
 };
+
+void Reflect(Reader& visitor, AbsolutePath& value);
+void Reflect(Writer& visitor, AbsolutePath& value);
 
 struct Directory {
   explicit Directory(const AbsolutePath& path);

@@ -295,7 +295,7 @@ optional<lsSymbolInformation> GetSymbolInfo(QueryDatabase* db,
         break;
 
       lsSymbolInformation info;
-      info.name = file.def->path;
+      info.name = file.def->path.path;
       info.kind = lsSymbolKind::File;
       return info;
     }

@@ -944,7 +944,7 @@ std::string_view QueryDatabase::GetSymbolDetailedName(RawId symbol_idx) const {
       break;
     case SymbolKind::File:
       if (files[idx].def)
-        return files[idx].def->path;
+        return files[idx].def->path.path;
       break;
     case SymbolKind::Func:
       if (const auto* def = funcs[idx].AnyDef())
@@ -969,7 +969,7 @@ std::string_view QueryDatabase::GetSymbolShortName(RawId symbol_idx) const {
       break;
     case SymbolKind::File:
       if (files[idx].def)
-        return files[idx].def->path;
+        return files[idx].def->path.path;
       break;
     case SymbolKind::Func:
       if (const auto* def = funcs[idx].AnyDef())

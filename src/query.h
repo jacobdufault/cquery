@@ -98,7 +98,7 @@ struct QueryFamily {
 struct QueryFile {
   struct Def {
     Id<QueryFile> file;
-    std::string path;
+    AbsolutePath path;
     std::vector<std::string> args;
     // Language identifier
     std::string language;
