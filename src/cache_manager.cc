@@ -198,7 +198,7 @@ std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(
 // Write an IndexFile to the cache storage
 void IndexCache::Write(IndexFile& file) {
   driver_->Write(file.path, file.file_contents);
-  driver_->Write(file.path + SerializationFormatToSuffix(g_config->cacheFormat),
+  driver_->Write(file.path.path + SerializationFormatToSuffix(g_config->cacheFormat),
                  Serialize(g_config->cacheFormat, file));
 }
 
