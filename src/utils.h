@@ -176,3 +176,7 @@ std::string UpdateToRnNewlines(std::string output);
 
 // Get an executable located next to the cquery binary.
 AbsolutePath GetExecutablePathNextToCqueryBinary(const std::string& name);
+
+// FIXME: These should go in file_types.h; move hashing into a separate header.
+MAKE_HASHABLE(AbsolutePath, t.path);
+MAKE_HASHABLE(Directory, t.path);

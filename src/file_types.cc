@@ -32,14 +32,8 @@ void Reflect(Writer& visitor, AbsolutePath& value) {
   visitor.String(value.path.c_str(), value.path.length());
 }
 
-Directory::Directory(const std::string& path) : Directory(AbsolutePath(path)) {}
-
 Directory::Directory(const AbsolutePath& path) : path(path) {
-  EnsureEndsInSlash(this->path.path);
-}
-
-Directory::operator std::string() const {
-  return path;
+  EnsureEndsInSlash(this->path);
 }
 
 bool Directory::operator==(const Directory& rhs) const {

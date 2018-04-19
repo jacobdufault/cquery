@@ -58,14 +58,14 @@ bool TrimPath(Project* project,
   if (len > start)
     start = len;
 
-  for (auto& include_dir : project->quote_include_directories) {
-    len = TrimCommonPathPrefix(*insert_path, include_dir);
+  for (const Directory& include_dir : project->quote_include_directories) {
+    len = TrimCommonPathPrefix(*insert_path, include_dir.path);
     if (len > start)
       start = len;
   }
 
-  for (auto& include_dir : project->angle_include_directories) {
-    len = TrimCommonPathPrefix(*insert_path, include_dir);
+  for (const Directory& include_dir : project->angle_include_directories) {
+    len = TrimCommonPathPrefix(*insert_path, include_dir.path);
     if (len > start) {
       start = len;
       angle = true;
@@ -122,10 +122,10 @@ void IncludeComplete::Rescan() {
     InsertStlIncludes();
     InsertIncludesFromDirectory(g_config->projectRoot,
                                 false /*use_angle_brackets*/);
-    for (const std::string& dir : project_->quote_include_directories)
-      InsertIncludesFromDirectory(dir, false /*use_angle_brackets*/);
-    for (const std::string& dir : project_->angle_include_directories)
-      InsertIncludesFromDirectory(dir, true /*use_angle_brackets*/);
+    for (const Directory& dir : project_->quote_include_directories)
+      InsertIncludesFromDirectory(dir.path, false /*use_angle_brackets*/);
+    for (const Directory& dir : project_->angle_include_directories)
+      InsertIncludesFromDirectory(dir.path, true /*use_angle_brackets*/);
 
     timer.ResetAndPrint("[perf] Scanning for includes");
     is_scanning = false;

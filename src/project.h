@@ -23,12 +23,12 @@ struct Project {
   };
 
   // Include directories for "" headers
-  std::vector<std::string> quote_include_directories;
+  std::vector<Directory> quote_include_directories;
   // Include directories for <> headers
-  std::vector<std::string> angle_include_directories;
+  std::vector<Directory> angle_include_directories;
 
   std::vector<Entry> entries;
-  spp::sparse_hash_map<std::string, int> absolute_path_to_entry_index_;
+  spp::sparse_hash_map<AbsolutePath, int> absolute_path_to_entry_index_;
 
   // Loads a project for the given |directory|.
   //
@@ -57,5 +57,5 @@ struct Project {
   void ForAllFilteredFiles(
       std::function<void(int i, const Entry& entry)> action);
 
-  void Index(QueueManager* queue, WorkingFiles* wfiles, lsRequestId id);
+  void Index(QueueManager* queue, WorkingFiles* working_files, lsRequestId id);
 };

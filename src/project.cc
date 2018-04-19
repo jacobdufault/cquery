@@ -87,8 +87,8 @@ enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
 struct ProjectConfig {
   std::unordered_map<LanguageId, std::vector<std::string>>
       discovered_system_includes;
-  std::unordered_set<std::string> quote_dirs;
-  std::unordered_set<std::string> angle_dirs;
+  std::unordered_set<Directory> quote_dirs;
+  std::unordered_set<Directory> angle_dirs;
   std::vector<std::string> extra_flags;
   std::string project_dir;
   std::string resource_dir;
@@ -224,7 +224,8 @@ LanguageId SourceFileLanguage(const std::string& path) {
 Project::Entry GetCompilationEntryFromCompileCommandEntry(
     ProjectConfig* config,
     const CompileCommandsEntry& entry) {
-  auto cleanup_maybe_relative_path = [&](const std::string& path) {
+  auto cleanup_maybe_relative_path =
+      [&](const std::string& path) -> AbsolutePath {
     // TODO/FIXME: Normalization will fail for paths that do not exist. Should
     // it return an optional<std::string>?
     assert(!path.empty());
@@ -343,13 +344,13 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     // Finish processing path for the previous argument, which was a switch.
     // {"-I", "foo"} style.
     if (next_flag_is_path) {
-      std::string normalized_arg = cleanup_maybe_relative_path(arg);
+      AbsolutePath normalized_arg = cleanup_maybe_relative_path(arg);
       if (add_next_flag_to_quote_dirs)
-        config->quote_dirs.insert(normalized_arg);
+        config->quote_dirs.insert(Directory(normalized_arg));
       if (add_next_flag_to_angle_dirs)
-        config->angle_dirs.insert(normalized_arg);
+        config->angle_dirs.insert(Directory(normalized_arg));
       if (clang_cl)
-        arg = normalized_arg;
+        arg = normalized_arg.path;
 
       next_flag_is_path = false;
       add_next_flag_to_quote_dirs = false;
@@ -367,15 +368,15 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
 
         // {"-Ifoo"} style.
         if (StartsWith(arg, flag_type)) {
-          std::string path = arg.substr(flag_type.size());
-          assert(!path.empty());
-          path = cleanup_maybe_relative_path(path);
+          assert(arg != flag_type);
+          AbsolutePath path =
+              cleanup_maybe_relative_path(arg.substr(flag_type.size()));
           if (clang_cl || StartsWithAny(arg, kNormalizePathArgs))
-            arg = flag_type + path;
+            arg = flag_type + path.path;
           if (ShouldAddToQuoteIncludes(flag_type))
-            config->quote_dirs.insert(path);
+            config->quote_dirs.insert(Directory(path));
           if (ShouldAddToAngleIncludes(flag_type))
-            config->angle_dirs.insert(path);
+            config->angle_dirs.insert(Directory(path));
           break;
         }
       }
@@ -686,13 +687,11 @@ void Project::Load(const AbsolutePath& root_directory) {
                                    project.quote_dirs.end());
   angle_include_directories.assign(project.angle_dirs.begin(),
                                    project.angle_dirs.end());
-  for (std::string& path : quote_include_directories) {
-    EnsureEndsInSlash(path);
-    LOG_S(INFO) << "quote_include_dir: " << path;
+  for (const Directory& dir : quote_include_directories) {
+    LOG_S(INFO) << "quote_include_dir: " << dir.path;
   }
-  for (std::string& path : angle_include_directories) {
-    EnsureEndsInSlash(path);
-    LOG_S(INFO) << "angle_include_dir: " << path;
+  for (const Directory& dir : angle_include_directories) {
+    LOG_S(INFO) << "angle_include_dir: " << dir.path;
   }
 
   // Setup project entries.
@@ -775,7 +774,9 @@ void Project::ForAllFilteredFiles(
   }
 }
 
-void Project::Index(QueueManager* queue, WorkingFiles* wfiles, lsRequestId id) {
+void Project::Index(QueueManager* queue,
+                    WorkingFiles* working_files,
+                    lsRequestId id) {
   ForAllFilteredFiles([&](int i, const Project::Entry& entry) {
     optional<std::string> content = ReadContent(entry.filename);
     if (!content) {
@@ -783,7 +784,8 @@ void Project::Index(QueueManager* queue, WorkingFiles* wfiles, lsRequestId id) {
                    << entry.filename.path;
       return;
     }
-    bool is_interactive = wfiles->GetFileByFilename(entry.filename) != nullptr;
+    bool is_interactive =
+        working_files->GetFileByFilename(entry.filename) != nullptr;
     queue->index_request.PushBack(Index_Request(entry.filename, entry.args,
                                                 is_interactive, *content,
                                                 ICacheManager::Make(), id));
@@ -1614,12 +1616,13 @@ TEST_SUITE("Project") {
     Project::Entry result =
         GetCompilationEntryFromCompileCommandEntry(&config, entry);
 
-    std::unordered_set<std::string> angle_expected{
-        "&/a_absolute1", "&/a_absolute2", "&/base/a_relative1",
-        "&/base/a_relative2"};
-    std::unordered_set<std::string> quote_expected{
-        "&/q_absolute1", "&/q_absolute2", "&/base/q_relative1",
-        "&/base/q_relative2"};
+    auto md = [](const char* str) { return Directory(AbsolutePath(str)); };
+    std::unordered_set<Directory> angle_expected{
+        md("&/a_absolute1"), md("&/a_absolute2"), md("&/base/a_relative1"),
+        md("&/base/a_relative2")};
+    std::unordered_set<Directory> quote_expected{
+        md("&/q_absolute1"), md("&/q_absolute2"), md("&/base/q_relative1"),
+        md("&/base/q_relative2")};
     REQUIRE(config.angle_dirs == angle_expected);
     REQUIRE(config.quote_dirs == quote_expected);
   }

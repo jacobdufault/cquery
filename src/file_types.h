@@ -27,12 +27,8 @@ void Reflect(Writer& visitor, AbsolutePath& value);
 struct Directory {
   explicit Directory(const AbsolutePath& path);
 
-  // Provide implicit conversions to std::string for the time being.
-  Directory(const std::string& path);
-  operator std::string() const;
-
   bool operator==(const Directory& rhs) const;
   bool operator!=(const Directory& rhs) const;
 
-  AbsolutePath path;
+  std::string path;
 };
