@@ -41,7 +41,7 @@ void FileConsumerSharedState::Reset(const std::string& file) {
 }
 
 FileConsumer::FileConsumer(FileConsumerSharedState* shared_state,
-                           const std::string& parse_file)
+                           const AbsolutePath& parse_file)
     : shared_(shared_state), parse_file_(parse_file) {}
 
 IndexFile* FileConsumer::TryConsumeFile(CXFile file,
@@ -107,6 +107,6 @@ void FileConsumer::EmitError(CXFile file) const {
   // TODO: Investigate this more, why can we get an empty file name?
   if (!file_name.empty()) {
     LOG_S(ERROR) << "Could not get unique file id for " << file_name
-                 << " when parsing " << parse_file_;
+                 << " when parsing " << parse_file_.path;
   }
 }

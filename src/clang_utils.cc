@@ -25,7 +25,7 @@ lsRange GetLsRangeForFixIt(const CXSourceRange& range) {
 
 // See clang_formatDiagnostic
 optional<lsDiagnostic> BuildAndDisposeDiagnostic(CXDiagnostic diagnostic,
-                                                 const std::string& path) {
+                                                 const AbsolutePath& path) {
   // Get diagnostic location.
   CXFile file;
   unsigned start_line, start_column;
@@ -39,7 +39,7 @@ optional<lsDiagnostic> BuildAndDisposeDiagnostic(CXDiagnostic diagnostic,
   }
   // Diagnostic path does not match our required path.
   optional<AbsolutePath> cx_file_path = FileName(file);
-  if (!cx_file_path || path != cx_file_path->path) {
+  if (!cx_file_path || path != *cx_file_path) {
     clang_disposeDiagnostic(diagnostic);
     return nullopt;
   }

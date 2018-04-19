@@ -2,7 +2,7 @@
 
 FileContents::FileContents() : line_offsets_{0} {}
 
-FileContents::FileContents(const std::string& path, const std::string& content)
+FileContents::FileContents(const AbsolutePath& path, const std::string& content)
     : path(path), content(content) {
   line_offsets_.push_back(0);
   for (size_t i = 0; i < content.size(); i++) {

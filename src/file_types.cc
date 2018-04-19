@@ -32,7 +32,7 @@ void Reflect(Writer& visitor, AbsolutePath& value) {
   visitor.String(value.path.c_str(), value.path.length());
 }
 
-Directory::Directory(const AbsolutePath& path) : path(path) {
+Directory::Directory(const AbsolutePath& path) : path(path.path) {
   EnsureEndsInSlash(this->path);
 }
 

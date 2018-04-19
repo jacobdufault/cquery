@@ -2,6 +2,7 @@
 
 #include "clang_cursor.h"
 #include "clang_index.h"
+#include "file_types.h"
 
 #include <clang-c/Index.h>
 
@@ -15,7 +16,7 @@
 struct ClangTranslationUnit {
   static std::unique_ptr<ClangTranslationUnit> Create(
       ClangIndex* index,
-      const std::string& filepath,
+      const AbsolutePath& filepath,
       const std::vector<std::string>& arguments,
       std::vector<CXUnsavedFile>& unsaved_files,
       unsigned flags);

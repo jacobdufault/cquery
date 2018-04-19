@@ -10,7 +10,7 @@
 // Builds an lsDiagnostic instance, but only if |path| matches the diagnostic
 // path.
 optional<lsDiagnostic> BuildAndDisposeDiagnostic(CXDiagnostic diagnostic,
-                                                 const std::string& path);
+                                                 const AbsolutePath& path);
 
 // Returns the absolute path to |file|.
 optional<AbsolutePath> FileName(CXFile file);

@@ -35,7 +35,7 @@ struct FileConsumerSharedState {
 // units but we still want to index them.
 struct FileConsumer {
   FileConsumer(FileConsumerSharedState* shared_state,
-               const std::string& parse_file);
+               const AbsolutePath& parse_file);
 
   // Returns true if this instance owns given |file|. This will also attempt to
   // take ownership over |file|.
@@ -58,5 +58,5 @@ struct FileConsumer {
 
   std::unordered_map<CXFileUniqueID, std::unique_ptr<IndexFile>> local_;
   FileConsumerSharedState* shared_;
-  std::string parse_file_;
+  AbsolutePath parse_file_;
 };

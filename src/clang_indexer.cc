@@ -282,7 +282,7 @@ struct IndexParam {
   std::unordered_set<CXFile> seen_cx_files;
   std::vector<AbsolutePath> seen_files;
   FileContentsMap file_contents;
-  std::unordered_map<std::string, int64_t> file_modification_times;
+  std::unordered_map<AbsolutePath, int64_t> file_modification_times;
 
   // Only use this when strictly needed (ie, primary translation unit is
   // needed). Most logic should get the IndexFile instance via
@@ -2187,7 +2187,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   std::vector<CXUnsavedFile> unsaved_files;
   for (const FileContents& contents : file_contents) {
     CXUnsavedFile unsaved;
-    unsaved.Filename = contents.path.c_str();
+    unsaved.Filename = contents.path.path.c_str();
     unsaved.Contents = contents.content.c_str();
     unsaved.Length = (unsigned long)contents.content.size();
     unsaved_files.push_back(unsaved);
@@ -2234,8 +2234,9 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
   FileConsumer file_consumer(file_consumer_shared, file);
   IndexParam param(tu, &file_consumer);
   for (const CXUnsavedFile& contents : file_contents) {
-    param.file_contents[contents.Filename] = FileContents(
-        contents.Filename, std::string(contents.Contents, contents.Length));
+    AbsolutePath contents_path(contents.Filename);
+    param.file_contents[contents_path] = FileContents(
+        contents_path, std::string(contents.Contents, contents.Length));
   }
 
   CXFile cx_file = clang_getFile(tu->cx_tu, file.path.c_str());
@@ -2263,7 +2264,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
 
   perf->index_build = timer.ElapsedMicrosecondsAndReset();
 
-  std::unordered_map<std::string, int> inc_to_line;
+  std::unordered_map<AbsolutePath, int> inc_to_line;
   // TODO
   if (param.primary_file)
     for (auto& inc : param.primary_file->includes)
