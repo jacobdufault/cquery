@@ -338,21 +338,22 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
   // If this is the first time we have seen the file (ignoring if we are
   // generating an index for it):
   if (param->seen_cx_files.insert(file).second) {
-    std::string file_name = FileName(file);
+    optional<AbsolutePath> file_name = FileName(file);
     // file_name may be empty when it contains .. and is outside of WorkingDir.
     // https://reviews.llvm.org/D42893
     // https://github.com/cquery-project/cquery/issues/413
-    if (!file_name.empty()) {
+    if (file_name && !file_name->path.empty()) {
       // Add to all files we have seen so we can generate proper dependency
       // graph.
-      param->seen_files.push_back(file_name);
+      param->seen_files.push_back(file_name->path);
 
       // Set modification time.
-      optional<int64_t> modification_time = GetLastModificationTime(file_name);
+      optional<int64_t> modification_time =
+          GetLastModificationTime(file_name->path);
       LOG_IF_S(ERROR, !modification_time)
-          << "Failed fetching modification time for " << file_name;
+          << "Failed fetching modification time for " << file_name->path;
       if (modification_time)
-        param->file_modification_times[file_name] = *modification_time;
+        param->file_modification_times[file_name->path] = *modification_time;
     }
   }
 
@@ -863,9 +864,13 @@ CXIdxClientFile OnIndexIncludedFile(CXClientData client_data,
   if (!db)
     return nullptr;
 
+  optional<AbsolutePath> include_path = FileName(file->file);
+  if (!include_path)
+    return nullptr;
+
   IndexInclude include;
   include.line = line;
-  include.resolved_path = FileName(file->file);
+  include.resolved_path = include_path->path;
   if (!include.resolved_path.empty())
     db->includes.push_back(include);
 
@@ -2355,7 +2360,7 @@ void ClangSanityCheck(const Project::Entry& entry) {
       unsigned int line, column;
       CXSourceLocation diag_loc = clang_getDiagnosticLocation(diagnostic);
       clang_getSpellingLocation(diag_loc, &file, &line, &column, nullptr);
-      LOG_S(WARNING) << FileName(file) << line << ":" << column << " "
+      LOG_S(WARNING) << FileName(file)->path << line << ":" << column << " "
                      << ToString(clang_getDiagnosticSpelling(diagnostic));
       clang_disposeDiagnostic(diagnostic);
     }

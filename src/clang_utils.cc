@@ -32,7 +32,14 @@ optional<lsDiagnostic> BuildAndDisposeDiagnostic(CXDiagnostic diagnostic,
   clang_getSpellingLocation(clang_getDiagnosticLocation(diagnostic), &file,
                             &start_line, &start_column, nullptr);
 
-  if (file && path != FileName(file)) {
+  // No diagnostic file.
+  if (!file) {
+    clang_disposeDiagnostic(diagnostic);
+    return nullopt;
+  }
+  // Diagnostic path does not match our required path.
+  optional<AbsolutePath> cx_file_path = FileName(file);
+  if (!cx_file_path || path != cx_file_path->path) {
     clang_disposeDiagnostic(diagnostic);
     return nullopt;
   }
@@ -107,16 +114,10 @@ optional<lsDiagnostic> BuildAndDisposeDiagnostic(CXDiagnostic diagnostic,
   return ls_diagnostic;
 }
 
-std::string FileName(CXFile file) {
+optional<AbsolutePath> FileName(CXFile file) {
   CXString cx_name = clang_getFileName(file);
   std::string name = ToString(cx_name);
-  optional<AbsolutePath> normalized = NormalizePath(name);
-  if (!normalized) {
-    // FIXME: make this return optional
-    LOG_S(INFO) << "Failed to normalize " << name;
-    return name;
-  }
-  return normalized->path;
+  return NormalizePath(name);
 }
 
 std::string ToString(CXString cx_string) {

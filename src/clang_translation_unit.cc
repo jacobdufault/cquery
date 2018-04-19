@@ -28,8 +28,8 @@ void EmitDiagnostics(std::string path,
     unsigned int line, column;
     clang_getSpellingLocation(clang_getDiagnosticLocation(diagnostic), &file,
                               &line, &column, nullptr);
-    std::string path = FileName(file);
-    output += path + ":" + std::to_string(line - 1) + ":" +
+    optional<AbsolutePath> path = FileName(file);
+    output += (path ? path->path : "") + ":" + std::to_string(line - 1) + ":" +
               std::to_string(column) + " ";
 
     // Severity

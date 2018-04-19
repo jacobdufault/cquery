@@ -7,11 +7,13 @@
 
 #include <vector>
 
+// Builds an lsDiagnostic instance, but only if |path| matches the diagnostic
+// path.
 optional<lsDiagnostic> BuildAndDisposeDiagnostic(CXDiagnostic diagnostic,
                                                  const std::string& path);
 
 // Returns the absolute path to |file|.
-std::string FileName(CXFile file);
+optional<AbsolutePath> FileName(CXFile file);
 
 std::string ToString(CXString cx_string);
 
