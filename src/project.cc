@@ -42,18 +42,32 @@ namespace {
 
 bool g_disable_normalize_path_for_test = false;
 
-std::string NormalizePathWithTestOptOut(const std::string& path) {
-  if (g_disable_normalize_path_for_test) {
-    // Add a & so we can test to verify a path is normalized.
-    return "&" + path;
-  }
-  optional<AbsolutePath> normalized = NormalizePath(path);
-  if (!normalized) {
+struct NormalizationCache {
+  // input path -> normalized path
+  std::unordered_map<std::string, std::string> paths;
+
+  std::string Get(const std::string& path) {
+    auto it = paths.find(path);
+    if (it != paths.end())
+      return it->second;
+
+    if (g_disable_normalize_path_for_test) {
+      // Add a & so we can test to verify a path is normalized.
+      paths[path] = "&" + path;
+      return paths[path];
+    }
+
+    optional<AbsolutePath> normalized = NormalizePath(path);
+    if (normalized) {
+      paths[path] = normalized->path;
+      return normalized->path;
+    }
+
     LOG_S(WARNING) << "Failed to normalize " << path;
+    paths[path] = path;
     return path;
   }
-  return *normalized;
-}
+};
 
 bool IsUnixAbsolutePath(const std::string& path) {
   return !path.empty() && path[0] == '/';
@@ -79,6 +93,7 @@ struct ProjectConfig {
   std::string project_dir;
   std::string resource_dir;
   ProjectMode mode = ProjectMode::CompileCommandsJson;
+  NormalizationCache normalization_cache;
 };
 
 const std::vector<std::string>& GetSystemIncludes(
@@ -216,15 +231,15 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     if (entry.directory.empty() || IsUnixAbsolutePath(path) ||
         IsWindowsAbsolutePath(path)) {
       // We still want to normalize, as the path may contain .. characters.
-      return NormalizePathWithTestOptOut(path);
+      return config->normalization_cache.Get(path);
     }
     if (EndsWith(entry.directory, "/"))
-      return NormalizePathWithTestOptOut(entry.directory + path);
-    return NormalizePathWithTestOptOut(entry.directory + "/" + path);
+      return config->normalization_cache.Get(entry.directory + path);
+    return config->normalization_cache.Get(entry.directory + "/" + path);
   };
 
   Project::Entry result;
-  result.filename = NormalizePathWithTestOptOut(entry.file);
+  result.filename = config->normalization_cache.Get(entry.file);
   const std::string base_name = GetBaseName(entry.file);
 
   // Expand %c %cpp %clang
@@ -275,7 +290,7 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     std::string::size_type dot;
     while (i < args.size() && args[i][0] != '-' &&
            // Do not skip over main source filename
-           NormalizePathWithTestOptOut(args[i]) != result.filename &&
+           config->normalization_cache.Get(args[i]) != result.filename &&
            // There may be other filenames (e.g. more than one source filenames)
            // preceding main source filename. We use a heuristic here. `.` may
            // occur in both command names and source filenames. If `.` occurs in
@@ -524,7 +539,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 
   if (!IsUnixAbsolutePath(comp_db_dir) && !IsWindowsAbsolutePath(comp_db_dir)) {
     comp_db_dir =
-        NormalizePathWithTestOptOut(project->project_dir + comp_db_dir);
+        project->normalization_cache.Get(project->project_dir + comp_db_dir);
   }
 
   EnsureEndsInSlash(comp_db_dir);
@@ -598,7 +613,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
       absolute_filename = relative_filename;
     else
       absolute_filename = directory + "/" + relative_filename;
-    entry.file = NormalizePathWithTestOptOut(absolute_filename);
+    entry.file = project->normalization_cache.Get(absolute_filename);
 
     result.push_back(
         GetCompilationEntryFromCompileCommandEntry(project, entry));

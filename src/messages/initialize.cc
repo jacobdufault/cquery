@@ -484,7 +484,7 @@ MAKE_REFLECT_STRUCT(Out_InitializeResponse, jsonrpc, id, result);
 std::string NormalizePathOrAbort(std::string path) {
   optional<AbsolutePath> normalized = NormalizePath(path);
   if (!normalized)
-    ABORT_S() << "Unable to normalize path " << path;
+    ABORT_S() << "Unable to find path " << path;
   return normalized->path;
 }
 
