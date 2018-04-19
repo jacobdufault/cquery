@@ -7,7 +7,6 @@
 
 #include <loguru/loguru.hpp>
 
-
 #include <algorithm>
 #include <unordered_map>
 
@@ -36,11 +35,8 @@ struct FileBasedCacheDriver : public ICacheStore {
       cache_file = externalsDir_ + '/' + EscapeFileName(key);
     }
 
-    optional<std::string> Read(const std::string& key) override
-    {
-        std::string file_path = KeyToFilePath(key);
-        return ReadContent(file_path);
-    }
+    return g_config->cacheDirectory + cache_file;
+  }
 
   optional<std::string> Read(const std::string& key) override {
     std::string file_path = KeyToFilePath(key);
@@ -221,7 +217,7 @@ optional<std::string> IndexCache::TryLoadContent(const NormalizedPath& path) {
 // Write an IndexFile to the cache storage
 void IndexCache::Write(IndexFile& file) {
   driver_->Write(file.path, file.file_contents);
-  driver_->Write(file.path.path + SerializationFormatToSuffix(g_config->cacheFormat),
+  driver_->Write(file.path + SerializationFormatToSuffix(g_config->cacheFormat),
                  Serialize(g_config->cacheFormat, file));
 }
 
@@ -264,7 +260,12 @@ std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(
               << "\".";
 
   int ret = unqlite_open(&database, databaseFile.c_str(), UNQLITE_OPEN_CREATE);
-  UnqliteHandleResult("unqlite_open", database, ret);
+
+  if (ret != UNQLITE_OK)
+    LOG_S(WARNING) << "Unqlite: unqlite_open reported error condition " << ret
+                   << ".";
+
+  ret = unqlite_config(database, UNQLITE_CONFIG_MAX_PAGE_CACHE, 64*1024);
 
   // if (ret == UNQLITE_OK) return
   // std::make_shared<UnqliteCacheDriver>(database);

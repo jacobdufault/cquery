@@ -703,11 +703,15 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> - try to limit unqlite memory buffer to 32*1024 pages (=128MiB)
 struct TestStore : public ICacheStore {
   optional<std::string> Read(const std::string& key) override {
     auto it = elements_.find(key);
     return it != elements_.end() ? it->second : optional<std::string>{};
   }
+<<<<<<< HEAD
 
   void Write(const std::string& key, const std::string& value) {
     elements_[key] = value;
@@ -729,13 +733,21 @@ struct TestStore : public ICacheStore
     {
         elements_.insert_or_assign(key, value);
     }
+=======
 
-    ~TestStore()
-    {
-    }
+  void Write(const std::string& key, const std::string& value) {
+    elements_[key] = value;
+  }
+>>>>>>> - try to limit unqlite memory buffer to 32*1024 pages (=128MiB)
 
+  ~TestStore() {}
+
+<<<<<<< HEAD
     std::unordered_map< std::string, std::string > elements_;
 >>>>>>> Interim fixes to the tests
+=======
+  std::unordered_map<std::string, std::string> elements_;
+>>>>>>> - try to limit unqlite memory buffer to 32*1024 pages (=128MiB)
 };
 
 TEST_SUITE("ImportPipeline") {
