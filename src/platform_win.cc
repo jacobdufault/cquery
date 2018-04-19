@@ -102,7 +102,7 @@ optional<AbsolutePath> NormalizePath(const std::string& path0,
   // cquery assumes forward-slashes.
   std::replace(path.begin(), path.end(), '\\', '/');
 
-  return AbsolutePath(path);
+  return AbsolutePath(path, false /*validate*/);
 }
 
 bool TryMakeDirectory(const AbsolutePath& absolute_path) {

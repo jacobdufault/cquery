@@ -107,7 +107,7 @@ optional<AbsolutePath> RealPathNotExpandSymlink(std::string path,
   // Remove trailing slash except when a single "/".
   if (resolved.size() > 1 && resolved.back() == '/')
     resolved.pop_back();
-  return AbsolutePath(resolved);
+  return AbsolutePath(resolved, true /*validate*/);
 }
 
 }  // namespace

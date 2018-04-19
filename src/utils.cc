@@ -463,6 +463,42 @@ AbsolutePath GetExecutablePathNextToCqueryBinary(const std::string& name) {
   return AbsolutePath(executable_path.substr(0, pos + 1) + name);
 }
 
+bool IsAbsolutePath(const std::string& path) {
+  return IsUnixAbsolutePath(path) || IsWindowsAbsolutePath(path);
+}
+
+bool IsUnixAbsolutePath(const std::string& path) {
+  return !path.empty() && path[0] == '/';
+}
+
+bool IsWindowsAbsolutePath(const std::string& path) {
+  auto is_drive_letter = [](char c) {
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+  };
+
+  return path.size() > 3 && path[1] == ':' &&
+         (path[2] == '/' || path[2] == '\\') && is_drive_letter(path[0]);
+}
+
+TEST_SUITE("AbsolutePath") {
+  TEST_CASE("IsWindowsAbsolutePath works correctly") {
+    REQUIRE(IsWindowsAbsolutePath("C:/Users/projects/"));
+    REQUIRE(IsWindowsAbsolutePath("C:/Users/projects"));
+    REQUIRE(IsWindowsAbsolutePath("C:/Users/projects"));
+    REQUIRE(IsWindowsAbsolutePath("C:\\Users\\projects"));
+    REQUIRE(IsWindowsAbsolutePath("C:\\\\Users\\\\projects"));
+    REQUIRE(IsWindowsAbsolutePath("c:\\\\Users\\\\projects"));
+    REQUIRE(IsWindowsAbsolutePath("A:\\\\Users\\\\projects"));
+
+    REQUIRE(!IsWindowsAbsolutePath("C:/"));
+    REQUIRE(!IsWindowsAbsolutePath("../abc/test"));
+    REQUIRE(!IsWindowsAbsolutePath("5:/test"));
+    REQUIRE(!IsWindowsAbsolutePath("cquery/project/file.cc"));
+    REQUIRE(!IsWindowsAbsolutePath(""));
+    REQUIRE(!IsWindowsAbsolutePath("/etc/linux/path"));
+  }
+}
+
 TEST_SUITE("GetDirName") {
   TEST_CASE("all") {
     REQUIRE(GetDirName("") == "./");

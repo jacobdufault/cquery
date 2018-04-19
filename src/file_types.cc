@@ -3,15 +3,17 @@
 #include "platform.h"
 #include "utils.h"
 
-// static
-AbsolutePath AbsolutePath::Build(const std::string& path) {
-  // TODO: add a debug-only check here that this is actually normalized.
-  return AbsolutePath(path);
-}
+#include <loguru.hpp>
 
 AbsolutePath::AbsolutePath() {}
 
-AbsolutePath::AbsolutePath(const std::string& path) : path(path) {}
+AbsolutePath::AbsolutePath(const std::string& path, bool validate)
+    : path(path) {
+  if (validate && !IsAbsolutePath(path)) {
+    loguru::Text stack = loguru::stacktrace();
+    LOG_S(ERROR) << "Expected " << path << " to be absolute\n" << stack.c_str();
+  }
+}
 
 AbsolutePath::operator std::string() const {
   return path;

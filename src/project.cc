@@ -69,19 +69,6 @@ struct NormalizationCache {
   }
 };
 
-bool IsUnixAbsolutePath(const std::string& path) {
-  return !path.empty() && path[0] == '/';
-}
-
-bool IsWindowsAbsolutePath(const std::string& path) {
-  auto is_drive_letter = [](char c) {
-    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
-  };
-
-  return path.size() > 3 && path[1] == ':' &&
-         (path[2] == '/' || path[2] == '\\') && is_drive_letter(path[0]);
-}
-
 enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
 
 struct ProjectConfig {
@@ -154,8 +141,7 @@ const std::vector<std::string>& GetSystemIncludes(
 
   std::vector<std::string> compiler_drivers = {
       GetExecutablePathNextToCqueryBinary("cquery-clang"), "clang++", "g++"};
-  if (IsUnixAbsolutePath(compiler_driver) ||
-      IsWindowsAbsolutePath(compiler_driver)) {
+  if (IsAbsolutePath(compiler_driver)) {
     compiler_drivers.insert(compiler_drivers.begin(), compiler_driver);
   }
 
@@ -229,8 +215,7 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
     // TODO/FIXME: Normalization will fail for paths that do not exist. Should
     // it return an optional<std::string>?
     assert(!path.empty());
-    if (entry.directory.empty() || IsUnixAbsolutePath(path) ||
-        IsWindowsAbsolutePath(path)) {
+    if (entry.directory.empty() || IsAbsolutePath(path)) {
       // We still want to normalize, as the path may contain .. characters.
       return config->normalization_cache.Get(path);
     }
@@ -538,7 +523,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 
   comp_db_dir = opt_compilation_db_dir;
 
-  if (!IsUnixAbsolutePath(comp_db_dir) && !IsWindowsAbsolutePath(comp_db_dir)) {
+  if (!IsAbsolutePath(comp_db_dir)) {
     comp_db_dir =
         project->normalization_cache.Get(project->project_dir + comp_db_dir);
   }
@@ -609,11 +594,11 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     our_time.Resume();
     entry.directory = directory;
     std::string absolute_filename;
-    if (IsUnixAbsolutePath(relative_filename) ||
-        IsWindowsAbsolutePath(relative_filename))
+    if (IsAbsolutePath(relative_filename)) {
       absolute_filename = relative_filename;
-    else
+    } else {
       absolute_filename = directory + "/" + relative_filename;
+    }
     entry.file = project->normalization_cache.Get(absolute_filename);
 
     result.push_back(
@@ -1682,23 +1667,6 @@ TEST_SUITE("Project") {
       REQUIRE(entry.has_value());
       REQUIRE(entry->args == std::vector<std::string>{"a", "b", "ee.cc", "d"});
     }
-  }
-
-  TEST_CASE("IsWindowsAbsolutePath works correctly") {
-    REQUIRE(IsWindowsAbsolutePath("C:/Users/projects/"));
-    REQUIRE(IsWindowsAbsolutePath("C:/Users/projects"));
-    REQUIRE(IsWindowsAbsolutePath("C:/Users/projects"));
-    REQUIRE(IsWindowsAbsolutePath("C:\\Users\\projects"));
-    REQUIRE(IsWindowsAbsolutePath("C:\\\\Users\\\\projects"));
-    REQUIRE(IsWindowsAbsolutePath("c:\\\\Users\\\\projects"));
-    REQUIRE(IsWindowsAbsolutePath("A:\\\\Users\\\\projects"));
-
-    REQUIRE(!IsWindowsAbsolutePath("C:/"));
-    REQUIRE(!IsWindowsAbsolutePath("../abc/test"));
-    REQUIRE(!IsWindowsAbsolutePath("5:/test"));
-    REQUIRE(!IsWindowsAbsolutePath("cquery/project/file.cc"));
-    REQUIRE(!IsWindowsAbsolutePath(""));
-    REQUIRE(!IsWindowsAbsolutePath("/etc/linux/path"));
   }
 
   TEST_CASE("Entry inference prefers same file endings") {
