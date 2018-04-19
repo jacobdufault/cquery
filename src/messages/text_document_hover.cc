@@ -13,36 +13,14 @@ optional<lsMarkedString> GetComments(QueryDatabase* db, SymbolRef sym) {
     return result;
   };
 
-  switch (sym.kind) {
-    case SymbolKind::Type: {
-      if (const auto* def = db->GetType(sym).AnyDef()) {
-        if (!def->comments.empty())
-          return make(def->comments);
-      }
-      return nullopt;
+  optional<lsMarkedString> result;
+  WithEntity(db, sym, [&](const auto& entity) {
+    if (const auto* def = entity.AnyDef()) {
+      if (!def->comments.empty())
+        result = make(def->comments);
     }
-    case SymbolKind::Func: {
-      if (const auto* def = db->GetFunc(sym).AnyDef()) {
-        if (!def->comments.empty())
-          return make(def->comments);
-      }
-      return nullopt;
-    }
-    case SymbolKind::Var: {
-      if (const auto* def = db->GetVar(sym).AnyDef()) {
-        if (!def->comments.empty())
-          return make(def->comments);
-      }
-      return nullopt;
-    }
-    case SymbolKind::File:
-    case SymbolKind::Invalid: {
-      CQUERY_UNREACHABLE();
-      break;
-    }
-  }
-  CQUERY_UNREACHABLE();
-  return nullopt;
+  });
+  return result;
 }
 
 // Returns the hover or detailed name for `sym`, if any.
@@ -56,42 +34,16 @@ optional<lsMarkedString> GetHoverOrName(QueryDatabase* db,
     return result;
   };
 
-  switch (sym.kind) {
-    case SymbolKind::Type: {
-      if (const auto* def = db->GetType(sym).AnyDef()) {
-        if (!def->hover.empty())
-          return make(def->hover);
-        if (!def->detailed_name.empty())
-          return make(def->detailed_name);
-      }
-      return nullopt;
+  optional<lsMarkedString> result;
+  WithEntity(db, sym, [&](const auto& entity) {
+    if (const auto* def = entity.AnyDef()) {
+      if (!def->hover.empty())
+        result = make(def->hover);
+      else if (!def->detailed_name.empty())
+        result = make(def->detailed_name);
     }
-    case SymbolKind::Func: {
-      if (const auto* def = db->GetFunc(sym).AnyDef()) {
-        if (!def->hover.empty())
-          return make(def->hover);
-        if (!def->detailed_name.empty())
-          return make(def->detailed_name);
-      }
-      return nullopt;
-    }
-    case SymbolKind::Var: {
-      if (const auto* def = db->GetVar(sym).AnyDef()) {
-        if (!def->hover.empty())
-          return make(def->hover);
-        if (!def->detailed_name.empty())
-          return make(def->detailed_name);
-      }
-      return nullopt;
-    }
-    case SymbolKind::File:
-    case SymbolKind::Invalid: {
-      CQUERY_UNREACHABLE();
-      break;
-    }
-  }
-  CQUERY_UNREACHABLE();
-  return nullopt;
+  });
+  return result;
 }
 
 struct In_TextDocumentHover : public RequestInMessage {
