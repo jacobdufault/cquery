@@ -64,7 +64,7 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
   int first_success = -1;
   for (size_t j = 0; j < components.size(); ++j) {
     size_t i = components.size() - j;
-    if (TryMakeDirectory(prefix + Join(components, '/', i))) {
+    if (TryMakeDirectory(AbsolutePath(prefix + Join(components, '/', i)))) {
       first_success = i;
       break;
     }
@@ -77,7 +77,8 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
 
   // Make all child directories.
   for (size_t i = first_success + 1; i <= components.size(); ++i) {
-    if (TryMakeDirectory(prefix + Join(components, '/', i)) == false) {
+    if (TryMakeDirectory(AbsolutePath(prefix + Join(components, '/', i))) ==
+        false) {
       LOG_S(FATAL) << "Failed making directory for " << path.path
                    << " even after creating parent directories";
       exit(1);

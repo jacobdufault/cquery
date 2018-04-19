@@ -348,8 +348,7 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
       param->seen_files.push_back(file_name->path);
 
       // Set modification time.
-      optional<int64_t> modification_time =
-          GetLastModificationTime(file_name->path);
+      optional<int64_t> modification_time = GetLastModificationTime(*file_name);
       LOG_IF_S(ERROR, !modification_time)
           << "Failed fetching modification time for " << file_name->path;
       if (modification_time)

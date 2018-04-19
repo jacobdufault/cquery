@@ -130,7 +130,7 @@ AbsolutePath GetExecutablePath() {
   std::string result(resolved);
   delete[] buffer;
   free(resolved);
-  return result;
+  return AbsolutePath(result);
 #elif defined(__FreeBSD__)
   static const int name[] = {
       CTL_KERN,
@@ -157,7 +157,7 @@ AbsolutePath GetWorkingDirectory() {
     return AbsolutePath("");
   std::string working_dir = std::string(result, strlen(result));
   EnsureEndsInSlash(working_dir);
-  return working_dir;
+  return AbsolutePath(working_dir);
 }
 
 optional<AbsolutePath> NormalizePath(const std::string& path,
