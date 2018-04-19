@@ -93,8 +93,8 @@ optional<AbsolutePath> NormalizePath(const std::string& path0,
   if (path.empty())
     return nullopt;
 
-
-  if (path.size() && path[0] > 0) path[0] = tolower(path[0]);
+  if (path.size() && path[0] > 0)
+    path[0] = tolower(path[0]);
 
   // We may need to normalize the drive name to upper-case; at the moment
   // vscode sends lower-case path names.

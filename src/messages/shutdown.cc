@@ -1,8 +1,8 @@
 #include "message_handler.h"
 #include "queue_manager.h"
 
-#include "config.h"
 #include "cache_manager.h"
+#include "config.h"
 
 namespace {
 MethodType kMethodType = "shutdown";

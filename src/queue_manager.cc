@@ -6,13 +6,12 @@
 
 #include <sstream>
 
-Index_Request::Index_Request(
-    const std::string& path,
-    const std::vector<std::string>& args,
-    bool is_interactive,
-    const std::string& contents,
-    const std::shared_ptr<IndexCache>& cache_manager,
-    lsRequestId id)
+Index_Request::Index_Request(const std::string& path,
+                             const std::vector<std::string>& args,
+                             bool is_interactive,
+                             const std::string& contents,
+                             const std::shared_ptr<IndexCache>& cache_manager,
+                             lsRequestId id)
     : path(path),
       args(args),
       is_interactive(is_interactive),
@@ -20,12 +19,11 @@ Index_Request::Index_Request(
       cache_manager(cache_manager),
       id(id) {}
 
-Index_DoIdMap::Index_DoIdMap(
-    std::unique_ptr<IndexFile> current,
-    const std::shared_ptr<IndexCache>& cache_manager,
-    PerformanceImportFile perf,
-    bool is_interactive,
-    bool write_to_disk)
+Index_DoIdMap::Index_DoIdMap(std::unique_ptr<IndexFile> current,
+                             const std::shared_ptr<IndexCache>& cache_manager,
+                             PerformanceImportFile perf,
+                             bool is_interactive,
+                             bool write_to_disk)
     : current(std::move(current)),
       cache_manager(cache_manager),
       perf(perf),

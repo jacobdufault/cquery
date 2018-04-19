@@ -218,7 +218,8 @@ CacheLoadResult TryLoadFromCache(
     const AbsolutePath& path_to_index) {
   // Always run this block, even if we are interactive, so we can check
   // dependencies and reset files in |file_consumer_shared|.
-  IndexFile* previous_index = cache_manager->TryLoad(NormalizedPath{path_to_index});
+  IndexFile* previous_index =
+      cache_manager->TryLoad(NormalizedPath{path_to_index});
   if (!previous_index)
     return CacheLoadResult::Parse;
 
@@ -269,9 +270,9 @@ CacheLoadResult TryLoadFromCache(
   PerformanceImportFile perf;
 
   std::vector<Index_DoIdMap> result;
-  result.push_back(Index_DoIdMap(cache_manager->TryTakeOrLoad(NormalizedPath{path_to_index}),
-                                 cache_manager, perf, is_interactive,
-                                 false /*write_to_disk*/));
+  result.push_back(Index_DoIdMap(
+      cache_manager->TryTakeOrLoad(NormalizedPath{path_to_index}),
+      cache_manager, perf, is_interactive, false /*write_to_disk*/));
   for (const AbsolutePath& dependency : previous_index->dependencies) {
     // Only load a dependency if it is not already loaded.
     //
@@ -365,7 +366,8 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // FIXME: don't use absolute path
   AbsolutePath path_to_index = entry.filename;
   if (entry.is_inferred) {
-    IndexFile* entry_cache = request.cache_manager->TryLoad(NormalizedPath{entry.filename});
+    IndexFile* entry_cache =
+        request.cache_manager->TryLoad(NormalizedPath{entry.filename});
     if (entry_cache)
       path_to_index = entry_cache->import_file;
   }
@@ -520,8 +522,8 @@ bool IndexMain_LoadPreviousIndex() {
   if (!response)
     return false;
 
-  response->previous =
-      response->cache_manager->TryTakeOrLoad(NormalizedPath{response->current->path});
+  response->previous = response->cache_manager->TryTakeOrLoad(
+      NormalizedPath{response->current->path});
   LOG_IF_S(ERROR, !response->previous)
       << "Unable to load previous index for already imported index "
       << response->current->path;
@@ -776,24 +778,19 @@ bool QueryDb_ImportMain(QueryDatabase* db,
   return did_work;
 }
 
-struct TestStore : public ICacheStore
-{
-    optional<std::string> Read(const std::string& key) override
-    {
-        auto it = elements_.find(key);
-        return it != elements_.end() ? it->second : optional<std::string>{};
-    }
+struct TestStore : public ICacheStore {
+  optional<std::string> Read(const std::string& key) override {
+    auto it = elements_.find(key);
+    return it != elements_.end() ? it->second : optional<std::string>{};
+  }
 
-    void Write(const std::string& key, const std::string& value)
-    {
-        elements_[key] = value;
-    }
+  void Write(const std::string& key, const std::string& value) {
+    elements_[key] = value;
+  }
 
-    ~TestStore()
-    {
-    }
+  ~TestStore() {}
 
-    std::unordered_map< std::string, std::string > elements_;
+  std::unordered_map<std::string, std::string> elements_;
 };
 
 TEST_SUITE("ImportPipeline") {
