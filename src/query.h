@@ -111,7 +111,7 @@ struct QueryFile {
     // Parts of the file which are disabled.
     std::vector<Range> inactive_regions;
     // Used by |$cquery/freshenIndex|.
-    std::vector<std::string> dependencies;
+    std::vector<AbsolutePath> dependencies;
   };
 
   using DefUpdate = WithFileContent<Def>;

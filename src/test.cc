@@ -295,7 +295,7 @@ IndexFile* FindDbForPathEnding(
     const std::string& path,
     const std::vector<std::unique_ptr<IndexFile>>& dbs) {
   for (auto& db : dbs) {
-    if (EndsWith(db->path, path))
+    if (EndsWith(db->path.path, path))
       return db.get();
   }
   return nullptr;

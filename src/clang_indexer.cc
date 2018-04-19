@@ -280,7 +280,7 @@ struct ConstructorCache {
 
 struct IndexParam {
   std::unordered_set<CXFile> seen_cx_files;
-  std::vector<std::string> seen_files;
+  std::vector<AbsolutePath> seen_files;
   FileContentsMap file_contents;
   std::unordered_map<std::string, int64_t> file_modification_times;
 
@@ -692,9 +692,10 @@ void OnIndexReference_Function(IndexFile* db,
 
 // static
 const int IndexFile::kMajorVersion = 15;
+// static
 const int IndexFile::kMinorVersion = 0;
 
-IndexFile::IndexFile(const std::string& path, const std::string& contents)
+IndexFile::IndexFile(const AbsolutePath& path, const std::string& contents)
     : id_cache(path), path(path), file_contents(contents) {}
 
 IndexTypeId IndexFile::ToTypeId(Usr usr) {
@@ -812,7 +813,7 @@ void AddUseSpell(IndexFile* db, std::vector<Use>& uses, ClangCursor cursor) {
   AddUse(db, uses, cursor.get_spell(), cursor.get_lexical_parent().cx_cursor);
 }
 
-IdCache::IdCache(const std::string& primary_file)
+IdCache::IdCache(const AbsolutePath& primary_file)
     : primary_file(primary_file) {}
 
 void OnIndexDiagnostic(CXClientData client_data,

@@ -997,8 +997,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("remove defs") {
-    IndexFile previous("foo.cc", "<empty>");
-    IndexFile current("foo.cc", "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))->def.spell =
         Use(Range(Position(1, 0)), {}, {}, {}, {});
@@ -1017,8 +1017,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("do not remove ref-only defs") {
-    IndexFile previous("foo.cc", "<empty>");
-    IndexFile current("foo.cc", "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))
         ->uses.push_back(Use{Range(Position(1, 0)), {}, {}, {}, {}});
@@ -1035,8 +1035,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("func callers") {
-    IndexFile previous("foo.cc", "<empty>");
-    IndexFile current("foo.cc", "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
@@ -1056,8 +1056,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("type usages") {
-    IndexFile previous("foo.cc", "<empty>");
-    IndexFile current("foo.cc", "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     IndexType* pt = previous.Resolve(previous.ToTypeId(HashUsr("usr")));
     IndexType* ct = current.Resolve(current.ToTypeId(HashUsr("usr")));
@@ -1077,8 +1077,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("apply delta") {
-    IndexFile previous("foo.cc", "<empty>");
-    IndexFile current("foo.cc", "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));

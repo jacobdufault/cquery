@@ -151,12 +151,12 @@ ShouldParse FileNeedsParse(
     ImportManager* import_manager,
     const std::shared_ptr<ICacheManager>& cache_manager,
     IndexFile* opt_previous_index,
-    const std::string& path,
+    const AbsolutePath& path,
     const std::vector<std::string>& args,
-    const optional<std::string>& from) {
-  auto unwrap_opt = [](const optional<std::string>& opt) -> std::string {
+    const optional<AbsolutePath>& from) {
+  auto unwrap_opt = [](const optional<AbsolutePath>& opt) -> std::string {
     if (opt)
-      return " (via " + *opt + ")";
+      return " (via " + opt->path + ")";
     return "";
   };
 
@@ -181,7 +181,8 @@ ShouldParse FileNeedsParse(
   // File has been changed.
   if (!last_cached_modification ||
       modification_timestamp != *last_cached_modification) {
-    LOG_S(INFO) << "Timestamp has changed for " << path << unwrap_opt(from);
+    LOG_S(INFO) << "Timestamp has changed for " << path.path
+                << unwrap_opt(from);
     return ShouldParse::Yes;
   }
 
@@ -197,7 +198,8 @@ ShouldParse FileNeedsParse(
              (is_file(prev_args[i]) && is_file(args[i]));
     }
     if (!same) {
-      LOG_S(INFO) << "Arguments have changed for " << path << unwrap_opt(from);
+      LOG_S(INFO) << "Arguments have changed for " << path.path
+                  << unwrap_opt(from);
       return ShouldParse::Yes;
     }
   }
@@ -281,7 +283,7 @@ CacheLoadResult TryLoadFromCache(
       continue;
 
     LOG_S(INFO) << "Emitting index result for " << dependency << " (via "
-                << previous_index->path << ")";
+                << previous_index->path.path << ")";
 
     std::unique_ptr<IndexFile> dependency_index =
         cache_manager->TryTakeOrLoad(dependency);
@@ -409,7 +411,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
 
     // When main thread does IdMap request it will request the previous index if
     // needed.
-    LOG_S(INFO) << "Emitting index result for " << new_index->path;
+    LOG_S(INFO) << "Emitting index result for " << new_index->path.path;
     result.push_back(Index_DoIdMap(std::move(new_index), request.cache_manager,
                                    perf, request.is_interactive,
                                    true /*write_to_disk*/));
@@ -467,13 +469,14 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
         IndexUpdate::CreateDelta(previous_id_map, response->current->ids.get(),
                                  previous_index, response->current->file.get());
     response->perf.index_make_delta = time.ElapsedMicrosecondsAndReset();
-    LOG_S(INFO) << "Built index update for " << response->current->file->path
+    LOG_S(INFO) << "Built index update for "
+                << response->current->file->path.path
                 << " (is_delta=" << !!response->previous << ")";
 
     // Write current index to disk if requested.
     if (response->write_to_disk) {
       LOG_S(INFO) << "Writing cached index to disk for "
-                  << response->current->file->path;
+                  << response->current->file->path.path;
       time.Reset();
       response->cache_manager->WriteToCache(*response->current->file);
       response->perf.index_save_to_disk = time.ElapsedMicrosecondsAndReset();
@@ -523,7 +526,7 @@ bool IndexMain_LoadPreviousIndex() {
       response->cache_manager->TryTakeOrLoad(response->current->path);
   LOG_IF_S(ERROR, !response->previous)
       << "Unable to load previous index for already imported index "
-      << response->current->path;
+      << response->current->path.path;
 
   queue->do_id_map.PushBack(std::move(*response));
   return true;
@@ -587,7 +590,7 @@ void IndexWithTuFromCodeCompletion(
     assert(false && "FIXME cache_manager");
     // When main thread does IdMap request it will request the previous index if
     // needed.
-    LOG_S(INFO) << "Emitting index result for " << new_index->path;
+    LOG_S(INFO) << "Emitting index result for " << new_index->path.path;
     result.push_back(Index_DoIdMap(std::move(new_index), cache_manager, perf,
                                    true /*is_interactive*/,
                                    true /*write_to_disk*/));
@@ -677,7 +680,7 @@ void QueryDb_DoIdMap(QueueManager* queue,
   // otherwise we will never actually generate the IdMap.
   if (!import_manager->StartQueryDbImport(request->current->path)) {
     LOG_S(INFO) << "Dropping index as it is already being imported for "
-                << request->current->path;
+                << request->current->path.path;
     return;
   }
 
@@ -823,12 +826,13 @@ TEST_SUITE("ImportPipeline") {
                      const std::vector<std::string>& new_args = {}) {
       std::unique_ptr<IndexFile> opt_previous_index;
       if (!old_args.empty()) {
-        opt_previous_index = std::make_unique<IndexFile>("---.cc", "<empty>");
+        opt_previous_index =
+            std::make_unique<IndexFile>(AbsolutePath("---.cc"), "<empty>");
         opt_previous_index->args = old_args;
       }
-      optional<std::string> from;
+      optional<AbsolutePath> from;
       if (is_dependency)
-        from = std::string("---.cc");
+        from = AbsolutePath("---.cc");
       return FileNeedsParse(is_interactive /*is_interactive*/,
                             &timestamp_manager, &modification_timestamp_fetcher,
                             &import_manager, cache_manager,

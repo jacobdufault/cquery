@@ -438,7 +438,7 @@ struct IndexVar {
 MAKE_HASHABLE(IndexVar, t.id);
 
 struct IdCache {
-  std::string primary_file;
+  AbsolutePath primary_file;
   std::unordered_map<Usr, IndexTypeId> usr_to_type_id;
   std::unordered_map<Usr, IndexFuncId> usr_to_func_id;
   std::unordered_map<Usr, IndexVarId> usr_to_var_id;
@@ -446,7 +446,7 @@ struct IdCache {
   std::unordered_map<IndexFuncId, Usr> func_id_to_usr;
   std::unordered_map<IndexVarId, Usr> var_id_to_usr;
 
-  IdCache(const std::string& primary_file);
+  IdCache(const AbsolutePath& primary_file);
 };
 
 struct IndexInclude {
@@ -468,7 +468,7 @@ struct IndexFile {
   // files accepted by newer cquery.
   static const int kMinorVersion;
 
-  std::string path;
+  AbsolutePath path;
   std::vector<std::string> args;
   int64_t last_modification_time = 0;
   LanguageId language = LanguageId::Unknown;
@@ -477,13 +477,13 @@ struct IndexFile {
   // IndexFile. When parsing a translation unit we generate many IndexFile
   // instances (ie, each header has a separate one). When the user edits a
   // header we need to lookup the original translation unit and reindex that.
-  std::string import_file;
+  AbsolutePath import_file;
 
   // Source ranges that were not processed.
   std::vector<Range> skipped_by_preprocessor;
 
   std::vector<IndexInclude> includes;
-  std::vector<std::string> dependencies;
+  std::vector<AbsolutePath> dependencies;
   std::vector<IndexType> types;
   std::vector<IndexFunc> funcs;
   std::vector<IndexVar> vars;
@@ -493,7 +493,7 @@ struct IndexFile {
   // File contents at the time of index. Not serialized.
   std::string file_contents;
 
-  IndexFile(const std::string& path, const std::string& contents);
+  IndexFile(const AbsolutePath& path, const std::string& contents);
 
   IndexTypeId ToTypeId(Usr usr);
   IndexFuncId ToFuncId(Usr usr);
