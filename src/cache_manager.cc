@@ -67,7 +67,7 @@ void UnqliteHandleResult(std::string operation, unqlite* database, int ret) {
 // Storing index+content in an unqlite database (possibly shared between
 // multiple cquery caches, since it could be a user-setting)
 struct UnqliteCacheDriver : public ICacheStore {
-  UnqliteCacheDriver(unqlite* database) : database_(database) {}
+  UnqliteCacheDriver(unqlite* database) : database_(database), bytesSinceCommit_(0) {}
 
   UnqliteCacheDriver(UnqliteCacheDriver&) = delete;
 
@@ -84,9 +84,15 @@ struct UnqliteCacheDriver : public ICacheStore {
     }
 
     if (ret == UNQLITE_OK)
+    {
+      LOG_S(INFO) << "unqlite: Handing out cache for key \"" << key << "\"";
       return std::move(result);
+    }
     else
+    {
+      LOG_S(WARNING) << "unqlite: No data for key \"" << key << "\"";
       return {};
+    }
   }
 
   void Write(const std::string& key, const std::string& value) override {
@@ -96,6 +102,16 @@ struct UnqliteCacheDriver : public ICacheStore {
       ;
     if (ret != UNQLITE_OK) {
       UnqliteHandleResult("unqlite_kv_store", database_, ret);
+    }
+    else
+    {
+        bytesSinceCommit_ += value.size();
+
+        if (bytesSinceCommit_ > 32*1024*1024)
+        {
+            ret = unqlite_commit(database_);
+            if (ret == UNQLITE_OK) bytesSinceCommit_ = 0u;
+        }
     }
   }
 
@@ -112,6 +128,7 @@ struct UnqliteCacheDriver : public ICacheStore {
 
   ~UnqliteCacheDriver() override {}
 
+  size_t bytesSinceCommit_;
   unqlite* database_;
 };
 
@@ -141,6 +158,10 @@ IndexFile* IndexCache::TryLoad(const NormalizedPath& path) {
     result = ptr.get();
     caches_.emplace(path.path, std::move(ptr));
   }
+  else
+  {
+    LOG_S(WARNING) << "IndexCache::TryLoad: Cannot serve cache request for \"" << path.path << "\"";
+  }
 
   return result;
 }
@@ -159,12 +180,15 @@ optional<std::string> IndexCache::TryLoadContent(const NormalizedPath& path) {
 
 std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(
     const NormalizedPath& file) {
-  optional<std::string> file_content = ReadContent(file.path);
-  optional<std::string> serialized_indexed_content = ReadContent(
+  optional<std::string> file_content = driver_->Read(file.path);
+  optional<std::string> serialized_indexed_content = driver_->Read(
       file.path + SerializationFormatToSuffix(g_config->cacheFormat));
 
   if (!file_content || !serialized_indexed_content)
+  {
+    LOG_S(WARNING) << "IndexCache::LoadIndexFileFromCache: Cannot serve cache request for \"" << file.path << "\"";
     return nullptr;
+  }
 
   return Deserialize(g_config->cacheFormat, file.path,
                      *serialized_indexed_content, *file_content,
@@ -221,8 +245,6 @@ std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(
   if (ret != UNQLITE_OK)
     LOG_S(WARNING) << "Unqlite: unqlite_open reported error condition " << ret
                    << ".";
-
-  ret = unqlite_config(database, UNQLITE_CONFIG_MAX_PAGE_CACHE, 64*1024);
 
   // if (ret == UNQLITE_OK) return
   // std::make_shared<UnqliteCacheDriver>(database);
