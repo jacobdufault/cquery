@@ -345,7 +345,7 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
     if (file_name && !file_name->path.empty()) {
       // Add to all files we have seen so we can generate proper dependency
       // graph.
-      param->seen_files.push_back(file_name->path);
+      param->seen_files.push_back(*file_name);
 
       // Set modification time.
       optional<int64_t> modification_time = GetLastModificationTime(*file_name);
@@ -2205,8 +2205,8 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   if (dump_ast)
     Dump(clang_getTranslationUnitCursor(tu->cx_tu));
 
-  return ParseWithTu(file_consumer_shared, perf, tu.get(), index, file->path,
-                     args, unsaved_files);
+  return ParseWithTu(file_consumer_shared, perf, tu.get(), index, *file, args,
+                     unsaved_files);
 }
 
 optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
@@ -2214,7 +2214,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
     PerformanceImportFile* perf,
     ClangTranslationUnit* tu,
     ClangIndex* index,
-    const std::string& file,
+    const AbsolutePath& file,
     const std::vector<std::string>& args,
     const std::vector<CXUnsavedFile>& file_contents) {
   Timer timer;
@@ -2238,7 +2238,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
         contents.Filename, std::string(contents.Contents, contents.Length));
   }
 
-  CXFile cx_file = clang_getFile(tu->cx_tu, file.c_str());
+  CXFile cx_file = clang_getFile(tu->cx_tu, file.path.c_str());
   param.primary_file = ConsumeFile(&param, cx_file);
 
   CXIndexAction index_action = clang_IndexAction_create(index->cx_index);
@@ -2251,7 +2251,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
           CXIndexOpt_IndexImplicitTemplateInstantiations,
       tu->cx_tu);
   if (index_result != CXError_Success) {
-    LOG_S(ERROR) << "Indexing " << file
+    LOG_S(ERROR) << "Indexing " << file.path
                  << " failed with errno=" << index_result;
     return nullopt;
   }

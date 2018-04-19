@@ -59,13 +59,13 @@ struct IterationLoop {
 
 struct IModificationTimestampFetcher {
   virtual ~IModificationTimestampFetcher() = default;
-  virtual optional<int64_t> GetModificationTime(const std::string& path) = 0;
+  virtual optional<int64_t> GetModificationTime(const AbsolutePath& path) = 0;
 };
 struct RealModificationTimestampFetcher : IModificationTimestampFetcher {
   ~RealModificationTimestampFetcher() override = default;
 
   // IModificationTimestamp:
-  optional<int64_t> GetModificationTime(const std::string& path) override {
+  optional<int64_t> GetModificationTime(const AbsolutePath& path) override {
     return GetLastModificationTime(path);
   }
 };
@@ -75,7 +75,7 @@ struct FakeModificationTimestampFetcher : IModificationTimestampFetcher {
   ~FakeModificationTimestampFetcher() override = default;
 
   // IModificationTimestamp:
-  optional<int64_t> GetModificationTime(const std::string& path) override {
+  optional<int64_t> GetModificationTime(const AbsolutePath& path) override {
     auto it = entries.find(path);
     assert(it != entries.end());
     return it->second;
@@ -217,7 +217,7 @@ CacheLoadResult TryLoadFromCache(
     const std::shared_ptr<ICacheManager>& cache_manager,
     bool is_interactive,
     const Project::Entry& entry,
-    const std::string& path_to_index) {
+    const AbsolutePath& path_to_index) {
   // Always run this block, even if we are interactive, so we can check
   // dependencies and reset files in |file_consumer_shared|.
   IndexFile* previous_index = cache_manager->TryLoad(path_to_index);
@@ -245,8 +245,8 @@ CacheLoadResult TryLoadFromCache(
 
   bool needs_reparse = is_interactive || path_state == ShouldParse::Yes;
 
-  for (const std::string& dependency : previous_index->dependencies) {
-    assert(!dependency.empty());
+  for (const AbsolutePath& dependency : previous_index->dependencies) {
+    assert(!dependency.path.empty());
 
     if (FileNeedsParse(is_interactive, timestamp_manager,
                        modification_timestamp_fetcher, import_manager,
@@ -265,7 +265,8 @@ CacheLoadResult TryLoadFromCache(
     return CacheLoadResult::Parse;
 
   // No timestamps changed - load directly from cache.
-  LOG_S(INFO) << "Skipping parse; no timestamp change for " << path_to_index;
+  LOG_S(INFO) << "Skipping parse; no timestamp change for "
+              << path_to_index.path;
 
   // TODO/FIXME: real perf
   PerformanceImportFile perf;
@@ -274,7 +275,7 @@ CacheLoadResult TryLoadFromCache(
   result.push_back(Index_DoIdMap(cache_manager->TakeOrLoad(path_to_index),
                                  cache_manager, perf, is_interactive,
                                  false /*write_to_disk*/));
-  for (const std::string& dependency : previous_index->dependencies) {
+  for (const AbsolutePath& dependency : previous_index->dependencies) {
     // Only load a dependency if it is not already loaded.
     //
     // This is important for perf in large projects where there are lots of
@@ -282,7 +283,7 @@ CacheLoadResult TryLoadFromCache(
     if (!file_consumer_shared->Mark(dependency))
       continue;
 
-    LOG_S(INFO) << "Emitting index result for " << dependency << " (via "
+    LOG_S(INFO) << "Emitting index result for " << dependency.path << " (via "
                 << previous_index->path.path << ")";
 
     std::unique_ptr<IndexFile> dependency_index =
@@ -306,7 +307,7 @@ std::vector<FileContents> PreloadFileContents(
     const std::shared_ptr<ICacheManager>& cache_manager,
     const Project::Entry& entry,
     const std::string& entry_contents,
-    const std::string& path_to_index) {
+    const AbsolutePath& path_to_index) {
   // Load file contents for all dependencies into memory. If the dependencies
   // for the file changed we may not end up using all of the files we
   // preloaded. If a new dependency was added the indexer will grab the file
@@ -321,7 +322,7 @@ std::vector<FileContents> PreloadFileContents(
 
   // index->file_contents comes from cache, so we need to check if that cache is
   // still valid. if so, we can use it, otherwise we need to load from disk.
-  auto get_latest_content = [](const std::string& path, int64_t cached_time,
+  auto get_latest_content = [](const AbsolutePath& path, int64_t cached_time,
                                const std::string& cached) -> std::string {
     optional<int64_t> mod_time = GetLastModificationTime(path);
     if (!mod_time)
@@ -332,7 +333,7 @@ std::vector<FileContents> PreloadFileContents(
 
     optional<std::string> fresh_content = ReadContent(path);
     if (!fresh_content) {
-      LOG_S(ERROR) << "Failed to load content for " << path;
+      LOG_S(ERROR) << "Failed to load content for " << path.path;
       return "";
     }
     return *fresh_content;
@@ -341,7 +342,7 @@ std::vector<FileContents> PreloadFileContents(
   std::vector<FileContents> file_contents;
   file_contents.push_back(FileContents(entry.filename, entry_contents));
   cache_manager->IterateLoadedCaches([&](IndexFile* index) {
-    if (index->path == entry.filename)
+    if (index->path.path == entry.filename)
       return;
     file_contents.push_back(FileContents(
         index->path,
@@ -364,7 +365,8 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // If the file is inferred, we may not actually be able to parse that file
   // directly (ie, a header file, which are not listed in the project). If this
   // file is inferred, then try to use the file which originally imported it.
-  std::string path_to_index = entry.filename;
+  // FIXME: don't use absolute path
+  AbsolutePath path_to_index = AbsolutePath(entry.filename);
   if (entry.is_inferred) {
     IndexFile* entry_cache = request.cache_manager->TryLoad(entry.filename);
     if (entry_cache)
@@ -379,7 +381,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
     return;
   }
 
-  LOG_S(INFO) << "Parsing " << path_to_index;
+  LOG_S(INFO) << "Parsing " << path_to_index.path;
   std::vector<FileContents> file_contents = PreloadFileContents(
       request.cache_manager, entry, request.contents, path_to_index);
 
@@ -393,7 +395,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
       Out_Error out;
       out.id = request.id;
       out.error.code = lsErrorCodes::InternalError;
-      out.error.message = "Failed to index " + path_to_index;
+      out.error.message = "Failed to index " + path_to_index.path;
       QueueManager::WriteStdout(kMethodType_Unknown, out);
     }
     return;
@@ -571,7 +573,7 @@ void IndexWithTuFromCodeCompletion(
     FileConsumerSharedState* file_consumer_shared,
     ClangTranslationUnit* tu,
     const std::vector<CXUnsavedFile>& file_contents,
-    const std::string& path,
+    const AbsolutePath& path,
     const std::vector<std::string>& args) {
   file_consumer_shared->Reset(path);
 
@@ -833,10 +835,10 @@ TEST_SUITE("ImportPipeline") {
       optional<AbsolutePath> from;
       if (is_dependency)
         from = AbsolutePath("---.cc");
-      return FileNeedsParse(is_interactive /*is_interactive*/,
-                            &timestamp_manager, &modification_timestamp_fetcher,
-                            &import_manager, cache_manager,
-                            opt_previous_index.get(), file, new_args, from);
+      return FileNeedsParse(
+          is_interactive /*is_interactive*/, &timestamp_manager,
+          &modification_timestamp_fetcher, &import_manager, cache_manager,
+          opt_previous_index.get(), AbsolutePath(file), new_args, from);
     };
 
     // A file with no timestamp is not imported, since this implies the file no

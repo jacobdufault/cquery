@@ -533,7 +533,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
     PerformanceImportFile* perf,
     ClangTranslationUnit* tu,
     ClangIndex* index,
-    const std::string& file,
+    const AbsolutePath& file,
     const std::vector<std::string>& args,
     const std::vector<CXUnsavedFile>& file_contents);
 

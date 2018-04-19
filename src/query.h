@@ -119,7 +119,7 @@ struct QueryFile {
   optional<Def> def;
   Maybe<Id<void>> symbol_idx;
 
-  explicit QueryFile(const std::string& path) {
+  explicit QueryFile(const AbsolutePath& path) {
     def = Def();
     def->path = path;
   }
