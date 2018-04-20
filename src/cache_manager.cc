@@ -58,9 +58,14 @@ void UnqliteHandleResult(std::string operation, unqlite* database, int ret) {
     const char* zBuf;
     int iLen;
     unqlite_config(database, UNQLITE_CONFIG_ERR_LOG, &zBuf, &iLen);
-    LOG_S(WARNING) << "Unqlite error: \"" << std::string(zBuf, zBuf + iLen)
-                   << "\". Rolling back.";
-    unqlite_rollback(database);
+    LOG_S(WARNING) << "Unqlite error: \"" << std::string(zBuf, zBuf + iLen) << "\".";
+
+    switch(ret) {
+    case UNQLITE_IOERR:
+    case UNQLITE_NOMEM:
+        LOG_S(ERROR) << "Rolling back the last commit.";
+        unqlite_rollback(database);
+    }
   }
 }
 
@@ -107,9 +112,10 @@ struct UnqliteCacheDriver : public ICacheStore {
     {
         bytesSinceCommit_ += value.size();
 
-        if (bytesSinceCommit_ > 32*1024*1024)
+        if (bytesSinceCommit_ > 16*1024*1024)
         {
             ret = unqlite_commit(database_);
+            UnqliteHandleResult("unqlite_commit", database_, ret);
             if (ret == UNQLITE_OK) bytesSinceCommit_ = 0u;
         }
     }
@@ -254,10 +260,7 @@ std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(
               << "\".";
 
   int ret = unqlite_open(&database, databaseFile.c_str(), UNQLITE_OPEN_CREATE);
-
-  if (ret != UNQLITE_OK)
-    LOG_S(WARNING) << "Unqlite: unqlite_open reported error condition " << ret
-                   << ".";
+  UnqliteHandleResult("unqlite_open", database, ret);
 
   // if (ret == UNQLITE_OK) return
   // std::make_shared<UnqliteCacheDriver>(database);
