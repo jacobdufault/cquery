@@ -33,6 +33,8 @@ std::shared_ptr<ICacheStore> OpenOrConnectFileStore(const NormalizedPath& path);
 std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(
     const NormalizedPath& path_to_db);
 
+
+// Note that IndexCaches are _not_ thread-safe.
 struct IndexCache {
  public:
   IndexCache(std::shared_ptr<ICacheStore> driver);

@@ -148,11 +148,33 @@ std::string SerializationFormatToSuffix(SerializeFormat format) {
 IndexCache::IndexCache(std::shared_ptr<ICacheStore> driver)
     : driver_(std::move(driver)) {}
 
+
+std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(
+    const NormalizedPath& file) {
+  optional<std::string> file_content = driver_->Read(file.path);
+  optional<std::string> serialized_indexed_content = driver_->Read(
+      file.path + SerializationFormatToSuffix(g_config->cacheFormat));
+
+  if (!file_content || !serialized_indexed_content)
+  {
+    LOG_S(WARNING) << "IndexCache::LoadIndexFileFromCache: Cannot serve cache request for \"" << file.path << "\"";
+    return nullptr;
+  }
+
+  return Deserialize(g_config->cacheFormat, file.path,
+                     *serialized_indexed_content, *file_content,
+                     IndexFile::kMajorVersion);
+}
+
 // Tries to recover an index file (content+serialized index) for a given source
 // file from the cache store and returns a non-owning reference or null,
 // buffering the IndexFile internally for later take
 IndexFile* IndexCache::TryLoad(const NormalizedPath& path) {
   IndexFile* result = nullptr;
+  auto it = caches_.find(path.path);
+  if (it != caches_.end())
+    return it->second.get();
+
   auto ptr = LoadIndexFileFromCache(path);
   if (ptr) {
     result = ptr.get();
@@ -170,29 +192,20 @@ IndexFile* IndexCache::TryLoad(const NormalizedPath& path) {
 // file from the cache store and returns a non-owning reference or null
 std::unique_ptr<IndexFile> IndexCache::TryTakeOrLoad(
     const NormalizedPath& path) {
+  auto it = caches_.find(path.path);
+  if (it != caches_.end())
+  {
+    auto result = std::move(it->second);
+    caches_.erase(it);
+    return result;
+  }
+
   return LoadIndexFileFromCache(path);
 }
 
 // Only load the buffered file content from the cache
 optional<std::string> IndexCache::TryLoadContent(const NormalizedPath& path) {
   return driver_->Read(path.path);
-}
-
-std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(
-    const NormalizedPath& file) {
-  optional<std::string> file_content = driver_->Read(file.path);
-  optional<std::string> serialized_indexed_content = driver_->Read(
-      file.path + SerializationFormatToSuffix(g_config->cacheFormat));
-
-  if (!file_content || !serialized_indexed_content)
-  {
-    LOG_S(WARNING) << "IndexCache::LoadIndexFileFromCache: Cannot serve cache request for \"" << file.path << "\"";
-    return nullptr;
-  }
-
-  return Deserialize(g_config->cacheFormat, file.path,
-                     *serialized_indexed_content, *file_content,
-                     IndexFile::kMajorVersion);
 }
 
 // Write an IndexFile to the cache storage
