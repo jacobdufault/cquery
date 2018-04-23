@@ -1,5 +1,8 @@
 #include "method.h"
 
+#include <doctest/doctest.h>
+#include "serializers/json.h"
+
 MethodType kMethodType_Unknown = "$unknown";
 MethodType kMethodType_Exit = "exit";
 MethodType kMethodType_TextDocumentPublishDiagnostics =
@@ -35,7 +38,7 @@ void Reflect(Writer& visitor, lsRequestId& value) {
       visitor.Int(value.value);
       break;
     case lsRequestId::kString:
-      std::string str;
+      std::string str = std::to_string(value.value);
       visitor.String(str.c_str(), str.length());
       break;
   }
@@ -55,4 +58,27 @@ lsRequestId RequestInMessage::GetRequestId() const {
 
 lsRequestId NotificationInMessage::GetRequestId() const {
   return lsRequestId();
+}
+
+TEST_SUITE("lsRequestId") {
+  TEST_CASE("To string") {
+    // FIXME: Add test reflection helpers; make it easier to use.
+    rapidjson::StringBuffer output;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(output);
+    JsonWriter json_writer(&writer);
+
+    lsRequestId id;
+    id.value = 3;
+
+    id.type = lsRequestId::kNone;
+    Reflect(json_writer, id);
+
+    id.type = lsRequestId::kInt;
+    Reflect(json_writer, id);
+
+    id.type = lsRequestId::kString;
+    Reflect(json_writer, id);
+
+    REQUIRE(std::string(output.GetString()) == "null3\"3\"");
+  }
 }
