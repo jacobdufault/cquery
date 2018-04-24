@@ -36,6 +36,11 @@ void Reflect(Writer& visitor, AbsolutePath& value) {
   visitor.String(value.path.c_str(), value.path.length());
 }
 
+std::ostream& operator<<(std::ostream& out, const AbsolutePath& path) {
+  out << path.path;
+  return out;
+}
+
 Directory::Directory(const AbsolutePath& path) : path(path.path) {
   EnsureEndsInSlash(this->path);
 }

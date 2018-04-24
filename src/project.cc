@@ -93,8 +93,7 @@ const std::vector<std::string>& GetSystemIncludes(
   if (it != project_config->discovered_system_includes.end())
     return it->second;
 
-  if (g_disable_normalize_path_for_test ||
-      !g_config->discoverSystemIncludes) {
+  if (g_disable_normalize_path_for_test || !g_config->discoverSystemIncludes) {
     project_config->discovered_system_includes[language] = {};
     return project_config->discovered_system_includes[language];
   }
@@ -172,11 +171,21 @@ std::vector<std::string> kBlacklist = {
 
 // Arguments which are followed by a potentially relative path. We need to make
 // all relative paths absolute, otherwise libclang will not resolve them.
-std::vector<std::string> kPathArgs = {
-    "-I",        "-iquote",        "-isystem",     "--sysroot=",
-    "-isysroot", "-gcc-toolchain", "-include-pch", "-iframework",
-    "-F",        "-imacros",       "-include",     "/I",
-    "-idirafter", "--include-directory-after=", "--include-directory-after"};
+std::vector<std::string> kPathArgs = {"-I",
+                                      "-iquote",
+                                      "-isystem",
+                                      "--sysroot=",
+                                      "-isysroot",
+                                      "-gcc-toolchain",
+                                      "-include-pch",
+                                      "-iframework",
+                                      "-F",
+                                      "-imacros",
+                                      "-include",
+                                      "/I",
+                                      "-idirafter",
+                                      "--include-directory-after=",
+                                      "--include-directory-after"};
 
 // Arguments which always require an absolute path, ie, clang -working-directory
 // does not work as expected. Argument processing assumes that this is a subset
@@ -753,7 +762,7 @@ void Project::ForAllFilteredFiles(
     else {
       if (g_config->index.logSkippedPaths) {
         LOG_S(INFO) << "[" << i + 1 << "/" << entries.size() << "]: Failed "
-                    << failure_reason << "; skipping " << entry.filename.path;
+                    << failure_reason << "; skipping " << entry.filename;
       }
     }
   }
@@ -766,7 +775,7 @@ void Project::Index(QueueManager* queue,
     optional<std::string> content = ReadContent(entry.filename);
     if (!content) {
       LOG_S(ERROR) << "When loading project, canont read file "
-                   << entry.filename.path;
+                   << entry.filename;
       return;
     }
     bool is_interactive =

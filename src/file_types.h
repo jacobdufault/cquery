@@ -3,6 +3,7 @@
 #include "hash_utils.h"
 #include "serializer.h"
 
+#include <iosfwd>
 #include <string>
 
 struct AbsolutePath {
@@ -22,6 +23,8 @@ MAKE_HASHABLE(AbsolutePath, t.path);
 
 void Reflect(Reader& visitor, AbsolutePath& value);
 void Reflect(Writer& visitor, AbsolutePath& value);
+
+std::ostream& operator<<(std::ostream& out, const AbsolutePath& path);
 
 struct Directory {
   explicit Directory(const AbsolutePath& path);

@@ -419,7 +419,7 @@ void TryEnsureDocumentParsed(ClangCompleteManager* manager,
     *tu = ClangTranslationUnit::Reparse(std::move(*tu), unsaved);
     if (!*tu) {
       LOG_S(ERROR) << "Reparsing translation unit for diagnostics failed for "
-                   << session->file.filename.path;
+                   << session->file.filename;
       return;
     }
 
@@ -789,13 +789,11 @@ void ClangCompleteManager::NotifyClose(const AbsolutePath& filename) {
   std::shared_ptr<CompletionSession> preloaded_ptr;
   preloaded_sessions_.TryTake(filename, &preloaded_ptr);
   LOG_IF_S(INFO, !!preloaded_ptr)
-      << "Dropped preloaded-based code completion session for "
-      << filename.path;
+      << "Dropped preloaded-based code completion session for " << filename;
   std::shared_ptr<CompletionSession> completion_ptr;
   completion_sessions_.TryTake(filename, &completion_ptr);
   LOG_IF_S(INFO, !!completion_ptr)
-      << "Dropped completion-based code completion session for "
-      << filename.path;
+      << "Dropped completion-based code completion session for " << filename;
 
   // We should never have both a preloaded and completion session.
   assert((preloaded_ptr && completion_ptr) == false);

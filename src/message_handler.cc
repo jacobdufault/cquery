@@ -78,9 +78,9 @@ bool FindFileOrFail(QueryDatabase* db,
   bool indexing = project->absolute_path_to_entry_index_.find(absolute_path) !=
                   project->absolute_path_to_entry_index_.end();
   if (indexing)
-    LOG_S(INFO) << "\"" << absolute_path.path << "\" is being indexed.";
+    LOG_S(INFO) << "\"" << absolute_path << "\" is being indexed.";
   else
-    LOG_S(INFO) << "Unable to find file \"" << absolute_path.path << "\"";
+    LOG_S(INFO) << "Unable to find file \"" << absolute_path << "\"";
   /*
   LOG_S(INFO) << "Files (size=" << db->usr_to_file.size() << "): "
               << StringJoinMap(db->usr_to_file,

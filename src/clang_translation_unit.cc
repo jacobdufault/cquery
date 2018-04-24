@@ -96,20 +96,19 @@ std::unique_ptr<ClangTranslationUnit> ClangTranslationUnit::Create(
     case CXError_Success:
       return std::make_unique<ClangTranslationUnit>(cx_tu);
     case CXError_Failure:
-      LOG_S(ERROR) << "libclang generic failure for " << filepath.path << ". "
+      LOG_S(ERROR) << "libclang generic failure for " << filepath << ". "
                    << make_msg();
       return nullptr;
     case CXError_Crashed:
-      LOG_S(ERROR) << "libclang crashed for " << filepath.path << ". "
-                   << make_msg();
+      LOG_S(ERROR) << "libclang crashed for " << filepath << ". " << make_msg();
       return nullptr;
     case CXError_InvalidArguments:
-      LOG_S(ERROR) << "libclang had invalid arguments for " << filepath.path
-                   << ". " << make_msg();
+      LOG_S(ERROR) << "libclang had invalid arguments for " << filepath << ". "
+                   << make_msg();
       return nullptr;
     case CXError_ASTReadError:
-      LOG_S(ERROR) << "libclang had ast read error for " << filepath.path
-                   << ". " << make_msg();
+      LOG_S(ERROR) << "libclang had ast read error for " << filepath << ". "
+                   << make_msg();
       return nullptr;
   }
 

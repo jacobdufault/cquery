@@ -52,8 +52,7 @@ struct Handler_TextDocumentDidSave
     if (!g_config->enableIndexOnDidChange) {
       optional<std::string> content = ReadContent(path);
       if (!content) {
-        LOG_S(ERROR) << "Unable to read file content after saving "
-                     << path.path;
+        LOG_S(ERROR) << "Unable to read file content after saving " << path;
       } else {
         Project::Entry entry = project->FindCompilationEntryForFile(path);
         QueueManager::instance()->index_request.PushBack(

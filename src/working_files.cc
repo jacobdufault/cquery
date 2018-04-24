@@ -331,7 +331,7 @@ optional<int> WorkingFile::GetBufferPosFromIndexPos(int line,
   if (line < 0 || line >= (int)index_lines.size()) {
     loguru::Text stack = loguru::stacktrace();
     LOG_S(WARNING) << "Bad index_line (got " << line << ", expected [0, "
-                   << index_lines.size() << ")) in " << filename.path
+                   << index_lines.size() << ")) in " << filename
                    << stack.c_str();
     return nullopt;
   }
@@ -500,7 +500,7 @@ void WorkingFiles::OnChange(const lsTextDocumentDidChangeParams& change) {
   AbsolutePath filename = change.textDocument.uri.GetAbsolutePath();
   WorkingFile* file = GetFileByFilenameNoLock(filename);
   if (!file) {
-    LOG_S(WARNING) << "Could not change " << filename.path
+    LOG_S(WARNING) << "Could not change " << filename
                    << " because it was not open";
     return;
   }
@@ -541,7 +541,7 @@ void WorkingFiles::OnClose(const lsTextDocumentIdentifier& close) {
     }
   }
 
-  LOG_S(WARNING) << "Could not close " << filename.path
+  LOG_S(WARNING) << "Could not close " << filename
                  << " because it was not open";
 }
 

@@ -55,9 +55,8 @@ struct Handler_TextDocumentDocumentLink
       WorkingFile* working_file = working_files->GetFileByFilename(
           request->params.textDocument.uri.GetAbsolutePath());
       if (!working_file) {
-        LOG_S(WARNING)
-            << "Unable to find working file "
-            << request->params.textDocument.uri.GetAbsolutePath().path;
+        LOG_S(WARNING) << "Unable to find working file "
+                       << request->params.textDocument.uri.GetAbsolutePath();
         return;
       }
       for (const IndexInclude& include : file->def->includes) {

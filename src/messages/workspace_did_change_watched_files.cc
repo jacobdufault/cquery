@@ -52,8 +52,7 @@ struct Handler_WorkspaceDidChangeWatchedFiles
         case lsFileChangeType::Changed: {
           optional<std::string> content = ReadContent(path);
           if (!content)
-            LOG_S(ERROR) << "Unable to read file content after saving "
-                         << path.path;
+            LOG_S(ERROR) << "Unable to read file content after saving " << path;
           else {
             QueueManager::instance()->index_request.PushBack(
                 Index_Request(path, entry.args, is_interactive, *content,

@@ -23,7 +23,7 @@ struct UriCache {
     optional<AbsolutePath> normalized = NormalizePath(path);
     if (normalized) {
       LOG_S(INFO) << "RecordPath: client=" << path
-                  << ", normalized=" << normalized->path;
+                  << ", normalized=" << *normalized;
       cache.Insert(*normalized, path);
     }
   }
@@ -32,7 +32,7 @@ struct UriCache {
     std::string resolved;
     if (cache.TryGet(path, &resolved))
       return resolved;
-    LOG_S(INFO) << "No cached URI for " << path.path;
+    LOG_S(INFO) << "No cached URI for " << path;
     return path;
   }
 

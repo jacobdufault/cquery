@@ -350,7 +350,7 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
       // Set modification time.
       optional<int64_t> modification_time = GetLastModificationTime(*file_name);
       LOG_IF_S(ERROR, !modification_time)
-          << "Failed fetching modification time for " << file_name->path;
+          << "Failed fetching modification time for " << *file_name;
       if (modification_time)
         param->file_modification_times[file_name->path] = *modification_time;
     }
@@ -2255,7 +2255,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
           CXIndexOpt_IndexImplicitTemplateInstantiations,
       tu->cx_tu);
   if (index_result != CXError_Success) {
-    LOG_S(ERROR) << "Indexing " << file.path
+    LOG_S(ERROR) << "Indexing " << file
                  << " failed with errno=" << index_result;
     return nullopt;
   }

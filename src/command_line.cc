@@ -68,7 +68,8 @@ bool ShouldDisplayMethodTiming(MethodType type) {
 }
 
 void PrintHelp() {
-  std::cout << R"help(cquery is a low-latency C/C++/Objective-C language server.
+  std::cout
+      << R"help(cquery is a low-latency C/C++/Objective-C language server.
 
 Mode:
   --check <path>
@@ -436,11 +437,11 @@ int main(int argc, char** argv) {
     }
     optional<std::string> content = ReadContent(*path);
     if (!content || content->empty()) {
-      ABORT_S() << "Cannot read file content at \"" << path->path
+      ABORT_S() << "Cannot read file content at \"" << *path
                 << "\". Make sure to pass a specific cc/cpp file, not a "
                 << "directory.";
     }
-    LOG_S(INFO) << "Using path " << path->path;
+    LOG_S(INFO) << "Using path " << *path;
 
     language_server = false;
     Project project;

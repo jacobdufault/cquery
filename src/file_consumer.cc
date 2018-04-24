@@ -107,6 +107,6 @@ void FileConsumer::EmitError(CXFile file) const {
   // TODO: Investigate this more, why can we get an empty file name?
   if (!file_name.empty()) {
     LOG_S(ERROR) << "Could not get unique file id for " << file_name
-                 << " when parsing " << parse_file_.path;
+                 << " when parsing " << parse_file_;
   }
 }
