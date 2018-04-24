@@ -38,7 +38,7 @@ struct Handler_TextDocumentFormatting
     response.id = request->id;
 
     WorkingFile* working_file = working_files->GetFileByFilename(
-        request->params.textDocument.uri.GetPath());
+        request->params.textDocument.uri.GetAbsolutePath());
     response.result =
         RunClangFormat(working_file->filename, working_file->buffer_content,
                        nullopt /*start_offset*/, nullopt /*end_offset*/);

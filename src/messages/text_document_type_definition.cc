@@ -25,8 +25,8 @@ struct Handler_TextDocumentTypeDefinition
   void Run(In_TextDocumentTypeDefinition* request) override {
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file,
-                        nullptr)) {
+                        request->params.textDocument.uri.GetAbsolutePath(),
+                        &file, nullptr)) {
       return;
     }
     WorkingFile* working_file =

@@ -20,7 +20,7 @@ struct Handler_CqueryDidView
     : BaseMessageHandler<In_CqueryTextDocumentDidView> {
   MethodType GetMethodType() const override { return kMethodType; }
   void Run(In_CqueryTextDocumentDidView* request) override {
-    std::string path = request->params.textDocumentUri.GetPath();
+    AbsolutePath path = request->params.textDocumentUri.GetAbsolutePath();
 
     WorkingFile* working_file = working_files->GetFileByFilename(path);
     if (!working_file)

@@ -34,8 +34,8 @@ struct Handler_TextDocumentDocumentSymbol
     QueryFile* file;
     QueryFileId file_id;
     if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file,
-                        &file_id)) {
+                        request->params.textDocument.uri.GetAbsolutePath(),
+                        &file, &file_id)) {
       return;
     }
 

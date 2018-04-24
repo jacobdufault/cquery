@@ -23,12 +23,13 @@ struct Handler_TextDocumentDidChange
   MethodType GetMethodType() const override { return kMethodType; }
 
   void Run(In_TextDocumentDidChange* request) override {
-    std::string path = request->params.textDocument.uri.GetPath();
+    AbsolutePath path = request->params.textDocument.uri.GetAbsolutePath();
     working_files->OnChange(request->params);
     if (g_config->enableIndexOnDidChange) {
       optional<std::string> content = ReadContent(path);
       if (!content) {
-        LOG_S(ERROR) << "Unable to read file content after saving " << path;
+        LOG_S(ERROR) << "Unable to read file content after saving "
+                     << path.path;
       } else {
         Project::Entry entry = project->FindCompilationEntryForFile(path);
         QueueManager::instance()->index_request.PushBack(

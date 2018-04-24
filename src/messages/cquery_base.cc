@@ -20,7 +20,8 @@ struct Handler_CqueryBase : BaseMessageHandler<In_CqueryBase> {
   void Run(In_CqueryBase* request) override {
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file)) {
+                        request->params.textDocument.uri.GetAbsolutePath(),
+                        &file)) {
       return;
     }
 

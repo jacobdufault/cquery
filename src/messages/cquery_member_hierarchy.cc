@@ -221,7 +221,7 @@ struct Handler_CqueryMemberHierarchy
     } else {
       QueryFile* file;
       if (!FindFileOrFail(db, project, request->id,
-                          params.textDocument.uri.GetPath(), &file))
+                          params.textDocument.uri.GetAbsolutePath(), &file))
         return;
       WorkingFile* working_file =
           working_files->GetFileByFilename(file->def->path);

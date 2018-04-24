@@ -690,18 +690,18 @@ CompletionSession::CompletionSession(const Project::Entry& file,
 
 CompletionSession::~CompletionSession() {}
 
-ClangCompleteManager::PreloadRequest::PreloadRequest(const std::string& path)
+ClangCompleteManager::PreloadRequest::PreloadRequest(const AbsolutePath& path)
     : request_time(std::chrono::high_resolution_clock::now()), path(path) {}
 
 ClangCompleteManager::CompletionRequest::CompletionRequest(
     const lsRequestId& id,
-    const std::string& path,
+    const AbsolutePath& path,
     const lsPosition& position,
     const OnComplete& on_complete)
     : id(id), path(path), position(position), on_complete(on_complete) {}
 
 ClangCompleteManager::DiagnosticRequest::DiagnosticRequest(
-    const std::string& path)
+    const AbsolutePath& path)
     : path(path) {}
 
 ClangCompleteManager::ClangCompleteManager(Project* project,
@@ -729,7 +729,7 @@ void ClangCompleteManager::CodeComplete(
     const lsTextDocumentPositionParams& completion_location,
     const OnComplete& on_complete) {
   completion_request_.PushBack(std::make_unique<CompletionRequest>(
-      id, completion_location.textDocument.uri.GetPath(),
+      id, completion_location.textDocument.uri.GetAbsolutePath(),
       completion_location.position, on_complete));
 }
 
@@ -746,7 +746,7 @@ void ClangCompleteManager::DiagnosticsUpdate(const std::string& path) {
   }
 }
 
-void ClangCompleteManager::NotifyView(const std::string& filename) {
+void ClangCompleteManager::NotifyView(const AbsolutePath& filename) {
   //
   // On view, we reparse only if the file has not been parsed. The existence of
   // a CompletionSession instance implies the file is already parsed or will be
@@ -758,7 +758,7 @@ void ClangCompleteManager::NotifyView(const std::string& filename) {
     preload_requests_.PushBack(PreloadRequest(filename), true /*priority*/);
 }
 
-void ClangCompleteManager::NotifyEdit(const std::string& filename) {
+void ClangCompleteManager::NotifyEdit(const AbsolutePath& filename) {
   //
   // We treat an edit like a view, because the completion logic will handle
   // moving the CompletionSession instance from preloaded to completion
@@ -768,7 +768,7 @@ void ClangCompleteManager::NotifyEdit(const std::string& filename) {
   NotifyView(filename);
 }
 
-void ClangCompleteManager::NotifySave(const std::string& filename) {
+void ClangCompleteManager::NotifySave(const AbsolutePath& filename) {
   //
   // On save, always reparse.
   //
@@ -777,7 +777,7 @@ void ClangCompleteManager::NotifySave(const std::string& filename) {
   preload_requests_.PushBack(PreloadRequest(filename), true /*priority*/);
 }
 
-void ClangCompleteManager::NotifyClose(const std::string& filename) {
+void ClangCompleteManager::NotifyClose(const AbsolutePath& filename) {
   //
   // On close, we clear any existing CompletionSession instance.
   //
@@ -786,24 +786,27 @@ void ClangCompleteManager::NotifyClose(const std::string& filename) {
 
   // Take and drop. It's okay if we don't actually drop the file, it'll
   // eventually get pushed out of the caches as the user opens other files.
-  auto preloaded_ptr = preloaded_sessions_.TryTake(filename);
+  std::shared_ptr<CompletionSession> preloaded_ptr;
+  preloaded_sessions_.TryTake(filename, &preloaded_ptr);
   LOG_IF_S(INFO, !!preloaded_ptr)
-      << "Dropped preloaded-based code completion session for " << filename;
-  auto completion_ptr = completion_sessions_.TryTake(filename);
+      << "Dropped preloaded-based code completion session for "
+      << filename.path;
+  std::shared_ptr<CompletionSession> completion_ptr;
+  completion_sessions_.TryTake(filename, &completion_ptr);
   LOG_IF_S(INFO, !!completion_ptr)
-      << "Dropped completion-based code completion session for " << filename;
+      << "Dropped completion-based code completion session for "
+      << filename.path;
 
   // We should never have both a preloaded and completion session.
   assert((preloaded_ptr && completion_ptr) == false);
 }
 
 bool ClangCompleteManager::EnsureCompletionOrCreatePreloadSession(
-    const std::string& filename) {
+    const AbsolutePath& filename) {
   std::lock_guard<std::mutex> lock(sessions_lock_);
 
   // Check for an existing CompletionSession.
-  if (preloaded_sessions_.TryGet(filename) ||
-      completion_sessions_.TryGet(filename)) {
+  if (preloaded_sessions_.Has(filename) || completion_sessions_.Has(filename)) {
     return false;
   }
 
@@ -821,15 +824,13 @@ std::shared_ptr<CompletionSession> ClangCompleteManager::TryGetSession(
   std::lock_guard<std::mutex> lock(sessions_lock_);
 
   // Try to find a preloaded session.
-  std::shared_ptr<CompletionSession> preloaded_session =
-      preloaded_sessions_.TryGet(filename);
-
-  if (preloaded_session) {
+  std::shared_ptr<CompletionSession> preloaded_session;
+  if (preloaded_sessions_.TryGet(filename, &preloaded_session)) {
     // If this request is for a completion, we should move it to
     // |completion_sessions|.
     if (mark_as_completion) {
-      assert(!completion_sessions_.TryGet(filename));
-      preloaded_sessions_.TryTake(filename);
+      assert(!completion_sessions_.Has(filename));
+      preloaded_sessions_.TryTake(filename, nullptr);
       completion_sessions_.Insert(filename, preloaded_session);
     }
 
@@ -837,9 +838,9 @@ std::shared_ptr<CompletionSession> ClangCompleteManager::TryGetSession(
   }
 
   // Try to find a completion session. If none create one.
-  std::shared_ptr<CompletionSession> completion_session =
-      completion_sessions_.TryGet(filename);
-  if (!completion_session && create_if_needed) {
+  std::shared_ptr<CompletionSession> completion_session;
+  if (!completion_sessions_.TryGet(filename, &completion_session) &&
+      create_if_needed) {
     completion_session = std::make_shared<CompletionSession>(
         project_->FindCompilationEntryForFile(filename), working_files_);
     completion_sessions_.Insert(filename, completion_session);
@@ -851,8 +852,8 @@ std::shared_ptr<CompletionSession> ClangCompleteManager::TryGetSession(
 void ClangCompleteManager::FlushSession(const std::string& filename) {
   std::lock_guard<std::mutex> lock(sessions_lock_);
 
-  preloaded_sessions_.TryTake(filename);
-  completion_sessions_.TryTake(filename);
+  preloaded_sessions_.TryTake(filename, nullptr);
+  completion_sessions_.TryTake(filename, nullptr);
 
   LOG_S(INFO) << "Flushed completion sessions for " << filename;
 }

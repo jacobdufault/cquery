@@ -205,7 +205,7 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db,
     return lsDocumentUri::FromPath(*path);
   } else {
     *path = "";
-    return lsDocumentUri::FromPath("");
+    return lsDocumentUri();
   }
 }
 
@@ -214,7 +214,7 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryFileId file_id) {
   if (file.def) {
     return lsDocumentUri::FromPath(file.def->path);
   } else {
-    return lsDocumentUri::FromPath("");
+    return lsDocumentUri();
   }
 }
 

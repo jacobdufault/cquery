@@ -11,7 +11,7 @@
 // that happens.
 struct CodeCompleteCache {
   // NOTE: Make sure to access these variables under |WithLock|.
-  optional<std::string> cached_path_;
+  optional<AbsolutePath> cached_path_;
   optional<lsPosition> cached_completion_position_;
   std::vector<lsCompletionItem> cached_results_;
 

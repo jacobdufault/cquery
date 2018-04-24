@@ -31,7 +31,7 @@ struct Handler_TextDocumentDidSave
   MethodType GetMethodType() const override { return kMethodType; }
 
   void Run(In_TextDocumentDidSave* request) override {
-    std::string path = request->params.textDocument.uri.GetPath();
+    AbsolutePath path = request->params.textDocument.uri.GetAbsolutePath();
     if (ShouldIgnoreFileForIndexing(path))
       return;
 
@@ -52,7 +52,8 @@ struct Handler_TextDocumentDidSave
     if (!g_config->enableIndexOnDidChange) {
       optional<std::string> content = ReadContent(path);
       if (!content) {
-        LOG_S(ERROR) << "Unable to read file content after saving " << path;
+        LOG_S(ERROR) << "Unable to read file content after saving "
+                     << path.path;
       } else {
         Project::Entry entry = project->FindCompilationEntryForFile(path);
         QueueManager::instance()->index_request.PushBack(

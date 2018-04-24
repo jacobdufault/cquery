@@ -284,7 +284,7 @@ struct Handler_TextDocumentCompletion : MessageHandler {
       QueueManager::WriteStdout(kMethodType, out);
     };
 
-    std::string path = request->params.textDocument.uri.GetPath();
+    AbsolutePath path = request->params.textDocument.uri.GetAbsolutePath();
     WorkingFile* file = working_files->GetFileByFilename(path);
     if (!file) {
       write_empty_result();
@@ -413,7 +413,8 @@ struct Handler_TextDocumentCompletion : MessageHandler {
 
             // Cache completion results.
             if (!is_cached_result) {
-              std::string path = request->params.textDocument.uri.GetPath();
+              AbsolutePath path =
+                  request->params.textDocument.uri.GetAbsolutePath();
               if (is_global_completion) {
                 global_code_complete_cache->WithLock([&]() {
                   global_code_complete_cache->cached_path_ = path;

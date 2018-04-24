@@ -40,7 +40,7 @@ struct Handler_WorkspaceDidChangeWatchedFiles
   MethodType GetMethodType() const override { return kMethodType; }
   void Run(In_WorkspaceDidChangeWatchedFiles* request) override {
     for (lsFileEvent& event : request->params.changes) {
-      std::string path = event.uri.GetPath();
+      AbsolutePath path = event.uri.GetAbsolutePath();
       auto it = project->absolute_path_to_entry_index_.find(path);
       if (it == project->absolute_path_to_entry_index_.end())
         continue;
@@ -52,7 +52,8 @@ struct Handler_WorkspaceDidChangeWatchedFiles
         case lsFileChangeType::Changed: {
           optional<std::string> content = ReadContent(path);
           if (!content)
-            LOG_S(ERROR) << "Unable to read file content after saving " << path;
+            LOG_S(ERROR) << "Unable to read file content after saving "
+                         << path.path;
           else {
             QueueManager::instance()->index_request.PushBack(
                 Index_Request(path, entry.args, is_interactive, *content,

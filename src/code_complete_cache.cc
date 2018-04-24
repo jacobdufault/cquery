@@ -7,6 +7,6 @@ void CodeCompleteCache::WithLock(std::function<void()> action) {
 
 bool CodeCompleteCache::IsCacheValid(lsTextDocumentPositionParams position) {
   std::lock_guard<std::mutex> lock(mutex_);
-  return cached_path_ == position.textDocument.uri.GetPath() &&
+  return cached_path_ == position.textDocument.uri.GetAbsolutePath() &&
          cached_completion_position_ == position.position;
 }

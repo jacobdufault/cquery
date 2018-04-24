@@ -103,22 +103,21 @@ struct lsResponseError {
 /////////////////////////////////////////////////////////////////////////////
 
 struct lsDocumentUri {
-  static lsDocumentUri FromPath(const std::string& path);
+  static lsDocumentUri FromPath(const AbsolutePath& path);
 
   lsDocumentUri();
   bool operator==(const lsDocumentUri& other) const;
 
-  void SetPath(const std::string& path);
-  std::string GetPath() const;
+  void SetPath(const AbsolutePath& path);
+  std::string GetRawPath() const;
+  AbsolutePath GetAbsolutePath() const;
 
-  std::string raw_uri;
+  std::string raw_uri_;
 };
-MAKE_HASHABLE(lsDocumentUri, t.raw_uri);
+MAKE_HASHABLE(lsDocumentUri, t.raw_uri_);
 
-template <typename TVisitor>
-void Reflect(TVisitor& visitor, lsDocumentUri& value) {
-  Reflect(visitor, value.raw_uri);
-}
+void Reflect(Writer& visitor, lsDocumentUri& value);
+void Reflect(Reader& visitor, lsDocumentUri& value);
 
 struct lsPosition {
   lsPosition();

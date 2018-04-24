@@ -331,7 +331,7 @@ optional<int> WorkingFile::GetBufferPosFromIndexPos(int line,
   if (line < 0 || line >= (int)index_lines.size()) {
     loguru::Text stack = loguru::stacktrace();
     LOG_S(WARNING) << "Bad index_line (got " << line << ", expected [0, "
-                   << index_lines.size() << ")) in " << filename
+                   << index_lines.size() << ")) in " << filename.path
                    << stack.c_str();
     return nullopt;
   }
@@ -479,7 +479,7 @@ void WorkingFiles::DoActionOnFile(
 WorkingFile* WorkingFiles::OnOpen(const lsTextDocumentItem& open) {
   std::lock_guard<std::mutex> lock(files_mutex);
 
-  std::string filename = open.uri.GetPath();
+  AbsolutePath filename = open.uri.GetAbsolutePath();
   std::string content = open.text;
 
   // The file may already be open.
@@ -497,10 +497,10 @@ WorkingFile* WorkingFiles::OnOpen(const lsTextDocumentItem& open) {
 void WorkingFiles::OnChange(const lsTextDocumentDidChangeParams& change) {
   std::lock_guard<std::mutex> lock(files_mutex);
 
-  std::string filename = change.textDocument.uri.GetPath();
+  AbsolutePath filename = change.textDocument.uri.GetAbsolutePath();
   WorkingFile* file = GetFileByFilenameNoLock(filename);
   if (!file) {
-    LOG_S(WARNING) << "Could not change " << filename
+    LOG_S(WARNING) << "Could not change " << filename.path
                    << " because it was not open";
     return;
   }
@@ -532,7 +532,7 @@ void WorkingFiles::OnChange(const lsTextDocumentDidChangeParams& change) {
 void WorkingFiles::OnClose(const lsTextDocumentIdentifier& close) {
   std::lock_guard<std::mutex> lock(files_mutex);
 
-  std::string filename = close.uri.GetPath();
+  AbsolutePath filename = close.uri.GetAbsolutePath();
 
   for (int i = 0; i < files.size(); ++i) {
     if (files[i]->filename == filename) {
@@ -541,7 +541,7 @@ void WorkingFiles::OnClose(const lsTextDocumentIdentifier& close) {
     }
   }
 
-  LOG_S(WARNING) << "Could not close " << filename
+  LOG_S(WARNING) << "Could not close " << filename.path
                  << " because it was not open";
 }
 

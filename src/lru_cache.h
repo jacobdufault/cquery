@@ -15,17 +15,19 @@ struct LruCache {
   // Fetches an entry for |key|. If it does not exist, |allocator| will be
   // invoked to create one.
   template <typename TAllocator>
-  std::shared_ptr<TValue> Get(const TKey& key, TAllocator allocator);
+  TValue Get(const TKey& key, TAllocator allocator);
+  // Returns true if there is an entry for |key|.
+  bool Has(const TKey& key);
   // Fetches the entry for |filename| and updates it's usage so it is less
   // likely to be evicted.
-  std::shared_ptr<TValue> TryGet(const TKey& key);
+  bool TryGet(const TKey& key, TValue* dest);
   // TryGetEntry, except the entry is removed from the cache.
-  std::shared_ptr<TValue> TryTake(const TKey& key);
+  bool TryTake(const TKey& key, TValue* dest);
   // Inserts an entry. Evicts the oldest unused entry if there is no space.
-  void Insert(const TKey& key, const std::shared_ptr<TValue>& value);
+  void Insert(const TKey& key, const TValue& value);
 
   // Call |func| on existing entries. If |func| returns false iteration
-  // temrinates early.
+  // terminates early.
   template <typename TFunc>
   void IterateValues(TFunc func);
 
@@ -42,7 +44,7 @@ struct LruCache {
   struct Entry {
     uint32_t score = 0;
     TKey key;
-    std::shared_ptr<TValue> value;
+    TValue value;
     bool operator<(const Entry& other) const { return score < other.score; }
   };
 
@@ -60,44 +62,58 @@ LruCache<TKey, TValue>::LruCache(int max_entries) : max_entries_(max_entries) {
 
 template <typename TKey, typename TValue>
 template <typename TAllocator>
-std::shared_ptr<TValue> LruCache<TKey, TValue>::Get(const TKey& key,
-                                                    TAllocator allocator) {
-  std::shared_ptr<TValue> result = TryGet(key);
-  if (!result)
-    Insert(key, result = allocator());
+TValue LruCache<TKey, TValue>::Get(const TKey& key, TAllocator allocator) {
+  for (Entry& entry : entries_) {
+    if (entry.key == key)
+      return entry.value;
+  }
+
+  auto result = allocator();
+  Insert(key, result);
   return result;
 }
 
 template <typename TKey, typename TValue>
-std::shared_ptr<TValue> LruCache<TKey, TValue>::TryGet(const TKey& key) {
+bool LruCache<TKey, TValue>::Has(const TKey& key) {
+  for (Entry& entry : entries_) {
+    if (entry.key == key)
+      return true;
+  }
+  return false;
+}
+
+template <typename TKey, typename TValue>
+bool LruCache<TKey, TValue>::TryGet(const TKey& key, TValue* dest) {
   // Assign new score.
   for (Entry& entry : entries_) {
     if (entry.key == key) {
       entry.score = next_score_;
       IncrementScore();
-      return entry.value;
+      if (dest)
+        *dest = entry.value;
+      return true;
     }
   }
 
-  return nullptr;
+  return false;
 }
 
 template <typename TKey, typename TValue>
-std::shared_ptr<TValue> LruCache<TKey, TValue>::TryTake(const TKey& key) {
+bool LruCache<TKey, TValue>::TryTake(const TKey& key, TValue* dest) {
   for (size_t i = 0; i < entries_.size(); ++i) {
     if (entries_[i].key == key) {
-      std::shared_ptr<TValue> copy = entries_[i].value;
+      if (dest)
+        *dest = entries_[i].value;
       entries_.erase(entries_.begin() + i);
-      return copy;
+      return true;
     }
   }
 
-  return nullptr;
+  return false;
 }
 
 template <typename TKey, typename TValue>
-void LruCache<TKey, TValue>::Insert(const TKey& key,
-                                    const std::shared_ptr<TValue>& value) {
+void LruCache<TKey, TValue>::Insert(const TKey& key, const TValue& value) {
   if ((int)entries_.size() >= max_entries_)
     entries_.erase(std::min_element(entries_.begin(), entries_.end()));
 

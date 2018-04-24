@@ -39,7 +39,7 @@ struct Handler_TextDocumentDidOpen
     // we will need to find a way to unblock the code lens request.
     const auto& params = request->params;
     Timer time;
-    std::string path = params.textDocument.uri.GetPath();
+    AbsolutePath path = params.textDocument.uri.GetAbsolutePath();
     if (ShouldIgnoreFileForIndexing(path))
       return;
 

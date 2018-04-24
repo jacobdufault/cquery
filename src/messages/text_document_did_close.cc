@@ -22,7 +22,7 @@ struct Handler_TextDocumentDidClose
   MethodType GetMethodType() const override { return kMethodType; }
 
   void Run(In_TextDocumentDidClose* request) override {
-    std::string path = request->params.textDocument.uri.GetPath();
+    AbsolutePath path = request->params.textDocument.uri.GetAbsolutePath();
 
     // Clear any diagnostics for the file.
     Out_TextDocumentPublishDiagnostics out;

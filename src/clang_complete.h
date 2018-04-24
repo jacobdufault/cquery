@@ -58,26 +58,26 @@ struct ClangCompleteManager {
   using OnDropped = std::function<void(lsRequestId request_id)>;
 
   struct PreloadRequest {
-    PreloadRequest(const std::string& path);
+    PreloadRequest(const AbsolutePath& path);
 
     std::chrono::time_point<std::chrono::high_resolution_clock> request_time;
-    std::string path;
+    AbsolutePath path;
   };
   struct CompletionRequest {
     CompletionRequest(const lsRequestId& id,
-                      const std::string& path,
+                      const AbsolutePath& path,
                       const lsPosition& position,
                       const OnComplete& on_complete);
 
     lsRequestId id;
-    std::string path;
+    AbsolutePath path;
     lsPosition position;
     OnComplete on_complete;
   };
   struct DiagnosticRequest {
-    DiagnosticRequest(const std::string& path);
+    DiagnosticRequest(const AbsolutePath& path);
 
-    std::string path;
+    AbsolutePath path;
   };
 
   ClangCompleteManager(Project* project,
@@ -97,19 +97,19 @@ struct ClangCompleteManager {
 
   // Notify the completion manager that |filename| has been viewed and we
   // should begin preloading completion data.
-  void NotifyView(const std::string& filename);
+  void NotifyView(const AbsolutePath& filename);
   // Notify the completion manager that |filename| has been edited.
-  void NotifyEdit(const std::string& filename);
+  void NotifyEdit(const AbsolutePath& filename);
   // Notify the completion manager that |filename| has been saved. This
   // triggers a reparse.
-  void NotifySave(const std::string& filename);
+  void NotifySave(const AbsolutePath& filename);
   // Notify the completion manager that |filename| has been closed. Any existing
   // completion session will be dropped.
-  void NotifyClose(const std::string& filename);
+  void NotifyClose(const AbsolutePath& filename);
 
   // Ensures there is a completion or preloaded session. Returns true if a new
   // session was created.
-  bool EnsureCompletionOrCreatePreloadSession(const std::string& filename);
+  bool EnsureCompletionOrCreatePreloadSession(const AbsolutePath& filename);
   // Tries to find an edit session for |filename|. This will move the session
   // from view to edit.
   std::shared_ptr<CompletionSession> TryGetSession(const std::string& filename,
@@ -132,7 +132,8 @@ struct ClangCompleteManager {
   OnIndex on_index_;
   OnDropped on_dropped_;
 
-  using LruSessionCache = LruCache<std::string, CompletionSession>;
+  using LruSessionCache =
+      LruCache<std::string, std::shared_ptr<CompletionSession>>;
 
   // CompletionSession instances which are preloaded, ie, files which the user
   // has viewed but not requested code completion for.

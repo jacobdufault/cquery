@@ -11,7 +11,7 @@
 
 struct WorkingFile {
   int version = 0;
-  std::string filename;
+  AbsolutePath filename;
 
   std::string buffer_content;
   // Note: This assumes 0-based lines (1-based lines are normally assumed).

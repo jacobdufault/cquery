@@ -828,8 +828,8 @@ TEST_SUITE("ImportPipeline") {
                      const std::vector<std::string>& new_args = {}) {
       std::unique_ptr<IndexFile> opt_previous_index;
       if (!old_args.empty()) {
-        opt_previous_index =
-            std::make_unique<IndexFile>(AbsolutePath("---.cc", false /*validate*/), "<empty>");
+        opt_previous_index = std::make_unique<IndexFile>(
+            AbsolutePath("---.cc", false /*validate*/), "<empty>");
         opt_previous_index->args = old_args;
       }
       optional<AbsolutePath> from;
@@ -838,7 +838,8 @@ TEST_SUITE("ImportPipeline") {
       return FileNeedsParse(
           is_interactive /*is_interactive*/, &timestamp_manager,
           &modification_timestamp_fetcher, &import_manager, cache_manager,
-          opt_previous_index.get(), AbsolutePath(file, false /*validate*/), new_args, from);
+          opt_previous_index.get(), AbsolutePath(file, false /*validate*/),
+          new_args, from);
     };
 
     // A file with no timestamp is not imported, since this implies the file no

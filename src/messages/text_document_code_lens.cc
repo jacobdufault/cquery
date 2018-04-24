@@ -90,13 +90,14 @@ struct Handler_TextDocumentCodeLens
     out.id = request->id;
 
     lsDocumentUri file_as_uri = request->params.textDocument.uri;
-    std::string path = file_as_uri.GetPath();
+    AbsolutePath path = file_as_uri.GetAbsolutePath();
 
     clang_complete->NotifyView(path);
 
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file)) {
+                        request->params.textDocument.uri.GetAbsolutePath(),
+                        &file)) {
       return;
     }
 

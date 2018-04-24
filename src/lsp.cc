@@ -1,5 +1,7 @@
 #include "lsp.h"
 
+#include "lru_cache.h"
+#include "platform.h"
 #include "recorder.h"
 #include "serializers/json.h"
 
@@ -9,6 +11,40 @@
 
 #include <stdio.h>
 #include <iostream>
+
+namespace {
+
+constexpr const int kMaxUriCacheEntries = 5000;
+struct UriCache {
+  LruCache<AbsolutePath, std::string> cache;
+  UriCache() : cache(kMaxUriCacheEntries) {}
+
+  void RecordPath(const std::string& path) {
+    optional<AbsolutePath> normalized = NormalizePath(path);
+    if (normalized) {
+      LOG_S(INFO) << "RecordPath: client=" << path
+                  << ", normalized=" << normalized->path;
+      cache.Insert(*normalized, path);
+    }
+  }
+
+  std::string GetPath(const AbsolutePath& path) {
+    std::string resolved;
+    if (cache.TryGet(path, &resolved))
+      return resolved;
+    LOG_S(INFO) << "No cached URI for " << path.path;
+    return path;
+  }
+
+  static UriCache* instance() {
+    static UriCache* instance = nullptr;
+    if (!instance)
+      instance = new UriCache();
+    return instance;
+  }
+};
+
+}  // namespace
 
 MessageRegistry* MessageRegistry::instance_ = nullptr;
 
@@ -198,32 +234,32 @@ void lsResponseError::Write(Writer& visitor) {
   visitor.EndObject();
 }
 
-lsDocumentUri lsDocumentUri::FromPath(const std::string& path) {
+lsDocumentUri lsDocumentUri::FromPath(const AbsolutePath& path) {
   lsDocumentUri result;
-  result.SetPath(path);
+  result.SetPath(UriCache::instance()->GetPath(path));
   return result;
 }
 
 lsDocumentUri::lsDocumentUri() {}
 
 bool lsDocumentUri::operator==(const lsDocumentUri& other) const {
-  return raw_uri == other.raw_uri;
+  return raw_uri_ == other.raw_uri_;
 }
 
-void lsDocumentUri::SetPath(const std::string& path) {
+void lsDocumentUri::SetPath(const AbsolutePath& path) {
   // file:///c%3A/Users/jacob/Desktop/superindex/indexer/full_tests
-  raw_uri = path;
+  raw_uri_ = path;
 
-  size_t index = raw_uri.find(":");
+  size_t index = raw_uri_.find(":");
   if (index == 1) {  // widows drive letters must always be 1 char
-    raw_uri.replace(raw_uri.begin() + index, raw_uri.begin() + index + 1,
-                    "%3A");
+    raw_uri_.replace(raw_uri_.begin() + index, raw_uri_.begin() + index + 1,
+                     "%3A");
   }
 
   // subset of reserved characters from the URI standard
   // http://www.ecma-international.org/ecma-262/6.0/#sec-uri-syntax-and-semantics
   std::string t;
-  t.reserve(8 + raw_uri.size());
+  t.reserve(8 + raw_uri_.size());
   // TODO: proper fix
 #if defined(_WIN32)
   t += "file:///";
@@ -232,7 +268,7 @@ void lsDocumentUri::SetPath(const std::string& path) {
 #endif
 
   // clang-format off
-  for (char c : raw_uri)
+  for (char c : raw_uri_)
     switch (c) {
     case ' ': t += "%20"; break;
     case '#': t += "%23"; break;
@@ -248,12 +284,12 @@ void lsDocumentUri::SetPath(const std::string& path) {
     default: t += c; break;
     }
   // clang-format on
-  raw_uri = std::move(t);
+  raw_uri_ = std::move(t);
 }
 
-std::string lsDocumentUri::GetPath() const {
-  if (raw_uri.compare(0, 8, "file:///"))
-    return raw_uri;
+std::string lsDocumentUri::GetRawPath() const {
+  if (raw_uri_.compare(0, 8, "file:///"))
+    return raw_uri_;
   std::string ret;
 #ifdef _WIN32
   size_t i = 8;
@@ -263,14 +299,28 @@ std::string lsDocumentUri::GetPath() const {
   auto from_hex = [](unsigned char c) {
     return c - '0' < 10 ? c - '0' : (c | 32) - 'a' + 10;
   };
-  for (; i < raw_uri.size(); i++) {
-    if (i + 3 <= raw_uri.size() && raw_uri[i] == '%') {
-      ret.push_back(from_hex(raw_uri[i + 1]) * 16 + from_hex(raw_uri[i + 2]));
+  for (; i < raw_uri_.size(); i++) {
+    if (i + 3 <= raw_uri_.size() && raw_uri_[i] == '%') {
+      ret.push_back(from_hex(raw_uri_[i + 1]) * 16 + from_hex(raw_uri_[i + 2]));
       i += 2;
     } else
-      ret.push_back(raw_uri[i] == '\\' ? '/' : raw_uri[i]);
+      ret.push_back(raw_uri_[i] == '\\' ? '/' : raw_uri_[i]);
   }
   return ret;
+}
+
+AbsolutePath lsDocumentUri::GetAbsolutePath() const {
+  return *NormalizePath(GetRawPath(), false /*ensure_exists*/);
+}
+
+void Reflect(Writer& visitor, lsDocumentUri& value) {
+  Reflect(visitor, value.raw_uri_);
+}
+void Reflect(Reader& visitor, lsDocumentUri& value) {
+  Reflect(visitor, value.raw_uri_);
+  // Only record the path when we deserialize a URI, since it most likely came
+  // from the client.
+  UriCache::instance()->RecordPath(value.GetRawPath());
 }
 
 lsPosition::lsPosition() {}
@@ -310,8 +360,8 @@ bool lsLocation::operator==(const lsLocation& o) const {
 }
 
 bool lsLocation::operator<(const lsLocation& o) const {
-  return std::make_tuple(uri.raw_uri, range) <
-         std::make_tuple(o.uri.raw_uri, o.range);
+  return std::make_tuple(uri.raw_uri_, range) <
+         std::make_tuple(o.uri.raw_uri_, o.range);
 }
 
 bool lsTextEdit::operator==(const lsTextEdit& that) {

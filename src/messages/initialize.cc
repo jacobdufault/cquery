@@ -501,9 +501,9 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
 
     if (request->params.rootUri) {
       std::string project_path =
-          NormalizePathOrAbort(request->params.rootUri->GetPath());
+          NormalizePathOrAbort(request->params.rootUri->GetRawPath());
       LOG_S(INFO) << "[querydb] Initialize in directory " << project_path
-                  << " with uri " << request->params.rootUri->raw_uri;
+                  << " with uri " << request->params.rootUri->raw_uri_;
 
       {
         if (request->params.initializationOptions)

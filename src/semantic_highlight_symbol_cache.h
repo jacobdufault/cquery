@@ -33,7 +33,7 @@ struct SemanticHighlightSymbolCache {
   };
 
   constexpr static int kCacheSize = 10;
-  LruCache<std::string, Entry> cache_;
+  LruCache<std::string, std::shared_ptr<Entry>> cache_;
   uint32_t next_stable_id_ = 0;
   std::unique_ptr<GroupMatch> match_;
 

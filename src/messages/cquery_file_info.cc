@@ -28,7 +28,8 @@ struct Handler_CqueryFileInfo : BaseMessageHandler<In_CqueryFileInfo> {
   void Run(In_CqueryFileInfo* request) override {
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file)) {
+                        request->params.textDocument.uri.GetAbsolutePath(),
+                        &file)) {
       return;
     }
 

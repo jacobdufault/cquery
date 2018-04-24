@@ -314,13 +314,13 @@ struct Handler_TextDocumentCodeAction
     QueryFileId file_id;
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
-                        request->params.textDocument.uri.GetPath(), &file,
-                        &file_id)) {
+                        request->params.textDocument.uri.GetAbsolutePath(),
+                        &file, &file_id)) {
       return;
     }
 
     WorkingFile* working_file = working_files->GetFileByFilename(
-        request->params.textDocument.uri.GetPath());
+        request->params.textDocument.uri.GetAbsolutePath());
     if (!working_file) {
       // TODO: send error response.
       LOG_S(WARNING)

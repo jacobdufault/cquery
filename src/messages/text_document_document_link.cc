@@ -47,15 +47,17 @@ struct Handler_TextDocumentDocumentLink
     if (g_config->showDocumentLinksOnIncludes) {
       QueryFile* file;
       if (!FindFileOrFail(db, project, request->id,
-                          request->params.textDocument.uri.GetPath(), &file)) {
+                          request->params.textDocument.uri.GetAbsolutePath(),
+                          &file)) {
         return;
       }
 
       WorkingFile* working_file = working_files->GetFileByFilename(
-          request->params.textDocument.uri.GetPath());
+          request->params.textDocument.uri.GetAbsolutePath());
       if (!working_file) {
-        LOG_S(WARNING) << "Unable to find working file "
-                       << request->params.textDocument.uri.GetPath();
+        LOG_S(WARNING)
+            << "Unable to find working file "
+            << request->params.textDocument.uri.GetAbsolutePath().path;
         return;
       }
       for (const IndexInclude& include : file->def->includes) {

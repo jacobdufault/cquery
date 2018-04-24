@@ -42,7 +42,7 @@ struct Handler_TextDocumentRangeFormatting
     response.id = request->id;
 
     WorkingFile* working_file = working_files->GetFileByFilename(
-        request->params.textDocument.uri.GetPath());
+        request->params.textDocument.uri.GetAbsolutePath());
 
     int start_offset = GetOffsetForPosition(request->params.range.start,
                                             working_file->buffer_content);

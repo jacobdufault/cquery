@@ -89,8 +89,8 @@ struct Handler_TextDocumentSignatureHelp : MessageHandler {
   void Run(std::unique_ptr<InMessage> message) override {
     auto request = static_cast<In_TextDocumentSignatureHelp*>(message.get());
     lsTextDocumentPositionParams& params = request->params;
-    WorkingFile* file =
-        working_files->GetFileByFilename(params.textDocument.uri.GetPath());
+    WorkingFile* file = working_files->GetFileByFilename(
+        params.textDocument.uri.GetAbsolutePath());
     std::string search;
     int active_param = 0;
     if (file) {
@@ -148,7 +148,7 @@ struct Handler_TextDocumentSignatureHelp : MessageHandler {
           if (!is_cached_result) {
             signature_cache->WithLock([&]() {
               signature_cache->cached_path_ =
-                  msg->params.textDocument.uri.GetPath();
+                  msg->params.textDocument.uri.GetAbsolutePath();
               signature_cache->cached_completion_position_ =
                   msg->params.position;
               signature_cache->cached_results_ = results;
