@@ -1,5 +1,6 @@
 #include "method.h"
 
+#include <iostream>
 #include <doctest/doctest.h>
 #include "serializers/json.h"
 
