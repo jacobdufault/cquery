@@ -119,8 +119,9 @@ const std::vector<std::string>& GetSystemIncludes(
 
   // Capture these flags in |extra_flags|, since they may change system include
   // directories.
-  static std::vector<std::string> kFlagsToPass = {"--gcc-toolchain",
-                                                  "--sysroot"};
+  static std::vector<std::string> kFlagsToPass = {
+      "--gcc-toolchain", "--sysroot",     "-nostdinc",
+      "-nostdinc++",     "-nobuiltininc", "-stdlib=libstdc++"};
   std::vector<std::string> extra_flags;
   bool capture_next = false;
   for (const std::string& flag : flags) {
