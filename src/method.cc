@@ -67,6 +67,8 @@ TEST_SUITE("lsRequestId") {
     rapidjson::Writer<rapidjson::StringBuffer> writer(output);
     JsonWriter json_writer(&writer);
 
+    json_writer.StartArray(0);
+
     lsRequestId id;
     id.value = 3;
 
@@ -79,6 +81,8 @@ TEST_SUITE("lsRequestId") {
     id.type = lsRequestId::kString;
     Reflect(json_writer, id);
 
-    REQUIRE(std::string(output.GetString()) == "null3\"3\"");
+    json_writer.EndArray();
+
+    REQUIRE(std::string(output.GetString()) == "[null,3,\"3\"]");
   }
 }
