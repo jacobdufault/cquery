@@ -58,6 +58,17 @@ struct Config {
   // Example value: "/path/to/lib/clang/5.0.1/"
   std::string resourceDirectory;
 
+  // Should system include directories be discovered/extracted by running
+  // |clang++ -E -xc++ - -v|?
+  //
+  // System includes are necessary to resolve system/stl headers like <vector>.
+  //
+  // cquery will try a number of different compilers for system include
+  // extraction. If there is a compiler mentioned in your project, that will be
+  // used. Otherwise, cquery will use cquery-clang, and then the system-wide
+  // clang++ or g++ will be used.
+  bool discoverSystemIncludes = true;
+
   // Additional arguments to pass to clang.
   std::vector<std::string> extraClangArguments;
 
@@ -264,6 +275,7 @@ MAKE_REFLECT_STRUCT(Config,
                     cacheFormat,
                     resourceDirectory,
 
+                    discoverSystemIncludes,
                     extraClangArguments,
 
                     progressReportFrequencyMs,

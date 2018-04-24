@@ -94,7 +94,7 @@ const std::vector<std::string>& GetSystemIncludes(
     return it->second;
 
   if (g_disable_normalize_path_for_test ||
-      !g_config->extraClangArguments.empty()) {
+      !g_config->discoverSystemIncludes) {
     project_config->discovered_system_includes[language] = {};
     return project_config->discovered_system_includes[language];
   }
@@ -152,8 +152,8 @@ const std::vector<std::string>& GetSystemIncludes(
               << StringJoin(
                      project_config->discovered_system_includes[language],
                      "\n  ");
-  LOG_S(INFO) << "To disable this pass flags in extraClangArguments "
-                 "initialization options";
+  LOG_S(INFO) << "To disable this set the discoverSystemIncludes config "
+              << "option to false.";
 
   return project_config->discovered_system_includes[language];
 }
