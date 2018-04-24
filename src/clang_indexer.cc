@@ -843,7 +843,10 @@ void OnIndexDiagnostic(CXClientData client_data,
     // Build diagnostic.
     optional<lsDiagnostic> ls_diagnostic =
         BuildAndDisposeDiagnostic(diagnostic, db->path);
-    if (ls_diagnostic)
+    // Check to see if we have already reported this diagnostic, as sometimes
+    // libclang will report the same diagnostic twice. See
+    // https://github.com/cquery-project/cquery/issues/594 for a repro.
+    if (ls_diagnostic && !ContainsValue(db->diagnostics_, *ls_diagnostic))
       db->diagnostics_.push_back(*ls_diagnostic);
   }
 }

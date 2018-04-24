@@ -75,7 +75,8 @@ std::string StringJoin(const TValues& values, const std::string& sep = ", ") {
 
 template <typename TCollection, typename TValue>
 bool ContainsValue(const TCollection& collection, const TValue& value) {
-  return collection.find(value) != collection.end();
+  return std::find(std::begin(collection), std::end(collection), value) !=
+         std::end(collection);
 }
 
 // Finds all files in the given folder. This is recursive.

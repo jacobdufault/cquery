@@ -268,6 +268,7 @@ target_sources(cquery PRIVATE
                src/method.cc
                src/lex_utils.cc
                src/lsp.cc
+               src/lsp_diagnostic.cc
                src/match.cc
                src/message_handler.cc
                src/options.cc

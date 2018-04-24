@@ -34,6 +34,9 @@ struct lsDiagnostic {
 
   // Non-serialized set of fixits.
   std::vector<lsTextEdit> fixits_;
+
+  bool operator==(const lsDiagnostic& rhs) const;
+  bool operator!=(const lsDiagnostic& rhs) const;
 };
 MAKE_REFLECT_STRUCT(lsDiagnostic, range, severity, source, message);
 
