@@ -74,7 +74,10 @@ MAKE_REFLECT_STRUCT(Out_CqueryCallHierarchy::Entry,
                     callType,
                     numChildren,
                     children);
-MAKE_REFLECT_STRUCT(Out_CqueryCallHierarchy, jsonrpc, id, result);
+MAKE_REFLECT_STRUCT_OPTIONALS_MANDATORY(Out_CqueryCallHierarchy,
+                                        jsonrpc,
+                                        id,
+                                        result);
 
 bool Expand(MessageHandler* m,
             Out_CqueryCallHierarchy::Entry* entry,
