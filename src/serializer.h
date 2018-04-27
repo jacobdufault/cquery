@@ -72,10 +72,14 @@ class Writer {
 
 struct IndexFile;
 
+struct optionals_mandatory_tag {};
+
 #define REFLECT_MEMBER_START() ReflectMemberStart(visitor, value)
 #define REFLECT_MEMBER_END() ReflectMemberEnd(visitor, value);
 #define REFLECT_MEMBER_END1(value) ReflectMemberEnd(visitor, value);
 #define REFLECT_MEMBER(name) ReflectMember(visitor, #name, value.name)
+#define REFLECT_MEMBER_OPTIONALS(name) \
+  ReflectMember(visitor, #name, value.name, optionals_mandatory_tag{})
 #define REFLECT_MEMBER2(name, value) ReflectMember(visitor, name, value)
 
 #define MAKE_REFLECT_TYPE_PROXY(type_name) \
@@ -92,6 +96,7 @@ struct IndexFile;
   }
 
 #define _MAPPABLE_REFLECT_MEMBER(name) REFLECT_MEMBER(name);
+#define _MAPPABLE_REFLECT_MEMBER_OPTIONALS(name) REFLECT_MEMBER_OPTIONALS(name);
 
 #define MAKE_REFLECT_EMPTY_STRUCT(type, ...)     \
   template <typename TVisitor>                   \
@@ -106,6 +111,14 @@ struct IndexFile;
     REFLECT_MEMBER_START();                          \
     MACRO_MAP(_MAPPABLE_REFLECT_MEMBER, __VA_ARGS__) \
     REFLECT_MEMBER_END();                            \
+  }
+
+#define MAKE_REFLECT_STRUCT_OPTIONALS_MANDATORY(type, ...)     \
+  template <typename TVisitor>                                 \
+  void Reflect(TVisitor& visitor, type& value) {               \
+    REFLECT_MEMBER_START();                                    \
+    MACRO_MAP(_MAPPABLE_REFLECT_MEMBER_OPTIONALS, __VA_ARGS__) \
+    REFLECT_MEMBER_END();                                      \
   }
 
 // clang-format off
@@ -232,6 +245,15 @@ void ReflectMember(Writer& visitor, const char* name, Maybe<T>& value) {
     visitor.Key(name);
     Reflect(visitor, value);
   }
+}
+
+template <typename T>
+void ReflectMember(Writer& visitor,
+                   const char* name,
+                   T& value,
+                   optionals_mandatory_tag) {
+  visitor.Key(name);
+  Reflect(visitor, value);
 }
 
 // std::vector

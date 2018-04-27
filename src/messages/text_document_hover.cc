@@ -63,20 +63,10 @@ struct Out_TextDocumentHover : public lsOutMessage<Out_TextDocumentHover> {
   optional<Result> result;
 };
 MAKE_REFLECT_STRUCT(Out_TextDocumentHover::Result, contents, range);
-void Reflect(Writer& visitor, Out_TextDocumentHover& value) {
-  REFLECT_MEMBER_START();
-  REFLECT_MEMBER(jsonrpc);
-  REFLECT_MEMBER(id);
-  if (value.result)
-    REFLECT_MEMBER(result);
-  else {
-    // Empty optional<> is elided by the default serializer, we need to write
-    // |null| to be compliant with the LSP.
-    visitor.Key("result");
-    visitor.Null();
-  }
-  REFLECT_MEMBER_END();
-}
+MAKE_REFLECT_STRUCT_OPTIONALS_MANDATORY(Out_TextDocumentHover,
+                                        jsonrpc,
+                                        id,
+                                        result);
 
 struct Handler_TextDocumentHover : BaseMessageHandler<In_TextDocumentHover> {
   MethodType GetMethodType() const override { return kMethodType; }
