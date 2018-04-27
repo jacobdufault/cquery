@@ -54,7 +54,10 @@ MAKE_REFLECT_STRUCT(Out_CqueryMemberHierarchy::Entry,
                     location,
                     numChildren,
                     children);
-MAKE_REFLECT_STRUCT(Out_CqueryMemberHierarchy, jsonrpc, id, result);
+MAKE_REFLECT_STRUCT_OPTIONALS_MANDATORY(Out_CqueryMemberHierarchy,
+                                        jsonrpc,
+                                        id,
+                                        result);
 
 bool Expand(MessageHandler* m,
             Out_CqueryMemberHierarchy::Entry* entry,

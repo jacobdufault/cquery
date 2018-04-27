@@ -58,7 +58,10 @@ MAKE_REFLECT_STRUCT(Out_CqueryInheritanceHierarchy::Entry,
                     location,
                     numChildren,
                     children);
-MAKE_REFLECT_STRUCT(Out_CqueryInheritanceHierarchy, jsonrpc, id, result);
+MAKE_REFLECT_STRUCT_OPTIONALS_MANDATORY(Out_CqueryInheritanceHierarchy,
+                                        jsonrpc,
+                                        id,
+                                        result);
 
 bool Expand(MessageHandler* m,
             Out_CqueryInheritanceHierarchy::Entry* entry,
