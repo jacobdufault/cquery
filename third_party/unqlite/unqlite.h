@@ -8,7 +8,7 @@
 /*
  * Symisc UnQLite: An Embeddable NoSQL (Post Modern) Database Engine.
  * Copyright (C) 2012-2018, Symisc Systems http://unqlite.org/
- * Version 1.1.8
+ * Version 1.1.9
  * For information on licensing, redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES
  * please contact Symisc Systems via:
  *       legal@symisc.net
@@ -42,7 +42,7 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- /* $SymiscID: unqlite.h v1.2 Win10 2108-01-21 23:59:12 stable <chm@symisc.net>  $ */
+ /* $SymiscID: unqlite.h v1.3 Win10 2108-04-27 02:35:11 stable <chm@symisc.net>  $ */
 #include <stdarg.h> /* needed for the definition of va_list */
 /*
  * Compile time engine version, signature, identification in the symisc source tree
@@ -58,13 +58,13 @@
  * version number and Y is the minor version number and Z is the release
  * number.
  */
-#define UNQLITE_VERSION "1.1.8"
+#define UNQLITE_VERSION "1.1.9"
 /*
  * The UNQLITE_VERSION_NUMBER C preprocessor macro resolves to an integer
  * with the value (X*1000000 + Y*1000 + Z) where X, Y, and Z are the same
  * numbers used in [UNQLITE_VERSION].
  */
-#define UNQLITE_VERSION_NUMBER 1001008
+#define UNQLITE_VERSION_NUMBER 1001009
 /*
  * The UNQLITE_SIG C preprocessor macro evaluates to a string
  * literal which is the public signature of the unqlite engine.
@@ -72,7 +72,7 @@
  * generated Server MIME header as follows:
  *   Server: YourWebServer/x.x unqlite/x.x.x \r\n
  */
-#define UNQLITE_SIG "unqlite/1.1.8"
+#define UNQLITE_SIG "unqlite/1.1.9"
 /*
  * UnQLite identification in the Symisc source tree:
  * Each particular check-in of a particular software released

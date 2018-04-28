@@ -1,7 +1,7 @@
 /*
  * Symisc UnQLite: An Embeddable NoSQL (Post Modern) Database Engine.
  * Copyright (C) 2012-2018, Symisc Systems http://unqlite.org/
- * Version 1.1.8
+ * Version 1.1.9
  * For information on licensing, redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES
  * please contact Symisc Systems via:
  *       legal@symisc.net
@@ -35,10 +35,8 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*
- * $SymiscID: unqlite.c v1.1.8 Win10 2108-01-21 00:02:12 stable <chm@symisc.net> $ 
- */
-/* This file is an amalgamation of many separate C source files from unqlite version 1.1.6
+ /* $SymiscID: unqlite.c v1.1.9 Win10 2108-04-27 02:35:11 stable <chm@symisc.net>  $ */
+/* This file is an amalgamation of many separate C source files from unqlite version 1.1.9
  * By combining all the individual C code files into this single large file, the entire code
  * can be compiled as a single translation unit. This allows many compilers to do optimization's
  * that would not be possible if the files were compiled separately. Performance improvements
@@ -75,7 +73,7 @@
 /*
  * Symisc UnQLite: An Embeddable NoSQL (Post Modern) Database Engine.
  * Copyright (C) 2012-2018, Symisc Systems http://unqlite.org/
- * Version 1.1.8
+ * Version 1.1.9
  * For information on licensing, redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES
  * please contact Symisc Systems via:
  *       legal@symisc.net
@@ -109,7 +107,7 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- /* $SymiscID: unqlite.h v1.2 Win10 2108-01-21 23:59:12 stable <chm@symisc.net>  $ */
+ /* $SymiscID: unqlite.h v1.3 Win10 2108-04-27 02:35:11 stable <chm@symisc.net>  $ */
 #include <stdarg.h> /* needed for the definition of va_list */
 /*
  * Compile time engine version, signature, identification in the symisc source tree
@@ -125,13 +123,13 @@
  * version number and Y is the minor version number and Z is the release
  * number.
  */
-#define UNQLITE_VERSION "1.1.8"
+#define UNQLITE_VERSION "1.1.9"
 /*
  * The UNQLITE_VERSION_NUMBER C preprocessor macro resolves to an integer
  * with the value (X*1000000 + Y*1000 + Z) where X, Y, and Z are the same
  * numbers used in [UNQLITE_VERSION].
  */
-#define UNQLITE_VERSION_NUMBER 1001008
+#define UNQLITE_VERSION_NUMBER 1001009
 /*
  * The UNQLITE_SIG C preprocessor macro evaluates to a string
  * literal which is the public signature of the unqlite engine.
@@ -139,7 +137,7 @@
  * generated Server MIME header as follows:
  *   Server: YourWebServer/x.x unqlite/x.x.x \r\n
  */
-#define UNQLITE_SIG "unqlite/1.1.8"
+#define UNQLITE_SIG "unqlite/1.1.9"
 /*
  * UnQLite identification in the Symisc source tree:
  * Each particular check-in of a particular software released
@@ -51094,7 +51092,7 @@ static int lh_record_insert(
 	int iCnt;
 	int rc;
 
-	/* Acquire the first page (DB hash Header) so that everything gets loaded autmatically */
+	/* Acquire the first page (DB hash Header) so that everything gets loaded automatically */
 	rc = pEngine->pIo->xGet(pEngine->pIo->pHandle,1,0);
 	if( rc != UNQLITE_OK ){
 		return rc;
@@ -51217,7 +51215,7 @@ static int lhash_write_header(lhash_kv_engine *pEngine,unqlite_page *pHeader)
 	/* Maximum split bucket */
 	SyBigEndianPack64(zRaw,pEngine->max_split_bucket);
 	zRaw += 8;
-	/* Initialiaze the bucket map */
+	/* Initialize the bucket map */
 	pMap = &pEngine->sPageMap;
 	/* Fill in the structure */
 	pMap->iNum = pHeader->pgno;
@@ -51327,10 +51325,6 @@ static int lhash_kv_init(unqlite_kv_engine *pEngine,int iPageSize)
 
 	/* This structure is always zeroed, go to the initialization directly */
 	SyMemBackendInitFromParent(&pHash->sAllocator,unqliteExportMemBackend());
-//#if defined(UNQLITE_ENABLE_THREADS)
-//	/* Already protected by the upper layers */
-//	SyMemBackendDisbaleMutexing(&pHash->sAllocator);
-//#endif
 	pHash->iPageSize = iPageSize;
 	/* Default hash function */
 	pHash->xHash = lhash_bin_hash;
@@ -57196,6 +57190,7 @@ static int pager_commit_phase1(Pager *pPager)
 				break;
 			}
 			pager_unlink_page(pPager, p);
+			pager_release_page(pPager, p);
 		}
 	}
 	/* If the file on disk is not the same size as the database image,
@@ -60205,7 +60200,7 @@ UNQLITE_PRIVATE int unqliteRegisterJx9Functions(unqlite_vm *pVm)
 /*
  * Symisc unQLite: An Embeddable NoSQL (Post Modern) Database Engine.
  * Copyright (C) 2012-2018, Symisc Systems http://unqlite.org/
- * Version 1.1.8
+ * Version 1.1.9
  * For information on licensing, redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES
  * please contact Symisc Systems via:
  *       legal@symisc.net
