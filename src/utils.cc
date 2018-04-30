@@ -212,7 +212,7 @@ static void GetFilesInFolderHelper(
       if (tinydir_readfile(&dir, &file) == -1) {
         LOG_S(WARNING) << "Unable to read file " << file.name
                        << " when reading directory " << folder;
-        goto bail;
+        goto bailfile;
       }
 
       // Skip all dot files except .cquery.
@@ -233,7 +233,7 @@ static void GetFilesInFolderHelper(
           handler(q.front().second + file.name);
         }
       }
-
+    bailfile:
       if (tinydir_next(&dir) == -1) {
         LOG_S(WARNING) << "Unable to fetch next file when reading directory "
                        << folder;
