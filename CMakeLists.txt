@@ -260,6 +260,7 @@ target_sources(cquery PRIVATE
                src/clang_utils.cc
                src/code_complete_cache.cc
                src/command_line.cc
+               src/compiler.cc
                src/diagnostics_engine.cc
                src/file_consumer.cc
                src/file_contents.cc
