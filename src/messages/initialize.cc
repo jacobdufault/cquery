@@ -536,12 +536,12 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
         }
       }
 
-      // Client capabilities
-      if (request->params.capabilities.textDocument) {
-        const auto& cap = *request->params.capabilities.textDocument;
-        if (cap.completion && cap.completion->completionItem)
-          g_config->client.snippetSupport =
-              cap.completion->completionItem->snippetSupport.value_or(false);
+      // Should snippets be enabled?
+      if (!request->params.capabilities.textDocument ||
+          !request->params.capabilities.textDocument->completion ||
+          !request->params.capabilities.textDocument->completion->completionItem ||
+          !request->params.capabilities.textDocument->completion->completionItem->snippetSupport) {
+        g_config->completion.enableSnippets = false;
       }
 
       // Check client version.

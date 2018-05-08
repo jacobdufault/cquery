@@ -569,10 +569,10 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
 
         // label/filterText/insertText
         BuildCompletionItemTexts(ls_result, result.CompletionString,
-                                 g_config->client.snippetSupport);
+                                 g_config->completion.enableSnippets);
 
         for (auto i = first_idx; i < ls_result.size(); ++i) {
-          if (g_config->client.snippetSupport &&
+          if (g_config->completion.enableSnippets &&
               ls_result[i].insertTextFormat == lsInsertTextFormat::Snippet) {
             ls_result[i].insertText += "$0";
           }
@@ -589,9 +589,9 @@ void CompletionQueryMain(ClangCompleteManager* completion_manager) {
                           ls_completion_item.insertText, do_insert,
                           ls_completion_item.insertTextFormat,
                           &ls_completion_item.parameters_,
-                          g_config->client.snippetSupport, angle_stack);
+                          g_config->completion.enableSnippets, angle_stack);
         assert(angle_stack == 0);
-        if (g_config->client.snippetSupport &&
+        if (g_config->completion.enableSnippets &&
             ls_completion_item.insertTextFormat ==
                 lsInsertTextFormat::Snippet) {
           ls_completion_item.insertText += "$0";
