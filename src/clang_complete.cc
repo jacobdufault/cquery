@@ -268,9 +268,9 @@ void BuildDetailString(CXCompletionString completion_string,
                        bool include_snippets,
                        int& angle_stack) {
   int num_chunks = clang_getNumCompletionChunks(completion_string);
-  auto append = [&](const char* text) {
+  auto append_possible_snippet = [&](const char* text) {
     detail += text;
-    if (do_insert)
+    if (do_insert && include_snippets)
       insert += text;
   };
   for (int i = 0; i < num_chunks; ++i) {
@@ -341,46 +341,46 @@ void BuildDetailString(CXCompletionString completion_string,
       }
 
       case CXCompletionChunk_LeftParen:
-        append("(");
+        append_possible_snippet("(");
         break;
       case CXCompletionChunk_RightParen:
-        append(")");
+        append_possible_snippet(")");
         break;
       case CXCompletionChunk_LeftBracket:
-        append("[");
+        append_possible_snippet("[");
         break;
       case CXCompletionChunk_RightBracket:
-        append("]");
+        append_possible_snippet("]");
         break;
       case CXCompletionChunk_LeftBrace:
-        append("{");
+        append_possible_snippet("{");
         break;
       case CXCompletionChunk_RightBrace:
-        append("}");
+        append_possible_snippet("}");
         break;
       case CXCompletionChunk_LeftAngle:
         ++angle_stack;
-        append("<");
+        append_possible_snippet("<");
         break;
       case CXCompletionChunk_RightAngle:
         --angle_stack;
-        append(">");
+        append_possible_snippet(">");
         break;
       case CXCompletionChunk_Comma:
-        append(", ");
+        append_possible_snippet(", ");
         break;
       case CXCompletionChunk_Colon:
-        append(":");
+        append_possible_snippet(":");
         break;
       case CXCompletionChunk_SemiColon:
-        append(";");
+        append_possible_snippet(";");
         break;
       case CXCompletionChunk_Equal:
-        append("=");
+        append_possible_snippet("=");
         break;
       case CXCompletionChunk_HorizontalSpace:
       case CXCompletionChunk_VerticalSpace:
-        append(" ");
+        append_possible_snippet(" ");
         break;
     }
   }
