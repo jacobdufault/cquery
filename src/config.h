@@ -247,6 +247,7 @@ MAKE_REFLECT_STRUCT(Config::CodeLens, localVariables);
 MAKE_REFLECT_STRUCT(Config::Completion,
                     enableSnippets,
                     detailedLabel,
+                    dropOldRequests,
                     filterAndSort,
                     includeMaxPathSize,
                     includeSuffixWhitelist,
