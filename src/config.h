@@ -97,12 +97,6 @@ struct Config {
   // inform users their vscode client is too old and needs to be updated.
   optional<int> clientVersion;
 
-  struct ClientCapability {
-    // TextDocumentClientCapabilities.completion.completionItem.snippetSupport
-    bool snippetSupport = false;
-  };
-  ClientCapability client;
-
   struct CodeLens {
     // Enables code lens on parameter and function variables.
     bool localVariables = true;
@@ -110,6 +104,10 @@ struct Config {
   CodeLens codeLens;
 
   struct Completion {
+    // If this is true and the client reports it can support snippets,
+    // completion will include snippets. Set to false to disable snippets.
+    bool enableSnippets = true;
+
     // Some completion UI, such as Emacs' completion-at-point and company-lsp,
     // display completion item label and detail side by side.
     // This does not look right, when you see things like:
@@ -248,9 +246,9 @@ struct Config {
   };
   Xref xref;
 };
-MAKE_REFLECT_STRUCT(Config::ClientCapability, snippetSupport);
 MAKE_REFLECT_STRUCT(Config::CodeLens, localVariables);
 MAKE_REFLECT_STRUCT(Config::Completion,
+                    enableSnippets,
                     detailedLabel,
                     filterAndSort,
                     includeMaxPathSize,
@@ -290,7 +288,6 @@ MAKE_REFLECT_STRUCT(Config,
 
                     clientVersion,
 
-                    client,
                     codeLens,
                     completion,
                     diagnostics,
