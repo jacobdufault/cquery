@@ -170,6 +170,8 @@ struct Config {
 
     // If true, diagnostics from a full document parse will be reported.
     bool onParse = true;
+    // If true, diagnostics from typing will be reported.
+    bool onType = true;
   };
   Diagnostics diagnostics;
 
@@ -254,7 +256,8 @@ MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     blacklist,
                     whitelist,
                     frequencyMs,
-                    onParse)
+                    onParse,
+                    onType)
 MAKE_REFLECT_STRUCT(Config::Highlight, blacklist, whitelist)
 MAKE_REFLECT_STRUCT(Config::Index,
                     attributeMakeCallsToCtor,

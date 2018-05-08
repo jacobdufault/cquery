@@ -619,7 +619,7 @@ void DiagnosticsQueryMain(ClangCompleteManager* completion_manager) {
     // Fetching the completion request blocks until we have a request.
     std::unique_ptr<ClangCompleteManager::DiagnosticRequest> request =
         completion_manager->diagnostics_request_.Dequeue();
-    if (!request)
+    if (!request || !g_config->diagnostics.onType)
       continue;
 
     std::string path = request->path;
