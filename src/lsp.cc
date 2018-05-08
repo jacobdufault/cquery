@@ -33,6 +33,14 @@ struct UriCache {
     if (cache.TryGet(path, &resolved))
       return resolved;
     LOG_S(INFO) << "No cached URI for " << path;
+
+    // If we do not have the value in the cache, try to renormalize it.
+    // Otherwise we will return paths with all lower-case letters which may
+    // break vscode.
+    optional<AbsolutePath> normalized = NormalizePath(path.path);
+    if (normalized)
+      return normalized->path;
+
     return path;
   }
 
