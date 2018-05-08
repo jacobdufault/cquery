@@ -70,7 +70,7 @@ optional<AbsolutePath> RealPathNotExpandSymlink(std::string path,
     resolved = "/";
     i = 1;
   } else {
-    if (ensure_exists && !getcwd(tmp, sizeof tmp))
+    if (!getcwd(tmp, sizeof tmp) && ensure_exists)
       return nullopt;
     resolved = tmp;
   }
@@ -96,9 +96,9 @@ optional<AbsolutePath> RealPathNotExpandSymlink(std::string path,
     // Here we differ from realpath(3), we use stat(2) instead of
     // lstat(2) because we do not want to resolve symlinks.
     resolved += next_token;
-    if (ensure_exists && stat(resolved.c_str(), &sb) != 0)
+    if (stat(resolved.c_str(), &sb) != 0 && ensure_exists)
       return nullopt;
-    if (ensure_exists && !S_ISDIR(sb.st_mode) && j < path.size()) {
+    if (!S_ISDIR(sb.st_mode) && j < path.size() && ensure_exists) {
       errno = ENOTDIR;
       return nullopt;
     }
