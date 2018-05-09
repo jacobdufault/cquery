@@ -306,7 +306,6 @@ target_sources(cquery PRIVATE
                src/messages/cquery_index_file.cc
                src/messages/cquery_inheritance_hierarchy.cc
                src/messages/cquery_member_hierarchy.cc
-               src/messages/cquery_random.cc
                src/messages/cquery_vars.cc
                src/messages/cquery_wait.cc
                src/messages/exit.cc
