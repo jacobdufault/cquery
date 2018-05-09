@@ -325,6 +325,7 @@ target_sources(cquery PRIVATE
                src/messages/text_document_document_symbol.cc
                src/messages/text_document_formatting.cc
                src/messages/text_document_hover.cc
+               src/messages/text_document_implementation.cc
                src/messages/text_document_range_formatting.cc
                src/messages/text_document_references.cc
                src/messages/text_document_rename.cc
