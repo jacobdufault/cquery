@@ -145,6 +145,8 @@ struct lsServerCapabilities {
   bool definitionProvider = true;
   // The server provides Goto Type Definition support.
   bool typeDefinitionProvider = true;
+  // The server provides implementation support.
+  bool implementationProvider = true;
   // The server provides find references support.
   bool referencesProvider = true;
   // The server provides document highlight support.
@@ -177,6 +179,7 @@ MAKE_REFLECT_STRUCT(lsServerCapabilities,
                     signatureHelpProvider,
                     definitionProvider,
                     typeDefinitionProvider,
+                    implementationProvider,
                     referencesProvider,
                     documentHighlightProvider,
                     documentSymbolProvider,
@@ -287,6 +290,9 @@ struct lsTextDocumentClientCapabilities {
   // Capabilities specific to the `textDocument/signatureHelp`
   optional<lsGenericDynamicReg> signatureHelp;
 
+  // Capabilities specific to the `textDocument/implementation`
+  optional<lsGenericDynamicReg> implementation;
+
   // Capabilities specific to the `textDocument/references`
   optional<lsGenericDynamicReg> references;
 
@@ -348,6 +354,7 @@ MAKE_REFLECT_STRUCT(lsTextDocumentClientCapabilities,
                     completion,
                     hover,
                     signatureHelp,
+                    implementation,
                     references,
                     documentHighlight,
                     documentSymbol,

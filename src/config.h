@@ -244,7 +244,7 @@ struct Config {
     // If true, |Location[]| response will include lexical container.
     bool container = false;
     // Maximum number of definition/reference/... results.
-    int maxNum = 2000;
+    unsigned int maxNum = 2000;
   };
   Xref xref;
 };
