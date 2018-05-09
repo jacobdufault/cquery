@@ -32,14 +32,12 @@ struct Handler_CqueryDerived : BaseMessageHandler<In_CqueryDerived> {
       if (sym.kind == SymbolKind::Type) {
         QueryType& type = db->GetType(sym);
         out.result = GetLsLocations(
-            db, working_files, GetDeclarations(db, type.derived),
-            g_config->xref.maxNum);
+            db, working_files, GetDeclarations(db, type.derived));
         break;
       } else if (sym.kind == SymbolKind::Func) {
         QueryFunc& func = db->GetFunc(sym);
         out.result = GetLsLocations(
-            db, working_files, GetDeclarations(db, func.derived),
-            g_config->xref.maxNum);
+            db, working_files, GetDeclarations(db, func.derived));
         break;
       }
     }

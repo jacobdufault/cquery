@@ -53,10 +53,6 @@ std::string Trim(std::string s) {
   TrimInPlace(s);
   return s;
 }
-void RemoveLastCR(std::string& s) {
-  if (!s.empty() && *s.rbegin() == '\r')
-    s.pop_back();
-}
 
 uint64_t HashUsr(const std::string& s) {
   return HashUsr(s.c_str(), s.size());
@@ -342,16 +338,22 @@ std::vector<std::string> ReadLinesWithEnding(std::string filename) {
 
 std::vector<std::string> ToLines(const std::string& content,
                                  bool trim_whitespace) {
+  auto remove_last_cr = [](std::string& s) {
+    if (!s.empty() && *s.rbegin() == '\r')
+      s.pop_back();
+  };
+
   std::vector<std::string> result;
 
   std::istringstream lines(content);
 
   std::string line;
   while (getline(lines, line)) {
-    if (trim_whitespace)
+    if (trim_whitespace) {
       TrimInPlace(line);
-    else
-      RemoveLastCR(line);
+    } else {
+      remove_last_cr(line);
+    }
     result.push_back(line);
   }
 

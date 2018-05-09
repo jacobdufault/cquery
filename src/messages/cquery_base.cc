@@ -35,15 +35,13 @@ struct Handler_CqueryBase : BaseMessageHandler<In_CqueryBase> {
       if (sym.kind == SymbolKind::Type) {
         if (const auto* def = db->GetType(sym).AnyDef()) {
           out.result = GetLsLocations(
-              db, working_files, GetDeclarations(db, def->bases),
-              g_config->xref.maxNum);
+              db, working_files, GetDeclarations(db, def->bases));
         }
         break;
       } else if (sym.kind == SymbolKind::Func) {
         if (const auto* def = db->GetFunc(sym).AnyDef()) {
           out.result = GetLsLocations(
-              db, working_files, GetDeclarations(db, def->bases),
-              g_config->xref.maxNum);
+              db, working_files, GetDeclarations(db, def->bases));
         }
         break;
       }

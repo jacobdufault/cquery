@@ -98,8 +98,7 @@ struct Handler_TextDocumentDefinition
         if (uses.empty() && on_def)
           uses.push_back(*on_def);
       }
-      AddRange(&out.result, GetLsLocations(db, working_files, uses,
-                                           g_config->xref.maxNum));
+      AddRange(&out.result, GetLsLocations(db, working_files, uses));
       if (!out.result.empty())
         break;
     }
