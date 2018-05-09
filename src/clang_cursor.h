@@ -65,6 +65,7 @@ class ClangCursor {
   std::string get_display_name() const;
   std::string get_usr() const;
   Usr get_usr_hash() const;
+  optional<Usr> get_opt_usr_hash() const;
 
   bool is_definition() const;
 
