@@ -45,8 +45,7 @@ struct Handler_CqueryVars : BaseMessageHandler<In_CqueryVars> {
         case SymbolKind::Type: {
           QueryType& type = db->types[id.id];
           out.result = GetLsLocations(
-              db, working_files, GetDeclarations(db, type.instances),
-              g_config->xref.maxNum);
+              db, working_files, GetDeclarations(db, type.instances));
           break;
         }
       }

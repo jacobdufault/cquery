@@ -232,8 +232,7 @@ optional<lsLocation> GetLsLocation(QueryDatabase* db,
 
 std::vector<lsLocation> GetLsLocations(QueryDatabase* db,
                                        WorkingFiles* working_files,
-                                       const std::vector<Use>& uses,
-                                       int limit) {
+                                       const std::vector<Use>& uses) {
   std::vector<lsLocation> result;
   for (Use use : uses) {
     if (optional<lsLocation> l = GetLsLocation(db, working_files, use))
@@ -242,8 +241,8 @@ std::vector<lsLocation> GetLsLocations(QueryDatabase* db,
 
   std::sort(result.begin(), result.end());
   result.erase(std::unique(result.begin(), result.end()), result.end());
-  if (result.size() > limit)
-    result.resize(limit);
+  if (result.size() > g_config->xref.maxNum)
+    result.resize(g_config->xref.maxNum);
   return result;
 }
 
