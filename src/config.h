@@ -93,10 +93,6 @@ struct Config {
   // If true, document links are reported for #include directives.
   bool showDocumentLinksOnIncludes = true;
 
-  // Version of the client. If undefined the version check is skipped. Used to
-  // inform users their vscode client is too old and needs to be updated.
-  optional<int> clientVersion;
-
   struct CodeLens {
     // Enables code lens on parameter and function variables.
     bool localVariables = true;
@@ -288,8 +284,6 @@ MAKE_REFLECT_STRUCT(Config,
 
                     showDocumentLinksOnIncludes,
 
-                    clientVersion,
-
                     codeLens,
                     completion,
                     diagnostics,
@@ -299,8 +293,5 @@ MAKE_REFLECT_STRUCT(Config,
                     xref,
 
                     enableIndexOnDidChange);
-
-// Expected client version. We show an error if this doesn't match.
-constexpr const int kExpectedClientVersion = 3;
 
 extern Config* g_config;
