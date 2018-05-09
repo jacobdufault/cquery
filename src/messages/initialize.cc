@@ -551,26 +551,6 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
         g_config->completion.enableSnippets = false;
       }
 
-      // Check client version.
-      if (g_config->clientVersion.has_value() &&
-          *g_config->clientVersion != kExpectedClientVersion) {
-        Out_ShowLogMessage out;
-        out.display_type = Out_ShowLogMessage::DisplayType::Show;
-        out.params.type = lsMessageType::Error;
-        out.params.message =
-            "cquery client (v" + std::to_string(*g_config->clientVersion) +
-            ") and server (v" + std::to_string(kExpectedClientVersion) +
-            ") version mismatch. Please update ";
-        if (g_config->clientVersion > kExpectedClientVersion)
-          out.params.message += "the cquery binary.";
-        else
-          out.params.message +=
-              "your extension client (VSIX file). Make sure to uninstall "
-              "the cquery extension and restart vscode before "
-              "reinstalling.";
-        out.Write(std::cout);
-      }
-
       // Ensure there is a resource directory.
       if (g_config->resourceDirectory.empty())
         g_config->resourceDirectory = GetDefaultResourceDirectory();
