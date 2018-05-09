@@ -12,13 +12,6 @@ struct In_TextDocumentTypeDefinition : public RequestInMessage {
 MAKE_REFLECT_STRUCT(In_TextDocumentTypeDefinition, id, params);
 REGISTER_IN_MESSAGE(In_TextDocumentTypeDefinition);
 
-struct Out_TextDocumentTypeDefinition
-    : public lsOutMessage<Out_TextDocumentTypeDefinition> {
-  lsRequestId id;
-  std::vector<lsLocationEx> result;
-};
-MAKE_REFLECT_STRUCT(Out_TextDocumentTypeDefinition, jsonrpc, id, result);
-
 struct Handler_TextDocumentTypeDefinition
     : BaseMessageHandler<In_TextDocumentTypeDefinition> {
   MethodType GetMethodType() const override { return kMethodType; }
@@ -32,7 +25,7 @@ struct Handler_TextDocumentTypeDefinition
     WorkingFile* working_file =
         working_files->GetFileByFilename(file->def->path);
 
-    Out_TextDocumentTypeDefinition out;
+    Out_LocationList out;
     out.id = request->id;
     for (SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
@@ -49,8 +42,7 @@ struct Handler_TextDocumentTypeDefinition
           QueryType& type = db->types[id.id];
           for (const auto& def : type.def)
             if (def.spell) {
-              if (auto ls_loc = GetLsLocationEx(db, working_files, *def.spell,
-                                                g_config->xref.container))
+              if (auto ls_loc = GetLsLocation(db, working_files, *def.spell))
                 out.result.push_back(*ls_loc);
             }
           break;

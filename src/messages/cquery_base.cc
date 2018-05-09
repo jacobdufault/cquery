@@ -33,16 +33,18 @@ struct Handler_CqueryBase : BaseMessageHandler<In_CqueryBase> {
     for (SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       if (sym.kind == SymbolKind::Type) {
-        if (const auto* def = db->GetType(sym).AnyDef())
-          out.result = GetLsLocationExs(
+        if (const auto* def = db->GetType(sym).AnyDef()) {
+          out.result = GetLsLocations(
               db, working_files, GetDeclarations(db, def->bases),
-              g_config->xref.container, g_config->xref.maxNum);
+              g_config->xref.maxNum);
+        }
         break;
       } else if (sym.kind == SymbolKind::Func) {
-        if (const auto* def = db->GetFunc(sym).AnyDef())
-          out.result = GetLsLocationExs(
+        if (const auto* def = db->GetFunc(sym).AnyDef()) {
+          out.result = GetLsLocations(
               db, working_files, GetDeclarations(db, def->bases),
-              g_config->xref.container, g_config->xref.maxNum);
+              g_config->xref.maxNum);
+        }
         break;
       }
     }

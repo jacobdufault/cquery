@@ -236,8 +236,6 @@ struct Config {
   bool enableIndexOnDidChange = false;
 
   struct Xref {
-    // If true, |Location[]| response will include lexical container.
-    bool container = false;
     // Maximum number of definition/reference/... results.
     unsigned int maxNum = 2000;
   };
@@ -269,7 +267,7 @@ MAKE_REFLECT_STRUCT(Config::Index,
                     logSkippedPaths,
                     threads);
 MAKE_REFLECT_STRUCT(Config::WorkspaceSymbol, maxNum, sort);
-MAKE_REFLECT_STRUCT(Config::Xref, container, maxNum);
+MAKE_REFLECT_STRUCT(Config::Xref, maxNum);
 MAKE_REFLECT_STRUCT(Config,
                     compilationDatabaseCommand,
                     compilationDatabaseDirectory,
