@@ -22,6 +22,8 @@
 #include <sparsepp/spp_memory.h>
 #endif
 
+#include "unqlite.h"
+
 // DEFAULT_RESOURCE_DIRECTORY is passed with quotes for non-MSVC compilers, ie,
 // foo vs "foo".
 #if defined(_MSC_VER)

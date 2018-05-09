@@ -578,12 +578,19 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       // Set project root.
       EnsureEndsInSlash(project_path);
       g_config->projectRoot = project_path;
-      // Create two cache directories for files inside and outside of the
-      // project.
-      MakeDirectoryRecursive(g_config->cacheDirectory +
-                             EscapeFileName(g_config->projectRoot));
-      MakeDirectoryRecursive(g_config->cacheDirectory + '@' +
-                             EscapeFileName(g_config->projectRoot));
+
+      // Initialize data store
+      if (g_config->cacheType == "files") {
+        g_config->cacheStore =
+            OpenOrConnectFileStore(NormalizedPath{g_config->projectRoot});
+      } else if (g_config->cacheType == "unqlite") {
+        g_config->cacheStore =
+            OpenOrConnectUnqliteStore(NormalizedPath{g_config->projectRoot});
+      } else {
+        LOG_S(INFO) << "Invalid cache type \"" << g_config->cacheType << "\".";
+      }
+
+      assert(g_config->cacheStore);
 
       Timer time;
       diag_engine->Init();
