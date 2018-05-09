@@ -33,13 +33,6 @@ MAKE_REFLECT_STRUCT(In_TextDocumentReferences::Params,
 MAKE_REFLECT_STRUCT(In_TextDocumentReferences, id, params);
 REGISTER_IN_MESSAGE(In_TextDocumentReferences);
 
-struct Out_TextDocumentReferences
-    : public lsOutMessage<Out_TextDocumentReferences> {
-  lsRequestId id;
-  std::vector<lsLocationEx> result;
-};
-MAKE_REFLECT_STRUCT(Out_TextDocumentReferences, jsonrpc, id, result);
-
 struct Handler_TextDocumentReferences
     : BaseMessageHandler<In_TextDocumentReferences> {
   MethodType GetMethodType() const override { return kMethodType; }
@@ -55,9 +48,8 @@ struct Handler_TextDocumentReferences
     WorkingFile* working_file =
         working_files->GetFileByFilename(file->def->path);
 
-    Out_TextDocumentReferences out;
+    Out_LocationList out;
     out.id = request->id;
-    bool container = g_config->xref.container;
 
     for (const SymbolRef& sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
@@ -66,10 +58,8 @@ struct Handler_TextDocumentReferences
           db, sym, request->params.context.includeDeclaration,
           [&](Use use, lsSymbolKind parent_kind) {
             if (use.role & request->params.context.role)
-              if (optional<lsLocationEx> ls_loc =
-                      GetLsLocationEx(db, working_files, use, container)) {
-                if (container)
-                  ls_loc->parentKind = parent_kind;
+              if (optional<lsLocation> ls_loc =
+                      GetLsLocation(db, working_files, use)) {
                 out.result.push_back(*ls_loc);
               }
           });
@@ -85,7 +75,7 @@ struct Handler_TextDocumentReferences
               for (const IndexInclude& include1 : file1.def->includes)
                 if (include1.resolved_path == include.resolved_path) {
                   // Another file |file1| has the same include line.
-                  lsLocationEx result;
+                  lsLocation result;
                   result.uri = lsDocumentUri::FromPath(file1.def->path);
                   result.range.start.line = result.range.end.line =
                       include1.line;

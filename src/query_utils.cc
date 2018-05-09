@@ -230,39 +230,21 @@ optional<lsLocation> GetLsLocation(QueryDatabase* db,
   return lsLocation(uri, *range);
 }
 
-optional<lsLocationEx> GetLsLocationEx(QueryDatabase* db,
+std::vector<lsLocation> GetLsLocations(QueryDatabase* db,
                                        WorkingFiles* working_files,
-                                       Use use,
-                                       bool container) {
-  optional<lsLocation> ls_loc = GetLsLocation(db, working_files, use);
-  if (!ls_loc)
-    return nullopt;
-  lsLocationEx ret;
-  ret.lsLocation::operator=(*ls_loc);
-  if (container) {
-    ret.role = uint16_t(use.role);
-    EachEntityDef(db, use, [&](const auto& def) {
-      ret.containerName = std::string_view(def.detailed_name);
-      return false;
-    });
+                                       const std::vector<Use>& uses,
+                                       int limit) {
+  std::vector<lsLocation> result;
+  for (Use use : uses) {
+    if (optional<lsLocation> l = GetLsLocation(db, working_files, use))
+      result.push_back(*l);
   }
-  return ret;
-}
 
-std::vector<lsLocationEx> GetLsLocationExs(QueryDatabase* db,
-                                           WorkingFiles* working_files,
-                                           const std::vector<Use>& uses,
-                                           bool container,
-                                           int limit) {
-  std::vector<lsLocationEx> ret;
-  for (Use use : uses)
-    if (auto loc = GetLsLocationEx(db, working_files, use, container))
-      ret.push_back(*loc);
-  std::sort(ret.begin(), ret.end());
-  ret.erase(std::unique(ret.begin(), ret.end()), ret.end());
-  if (ret.size() > limit)
-    ret.resize(limit);
-  return ret;
+  std::sort(result.begin(), result.end());
+  result.erase(std::unique(result.begin(), result.end()), result.end());
+  if (result.size() > limit)
+    result.resize(limit);
+  return result;
 }
 
 lsSymbolKind GetSymbolKind(QueryDatabase* db, SymbolIdx sym) {

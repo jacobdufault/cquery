@@ -205,15 +205,6 @@ enum class lsSymbolKind : uint8_t {
 };
 MAKE_REFLECT_TYPE_PROXY(lsSymbolKind);
 
-// cquery extension
-struct lsLocationEx : lsLocation {
-  optional<std::string_view> containerName;
-  optional<lsSymbolKind> parentKind;
-  // Avoid circular dependency on symbol.h
-  optional<uint16_t> role;
-};
-MAKE_REFLECT_STRUCT(lsLocationEx, uri, range, containerName, parentKind, role);
-
 template <typename T>
 struct lsCommand {
   // Title of the command (ie, 'save')
@@ -398,6 +389,6 @@ void Reflect(TVisitor& visitor, Out_ShowLogMessage& value) {
 
 struct Out_LocationList : public lsOutMessage<Out_LocationList> {
   lsRequestId id;
-  std::vector<lsLocationEx> result;
+  std::vector<lsLocation> result;
 };
 MAKE_REFLECT_STRUCT(Out_LocationList, jsonrpc, id, result);

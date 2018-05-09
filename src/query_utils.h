@@ -35,15 +35,10 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryFileId file_id);
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
                                    Use use);
-optional<lsLocationEx> GetLsLocationEx(QueryDatabase* db,
+std::vector<lsLocation> GetLsLocations(QueryDatabase* db,
                                        WorkingFiles* working_files,
-                                       Use use,
-                                       bool container);
-std::vector<lsLocationEx> GetLsLocationExs(QueryDatabase* db,
-                                           WorkingFiles* working_files,
-                                           const std::vector<Use>& refs,
-                                           bool container,
-                                           int limit);
+                                       const std::vector<Use>& refs,
+                                       int limit);
 // Returns a symbol. The symbol will have *NOT* have a location assigned.
 optional<lsSymbolInformation> GetSymbolInfo(QueryDatabase* db,
                                             WorkingFiles* working_files,
