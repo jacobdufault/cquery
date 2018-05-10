@@ -8,7 +8,7 @@
 // static
 AbsolutePath AbsolutePath::BuildDoNotUse(std::string_view path) {
   AbsolutePath p;
-  p.path = path.to_string();
+  p.path = std::string(path);
   return p;
 }
 
