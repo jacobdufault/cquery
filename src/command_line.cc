@@ -118,6 +118,33 @@ void PrintEnvironment() {
   }
 }
 
+struct Out_CqueryQueryDbStatus : public lsOutMessage<Out_CqueryQueryDbStatus> {
+  struct Params {
+    bool isActive = false;
+  };
+  std::string method = "$cquery/queryDbStatus";
+  Params params;
+};
+MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus::Params,
+                    isActive);
+MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus,
+                    jsonrpc,
+                    method,
+                    params);
+
+void WriteQueryDbStatus(bool is_active) {
+  if (!g_config->emitQueryDbBlocked)
+    return;
+
+  static bool last_status = false;
+  if (is_active == last_status)
+    return;
+  last_status = is_active;
+  Out_CqueryQueryDbStatus out;
+  out.params.isActive = is_active;
+  QueueManager::WriteStdout(out.method.c_str(), out);
+}
+
 }  // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -245,6 +272,7 @@ void RunQueryDbThread(const std::string& bin_name,
   // Run query db main loop.
   SetCurrentThreadName("querydb");
   while (true) {
+    WriteQueryDbStatus(true);
     bool did_work = QueryDbMainLoop(
         &db, querydb_waiter, &project, &file_consumer_shared, &import_manager,
         &import_pipeline_status, &timestamp_manager, &semantic_cache,
@@ -256,6 +284,7 @@ void RunQueryDbThread(const std::string& bin_name,
     FreeUnusedMemory();
 
     if (!did_work) {
+      WriteQueryDbStatus(false);
       auto* queue = QueueManager::instance();
       querydb_waiter->Wait(&queue->on_indexed, &queue->for_querydb,
                            &queue->do_id_map);
