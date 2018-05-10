@@ -232,7 +232,7 @@ std::string ClangCursor::get_type_description() const {
   return ::ToString(clang_getTypeSpelling(type));
 }
 
-NtString ClangCursor::get_comments() const {
+std::string ClangCursor::get_comments() const {
   CXSourceRange range = clang_Cursor_getCommentRange(cx_cursor);
   if (clang_Range_isNull(range))
     return {};
@@ -290,7 +290,7 @@ NtString ClangCursor::get_comments() const {
     ret.pop_back();
   if (ret.empty())
     return {};
-  return static_cast<std::string_view>(ret);
+  return ret;
 }
 
 std::string ClangCursor::ToString() const {

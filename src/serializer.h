@@ -1,7 +1,6 @@
 #pragma once
 
 #include "maybe.h"
-#include "nt_string.h"
 #include "port.h"
 
 #include <macro_map.h>
@@ -178,9 +177,6 @@ void Reflect(Writer& visitor, std::string& value);
 
 void Reflect(Reader& visitor, std::string_view& view);
 void Reflect(Writer& visitor, std::string_view& view);
-
-void Reflect(Reader& visitor, NtString& value);
-void Reflect(Writer& visitor, NtString& value);
 
 void Reflect(Reader& visitor, JsonNull& value);
 void Reflect(Writer& visitor, JsonNull& value);
