@@ -132,16 +132,6 @@ void Reflect(Writer& visitor, std::string_view& data) {
     visitor.String(&data[0], (rapidjson::SizeType)data.size());
 }
 
-void Reflect(Reader& visitor, NtString& value) {
-  if (!visitor.IsString())
-    throw std::invalid_argument("std::string");
-  value = visitor.GetString();
-}
-void Reflect(Writer& visitor, NtString& value) {
-  const char* s = value.c_str();
-  visitor.String(s ? s : "");
-}
-
 void Reflect(Reader& visitor, JsonNull& value) {
   visitor.GetNull();
 }

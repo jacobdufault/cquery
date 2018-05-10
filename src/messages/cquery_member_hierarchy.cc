@@ -35,7 +35,7 @@ struct Out_CqueryMemberHierarchy
     : public lsOutMessage<Out_CqueryMemberHierarchy> {
   struct Entry {
     QueryTypeId id;
-    std::string_view name;
+    std::string name;
     std::string fieldName;
     lsLocation location;
     // For unexpanded nodes, this is an upper bound because some entities may be
@@ -110,7 +110,7 @@ bool Expand(MessageHandler* m,
   if (detailed_name)
     entry->name = def->detailed_name;
   else
-    entry->name = def->ShortName();
+    entry->name = def->ShortName().to_string();
   std::unordered_set<Usr> seen;
   if (levels > 0) {
     std::vector<const QueryType*> stack;
@@ -177,7 +177,7 @@ struct Handler_CqueryMemberHierarchy
     Out_CqueryMemberHierarchy::Entry entry;
     // Not type, |id| is invalid.
     if (detailed_name)
-      entry.name = def->DetailedName(false);
+      entry.name = def->DetailedName(false).to_string();
     else
       entry.name = std::string(def->ShortName());
     if (def->spell) {
