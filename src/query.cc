@@ -314,17 +314,16 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
 }
 
 Maybe<QueryFileId> GetQueryFileIdFromPath(QueryDatabase* query_db,
-                                          const std::string& path,
+                                          const AbsolutePath& path,
                                           bool create_if_missing) {
-  AbsolutePath absolute_path(path);
-  auto it = query_db->usr_to_file.find(absolute_path);
+  auto it = query_db->usr_to_file.find(path);
   if (it != query_db->usr_to_file.end())
     return QueryFileId(it->second.id);
   if (!create_if_missing)
     return {};
 
   RawId idx = query_db->files.size();
-  query_db->usr_to_file[absolute_path] = QueryFileId(idx);
+  query_db->usr_to_file[path] = QueryFileId(idx);
   query_db->files.push_back(QueryFile(path));
   return QueryFileId(idx);
 }
@@ -1099,7 +1098,7 @@ TEST_SUITE("query") {
 
   TEST_CASE("Remove variable with usage") {
     auto load_index_from_json = [](const char* json) {
-      return Deserialize(SerializeFormat::Json, "foo.cc", json, "<empty>",
+      return Deserialize(SerializeFormat::Json, AbsolutePath::BuildDoNotUse("foo.cc"), json, "<empty>",
                          nullopt);
     };
 

@@ -146,7 +146,7 @@ const std::vector<std::string>& GetSystemIncludes(
   }
 
   std::vector<std::string> compiler_drivers = {
-      GetExecutablePathNextToCqueryBinary("cquery-clang"), "clang++", "g++"};
+      GetExecutablePathNextToCqueryBinary("cquery-clang").path, "clang++", "g++"};
   if (IsAbsolutePath(compiler_driver)) {
     compiler_drivers.insert(compiler_drivers.begin(), compiler_driver);
   }
@@ -308,7 +308,7 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
   // Compiler driver. If it looks like a path normalize it.
   std::string compiler_driver = args[i - 1];
   if (FindAnyPartial(compiler_driver, {"/", ".."}))
-    compiler_driver = cleanup_maybe_relative_path(compiler_driver);
+    compiler_driver = cleanup_maybe_relative_path(compiler_driver).path;
   result.args.push_back(compiler_driver);
 
   // Add -working-directory if not provided.
@@ -387,7 +387,7 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
       // slow. See
       // https://github.com/cquery-project/cquery/commit/af63df09d57d765ce12d40007bf56302a0446678.
       if (EndsWith(arg, base_name))
-        arg = cleanup_maybe_relative_path(arg);
+        arg = cleanup_maybe_relative_path(arg).path;
       // TODO Exclude .a .o to make link command in compile_commands.json work.
       // Also, clang_parseTranslationUnit2FullArgv does not seem to accept
       // multiple source filenames.

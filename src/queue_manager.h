@@ -16,7 +16,7 @@ struct Stdout_Request {
 };
 
 struct Index_Request {
-  std::string path;
+  AbsolutePath path;
   // TODO: make |args| a string that is parsed lazily.
   std::vector<std::string> args;
   bool is_interactive;
@@ -24,7 +24,7 @@ struct Index_Request {
   std::shared_ptr<ICacheManager> cache_manager;
   lsRequestId id;
 
-  Index_Request(const std::string& path,
+  Index_Request(const AbsolutePath& path,
                 const std::vector<std::string>& args,
                 bool is_interactive,
                 const std::string& contents,

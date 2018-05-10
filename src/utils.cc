@@ -203,7 +203,7 @@ static void GetFilesInFolderHelper(
         if (file.is_dir) {
           if (recursive) {
             std::string child_dir = q.front().second + file.name + "/";
-            if (!IsSymLink(AbsolutePath(file.path)))
+            if (!IsSymLink(AbsolutePath::BuildDoNotUse(file.path)))
               q.push(make_pair(file.path, child_dir));
           }
         } else {
@@ -292,10 +292,10 @@ bool FileExists(const std::string& filename) {
   return cache.is_open();
 }
 
-optional<std::string> ReadContent(const std::string& filename) {
+optional<std::string> ReadContent(const AbsolutePath& filename) {
   LOG_S(INFO) << "Reading " << filename;
   std::ifstream cache;
-  cache.open(filename);
+  cache.open(filename.path);
 
   try {
     return std::string(std::istreambuf_iterator<char>(cache),
@@ -305,10 +305,10 @@ optional<std::string> ReadContent(const std::string& filename) {
   }
 }
 
-std::vector<std::string> ReadLinesWithEnding(std::string filename) {
+std::vector<std::string> ReadLinesWithEnding(const AbsolutePath& filename) {
   std::vector<std::string> result;
 
-  std::ifstream input(filename);
+  std::ifstream input(filename.path);
   for (std::string line; SafeGetline(input, line);)
     result.push_back(line);
 
@@ -402,7 +402,7 @@ std::string GetDefaultResourceDirectory() {
         resource_directory.substr(1, resource_directory.size() - 2);
   }
   if (resource_directory.compare(0, 2, "..") == 0) {
-    std::string executable_path = GetExecutablePath();
+    std::string executable_path = GetExecutablePath().path;
     size_t pos = executable_path.find_last_of('/');
     result = executable_path.substr(0, pos + 1);
     result += resource_directory;
@@ -441,9 +441,9 @@ std::string UpdateToRnNewlines(std::string output) {
 }
 
 AbsolutePath GetExecutablePathNextToCqueryBinary(const std::string& name) {
-  std::string executable_path = GetExecutablePath();
+  std::string executable_path = GetExecutablePath().path;
   size_t pos = executable_path.find_last_of('/');
-  return AbsolutePath(executable_path.substr(0, pos + 1) + name);
+  return AbsolutePath::BuildDoNotUse(executable_path.substr(0, pos + 1) + name);
 }
 
 bool IsAbsolutePath(const std::string& path) {

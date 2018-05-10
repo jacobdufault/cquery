@@ -5,6 +5,13 @@
 
 #include <loguru.hpp>
 
+// static
+AbsolutePath AbsolutePath::BuildDoNotUse(std::string_view path) {
+  AbsolutePath p;
+  p.path = path.to_string();
+  return p;
+}
+
 AbsolutePath::AbsolutePath() {}
 
 AbsolutePath::AbsolutePath(const std::string& path, bool validate)

@@ -29,7 +29,7 @@ optional<lsPosition> GetLsPosition(WorkingFile* working_file,
 optional<lsRange> GetLsRange(WorkingFile* working_file, const Range& location);
 lsDocumentUri GetLsDocumentUri(QueryDatabase* db,
                                QueryFileId file_id,
-                               std::string* path);
+                               AbsolutePath* path);
 lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryFileId file_id);
 
 optional<lsLocation> GetLsLocation(QueryDatabase* db,

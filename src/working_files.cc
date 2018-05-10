@@ -206,7 +206,7 @@ std::vector<CXUnsavedFile> WorkingFiles::Snapshot::AsUnsavedFiles() const {
   return result;
 }
 
-WorkingFile::WorkingFile(const std::string& filename,
+WorkingFile::WorkingFile(const AbsolutePath& filename,
                          const std::string& buffer_content)
     : filename(filename), buffer_content(buffer_content) {
   OnBufferContentUpdated();
@@ -449,13 +449,13 @@ lsPosition WorkingFile::FindStableCompletionSource(
   return GetPositionForOffset(buffer_content, offset);
 }
 
-WorkingFile* WorkingFiles::GetFileByFilename(const std::string& filename) {
+WorkingFile* WorkingFiles::GetFileByFilename(const AbsolutePath& filename) {
   std::lock_guard<std::mutex> lock(files_mutex);
   return GetFileByFilenameNoLock(filename);
 }
 
 WorkingFile* WorkingFiles::GetFileByFilenameNoLock(
-    const std::string& filename) {
+    const AbsolutePath& filename) {
   for (auto& file : files) {
     if (file->filename == filename)
       return file.get();
@@ -469,7 +469,7 @@ void WorkingFiles::DoAction(const std::function<void()>& action) {
 }
 
 void WorkingFiles::DoActionOnFile(
-    const std::string& filename,
+    const AbsolutePath& filename,
     const std::function<void(WorkingFile* file)>& action) {
   std::lock_guard<std::mutex> lock(files_mutex);
   WorkingFile* file = GetFileByFilenameNoLock(filename);
@@ -552,8 +552,8 @@ WorkingFiles::Snapshot WorkingFiles::AsSnapshot(
   Snapshot result;
   result.files.reserve(files.size());
   for (const auto& file : files) {
-    if (filter_paths.empty() || FindAnyPartial(file->filename, filter_paths))
-      result.files.push_back({file->filename, file->buffer_content});
+    if (filter_paths.empty() || FindAnyPartial(file->filename.path, filter_paths))
+      result.files.push_back({file->filename.path, file->buffer_content});
   }
   return result;
 }
@@ -566,7 +566,7 @@ lsPosition CharPos(const WorkingFile& file,
 
 TEST_SUITE("WorkingFile") {
   TEST_CASE("simple call") {
-    WorkingFile f("foo.cc", "abcd(1, 2");
+    WorkingFile f(AbsolutePath::BuildDoNotUse("foo.cc"), "abcd(1, 2");
     int active_param = 0;
     REQUIRE(f.FindClosestCallNameInBuffer(CharPos(f, '('), &active_param) ==
             "abcd");
@@ -586,7 +586,7 @@ TEST_SUITE("WorkingFile") {
   }
 
   TEST_CASE("nested call") {
-    WorkingFile f("foo.cc", "abcd(efg(), 2");
+    WorkingFile f(AbsolutePath::BuildDoNotUse("foo.cc"), "abcd(efg(), 2");
     int active_param = 0;
     REQUIRE(f.FindClosestCallNameInBuffer(CharPos(f, '('), &active_param) ==
             "abcd");
@@ -615,7 +615,7 @@ TEST_SUITE("WorkingFile") {
   }
 
   TEST_CASE("auto-insert )") {
-    WorkingFile f("foo.cc", "abc()");
+    WorkingFile f(AbsolutePath::BuildDoNotUse("foo.cc"), "abc()");
     int active_param = 0;
     REQUIRE(f.FindClosestCallNameInBuffer(CharPos(f, ')'), &active_param) ==
             "abc");
@@ -623,7 +623,7 @@ TEST_SUITE("WorkingFile") {
   }
 
   TEST_CASE("existing completion") {
-    WorkingFile f("foo.cc", "zzz.asdf ");
+    WorkingFile f(AbsolutePath::BuildDoNotUse("foo.cc"), "zzz.asdf ");
     bool is_global_completion;
     std::string existing_completion;
     lsPosition end_pos;
@@ -656,7 +656,7 @@ TEST_SUITE("WorkingFile") {
   }
 
   TEST_CASE("existing completion underscore") {
-    WorkingFile f("foo.cc", "ABC_DEF ");
+    WorkingFile f(AbsolutePath::BuildDoNotUse("foo.cc"), "ABC_DEF ");
     bool is_global_completion;
     std::string existing_completion;
     lsPosition end_pos;

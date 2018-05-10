@@ -198,13 +198,13 @@ optional<lsRange> GetLsRange(WorkingFile* working_file, const Range& location) {
 
 lsDocumentUri GetLsDocumentUri(QueryDatabase* db,
                                QueryFileId file_id,
-                               std::string* path) {
+                               AbsolutePath* path) {
   QueryFile& file = db->files[file_id.id];
   if (file.def) {
     *path = file.def->path;
     return lsDocumentUri::FromPath(*path);
   } else {
-    *path = "";
+    path->path = "";
     return lsDocumentUri();
   }
 }
@@ -221,7 +221,7 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryFileId file_id) {
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
                                    Use use) {
-  std::string path;
+  AbsolutePath path;
   lsDocumentUri uri = GetLsDocumentUri(db, use.file, &path);
   optional<lsRange> range =
       GetLsRange(working_files->GetFileByFilename(path), use.range);
