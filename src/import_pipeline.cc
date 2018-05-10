@@ -663,7 +663,7 @@ void QueryDb_DoIdMap(QueueManager* queue,
   // it, load the previous state from disk and rerun IdMap logic later. Do not
   // do this if we have already attempted in the past.
   if (!request->load_previous && !request->previous &&
-      db->usr_to_file.find(NormalizedPath(request->current->path)) !=
+      db->usr_to_file.find(request->current->path) !=
           db->usr_to_file.end()) {
     assert(!request->load_previous);
     request->load_previous = true;
@@ -730,7 +730,7 @@ void QueryDb_OnIndexed(QueueManager* queue,
 
       // Semantic highlighting.
       QueryFileId file_id =
-          db->usr_to_file[NormalizedPath(working_file->filename)];
+          db->usr_to_file[working_file->filename];
       QueryFile* file = &db->files[file_id.id];
       EmitSemanticHighlighting(db, semantic_cache, working_file, file);
     }

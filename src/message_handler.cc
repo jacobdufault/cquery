@@ -61,7 +61,7 @@ bool FindFileOrFail(QueryDatabase* db,
                     QueryFileId* out_file_id) {
   *out_query_file = nullptr;
 
-  auto it = db->usr_to_file.find(NormalizedPath(absolute_path));
+  auto it = db->usr_to_file.find(absolute_path);
   if (it != db->usr_to_file.end()) {
     QueryFile& file = db->files[it->second.id];
     if (file.def) {
@@ -81,13 +81,6 @@ bool FindFileOrFail(QueryDatabase* db,
     LOG_S(INFO) << "\"" << absolute_path << "\" is being indexed.";
   else
     LOG_S(INFO) << "Unable to find file \"" << absolute_path << "\"";
-  /*
-  LOG_S(INFO) << "Files (size=" << db->usr_to_file.size() << "): "
-              << StringJoinMap(db->usr_to_file,
-                               [](const std::pair<NormalizedPath, QueryFileId>&
-  entry) { return entry.first.path;
-                               });
-  */
 
   if (id) {
     Out_Error out;

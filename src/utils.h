@@ -48,8 +48,6 @@ std::string ReplaceAll(const std::string& source,
 std::vector<std::string> SplitString(const std::string& str,
                                      const std::string& delimiter);
 
-std::string LowerPathIfCaseInsensitive(const std::string& path);
-
 template <typename TValues, typename TMap>
 std::string StringJoinMap(const TValues& values,
                           const TMap& map,
