@@ -100,7 +100,7 @@ optional<QueryFileId> GetImplementationFile(QueryDatabase* db,
 
   // No associated definition, scan the project for a file in the same
   // directory with the same base-name.
-  NormalizedPath original_path(file->def->path);
+  AbsolutePath original_path = file->def->path;
   std::string target_path = original_path.path;
   size_t last = target_path.find_last_of('.');
   if (last != std::string::npos) {
@@ -110,7 +110,7 @@ optional<QueryFileId> GetImplementationFile(QueryDatabase* db,
   LOG_S(INFO) << "!! Looking for impl file that starts with " << target_path;
 
   for (auto& entry : db->usr_to_file) {
-    const NormalizedPath& path = entry.first;
+    const AbsolutePath& path = entry.first;
 
     // Do not consider header files for implementation files.
     // TODO: make file extensions configurable.

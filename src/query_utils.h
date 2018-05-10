@@ -48,6 +48,7 @@ std::vector<SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
                                              QueryFile* file,
                                              lsPosition position);
 
+// Calls fn with a QueryFunc, QueryType, or QueryVar instance.
 template <typename Fn>
 void WithEntity(QueryDatabase* db, SymbolIdx sym, Fn&& fn) {
   switch (sym.kind) {
