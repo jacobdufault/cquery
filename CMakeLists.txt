@@ -303,7 +303,6 @@ target_sources(cquery PRIVATE
                src/messages/cquery_base.cc
                src/messages/cquery_call_hierarchy.cc
                src/messages/cquery_callers.cc
-               src/messages/cquery_derived.cc
                src/messages/cquery_did_view.cc
                src/messages/cquery_file_info.cc
                src/messages/cquery_freshen_index.cc
