@@ -275,7 +275,6 @@ target_sources(cquery PRIVATE
                src/platform_posix.cc
                src/platform_win.cc
                src/platform.cc
-               src/port.cc
                src/position.cc
                src/project.cc
                src/query_utils.cc
