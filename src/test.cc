@@ -268,7 +268,7 @@ void VerifySerializeToFrom(IndexFile* file) {
   std::string expected = file->ToString();
   std::string serialized = Serialize(SerializeFormat::Json, *file);
   std::unique_ptr<IndexFile> result =
-      Deserialize(SerializeFormat::Json, "--.cc", serialized, "<empty>",
+      Deserialize(SerializeFormat::Json, AbsolutePath::BuildDoNotUse("--.cc"), serialized, "<empty>",
                   nullopt /*expected_version*/);
   std::string actual = result->ToString();
   if (expected != actual) {
@@ -378,11 +378,11 @@ bool RunIndexTests(const std::string& filter_path, bool enable_update) {
 
       // FIXME: promote to utils, find and remove duplicates (ie,
       // cquery_call_tree.cc, maybe something in project.cc).
-      auto basename = [](const std::string& path) -> std::string {
-        size_t last_index = path.find_last_of('/');
+      auto basename = [](const AbsolutePath& path) -> std::string {
+        size_t last_index = path.path.find_last_of('/');
         if (last_index == std::string::npos)
-          return path;
-        return path.substr(last_index + 1);
+          return path.path;
+        return path.path.substr(last_index + 1);
       };
 
       auto severity_to_string = [](const lsDiagnosticSeverity& severity) {

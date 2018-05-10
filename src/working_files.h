@@ -31,7 +31,7 @@ struct WorkingFile {
   // lock!
   std::vector<lsDiagnostic> diagnostics_;
 
-  WorkingFile(const std::string& filename, const std::string& buffer_content);
+  WorkingFile(const AbsolutePath& filename, const std::string& buffer_content);
 
   // This should be called when the indexed content has changed.
   void SetIndexContent(const std::string& index_content);
@@ -95,14 +95,14 @@ struct WorkingFiles {
   //
 
   // Find the file with the given filename.
-  WorkingFile* GetFileByFilename(const std::string& filename);
-  WorkingFile* GetFileByFilenameNoLock(const std::string& filename);
+  WorkingFile* GetFileByFilename(const AbsolutePath& filename);
+  WorkingFile* GetFileByFilenameNoLock(const AbsolutePath& filename);
 
   // Run |action| under the lock.
   void DoAction(const std::function<void()>& action);
   // Run |action| on the file identified by |filename|. This executes under the
   // lock.
-  void DoActionOnFile(const std::string& filename,
+  void DoActionOnFile(const AbsolutePath& filename,
                       const std::function<void(WorkingFile* file)>& action);
 
   WorkingFile* OnOpen(const lsTextDocumentItem& open);

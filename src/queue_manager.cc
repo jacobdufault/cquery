@@ -6,7 +6,7 @@
 
 #include <sstream>
 
-Index_Request::Index_Request(const std::string& path,
+Index_Request::Index_Request(const AbsolutePath& path,
                              const std::vector<std::string>& args,
                              bool is_interactive,
                              const std::string& contents,

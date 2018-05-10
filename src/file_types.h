@@ -7,6 +7,8 @@
 #include <string>
 
 struct AbsolutePath {
+  static AbsolutePath BuildDoNotUse(std::string_view path);
+
   // Try not to use this.
   AbsolutePath();
 

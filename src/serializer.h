@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <vector>
 
+class AbsolutePath;
+
 enum class SerializeFormat { Json, MessagePack };
 
 // A tag type that can be used to write `null` to json.
@@ -307,7 +309,7 @@ void ReflectMember(Writer& visitor, const char* name, T& value) {
 std::string Serialize(SerializeFormat format, IndexFile& file);
 std::unique_ptr<IndexFile> Deserialize(
     SerializeFormat format,
-    const std::string& path,
+    const AbsolutePath& path,
     const std::string& serialized_index_content,
     const std::string& file_content,
     optional<int> expected_version);
