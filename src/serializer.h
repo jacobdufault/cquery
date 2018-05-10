@@ -12,7 +12,7 @@
 #include <type_traits>
 #include <vector>
 
-class AbsolutePath;
+struct AbsolutePath;
 
 enum class SerializeFormat { Json, MessagePack };
 
