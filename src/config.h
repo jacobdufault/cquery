@@ -85,6 +85,10 @@ struct Config {
   // interval; it could take significantly longer if cquery is completely idle.
   int progressReportFrequencyMs = 500;
 
+  // If true, cquery will emit $cquery/queryDbStatus notifications whenever the
+  // querydb thread is busy or idle.
+  bool emitQueryDbBlocked = false;
+
   // If true, document links are reported for #include directives.
   bool showDocumentLinksOnIncludes = true;
 
@@ -196,6 +200,7 @@ struct Config {
     //
     // Example: `ash/.*\.cc`
     std::vector<std::string> blacklist;
+    std::vector<std::string> whitelist;
 
     // 0: none, 1: Doxygen, 2: all comments
     // Plugin support for clients:
@@ -212,8 +217,6 @@ struct Config {
 
     // Number of indexer threads. If 0, 80% of cores are used.
     int threads = 0;
-
-    std::vector<std::string> whitelist;
   };
   Index index;
 
@@ -275,6 +278,7 @@ MAKE_REFLECT_STRUCT(Config,
                     extraClangArguments,
 
                     progressReportFrequencyMs,
+                    emitQueryDbBlocked,
 
                     showDocumentLinksOnIncludes,
 
