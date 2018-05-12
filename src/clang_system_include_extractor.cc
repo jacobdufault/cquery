@@ -1,5 +1,6 @@
 #include "clang_system_include_extractor.h"
 
+#include "compiler.h"
 #include "platform.h"
 #include "utils.h"
 
@@ -75,13 +76,13 @@ std::vector<std::string> FindSystemIncludeDirectories(
   LOG_S(INFO) << "Using compiler drivers " << StringJoin(compiler_drivers);
   for (const std::string& compiler_driver : compiler_drivers) {
     std::vector<std::string> flags = {
-        compiler_driver,
-        "-E",
-        "-x",
-        language,
-        "-",
-        "-v",
-        "-working-directory=" + working_directory};
+        compiler_driver, "-E", "-x", language, "-", "-v",
+    };
+
+    CompilerType compiler_type = FindCompilerType(compiler_driver);
+    CompilerAppendsFlagIfAccept(
+        compiler_type, "-working-directory=" + working_directory, flags);
+
     AddRange(&flags, extra_flags);
 
     LOG_S(INFO) << "Running " << StringJoin(flags, " ");
