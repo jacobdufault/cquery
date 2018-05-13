@@ -161,7 +161,8 @@ AbsolutePath GetWorkingDirectory() {
 }
 
 optional<AbsolutePath> NormalizePath(const std::string& path,
-                                     bool ensure_exists) {
+                                     bool ensure_exists,
+                                     bool force_lower_on_windows) {
   return RealPathNotExpandSymlink(path, ensure_exists);
 }
 
