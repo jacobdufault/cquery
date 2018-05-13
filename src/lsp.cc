@@ -37,7 +37,7 @@ struct UriCache {
     // If we do not have the value in the cache, try to renormalize it.
     // Otherwise we will return paths with all lower-case letters which may
     // break vscode.
-    optional<AbsolutePath> normalized = NormalizePath(path.path);
+    optional<AbsolutePath> normalized = NormalizePath(path.path, true /*ensure_exists*/, false /*force_lower_on_windows*/);
     if (normalized)
       return normalized->path;
 

@@ -56,7 +56,8 @@ AbsolutePath GetWorkingDirectory() {
 }
 
 optional<AbsolutePath> NormalizePath(const std::string& path0,
-                                     bool ensure_exists) {
+                                     bool ensure_exists,
+                                     bool force_lower_on_windows) {
   // Requires Windows 8
   /*
   if (!PathCanonicalize(buffer, path.c_str()))
@@ -102,8 +103,10 @@ optional<AbsolutePath> NormalizePath(const std::string& path0,
   path[0] = toupper(path[0]);
   */
   // Make the path all lower-case, since windows is case-insensitive.
-  for (size_t i = 0; i < path.size(); ++i)
-    path[i] = (char)tolower(path[i]);
+  if (force_lower_on_windows) {
+    for (size_t i = 0; i < path.size(); ++i)
+      path[i] = (char)tolower(path[i]);
+  }
 
   // cquery assumes forward-slashes.
   std::replace(path.begin(), path.end(), '\\', '/');
