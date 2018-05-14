@@ -53,6 +53,9 @@
 std::string g_init_options;
 Config* g_config;
 
+#if defined(_WIN32)
+__declspec(dllimport)
+#endif
 extern char** environ;
 
 namespace {
