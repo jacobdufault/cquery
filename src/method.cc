@@ -19,7 +19,8 @@ void Reflect(Reader& visitor, lsRequestId& value) {
     value.value = visitor.GetInt();
   } else if (visitor.IsInt64()) {
     value.type = lsRequestId::kInt;
-    value.value = visitor.GetInt64();
+    // `lsRequestId.value` is an `int`, so we're forced to truncate.
+    value.value = static_cast<int>(visitor.GetInt64());
   } else if (visitor.IsString()) {
     value.type = lsRequestId::kString;
     std::string s = visitor.GetString();
