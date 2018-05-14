@@ -114,14 +114,14 @@ optional<AbsolutePath> RealPathNotExpandSymlink(std::string path,
 
 void PlatformInit() {}
 
-#ifdef __APPLE__
+#if defined(__APPLE__)
 extern "C" int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
 #endif
 
 // See
 // https://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
 AbsolutePath GetExecutablePath() {
-#ifdef __APPLE__
+#if defined(__APPLE__)
   uint32_t size = 0;
   _NSGetExecutablePath(nullptr, &size);
   char* buffer = new char[size];
