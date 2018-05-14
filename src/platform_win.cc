@@ -141,7 +141,7 @@ void SetCurrentThreadName(const std::string& thread_name) {
   __try {
     RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR),
                    (ULONG_PTR*)&info);
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
   } __except (EXCEPTION_EXECUTE_HANDLER) {
 #else
   } catch (...) {
