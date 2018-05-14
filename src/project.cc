@@ -513,7 +513,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     // Try to load compile_commands.json, but fallback to a project listing.
   } else {
     project->mode = ProjectMode::ExternalCommand;
-#ifdef _WIN32
+#if defined(_WIN32)
 // TODO
 #else
     char tmpdir[] = "/tmp/cquery-compdb-XXXXXX";
@@ -561,7 +561,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     }
   }
   if (!g_config->compilationDatabaseCommand.empty()) {
-#ifdef _WIN32
+#if defined(_WIN32)
 // TODO
 #else
     unlink((comp_db_dir + "compile_commands.json").c_str());

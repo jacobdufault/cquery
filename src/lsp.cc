@@ -299,7 +299,7 @@ std::string lsDocumentUri::GetRawPath() const {
   if (raw_uri_.compare(0, 8, "file:///"))
     return raw_uri_;
   std::string ret;
-#ifdef _WIN32
+#if defined(_WIN32)
   size_t i = 8;
 #else
   size_t i = 7;
