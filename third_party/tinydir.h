@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2016, tinydir authors:
+Copyright (c) 2013-2017, tinydir authors:
 - Cong Xu
 - Lautis Sun
 - Baudouin Feildel
@@ -294,7 +294,7 @@ int tinydir_open(tinydir_dir *dir, const _tinydir_char_t *path)
 #ifdef _MSC_VER
 	_tinydir_strcpy(path_buf, dir->path);
 	_tinydir_strcat(path_buf, TINYDIR_STRING("\\*"));
-	dir->_h = FindFirstFile(path_buf, &dir->_f);
+	dir->_h = FindFirstFileEx(path_buf, FindExInfoStandard, &dir->_f, FindExSearchNameMatch, NULL, 0);
 	if (dir->_h == INVALID_HANDLE_VALUE)
 	{
 		errno = ENOENT;
@@ -628,7 +628,7 @@ int tinydir_file_open(tinydir_file *file, const _tinydir_char_t *path)
 	_tinydir_char_t *dir_name;
 	_tinydir_char_t *base_name;
 #if (defined _MSC_VER || defined __MINGW32__)
-	_tinydir_char_t drive_buf[_TINYDIR_DRIVE_MAX];
+	_tinydir_char_t drive_buf[_TINYDIR_PATH_MAX];
 	_tinydir_char_t ext_buf[_TINYDIR_FILENAME_MAX];
 #endif
 
