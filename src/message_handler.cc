@@ -163,6 +163,9 @@ void EmitSemanticHighlighting(QueryDatabase* db,
             detailed_name.substr(0, detailed_name.find('<'));
         int16_t start_line = sym.range.start.line;
         int16_t start_col = sym.range.start.column;
+        // The function is not there if this isn't at least zero.
+        if (start_line < 0)
+          continue;
         if (start_line >= 0 && start_line < working_file->index_lines.size()) {
           std::string_view line = working_file->index_lines[start_line];
           sym.range.end.line = start_line;
