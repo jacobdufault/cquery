@@ -968,7 +968,7 @@ void VisitDeclForTypeUsageVisitorHandler(ClangCursor cursor,
     }
   }
 
-  optional<Usr> referenced_usr = 
+  optional<Usr> referenced_usr =
       cursor.get_referenced()
           .template_specialization_to_template_definition()
           .get_opt_usr_hash();
@@ -2359,7 +2359,10 @@ void ClangSanityCheck(const Project::Entry& entry) {
       unsigned int line, column;
       CXSourceLocation diag_loc = clang_getDiagnosticLocation(diagnostic);
       clang_getSpellingLocation(diag_loc, &file, &line, &column, nullptr);
-      LOG_S(WARNING) << FileName(file)->path << line << ":" << column << " "
+      std::string file_name;
+      if (FileName(file))
+        file_name = FileName(file)->path + ":";
+      LOG_S(WARNING) << file_name << line << ":" << column << " "
                      << ToString(clang_getDiagnosticSpelling(diagnostic));
       clang_disposeDiagnostic(diagnostic);
     }
