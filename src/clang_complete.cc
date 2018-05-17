@@ -728,9 +728,9 @@ void ClangCompleteManager::CodeComplete(
     const lsRequestId& id,
     const lsTextDocumentPositionParams& completion_location,
     const OnComplete& on_complete) {
-  completion_request_.PushBack(std::make_unique<CompletionRequest>(
+  completion_request_.Enqueue(std::make_unique<CompletionRequest>(
       id, completion_location.textDocument.uri.GetAbsolutePath(),
-      completion_location.position, on_complete));
+      completion_location.position, on_complete), true /*priority*/);
 }
 
 void ClangCompleteManager::DiagnosticsUpdate(const std::string& path) {
@@ -741,7 +741,7 @@ void ClangCompleteManager::DiagnosticsUpdate(const std::string& path) {
           has = true;
       });
   if (!has) {
-    diagnostics_request_.PushBack(std::make_unique<DiagnosticRequest>(path),
+    diagnostics_request_.Enqueue(std::make_unique<DiagnosticRequest>(path),
                                   true /*priority*/);
   }
 }
@@ -755,7 +755,7 @@ void ClangCompleteManager::NotifyView(const AbsolutePath& filename) {
 
   // Only reparse the file if we create a new CompletionSession.
   if (EnsureCompletionOrCreatePreloadSession(filename))
-    preload_requests_.PushBack(PreloadRequest(filename), true /*priority*/);
+    preload_requests_.Enqueue(PreloadRequest(filename), true /*priority*/);
 }
 
 void ClangCompleteManager::NotifyEdit(const AbsolutePath& filename) {
@@ -774,7 +774,7 @@ void ClangCompleteManager::NotifySave(const AbsolutePath& filename) {
   //
 
   EnsureCompletionOrCreatePreloadSession(filename);
-  preload_requests_.PushBack(PreloadRequest(filename), true /*priority*/);
+  preload_requests_.Enqueue(PreloadRequest(filename), true /*priority*/);
 }
 
 void ClangCompleteManager::NotifyClose(const AbsolutePath& filename) {

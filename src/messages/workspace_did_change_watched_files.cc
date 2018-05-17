@@ -54,18 +54,18 @@ struct Handler_WorkspaceDidChangeWatchedFiles
           if (!content)
             LOG_S(ERROR) << "Unable to read file content after saving " << path;
           else {
-            QueueManager::instance()->index_request.PushBack(
+            QueueManager::instance()->index_request.Enqueue(
                 Index_Request(path, entry.args, is_interactive, *content,
-                              MakeIndexCache(g_config->cacheStore)));
+                              MakeIndexCache(g_config->cacheStore)), false /*priority*/);
             if (is_interactive)
               clang_complete->NotifySave(path);
           }
           break;
         }
         case lsFileChangeType::Deleted:
-          QueueManager::instance()->index_request.PushBack(
+          QueueManager::instance()->index_request.Enqueue(
               Index_Request(path, entry.args, is_interactive, std::string(),
-                            MakeIndexCache(g_config->cacheStore)));
+                            MakeIndexCache(g_config->cacheStore)), false /*priority*/);
           break;
       }
     }

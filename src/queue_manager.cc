@@ -63,7 +63,7 @@ void QueueManager::WriteStdout(MethodType method, lsBaseOutMessage& response) {
   Stdout_Request out;
   out.content = sstream.str();
   out.method = method;
-  instance()->for_stdout.PushBack(std::move(out));
+  instance()->for_stdout.Enqueue(std::move(out), false /*priority*/);
 }
 
 QueueManager::QueueManager(MultiQueueWaiter* querydb_waiter,

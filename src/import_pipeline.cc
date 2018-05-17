@@ -293,7 +293,7 @@ CacheLoadResult TryLoadFromCache(
                                    is_interactive, false /*write_to_disk*/));
   }
 
-  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result));
+  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result), false /*priority*/);
   return CacheLoadResult::DoNotParse;
 }
 
@@ -475,7 +475,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
     }
 
     Index_OnIndexed reply(std::move(update));
-    queue->on_indexed.PushBack(std::move(reply), response->is_interactive);
+    queue->on_indexed.Enqueue(std::move(reply), response->is_interactive /*priority*/);
   }
 
   return did_work;
@@ -493,7 +493,7 @@ bool IndexMain_LoadPreviousIndex() {
       << "Unable to load previous index for already imported index "
       << response->current->path;
 
-  queue->do_id_map.PushBack(std::move(*response));
+  queue->do_id_map.Enqueue(std::move(*response), response->is_interactive /*priority*/);
   return true;
 }
 
@@ -516,7 +516,7 @@ bool IndexMergeIndexUpdates() {
     root->update.Merge(std::move(to_join->update));
   }
 
-  queue->on_indexed.PushFront(std::move(*root));
+  queue->on_indexed.Enqueue(std::move(*root), false /*priority*/);
   return did_merge;
 }
 
@@ -560,7 +560,7 @@ void IndexWithTuFromCodeCompletion(
   LOG_IF_S(WARNING, result.size() > 1)
       << "Code completion index update generated more than one index";
 
-  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result));
+  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result), true /*priority*/);
 }
 
 void Indexer_Main(DiagnosticsEngine* diag_engine,
@@ -630,7 +630,7 @@ void QueryDb_DoIdMap(QueueManager* queue,
           db->usr_to_file.end()) {
     assert(!request->load_previous);
     request->load_previous = true;
-    queue->load_previous_index.PushBack(std::move(*request));
+    queue->load_previous_index.Enqueue(std::move(*request), request->is_interactive /*priority*/);
     return;
   }
 
@@ -659,7 +659,7 @@ void QueryDb_DoIdMap(QueueManager* queue,
   response.current = make_map(std::move(request->current));
   response.previous = make_map(std::move(request->previous));
 
-  queue->on_id_mapped.PushBack(std::move(response));
+  queue->on_id_mapped.Enqueue(std::move(response), response.is_interactive /*priority*/);
 }
 
 void QueryDb_OnIndexed(QueueManager* queue,
@@ -776,8 +776,8 @@ TEST_SUITE("ImportPipeline") {
                      const std::vector<std::string>& args = {},
                      bool is_interactive = false,
                      const std::string& contents = "void foo();") {
-      queue->index_request.PushBack(
-          Index_Request(path, args, is_interactive, contents, cache_manager));
+      queue->index_request.Enqueue(
+          Index_Request(path, args, is_interactive, contents, cache_manager), false /*priority*/);
     }
 
     MultiQueueWaiter querydb_waiter;
