@@ -39,6 +39,7 @@ if(MSVC)
   target_compile_options(cquery PRIVATE
                          /nologo
                          /EHsc
+                         /D_CRT_SECURE_NO_WARNINGS # don't try to use MSVC std replacements
                          /W3 # roughly -Wall
                          /wd4996 # disable loguru unsafe warnings
                          /wd4722 # ignores warning C4722
