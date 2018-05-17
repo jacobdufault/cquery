@@ -474,7 +474,9 @@ int main(int argc, char** argv, const char** env) {
     language_server = false;
     Project project;
     Config config;
-    config.resourceDirectory = GetDefaultResourceDirectory();
+    if (!GetDefaultResourceDirectory())
+      ABORT_S() << "Cannot resolve resource directory";
+    config.resourceDirectory = GetDefaultResourceDirectory()->path;
     project.Load(GetWorkingDirectory().path);
     Project::Entry entry = project.FindCompilationEntryForFile(path->path);
     LOG_S(INFO) << "Using arguments " << StringJoin(entry.args, " ");
