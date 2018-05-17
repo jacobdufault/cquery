@@ -172,42 +172,28 @@ struct ThreadedQueue : public BaseThreadQueue {
 
   // Get the first element from the queue without blocking. Returns a null
   // value if the queue is empty.
-  optional<T> TryPopFrontHelper(int which) {
+  optional<T> TryPop(bool priority) {
     std::lock_guard<std::mutex> lock(mutex_);
-    auto execute = [&](std::deque<T>* q) {
+
+    auto pop = [&](std::deque<T>* q) {
       auto val = std::move(q->front());
       q->pop_front();
       --total_count_;
       return std::move(val);
     };
-    if (which & 2 && priority_.size())
-      return execute(&priority_);
-    if (which & 1 && queue_.size())
-      return execute(&queue_);
-    return nullopt;
-  }
 
-  optional<T> TryPopFront() { return TryPopFrontHelper(3); }
-
-  optional<T> TryPopBack() {
-    std::lock_guard<std::mutex> lock(mutex_);
-    auto execute = [&](std::deque<T>* q) {
-      auto val = std::move(q->back());
-      q->pop_back();
-      --total_count_;
-      return std::move(val);
+    auto get_result = [&](std::deque<T>* first, std::deque<T>* second) -> optional<T> {
+      if (!first->empty())
+        return pop(&priority_);
+      if (!second->empty())
+        return pop(&queue_);
+      return nullopt;
     };
-    // Reversed
-    if (queue_.size())
-      return execute(&queue_);
-    if (priority_.size())
-      return execute(&priority_);
-    return nullopt;
+
+    if (priority)
+      return get_result(&priority_, &queue_);
+    return get_result(&queue_, &priority_);
   }
-
-  optional<T> TryPopFrontLow() { return TryPopFrontHelper(1); }
-
-  optional<T> TryPopFrontHigh() { return TryPopFrontHelper(2); }
 
   template <typename Fn>
   void Iterate(Fn fn) {

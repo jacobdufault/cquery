@@ -425,7 +425,7 @@ bool IndexMain_DoParse(
     ImportManager* import_manager,
     IIndexer* indexer) {
   auto* queue = QueueManager::instance();
-  optional<Index_Request> request = queue->index_request.TryPopFront();
+  optional<Index_Request> request = queue->index_request.TryPop(true /*priority*/);
   if (!request)
     return false;
 
@@ -444,7 +444,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
   bool did_work = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIdMapped> response = queue->on_id_mapped.TryPopFront();
+    optional<Index_OnIdMapped> response = queue->on_id_mapped.TryPop(true /*priority*/);
     if (!response)
       return did_work;
 
@@ -483,7 +483,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
 
 bool IndexMain_LoadPreviousIndex() {
   auto* queue = QueueManager::instance();
-  optional<Index_DoIdMap> response = queue->load_previous_index.TryPopFront();
+  optional<Index_DoIdMap> response = queue->load_previous_index.TryPop(true /*priority*/);
   if (!response)
     return false;
 
@@ -498,25 +498,22 @@ bool IndexMain_LoadPreviousIndex() {
 }
 
 bool IndexMergeIndexUpdates() {
+  // Merge low-priority requests, since priority requests should get serviced
+  // by querydb asap.
+
   auto* queue = QueueManager::instance();
-  optional<Index_OnIndexed> root = queue->on_indexed.TryPopBack();
+  optional<Index_OnIndexed> root = queue->on_indexed.TryPop(false /*priority*/);
   if (!root)
     return false;
 
   bool did_merge = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIndexed> to_join = queue->on_indexed.TryPopBack();
+    optional<Index_OnIndexed> to_join = queue->on_indexed.TryPop(false /*priority*/);
     if (!to_join)
       break;
     did_merge = true;
-    // Timer time;
     root->update.Merge(std::move(to_join->update));
-    // time.ResetAndPrint("Joined querydb updates for files: " +
-    // StringJoinMap(root->update.files_def_update,
-    //[](const QueryFile::DefUpdate& update) {
-    // return update.path;
-    //}));
   }
 
   queue->on_indexed.PushFront(std::move(*root));
@@ -719,7 +716,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_DoIdMap> request = queue->do_id_map.TryPopFront();
+    optional<Index_DoIdMap> request = queue->do_id_map.TryPop(true /*priority*/);
     if (!request)
       break;
     did_work = true;
@@ -728,7 +725,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   loop.Reset();
   while (loop.Next()) {
-    optional<Index_OnIndexed> response = queue->on_indexed.TryPopFront();
+    optional<Index_OnIndexed> response = queue->on_indexed.TryPop(true /*priority*/);
     if (!response)
       break;
     did_work = true;
