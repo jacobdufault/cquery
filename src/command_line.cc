@@ -456,6 +456,8 @@ int main(int argc, char** argv, const char** env) {
   if (HasOption(options, "--check")) {
     loguru::g_stderr_verbosity = loguru::Verbosity_MAX;
 
+    LOG_S(INFO) << "Running --check";
+
     optional<AbsolutePath> path = NormalizePath(options["--check"]);
     if (!path) {
       ABORT_S() << "Cannot find path \"" << options["--check"] << "\". Make "
