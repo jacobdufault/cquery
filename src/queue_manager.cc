@@ -21,12 +21,10 @@ Index_Request::Index_Request(const AbsolutePath& path,
 
 Index_DoIdMap::Index_DoIdMap(std::unique_ptr<IndexFile> current,
                              const std::shared_ptr<IndexCache>& cache_manager,
-                             PerformanceImportFile perf,
                              bool is_interactive,
                              bool write_to_disk)
     : current(std::move(current)),
       cache_manager(cache_manager),
-      perf(perf),
       is_interactive(is_interactive),
       write_to_disk(write_to_disk) {
   assert(this->current);
@@ -38,17 +36,14 @@ Index_OnIdMapped::File::File(std::unique_ptr<IndexFile> file,
 
 Index_OnIdMapped::Index_OnIdMapped(
     const std::shared_ptr<IndexCache>& cache_manager,
-    PerformanceImportFile perf,
     bool is_interactive,
     bool write_to_disk)
     : cache_manager(cache_manager),
-      perf(perf),
       is_interactive(is_interactive),
       write_to_disk(write_to_disk) {}
 
-Index_OnIndexed::Index_OnIndexed(IndexUpdate&& update,
-                                 PerformanceImportFile perf)
-    : update(std::move(update)), perf(perf) {}
+Index_OnIndexed::Index_OnIndexed(IndexUpdate&& update)
+    : update(std::move(update)) {}
 
 std::unique_ptr<QueueManager> QueueManager::instance_;
 

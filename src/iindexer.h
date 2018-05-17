@@ -16,7 +16,6 @@ struct Config;
 struct IndexFile;
 struct FileContents;
 struct FileConsumerSharedState;
-struct PerformanceImportFile;
 
 // Abstracts away the actual indexing process. Each IIndexer instance is
 // per-thread and constructing an instance may be extremely expensive (ie,
@@ -38,6 +37,5 @@ struct IIndexer {
       FileConsumerSharedState* file_consumer_shared,
       std::string file,
       const std::vector<std::string>& args,
-      const std::vector<FileContents>& file_contents,
-      PerformanceImportFile* perf) = 0;
+      const std::vector<FileContents>& file_contents) = 0;
 };
