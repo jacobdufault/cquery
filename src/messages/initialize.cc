@@ -552,8 +552,12 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       }
 
       // Ensure there is a resource directory.
-      if (g_config->resourceDirectory.empty())
-        g_config->resourceDirectory = GetDefaultResourceDirectory();
+      if (g_config->resourceDirectory.empty()) {
+        optional<AbsolutePath> resource_dir = GetDefaultResourceDirectory();
+        if (!resource_dir)
+          ABORT_S() << "Cannot resolve resource directory.";
+        g_config->resourceDirectory = resource_dir->path;
+      }
       LOG_S(INFO) << "Using -resource-dir=" << g_config->resourceDirectory;
 
       // Send initialization before starting indexers, so we don't send a

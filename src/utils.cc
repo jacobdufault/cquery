@@ -389,7 +389,7 @@ std::string FormatMicroseconds(long long microseconds) {
   return std::to_string(milliseconds) + "." + std::to_string(remaining) + "ms";
 }
 
-std::string GetDefaultResourceDirectory() {
+optional<AbsolutePath> GetDefaultResourceDirectory() {
   std::string result;
 
   std::string resource_directory =
@@ -410,12 +410,12 @@ std::string GetDefaultResourceDirectory() {
     result = resource_directory;
   }
 
-  auto normalized_result = NormalizePath(result);
+  auto normalized_result = NormalizePath(result, false /*ensure_exists*/);
   if (!normalized_result) {
     LOG_S(WARNING) << "Resource directory " << result << " does not exist";
     return result;
   }
-  return normalized_result->path;
+  return normalized_result;
 }
 
 std::string UpdateToRnNewlines(std::string output) {

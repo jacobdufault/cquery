@@ -358,7 +358,10 @@ bool RunIndexTests(const std::string& filter_path, bool enable_update) {
     // Use c++14 by default, because MSVC STL is written assuming that.
     if (!AnyStartsWith(flags, "-std"))
       flags.push_back("-std=c++14");
-    flags.push_back("-resource-dir=" + GetDefaultResourceDirectory());
+    optional<AbsolutePath> resource_dir = GetDefaultResourceDirectory();
+    if (!resource_dir)
+      ABORT_S() << "Cannot resolve resource directory";
+    flags.push_back("-resource-dir=" + resource_dir->path);
     if (had_extra_flags) {
       std::cout << "For " << path << std::endl;
       std::cout << "  flags: " << StringJoin(flags) << std::endl;
