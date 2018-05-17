@@ -53,11 +53,6 @@
 std::string g_init_options;
 Config* g_config;
 
-#if defined(_WIN32)
-__declspec(dllimport)
-#endif
-extern char** environ;
-
 namespace {
 
 std::vector<std::string> kEmptyArgs;
@@ -113,11 +108,10 @@ See more on https://github.com/cquery-project/cquery/wiki
 }
 
 // Writes the environment to stdcerr.
-void PrintEnvironment() {
-  char** s = environ;
-  while (*s) {
-    std::cerr << *s << std::endl;
-    ++s;
+void PrintEnvironment(const char** env) {
+  while (*env) {
+    std::cerr << *env << std::endl;
+    ++env;
   }
 }
 
@@ -405,7 +399,7 @@ void LanguageServerMain(const std::string& bin_name,
   RunQueryDbThread(bin_name, querydb_waiter, indexer_waiter);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv, const char** env) {
   // `clang-format` will not output anything if PATH is not set.
   if (!getenv("PATH")) {
     LOG_S(WARNING) << "The \"PATH\" environment variable is not set. "
@@ -454,7 +448,7 @@ int main(int argc, char** argv) {
   IndexInit();
 
   if (HasOption(options, "--print-env"))
-    PrintEnvironment();
+    PrintEnvironment(env);
 
   if (HasOption(options, "--record"))
     EnableRecording(options["--record"]);
