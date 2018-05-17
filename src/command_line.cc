@@ -345,7 +345,7 @@ void LaunchStdinLoop(std::unordered_map<MethodType, Timer>* request_times) {
       MethodType method_type = message->GetMethodType();
       (*request_times)[method_type] = Timer();
 
-      queue->for_querydb.PushBack(std::move(message));
+      queue->for_querydb.Enqueue(std::move(message), false /*priority*/);
 
       // If the message was to exit then querydb will take care of the actual
       // exit. Stop reading from stdin since it might be detached.

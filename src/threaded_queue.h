@@ -89,29 +89,20 @@ struct ThreadedQueue : public BaseThreadQueue {
   size_t Size() const { return total_count_; }
 
   // Add an element to the queue.
-  template <void (std::deque<T>::*push)(T&&)>
-  void Push(T&& t, bool priority) {
+  void Enqueue(T&& t, bool priority) {
     std::lock_guard<std::mutex> lock(mutex_);
     if (priority)
-      (priority_.*push)(std::move(t));
+      priority_.push_back(std::move(t));
     else
-      (queue_.*push)(std::move(t));
+      queue_.push_back(std::move(t));
     ++total_count_;
     waiter_->cv.notify_one();
     if (waiter1_)
       waiter1_->cv.notify_one();
   }
 
-  void PushFront(T&& t, bool priority = false) {
-    Push<&std::deque<T>::push_front>(std::move(t), priority);
-  }
-
-  void PushBack(T&& t, bool priority = false) {
-    Push<&std::deque<T>::push_back>(std::move(t), priority);
-  }
-
   // Add a set of elements to the queue.
-  void EnqueueAll(std::vector<T>&& elements, bool priority = false) {
+  void EnqueueAll(std::vector<T>&& elements, bool priority) {
     if (elements.empty())
       return;
 
@@ -184,9 +175,9 @@ struct ThreadedQueue : public BaseThreadQueue {
 
     auto get_result = [&](std::deque<T>* first, std::deque<T>* second) -> optional<T> {
       if (!first->empty())
-        return pop(&priority_);
+        return pop(first);
       if (!second->empty())
-        return pop(&queue_);
+        return pop(second);
       return nullopt;
     };
 

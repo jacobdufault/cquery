@@ -66,11 +66,11 @@ struct Handler_TextDocumentDidOpen
 
     // Submit new index request.
     Project::Entry entry = project->FindCompilationEntryForFile(path);
-    QueueManager::instance()->index_request.PushBack(
+    QueueManager::instance()->index_request.Enqueue(
         Index_Request(
             entry.filename, params.args.size() ? params.args : entry.args,
             true /*is_interactive*/, params.textDocument.text, cache_manager),
-        true /* priority */);
+        true /*priority*/);
 
     clang_complete->FlushSession(entry.filename);
     LOG_S(INFO) << "Flushed clang complete sessions for " << entry.filename;
