@@ -73,16 +73,14 @@ struct Index_OnIndexed {
 };
 
 class QueueManager {
-  static std::unique_ptr<QueueManager> instance_;
-
  public:
   static QueueManager* instance() { return instance_.get(); }
-  static void Init(MultiQueueWaiter* querydb_waiter,
-                   MultiQueueWaiter* indexer_waiter,
-                   MultiQueueWaiter* stdout_waiter);
+  static void Init();
   static void WriteStdout(MethodType method, lsBaseOutMessage& response);
 
   bool HasWork();
+
+  MultiQueueWaiter waiter;
 
   // Messages received by "stdout" thread.
   ThreadedQueue<Stdout_Request> for_stdout;
@@ -101,7 +99,6 @@ class QueueManager {
   ThreadedQueue<Index_OnIndexed> on_indexed;
 
  private:
-  explicit QueueManager(MultiQueueWaiter* querydb_waiter,
-                        MultiQueueWaiter* indexer_waiter,
-                        MultiQueueWaiter* stdout_waiter);
+  explicit QueueManager();
+  static std::unique_ptr<QueueManager> instance_;
 };

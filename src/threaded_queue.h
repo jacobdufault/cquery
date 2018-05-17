@@ -19,54 +19,10 @@ struct BaseThreadQueue {
   virtual ~BaseThreadQueue() = default;
 };
 
-// std::lock accepts two or more arguments. We define an overload for one
-// argument.
-namespace std {
-template <typename Lockable>
-void lock(Lockable& l) {
-  l.lock();
-}
-}  // namespace std
-
-template <typename... Queue>
-struct MultiQueueLock {
-  MultiQueueLock(Queue... lockable) : tuple_{lockable...} { lock(); }
-  ~MultiQueueLock() { unlock(); }
-  void lock() { lock_impl(typename std::index_sequence_for<Queue...>{}); }
-  void unlock() { unlock_impl(typename std::index_sequence_for<Queue...>{}); }
-
- private:
-  template <size_t... Is>
-  void lock_impl(std::index_sequence<Is...>) {
-    std::lock(std::get<Is>(tuple_)->mutex_...);
-  }
-
-  template <size_t... Is>
-  void unlock_impl(std::index_sequence<Is...>) {
-    (void)std::initializer_list<int>{
-        (std::get<Is>(tuple_)->mutex_.unlock(), 0)...};
-  }
-
-  std::tuple<Queue...> tuple_;
-};
-
 struct MultiQueueWaiter {
   std::condition_variable_any cv;
 
-  static bool HasState(std::initializer_list<BaseThreadQueue*> queues) {
-    for (BaseThreadQueue* queue : queues) {
-      if (!queue->IsEmpty())
-        return true;
-    }
-    return false;
-  }
-
-  template <typename... BaseThreadQueue>
-  void Wait(BaseThreadQueue... queues) {
-    MultiQueueLock<BaseThreadQueue...> l(queues...);
-    while (!HasState({queues...}))
-      cv.wait(l);
-  }
+  void Wait(std::initializer_list<BaseThreadQueue*> queues);
 };
 
 // A threadsafe-queue. http://stackoverflow.com/a/16075550
@@ -76,29 +32,25 @@ struct ThreadedQueue : public BaseThreadQueue {
   ThreadedQueue() : total_count_(0) {
     owned_waiter_ = std::make_unique<MultiQueueWaiter>();
     waiter_ = owned_waiter_.get();
-    owned_waiter1_ = std::make_unique<MultiQueueWaiter>();
-    waiter1_ = owned_waiter1_.get();
   }
 
-  // TODO remove waiter1 after split of on_indexed
-  explicit ThreadedQueue(MultiQueueWaiter* waiter,
-                         MultiQueueWaiter* waiter1 = nullptr)
-      : total_count_(0), waiter_(waiter), waiter1_(waiter1) {}
+  explicit ThreadedQueue(MultiQueueWaiter* waiter)
+      : total_count_(0), waiter_(waiter) {}
 
   // Returns the number of elements in the queue. This is lock-free.
   size_t Size() const { return total_count_; }
 
   // Add an element to the queue.
   void Enqueue(T&& t, bool priority) {
-    std::lock_guard<std::mutex> lock(mutex_);
-    if (priority)
-      priority_.push_back(std::move(t));
-    else
-      queue_.push_back(std::move(t));
-    ++total_count_;
-    waiter_->cv.notify_one();
-    if (waiter1_)
-      waiter1_->cv.notify_one();
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      if (priority)
+        priority_.push_back(std::move(t));
+      else
+        queue_.push_back(std::move(t));
+      ++total_count_;
+    }
+    waiter_->cv.notify_all();
   }
 
   // Add a set of elements to the queue.
@@ -106,17 +58,17 @@ struct ThreadedQueue : public BaseThreadQueue {
     if (elements.empty())
       return;
 
-    std::lock_guard<std::mutex> lock(mutex_);
-
-    total_count_ += elements.size();
-
-    for (T& element : elements) {
-      if (priority)
-        priority_.push_back(std::move(element));
-      else
-        queue_.push_back(std::move(element));
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      total_count_ += elements.size();
+      for (T& element : elements) {
+        if (priority)
+          priority_.push_back(std::move(element));
+        else
+          queue_.push_back(std::move(element));
+      }
+      elements.clear();
     }
-    elements.clear();
 
     waiter_->cv.notify_all();
   }
@@ -203,7 +155,4 @@ struct ThreadedQueue : public BaseThreadQueue {
   std::deque<T> queue_;
   MultiQueueWaiter* waiter_;
   std::unique_ptr<MultiQueueWaiter> owned_waiter_;
-  // TODO remove waiter1 after split of on_indexed
-  MultiQueueWaiter* waiter1_;
-  std::unique_ptr<MultiQueueWaiter> owned_waiter1_;
 };

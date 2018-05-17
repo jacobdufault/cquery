@@ -163,7 +163,6 @@ void WriteQueryDbStatus(bool is_active) {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool QueryDbMainLoop(QueryDatabase* db,
-                     MultiQueueWaiter* waiter,
                      Project* project,
                      FileConsumerSharedState* file_consumer_shared,
                      ImportManager* import_manager,
@@ -206,9 +205,7 @@ bool QueryDbMainLoop(QueryDatabase* db,
   return did_work;
 }
 
-void RunQueryDbThread(const std::string& bin_name,
-                      MultiQueueWaiter* querydb_waiter,
-                      MultiQueueWaiter* indexer_waiter) {
+void RunQueryDbThread(const std::string& bin_name) {
   Project project;
   SemanticHighlightSymbolCache semantic_cache;
   WorkingFiles working_files;
@@ -249,7 +246,6 @@ void RunQueryDbThread(const std::string& bin_name,
   // Setup shared references.
   for (MessageHandler* handler : *MessageHandler::message_handlers) {
     handler->db = &db;
-    handler->waiter = indexer_waiter;
     handler->project = &project;
     handler->diag_engine = &diag_engine;
     handler->file_consumer_shared = &file_consumer_shared;
@@ -271,7 +267,7 @@ void RunQueryDbThread(const std::string& bin_name,
   while (true) {
     WriteQueryDbStatus(true);
     bool did_work = QueryDbMainLoop(
-        &db, querydb_waiter, &project, &file_consumer_shared, &import_manager,
+        &db, &project, &file_consumer_shared, &import_manager,
         &import_pipeline_status, &timestamp_manager, &semantic_cache,
         &working_files, &clang_complete, &include_complete,
         global_code_complete_cache.get(), non_global_code_complete_cache.get(),
@@ -283,8 +279,8 @@ void RunQueryDbThread(const std::string& bin_name,
     if (!did_work) {
       WriteQueryDbStatus(false);
       auto* queue = QueueManager::instance();
-      querydb_waiter->Wait(&queue->on_indexed, &queue->for_querydb,
-                           &queue->do_id_map);
+      QueueManager::instance()->waiter.Wait({ &queue->on_indexed, &queue->for_querydb,
+                           &queue->do_id_map });
     }
   }
 }
@@ -355,15 +351,14 @@ void LaunchStdinLoop(std::unordered_map<MethodType, Timer>* request_times) {
   });
 }
 
-void LaunchStdoutThread(std::unordered_map<MethodType, Timer>* request_times,
-                        MultiQueueWaiter* waiter) {
+void LaunchStdoutThread(std::unordered_map<MethodType, Timer>* request_times) {
   WorkThread::StartThread("stdout", [=]() {
     auto* queue = QueueManager::instance();
 
     while (true) {
       std::vector<Stdout_Request> messages = queue->for_stdout.DequeueAll();
       if (messages.empty()) {
-        waiter->Wait(&queue->for_stdout);
+        QueueManager::instance()->waiter.Wait({ &queue->for_stdout });
         continue;
       }
 
@@ -382,21 +377,18 @@ void LaunchStdoutThread(std::unordered_map<MethodType, Timer>* request_times,
   });
 }
 
-void LanguageServerMain(const std::string& bin_name,
-                        MultiQueueWaiter* querydb_waiter,
-                        MultiQueueWaiter* indexer_waiter,
-                        MultiQueueWaiter* stdout_waiter) {
+void LanguageServerMain(const std::string& bin_name) {
   std::unordered_map<MethodType, Timer> request_times;
 
   LaunchStdinLoop(&request_times);
 
   // We run a dedicated thread for writing to stdout because there can be an
   // unknown number of delays when output information.
-  LaunchStdoutThread(&request_times, stdout_waiter);
+  LaunchStdoutThread(&request_times);
 
   // Start querydb which takes over this thread. The querydb will launch
   // indexer threads as needed.
-  RunQueryDbThread(bin_name, querydb_waiter, indexer_waiter);
+  RunQueryDbThread(bin_name);
 }
 
 int main(int argc, char** argv, const char** env) {
@@ -439,8 +431,7 @@ int main(int argc, char** argv, const char** env) {
   loguru::g_flush_interval_ms = 0;
   loguru::init(argc, argv);
 
-  MultiQueueWaiter querydb_waiter, indexer_waiter, stdout_waiter;
-  QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
+  QueueManager::Init();
 
   bool language_server = true;
 
@@ -524,9 +515,7 @@ int main(int argc, char** argv, const char** env) {
       }
     }
 
-    // std::cerr << "Running language server" << std::endl;
-    LanguageServerMain(argv[0], &querydb_waiter, &indexer_waiter,
-                       &stdout_waiter);
+    LanguageServerMain(argv[0]);
   }
 
   if (HasOption(options, "--wait-for-input")) {

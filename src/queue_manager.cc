@@ -50,11 +50,9 @@ Index_OnIndexed::Index_OnIndexed(IndexUpdate&& update)
 std::unique_ptr<QueueManager> QueueManager::instance_;
 
 // static
-void QueueManager::Init(MultiQueueWaiter* querydb_waiter,
-                        MultiQueueWaiter* indexer_waiter,
-                        MultiQueueWaiter* stdout_waiter) {
-  instance_ = std::unique_ptr<QueueManager>(
-      new QueueManager(querydb_waiter, indexer_waiter, stdout_waiter));
+void QueueManager::Init() {
+  // QueueManager ctor is inaccessible to std::make_unique
+  instance_ = std::unique_ptr<QueueManager>(new QueueManager());
 }
 
 // static
@@ -68,17 +66,14 @@ void QueueManager::WriteStdout(MethodType method, lsBaseOutMessage& response) {
   instance()->for_stdout.Enqueue(std::move(out), false /*priority*/);
 }
 
-QueueManager::QueueManager(MultiQueueWaiter* querydb_waiter,
-                           MultiQueueWaiter* indexer_waiter,
-                           MultiQueueWaiter* stdout_waiter)
-    : for_stdout(stdout_waiter),
-      for_querydb(querydb_waiter),
-      do_id_map(querydb_waiter),
-      index_request(indexer_waiter),
-      load_previous_index(indexer_waiter),
-      on_id_mapped(indexer_waiter),
-      // TODO on_indexed is shared by "querydb" and "indexer"
-      on_indexed(querydb_waiter, indexer_waiter) {}
+QueueManager::QueueManager()
+    : for_stdout(&waiter),
+      for_querydb(&waiter),
+      do_id_map(&waiter),
+      index_request(&waiter),
+      load_previous_index(&waiter),
+      on_id_mapped(&waiter),
+      on_indexed(&waiter) {}
 
 bool QueueManager::HasWork() {
   return !index_request.IsEmpty() || !do_id_map.IsEmpty() ||

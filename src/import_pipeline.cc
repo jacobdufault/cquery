@@ -567,8 +567,7 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
                   ImportManager* import_manager,
                   ImportPipelineStatus* status,
                   Project* project,
-                  WorkingFiles* working_files,
-                  MultiQueueWaiter* waiter) {
+                  WorkingFiles* working_files) {
   RealModificationTimestampFetcher modification_timestamp_fetcher;
   auto* queue = QueueManager::instance();
   // Build one index per-indexer, as building the index acquires a global lock.
@@ -607,8 +606,8 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
 
     // We didn't do any work, so wait for a notification.
     if (!did_work) {
-      waiter->Wait(&queue->on_indexed, &queue->index_request,
-                   &queue->on_id_mapped, &queue->load_previous_index);
+      QueueManager::instance()->waiter.Wait({ &queue->on_indexed, &queue->index_request,
+                   &queue->on_id_mapped, &queue->load_previous_index });
     }
   }
 }
@@ -737,7 +736,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 TEST_SUITE("ImportPipeline") {
   struct Fixture {
     Fixture() {
-      QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
+      QueueManager::Init();
 
       queue = QueueManager::instance();
       cache_manager = ICacheManager::MakeFake({});
@@ -759,10 +758,6 @@ TEST_SUITE("ImportPipeline") {
       queue->index_request.Enqueue(
           Index_Request(path, args, is_interactive, contents, cache_manager), false /*priority*/);
     }
-
-    MultiQueueWaiter querydb_waiter;
-    MultiQueueWaiter indexer_waiter;
-    MultiQueueWaiter stdout_waiter;
 
     QueueManager* queue = nullptr;
     DiagnosticsEngine diag_engine;

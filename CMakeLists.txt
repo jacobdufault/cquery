@@ -289,6 +289,7 @@ target_sources(cquery PRIVATE
                src/task.cc
                src/test.cc
                src/third_party_impl.cc
+               src/threaded_queue.cc
                src/timer.cc
                src/timestamp_manager.cc
                src/type_printer.cc
