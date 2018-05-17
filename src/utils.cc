@@ -413,7 +413,7 @@ optional<AbsolutePath> GetDefaultResourceDirectory() {
   auto normalized_result = NormalizePath(result, false /*ensure_exists*/);
   if (!normalized_result) {
     LOG_S(WARNING) << "Resource directory " << result << " does not exist";
-    return result;
+    return nullopt;
   }
   return normalized_result;
 }
