@@ -10,9 +10,8 @@ struct ClangIndexer : IIndexer {
       FileConsumerSharedState* file_consumer_shared,
       std::string file,
       const std::vector<std::string>& args,
-      const std::vector<FileContents>& file_contents,
-      PerformanceImportFile* perf) override {
-    return Parse(file_consumer_shared, file, args, file_contents, perf, &index,
+      const std::vector<FileContents>& file_contents) override {
+    return Parse(file_consumer_shared, file, args, file_contents, &index,
                  false /*dump_ast*/);
   }
 
@@ -50,8 +49,7 @@ struct TestIndexer : IIndexer {
       FileConsumerSharedState* file_consumer_shared,
       std::string file,
       const std::vector<std::string>& args,
-      const std::vector<FileContents>& file_contents,
-      PerformanceImportFile* perf) override {
+      const std::vector<FileContents>& file_contents) override {
     auto it = indexes.find(file);
     if (it == indexes.end()) {
       // Don't return any indexes for unexpected data.

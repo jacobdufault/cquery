@@ -1,7 +1,6 @@
 #pragma once
 
 #include "method.h"
-#include "performance.h"
 #include "query.h"
 #include "threaded_queue.h"
 
@@ -37,14 +36,12 @@ struct Index_DoIdMap {
   std::unique_ptr<IndexFile> previous;
   std::shared_ptr<ICacheManager> cache_manager;
 
-  PerformanceImportFile perf;
   bool is_interactive = false;
   bool write_to_disk = false;
   bool load_previous = false;
 
   Index_DoIdMap(std::unique_ptr<IndexFile> current,
                 const std::shared_ptr<ICacheManager>& cache_manager,
-                PerformanceImportFile perf,
                 bool is_interactive,
                 bool write_to_disk);
 };
@@ -61,21 +58,18 @@ struct Index_OnIdMapped {
   std::unique_ptr<File> current;
   std::shared_ptr<ICacheManager> cache_manager;
 
-  PerformanceImportFile perf;
   bool is_interactive;
   bool write_to_disk;
 
   Index_OnIdMapped(const std::shared_ptr<ICacheManager>& cache_manager,
-                   PerformanceImportFile perf,
                    bool is_interactive,
                    bool write_to_disk);
 };
 
 struct Index_OnIndexed {
   IndexUpdate update;
-  PerformanceImportFile perf;
 
-  Index_OnIndexed(IndexUpdate&& update, PerformanceImportFile perf);
+  Index_OnIndexed(IndexUpdate&& update);
 };
 
 class QueueManager {

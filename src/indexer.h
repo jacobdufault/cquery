@@ -9,7 +9,6 @@
 #include "language.h"
 #include "lsp.h"
 #include "maybe.h"
-#include "performance.h"
 #include "position.h"
 #include "project.h"
 #include "serializer.h"
@@ -524,12 +523,10 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
     const std::string& file,
     const std::vector<std::string>& args,
     const std::vector<FileContents>& file_contents,
-    PerformanceImportFile* perf,
     ClangIndex* index,
     bool dump_ast = false);
 optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
     FileConsumerSharedState* file_consumer_shared,
-    PerformanceImportFile* perf,
     ClangTranslationUnit* tu,
     ClangIndex* index,
     const AbsolutePath& file,

@@ -265,12 +265,9 @@ CacheLoadResult TryLoadFromCache(
   // No timestamps changed - load directly from cache.
   LOG_S(INFO) << "Skipping parse; no timestamp change for " << path_to_index;
 
-  // TODO/FIXME: real perf
-  PerformanceImportFile perf;
-
   std::vector<Index_DoIdMap> result;
   result.push_back(Index_DoIdMap(cache_manager->TakeOrLoad(path_to_index),
-                                 cache_manager, perf, is_interactive,
+                                 cache_manager, is_interactive,
                                  false /*write_to_disk*/));
   for (const AbsolutePath& dependency : previous_index->dependencies) {
     // Only load a dependency if it is not already loaded.
@@ -292,8 +289,7 @@ CacheLoadResult TryLoadFromCache(
       continue;
 
     result.push_back(Index_DoIdMap(std::move(dependency_index), cache_manager,
-                                   perf, is_interactive,
-                                   false /*write_to_disk*/));
+                                   is_interactive, false /*write_to_disk*/));
   }
 
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result));
@@ -383,9 +379,8 @@ void ParseFile(DiagnosticsEngine* diag_engine,
       request.cache_manager, entry, request.contents, path_to_index);
 
   std::vector<Index_DoIdMap> result;
-  PerformanceImportFile perf;
   auto indexes = indexer->Index(file_consumer_shared, path_to_index, entry.args,
-                                file_contents, &perf);
+                                file_contents);
 
   if (!indexes) {
     if (g_config->index.enabled && request.id.has_value()) {
@@ -412,8 +407,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
     // needed.
     LOG_S(INFO) << "Emitting index result for " << new_index->path;
     result.push_back(Index_DoIdMap(std::move(new_index), request.cache_manager,
-                                   perf, request.is_interactive,
-                                   true /*write_to_disk*/));
+                                   request.is_interactive, true /*write_to_disk*/));
   }
 
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
@@ -454,8 +448,6 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
 
     did_work = true;
 
-    Timer time;
-
     IdMap* previous_id_map = nullptr;
     IndexFile* previous_index = nullptr;
     if (response->previous) {
@@ -467,7 +459,6 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
     IndexUpdate update =
         IndexUpdate::CreateDelta(previous_id_map, response->current->ids.get(),
                                  previous_index, response->current->file.get());
-    response->perf.index_make_delta = time.ElapsedMicrosecondsAndReset();
     LOG_S(INFO) << "Built index update for " << response->current->file->path
                 << " (is_delta=" << !!response->previous << ")";
 
@@ -475,39 +466,13 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
     if (response->write_to_disk) {
       LOG_S(INFO) << "Writing cached index to disk for "
                   << response->current->file->path;
-      time.Reset();
       response->cache_manager->WriteToCache(*response->current->file);
-      response->perf.index_save_to_disk = time.ElapsedMicrosecondsAndReset();
       timestamp_manager->UpdateCachedModificationTime(
           response->current->file->path,
           response->current->file->last_modification_time);
     }
 
-#if false
-#define PRINT_SECTION(name)                                                    \
-  if (response->perf.name) {                                                   \
-    total += response->perf.name;                                              \
-    output << " " << #name << ": " << FormatMicroseconds(response->perf.name); \
-  }
-    std::stringstream output;
-    long long total = 0;
-    output << "[perf]";
-    PRINT_SECTION(index_parse);
-    PRINT_SECTION(index_build);
-    PRINT_SECTION(index_save_to_disk);
-    PRINT_SECTION(index_load_cached);
-    PRINT_SECTION(querydb_id_map);
-    PRINT_SECTION(index_make_delta);
-    output << "\n       total: " << FormatMicroseconds(total);
-    output << " path: " << response->current_index->path;
-    LOG_S(INFO) << output.rdbuf();
-#undef PRINT_SECTION
-
-    if (response->is_interactive)
-      LOG_S(INFO) << "Applying IndexUpdate" << std::endl << update.ToString();
-#endif
-
-    Index_OnIndexed reply(std::move(update), response->perf);
+    Index_OnIndexed reply(std::move(update));
     queue->on_indexed.PushBack(std::move(reply), response->is_interactive);
   }
 
@@ -573,9 +538,8 @@ void IndexWithTuFromCodeCompletion(
     const std::vector<std::string>& args) {
   file_consumer_shared->Reset(path);
 
-  PerformanceImportFile perf;
   ClangIndex index;
-  auto indexes = ParseWithTu(file_consumer_shared, &perf, tu, &index, path,
+  auto indexes = ParseWithTu(file_consumer_shared, tu, &index, path,
                              args, file_contents);
   if (!indexes)
     return;
@@ -589,7 +553,7 @@ void IndexWithTuFromCodeCompletion(
     // When main thread does IdMap request it will request the previous index if
     // needed.
     LOG_S(INFO) << "Emitting index result for " << new_index->path;
-    result.push_back(Index_DoIdMap(std::move(new_index), cache_manager, perf,
+    result.push_back(Index_DoIdMap(std::move(new_index), cache_manager,
                                    true /*is_interactive*/,
                                    true /*write_to_disk*/));
   }
@@ -682,10 +646,8 @@ void QueryDb_DoIdMap(QueueManager* queue,
     return;
   }
 
-  Index_OnIdMapped response(request->cache_manager, request->perf,
+  Index_OnIdMapped response(request->cache_manager,
                             request->is_interactive, request->write_to_disk);
-  Timer time;
-
   auto make_map = [db](std::unique_ptr<IndexFile> file)
       -> std::unique_ptr<Index_OnIdMapped::File> {
     if (!file)
@@ -697,7 +659,6 @@ void QueryDb_DoIdMap(QueueManager* queue,
   };
   response.current = make_map(std::move(request->current));
   response.previous = make_map(std::move(request->previous));
-  response.perf.querydb_id_map = time.ElapsedMicrosecondsAndReset();
 
   queue->on_id_mapped.PushBack(std::move(response));
 }

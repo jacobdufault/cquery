@@ -370,8 +370,7 @@ bool RunIndexTests(const std::string& filter_path, bool enable_update) {
 
     // Run test.
     FileConsumerSharedState file_consumer_shared;
-    PerformanceImportFile perf;
-    auto dbs = Parse(&file_consumer_shared, path, flags, {}, &perf, &index,
+    auto dbs = Parse(&file_consumer_shared, path, flags, {}, &index,
                      false /*dump_ast*/);
     assert(dbs);
 

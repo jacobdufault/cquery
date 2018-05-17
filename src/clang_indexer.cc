@@ -2167,7 +2167,6 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
     const std::string& file0,
     const std::vector<std::string>& args,
     const std::vector<FileContents>& file_contents,
-    PerformanceImportFile* perf,
     ClangIndex* index,
     bool dump_ast) {
   if (!g_config->index.enabled)
@@ -2179,8 +2178,6 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
                    << " because it can not be found";
     return nullopt;
   }
-
-  Timer timer;
 
   std::vector<CXUnsavedFile> unsaved_files;
   for (const FileContents& contents : file_contents) {
@@ -2198,25 +2195,20 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   if (!tu)
     return nullopt;
 
-  perf->index_parse = timer.ElapsedMicrosecondsAndReset();
-
   if (dump_ast)
     Dump(clang_getTranslationUnitCursor(tu->cx_tu));
 
-  return ParseWithTu(file_consumer_shared, perf, tu.get(), index, *file, args,
+  return ParseWithTu(file_consumer_shared, tu.get(), index, *file, args,
                      unsaved_files);
 }
 
 optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
     FileConsumerSharedState* file_consumer_shared,
-    PerformanceImportFile* perf,
     ClangTranslationUnit* tu,
     ClangIndex* index,
     const AbsolutePath& file,
     const std::vector<std::string>& args,
     const std::vector<CXUnsavedFile>& file_contents) {
-  Timer timer;
-
   IndexerCallbacks callback = {0};
   // Available callbacks:
   // - abortQuery
@@ -2259,8 +2251,6 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
 
   ClangCursor(clang_getTranslationUnitCursor(tu->cx_tu))
       .VisitChildren(&VisitMacroDefinitionAndExpansions, &param);
-
-  perf->index_build = timer.ElapsedMicrosecondsAndReset();
 
   std::unordered_map<AbsolutePath, int> inc_to_line;
   // TODO
