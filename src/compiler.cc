@@ -5,6 +5,8 @@
 
 #include <doctest/doctest.h>
 
+#include <unordered_map>
+
 namespace {
 CompilerType ExtractCompilerType(const std::string& version_output) {
   if (version_output.find("Apple LLVM version") != std::string::npos)
@@ -17,17 +19,27 @@ CompilerType ExtractCompilerType(const std::string& version_output) {
     return CompilerType::MSVC;
   return CompilerType::Unknown;
 }
+
+// FIXME: Make FindCompilerType a class so this is not a global.
+std::unordered_map<std::string, CompilerType> compiler_type_cache_;
+
 }  // namespace
 
 CompilerType FindCompilerType(const std::string& compiler_driver) {
+  auto it = compiler_type_cache_.find(compiler_driver);
+  if (it != compiler_type_cache_.end())
+    return it->second;
+
   std::vector<std::string> flags = {compiler_driver};
   if (!EndsWith(compiler_driver, "cl.exe"))
     flags.push_back("--version");
   optional<std::string> version_output = RunExecutable(flags, "");
+  CompilerType result = CompilerType::Unknown;
   if (version_output)
-    return ExtractCompilerType(version_output.value());
-  else
-    return CompilerType::Unknown;
+    result = ExtractCompilerType(version_output.value());
+
+  compiler_type_cache_[compiler_driver] = result;
+  return result;
 }
 
 bool CompilerAcceptsFlag(CompilerType compiler_type, const std::string& flag) {
