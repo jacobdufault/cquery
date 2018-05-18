@@ -14,7 +14,6 @@ struct Config;
 class DiagnosticsEngine;
 struct FileConsumerSharedState;
 struct ImportManager;
-struct MultiQueueWaiter;
 struct Project;
 struct QueryDatabase;
 struct SemanticHighlightSymbolCache;
@@ -41,8 +40,7 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
                   ImportManager* import_manager,
                   ImportPipelineStatus* status,
                   Project* project,
-                  WorkingFiles* working_files,
-                  MultiQueueWaiter* waiter);
+                  WorkingFiles* working_files);
 
 bool QueryDb_ImportMain(QueryDatabase* db,
                         ImportManager* import_manager,

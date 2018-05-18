@@ -113,7 +113,7 @@ struct ActiveThread {
     out.params.doIdMapCount = queue->do_id_map.Size();
     out.params.loadPreviousIndexCount = queue->load_previous_index.Size();
     out.params.onIdMappedCount = queue->on_id_mapped.Size();
-    out.params.onIndexedCount = queue->on_indexed.Size();
+    out.params.onIndexedCount = queue->on_indexed_for_merge.Size() + queue->on_indexed_for_querydb.Size();
     out.params.activeThreads = status_->num_active_threads;
 
     // Ignore this progress update if the last update was too recent.
@@ -473,7 +473,9 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
     }
 
     Index_OnIndexed reply(std::move(update));
-    queue->on_indexed.Enqueue(std::move(reply), response->is_interactive /*priority*/);
+    const int kMaxSizeForQuerydb = 5000;
+    ThreadedQueue<Index_OnIndexed>& q = queue->on_indexed_for_querydb.Size() < kMaxSizeForQuerydb ? queue->on_indexed_for_querydb : queue->on_indexed_for_merge;
+    q.Enqueue(std::move(reply), response->is_interactive /*priority*/);
   }
 
   return did_work;
@@ -500,21 +502,21 @@ bool IndexMergeIndexUpdates() {
   // by querydb asap.
 
   auto* queue = QueueManager::instance();
-  optional<Index_OnIndexed> root = queue->on_indexed.TryPop(false /*priority*/);
+  optional<Index_OnIndexed> root = queue->on_indexed_for_merge.TryPop(false /*priority*/);
   if (!root)
     return false;
 
   bool did_merge = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIndexed> to_join = queue->on_indexed.TryPop(false /*priority*/);
+    optional<Index_OnIndexed> to_join = queue->on_indexed_for_merge.TryPop(false /*priority*/);
     if (!to_join)
       break;
     did_merge = true;
     root->update.Merge(std::move(to_join->update));
   }
 
-  queue->on_indexed.Enqueue(std::move(*root), false /*priority*/);
+  queue->on_indexed_for_querydb.Enqueue(std::move(*root), false /*priority*/);
   return did_merge;
 }
 
@@ -567,8 +569,7 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
                   ImportManager* import_manager,
                   ImportPipelineStatus* status,
                   Project* project,
-                  WorkingFiles* working_files,
-                  MultiQueueWaiter* waiter) {
+                  WorkingFiles* working_files) {
   RealModificationTimestampFetcher modification_timestamp_fetcher;
   auto* queue = QueueManager::instance();
   // Build one index per-indexer, as building the index acquires a global lock.
@@ -607,8 +608,8 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
 
     // We didn't do any work, so wait for a notification.
     if (!did_work) {
-      waiter->Wait(&queue->on_indexed, &queue->index_request,
-                   &queue->on_id_mapped, &queue->load_previous_index);
+      QueueManager::instance()->indexer_waiter->Wait(&queue->index_request,
+                   &queue->on_id_mapped, &queue->load_previous_index, &queue->on_indexed_for_merge);
     }
   }
 }
@@ -723,7 +724,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   loop.Reset();
   while (loop.Next()) {
-    optional<Index_OnIndexed> response = queue->on_indexed.TryPop(true /*priority*/);
+    optional<Index_OnIndexed> response = queue->on_indexed_for_querydb.TryPop(true /*priority*/);
     if (!response)
       break;
     did_work = true;
@@ -737,7 +738,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 TEST_SUITE("ImportPipeline") {
   struct Fixture {
     Fixture() {
-      QueueManager::Init(&querydb_waiter, &indexer_waiter, &stdout_waiter);
+      QueueManager::Init();
 
       queue = QueueManager::instance();
       cache_manager = ICacheManager::MakeFake({});
@@ -759,10 +760,6 @@ TEST_SUITE("ImportPipeline") {
       queue->index_request.Enqueue(
           Index_Request(path, args, is_interactive, contents, cache_manager), false /*priority*/);
     }
-
-    MultiQueueWaiter querydb_waiter;
-    MultiQueueWaiter indexer_waiter;
-    MultiQueueWaiter stdout_waiter;
 
     QueueManager* queue = nullptr;
     DiagnosticsEngine diag_engine;
