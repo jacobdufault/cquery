@@ -73,16 +73,16 @@ struct Index_OnIndexed {
 };
 
 class QueueManager {
-  static std::unique_ptr<QueueManager> instance_;
-
  public:
   static QueueManager* instance() { return instance_.get(); }
-  static void Init(MultiQueueWaiter* querydb_waiter,
-                   MultiQueueWaiter* indexer_waiter,
-                   MultiQueueWaiter* stdout_waiter);
+  static void Init();
   static void WriteStdout(MethodType method, lsBaseOutMessage& response);
 
   bool HasWork();
+
+  std::shared_ptr<MultiQueueWaiter> querydb_waiter;
+  std::shared_ptr<MultiQueueWaiter> indexer_waiter;
+  std::shared_ptr<MultiQueueWaiter> stdout_waiter;
 
   // Messages received by "stdout" thread.
   ThreadedQueue<Stdout_Request> for_stdout;
@@ -96,12 +96,14 @@ class QueueManager {
   ThreadedQueue<Index_DoIdMap> load_previous_index;
   ThreadedQueue<Index_OnIdMapped> on_id_mapped;
 
-  // Shared by querydb and indexer.
-  // TODO split on_indexed
-  ThreadedQueue<Index_OnIndexed> on_indexed;
+  // Index_OnIndexed is split into two queues. on_indexed_for_querydb is
+  // limited to a mediumish length and is handled only by querydb. When that
+  // list grows too big, messages are added to on_indexed_for_merge which will
+  // be processed by the indexer.
+  ThreadedQueue<Index_OnIndexed> on_indexed_for_querydb;
+  ThreadedQueue<Index_OnIndexed> on_indexed_for_merge;
 
  private:
-  explicit QueueManager(MultiQueueWaiter* querydb_waiter,
-                        MultiQueueWaiter* indexer_waiter,
-                        MultiQueueWaiter* stdout_waiter);
+  explicit QueueManager();
+  static std::unique_ptr<QueueManager> instance_;
 };

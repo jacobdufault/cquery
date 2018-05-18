@@ -70,7 +70,6 @@ MAKE_REFLECT_STRUCT(Out_CqueryPublishSemanticHighlighting,
 
 struct MessageHandler {
   QueryDatabase* db = nullptr;
-  MultiQueueWaiter* waiter = nullptr;
   Project* project = nullptr;
   DiagnosticsEngine* diag_engine = nullptr;
   FileConsumerSharedState* file_consumer_shared = nullptr;
