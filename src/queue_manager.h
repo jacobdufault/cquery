@@ -100,8 +100,8 @@ class QueueManager {
   // limited to a mediumish length and is handled only by querydb. When that
   // list grows too big, messages are added to on_indexed_for_merge which will
   // be processed by the indexer.
-  ThreadedQueue<Index_OnIndexed> on_indexed_for_querydb;
   ThreadedQueue<Index_OnIndexed> on_indexed_for_merge;
+  ThreadedQueue<Index_OnIndexed> on_indexed_for_querydb;
 
  private:
   explicit QueueManager();
