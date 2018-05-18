@@ -325,9 +325,8 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
   }
 
   // Add -working-directory if not provided.
-  if (!AnyStartsWith(args, "-working-directory"))
-    CompilerAppendsFlagIfAccept(
-        compiler_type, "-working-directory=" + entry.directory, result.args);
+  if (!clang_cl && !AnyStartsWith(args, "-working-directory"))
+    result.args.push_back("-working-directory=" + entry.directory);
 
   if (!gTestOutputMode) {
     std::vector<const char*> platform = GetPlatformClangArguments();
@@ -418,23 +417,21 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
 
   // Add -resource-dir so clang can correctly resolve system includes like
   // <cstddef>
-  if (!AnyStartsWith(result.args, "-resource-dir"))
-    CompilerAppendsFlagIfAccept(
-        compiler_type, "-resource-dir=" + config->resource_dir, result.args);
+  if (!clang_cl && !AnyStartsWith(result.args, "-resource-dir") && !config->resource_dir.empty()) {
+    result.args.push_back("-resource-dir=" + config->resource_dir);
+  }
 
   // There could be a clang version mismatch between what the project uses and
   // what cquery uses. Make sure we do not emit warnings for mismatched
   // options.
-  if (!AnyStartsWith(result.args, "-Wno-unknown-warning-option"))
-    CompilerAppendsFlagIfAccept(compiler_type, "-Wno-unknown-warning-option",
-                                result.args);
+  if (!clang_cl && !AnyStartsWith(result.args, "-Wno-unknown-warning-option"))
+    result.args.push_back("-Wno-unknown-warning-option");
 
   // Using -fparse-all-comments enables documentation in the indexer and in
   // code completion.
-  if (g_config->index.comments > 1 &&
+  if (!clang_cl && g_config->index.comments > 1 &&
       !AnyStartsWith(result.args, "-fparse-all-comments")) {
-    CompilerAppendsFlagIfAccept(compiler_type, "-fparse-all-comments",
-                                result.args);
+    result.args.push_back("-fparse-all-comments");
   }
 
   const auto& system_includes = GetSystemIncludes(config, compiler_driver, lang,
