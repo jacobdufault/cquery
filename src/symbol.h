@@ -74,11 +74,8 @@ struct lsDocumentHighlight {
 
   // The highlight kind, default is DocumentHighlightKind.Text.
   lsDocumentHighlightKind kind = lsDocumentHighlightKind::Text;
-
-  // cquery extension
-  Role role = Role::None;
 };
-MAKE_REFLECT_STRUCT(lsDocumentHighlight, range, kind, role);
+MAKE_REFLECT_STRUCT(lsDocumentHighlight, range, kind);
 
 struct lsSymbolInformation {
   std::string_view name;
