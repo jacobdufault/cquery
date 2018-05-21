@@ -54,7 +54,6 @@ struct Handler_TextDocumentDocumentHighlight
             highlight.kind = lsDocumentHighlightKind::Read;
           else
             highlight.kind = lsDocumentHighlightKind::Text;
-          highlight.role = use.role;
           out.result.push_back(highlight);
         }
       });
