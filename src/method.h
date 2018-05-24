@@ -11,6 +11,7 @@ extern MethodType kMethodType_Exit;
 extern MethodType kMethodType_TextDocumentPublishDiagnostics;
 extern MethodType kMethodType_CqueryPublishInactiveRegions;
 extern MethodType kMethodType_CqueryPublishSemanticHighlighting;
+extern MethodType kMethodType_CqueryQueryDbStatus;
 
 struct lsRequestId {
   // The client can send the request id as an int or a string. We should output

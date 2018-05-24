@@ -6,12 +6,13 @@
 
 #include <sstream>
 
-Index_Request::Index_Request(const AbsolutePath& path,
-                             const std::vector<std::string>& args,
-                             bool is_interactive,
-                             const std::string& contents,
-                             const std::shared_ptr<IndexCache>& cache_manager,
-                             lsRequestId id)
+Index_Request::Index_Request(
+    const AbsolutePath& path,
+    const std::vector<std::string>& args,
+    bool is_interactive,
+    const optional<std::string>& contents,
+    const std::shared_ptr<IndexCache>& cache_manager,
+    lsRequestId id)
     : path(path),
       args(args),
       is_interactive(is_interactive),

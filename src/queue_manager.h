@@ -19,14 +19,14 @@ struct Index_Request {
   // TODO: make |args| a string that is parsed lazily.
   std::vector<std::string> args;
   bool is_interactive;
-  std::string contents;  // Preloaded contents.
-  std::shared_ptr<IndexCache> cache_manager;
+  optional<std::string> contents;
+  std::shared_ptr<IndexCache> cache_manager;;
   lsRequestId id;
 
   Index_Request(const AbsolutePath& path,
                 const std::vector<std::string>& args,
                 bool is_interactive,
-                const std::string& contents,
+                const optional<std::string>& contents,
                 const std::shared_ptr<IndexCache>& cache_manager,
                 lsRequestId id = {});
 };
