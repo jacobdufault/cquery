@@ -7,9 +7,9 @@
 #include <algorithm>
 #include <atomic>
 #include <condition_variable>
+#include <deque>
 #include <memory>
 #include <mutex>
-#include <vector>
 #include <tuple>
 #include <utility>
 
@@ -58,7 +58,7 @@ struct MultiQueueLock {
 
 struct MultiQueueWaiter {
   static bool HasState(std::initializer_list<BaseThreadQueue*> queues);
-  
+
   bool ValidateWaiter(std::initializer_list<BaseThreadQueue*> queues);
 
   template <typename... BaseThreadQueue>
@@ -131,9 +131,9 @@ struct ThreadedQueue : public BaseThreadQueue {
     waiter->cv.wait(lock,
                     [&]() { return !priority_.empty() || !queue_.empty(); });
 
-    auto execute = [&](std::vector<T>* q) {
-      auto val = std::move(q->back());
-      q->pop_back();
+    auto execute = [&](std::deque<T>* q) {
+      auto val = std::move(q->front());
+      q->pop_front();
       --total_count_;
       return std::move(val);
     };
@@ -147,14 +147,14 @@ struct ThreadedQueue : public BaseThreadQueue {
   optional<T> TryDequeue(bool priority) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    auto pop = [&](std::vector<T>* q) {
-      auto val = std::move(q->back());
-      q->pop_back();
+    auto pop = [&](std::deque<T>* q) {
+      auto val = std::move(q->front());
+      q->pop_front();
       --total_count_;
       return std::move(val);
     };
 
-    auto get_result = [&](std::vector<T>* first, std::vector<T>* second) -> optional<T> {
+    auto get_result = [&](std::deque<T>* first, std::deque<T>* second) -> optional<T> {
       if (!first->empty())
         return pop(first);
       if (!second->empty())
@@ -175,11 +175,11 @@ struct ThreadedQueue : public BaseThreadQueue {
     for (auto& entry : queue_)
       fn(entry);
   }
-  
+
   mutable std::mutex mutex;
 
  private:
   std::atomic<int> total_count_;
-  std::vector<T> priority_;
-  std::vector<T> queue_;
+  std::deque<T> priority_;
+  std::deque<T> queue_;
 };
