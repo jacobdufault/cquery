@@ -25,7 +25,7 @@ std::vector<Use> GetNonDefDeclarationTargets(QueryDatabase* db, SymbolRef sym) {
       if (ret.empty()) {
         for (auto& def : db->GetVar(sym).def)
           if (def.type) {
-            if (Maybe<Use> use = GetDefinitionSpell(
+            if (optional<Use> use = GetDefinitionSpell(
                     db, SymbolIdx{*def.type, SymbolKind::Type})) {
               ret.push_back(*use);
               break;
@@ -141,7 +141,7 @@ struct Handler_TextDocumentDefinition
           auto pos = name.rfind(short_query);
           if (pos == std::string::npos)
             continue;
-          if (Maybe<Use> use = GetDefinitionSpell(db, db->symbols[i])) {
+          if (optional<Use> use = GetDefinitionSpell(db, db->symbols[i])) {
             std::tuple<int, int, bool, int> score{
                 int(name.size() - short_query.size()), -int(pos),
                 use->file != file_id,
@@ -160,7 +160,7 @@ struct Handler_TextDocumentDefinition
           }
         }
         if (best_i != -1) {
-          Maybe<Use> use = GetDefinitionSpell(db, db->symbols[best_i]);
+          optional<Use> use = GetDefinitionSpell(db, db->symbols[best_i]);
           assert(use);
           if (auto ls_loc = GetLsLocation(db, working_files, *use))
             out.result.push_back(*ls_loc);

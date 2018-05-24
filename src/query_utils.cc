@@ -38,13 +38,13 @@ std::vector<Use> GetDeclarations(std::vector<Q>& entities,
 
 }  // namespace
 
-Maybe<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym) {
-  Maybe<Use> ret;
+optional<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym) {
+  optional<Use> ret;
   EachEntityDef(db, sym, [&](const auto& def) { return !(ret = def.spell); });
   return ret;
 }
 
-Maybe<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym) {
+optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym) {
   // Used to jump to file.
   if (sym.kind == SymbolKind::File)
     return Use(Range(Position(0, 0), Position(0, 0)), sym.id, sym.kind,
@@ -54,7 +54,7 @@ Maybe<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym) {
   return ret;
 }
 
-Maybe<QueryFileId> GetDeclarationFileForSymbol(QueryDatabase* db,
+optional<QueryFileId> GetDeclarationFileForSymbol(QueryDatabase* db,
                                                SymbolIdx sym) {
   switch (sym.kind) {
     case SymbolKind::File:

@@ -423,7 +423,7 @@ bool IndexMain_DoParse(
     ImportManager* import_manager,
     IIndexer* indexer) {
   auto* queue = QueueManager::instance();
-  optional<Index_Request> request = queue->index_request.TryPop(true /*priority*/);
+  optional<Index_Request> request = queue->index_request.TryDequeue(true /*priority*/);
   if (!request)
     return false;
 
@@ -442,7 +442,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
   bool did_work = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIdMapped> response = queue->on_id_mapped.TryPop(true /*priority*/);
+    optional<Index_OnIdMapped> response = queue->on_id_mapped.TryDequeue(true /*priority*/);
     if (!response)
       return did_work;
 
@@ -483,7 +483,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
 
 bool IndexMain_LoadPreviousIndex() {
   auto* queue = QueueManager::instance();
-  optional<Index_DoIdMap> response = queue->load_previous_index.TryPop(true /*priority*/);
+  optional<Index_DoIdMap> response = queue->load_previous_index.TryDequeue(true /*priority*/);
   if (!response)
     return false;
 
@@ -502,14 +502,14 @@ bool IndexMergeIndexUpdates() {
   // by querydb asap.
 
   auto* queue = QueueManager::instance();
-  optional<Index_OnIndexed> root = queue->on_indexed_for_merge.TryPop(false /*priority*/);
+  optional<Index_OnIndexed> root = queue->on_indexed_for_merge.TryDequeue(false /*priority*/);
   if (!root)
     return false;
 
   bool did_merge = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIndexed> to_join = queue->on_indexed_for_merge.TryPop(false /*priority*/);
+    optional<Index_OnIndexed> to_join = queue->on_indexed_for_merge.TryDequeue(false /*priority*/);
     if (!to_join)
       break;
     did_merge = true;
@@ -715,7 +715,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_DoIdMap> request = queue->do_id_map.TryPop(true /*priority*/);
+    optional<Index_DoIdMap> request = queue->do_id_map.TryDequeue(true /*priority*/);
     if (!request)
       break;
     did_work = true;
@@ -724,7 +724,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   loop.Reset();
   while (loop.Next()) {
-    optional<Index_OnIndexed> response = queue->on_indexed_for_querydb.TryPop(true /*priority*/);
+    optional<Index_OnIndexed> response = queue->on_indexed_for_querydb.TryDequeue(true /*priority*/);
     if (!response)
       break;
     did_work = true;

@@ -5,9 +5,9 @@
 
 #include <optional.h>
 
-Maybe<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym);
-Maybe<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym);
-Maybe<QueryFileId> GetDeclarationFileForSymbol(QueryDatabase* db,
+optional<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym);
+optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym);
+optional<QueryFileId> GetDeclarationFileForSymbol(QueryDatabase* db,
                                                SymbolIdx sym);
 
 // Get defining declaration (if exists) or an arbitrary declaration (otherwise)
