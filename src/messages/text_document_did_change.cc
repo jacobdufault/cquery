@@ -26,16 +26,12 @@ struct Handler_TextDocumentDidChange
     AbsolutePath path = request->params.textDocument.uri.GetAbsolutePath();
     working_files->OnChange(request->params);
     if (g_config->enableIndexOnDidChange) {
-      optional<std::string> content = ReadContent(path);
-      if (!content) {
-        LOG_S(ERROR) << "Unable to read file content after saving " << path;
-      } else {
-        Project::Entry entry = project->FindCompilationEntryForFile(path);
-        QueueManager::instance()->index_request.Enqueue(
-            Index_Request(entry.filename, entry.args, true /*is_interactive*/,
-                          *content, ICacheManager::Make()),
-            true /*priority*/);
-      }
+      WorkingFile* working_file = working_files->GetFileByFilename(path);
+      Project::Entry entry = project->FindCompilationEntryForFile(path);
+      QueueManager::instance()->index_request.Enqueue(
+          Index_Request(entry.filename, entry.args, true /*is_interactive*/,
+                        working_file->buffer_content, ICacheManager::Make()),
+          true /*priority*/);
     }
     clang_complete->NotifyEdit(path);
     clang_complete->DiagnosticsUpdate(path);
