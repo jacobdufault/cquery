@@ -176,26 +176,28 @@ bool QueryDbMainLoop(QueryDatabase* db,
                      CodeCompleteCache* non_global_code_complete_cache,
                      CodeCompleteCache* signature_cache) {
   auto* queue = QueueManager::instance();
-  std::vector<std::unique_ptr<InMessage>> messages =
-      queue->for_querydb.DequeueAll();
-  bool did_work = messages.size();
-  for (auto& message : messages) {
-    // TODO: Consider using std::unordered_map to lookup the handler
+  bool did_work = false;
+
+  optional<std::unique_ptr<InMessage>> message = queue->for_querydb.TryDequeue(true /*priority*/);
+  while (message) {
+    did_work = true;
+
+    bool found_handler = false;
     for (MessageHandler* handler : *MessageHandler::message_handlers) {
-      if (handler->GetMethodType() == message->GetMethodType()) {
-        handler->Run(std::move(message));
+      if (handler->GetMethodType() == (*message)->GetMethodType()) {
+        handler->Run(std::move(*message));
+        found_handler = true;
         break;
       }
     }
 
-    if (message) {
-      LOG_S(FATAL) << "Exiting; no handler for " << message->GetMethodType();
+    if (!found_handler) {
+      LOG_S(FATAL) << "Exiting; no handler for " << (*message)->GetMethodType();
       exit(1);
     }
-  }
 
-  // TODO: consider rate-limiting and checking for IPC messages so we don't
-  // block requests / we can serve partial requests.
+    message = queue->for_querydb.TryDequeue(true /*priority*/);
+  }
 
   if (QueryDb_ImportMain(db, import_manager, status, semantic_cache,
                          working_files)) {
@@ -356,23 +358,17 @@ void LaunchStdoutThread(std::unordered_map<MethodType, Timer>* request_times) {
     auto* queue = QueueManager::instance();
 
     while (true) {
-      std::vector<Stdout_Request> messages = queue->for_stdout.DequeueAll();
-      if (messages.empty()) {
-        QueueManager::instance()->stdout_waiter->Wait(&queue->for_stdout);
-        continue;
+      Stdout_Request message = queue->for_stdout.Dequeue();
+
+      if (ShouldDisplayMethodTiming(message.method)) {
+        Timer time = (*request_times)[message.method];
+        time.ResetAndPrint("[e2e] Running " + std::string(message.method));
       }
 
-      for (auto& message : messages) {
-        if (ShouldDisplayMethodTiming(message.method)) {
-          Timer time = (*request_times)[message.method];
-          time.ResetAndPrint("[e2e] Running " + std::string(message.method));
-        }
+      RecordOutput(message.content);
 
-        RecordOutput(message.content);
-
-        fwrite(message.content.c_str(), message.content.size(), 1, stdout);
-        fflush(stdout);
-      }
+      fwrite(message.content.c_str(), message.content.size(), 1, stdout);
+      fflush(stdout);
     }
   });
 }

@@ -7,9 +7,9 @@
 #include <algorithm>
 #include <atomic>
 #include <condition_variable>
-#include <deque>
 #include <memory>
 #include <mutex>
+#include <vector>
 #include <tuple>
 #include <utility>
 
@@ -120,26 +120,6 @@ struct ThreadedQueue : public BaseThreadQueue {
     waiter->cv.notify_all();
   }
 
-  // Return all elements in the queue.
-  std::vector<T> DequeueAll() {
-    std::lock_guard<std::mutex> lock(mutex);
-
-    total_count_ = 0;
-
-    std::vector<T> result;
-    result.reserve(priority_.size() + queue_.size());
-    while (!priority_.empty()) {
-      result.emplace_back(std::move(priority_.front()));
-      priority_.pop_front();
-    }
-    while (!queue_.empty()) {
-      result.emplace_back(std::move(queue_.front()));
-      queue_.pop_front();
-    }
-
-    return result;
-  }
-
   // Returns true if the queue is empty. This is lock-free.
   bool IsEmpty() {
     return total_count_ == 0;
@@ -151,9 +131,9 @@ struct ThreadedQueue : public BaseThreadQueue {
     waiter->cv.wait(lock,
                     [&]() { return !priority_.empty() || !queue_.empty(); });
 
-    auto execute = [&](std::deque<T>* q) {
-      auto val = std::move(q->front());
-      q->pop_front();
+    auto execute = [&](std::vector<T>* q) {
+      auto val = std::move(q->back());
+      q->pop_back();
       --total_count_;
       return std::move(val);
     };
@@ -164,17 +144,17 @@ struct ThreadedQueue : public BaseThreadQueue {
 
   // Get the first element from the queue without blocking. Returns a null
   // value if the queue is empty.
-  optional<T> TryPop(bool priority) {
+  optional<T> TryDequeue(bool priority) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    auto pop = [&](std::deque<T>* q) {
-      auto val = std::move(q->front());
-      q->pop_front();
+    auto pop = [&](std::vector<T>* q) {
+      auto val = std::move(q->back());
+      q->pop_back();
       --total_count_;
       return std::move(val);
     };
 
-    auto get_result = [&](std::deque<T>* first, std::deque<T>* second) -> optional<T> {
+    auto get_result = [&](std::vector<T>* first, std::vector<T>* second) -> optional<T> {
       if (!first->empty())
         return pop(first);
       if (!second->empty())
@@ -200,6 +180,6 @@ struct ThreadedQueue : public BaseThreadQueue {
 
  private:
   std::atomic<int> total_count_;
-  std::deque<T> priority_;
-  std::deque<T> queue_;
+  std::vector<T> priority_;
+  std::vector<T> queue_;
 };
