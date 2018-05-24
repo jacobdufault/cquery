@@ -62,7 +62,6 @@ std::vector<std::string> kEmptyArgs;
 bool ShouldDisplayMethodTiming(MethodType type) {
   return type != kMethodType_TextDocumentPublishDiagnostics &&
          type != kMethodType_CqueryPublishInactiveRegions &&
-         type != kMethodType_CqueryQueryDbStatus &&
          type != kMethodType_Unknown;
 }
 
@@ -120,7 +119,7 @@ struct Out_CqueryQueryDbStatus : public lsOutMessage<Out_CqueryQueryDbStatus> {
   struct Params {
     bool isActive = false;
   };
-  std::string method = kMethodType_CqueryQueryDbStatus;
+  std::string method = "$cquery/queryDbStatus";
   Params params;
 };
 MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus::Params,
@@ -140,7 +139,7 @@ void WriteQueryDbStatus(bool is_active) {
   last_status = is_active;
   Out_CqueryQueryDbStatus out;
   out.params.isActive = is_active;
-  QueueManager::WriteStdout(kMethodType_CqueryQueryDbStatus, out);
+  QueueManager::WriteStdout(out.method.c_str(), out);
 }
 
 }  // namespace

@@ -12,8 +12,6 @@ MethodType kMethodType_CqueryPublishInactiveRegions =
     "$cquery/publishInactiveRegions";
 MethodType kMethodType_CqueryPublishSemanticHighlighting =
     "$cquery/publishSemanticHighlighting";
-MethodType kMethodType_CqueryQueryDbStatus = "$cquery/queryDbStatus";
-
 
 void Reflect(Reader& visitor, lsRequestId& value) {
   if (visitor.IsInt()) {
