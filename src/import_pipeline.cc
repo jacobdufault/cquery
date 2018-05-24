@@ -299,7 +299,7 @@ CacheLoadResult TryLoadFromCache(
 std::vector<FileContents> PreloadFileContents(
     const std::shared_ptr<ICacheManager>& cache_manager,
     const Project::Entry& entry,
-    const std::string& entry_contents,
+    const optional<std::string>& entry_contents,
     const AbsolutePath& path_to_index) {
   // Load file contents for all dependencies into memory. If the dependencies
   // for the file changed we may not end up using all of the files we
@@ -333,9 +333,10 @@ std::vector<FileContents> PreloadFileContents(
   };
 
   std::vector<FileContents> file_contents;
-  file_contents.push_back(FileContents(entry.filename, entry_contents));
+  if (entry_contents)
+    file_contents.push_back(FileContents(entry.filename, *entry_contents));
   cache_manager->IterateLoadedCaches([&](IndexFile* index) {
-    if (index->path == entry.filename)
+    if (entry_contents && index->path == entry.filename)
       return;
     file_contents.push_back(FileContents(
         index->path,
