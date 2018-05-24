@@ -50,11 +50,16 @@ struct Handler_WorkspaceDidChangeWatchedFiles
       switch (event.type) {
         case lsFileChangeType::Created:
         case lsFileChangeType::Changed: {
-          QueueManager::instance()->index_request.Enqueue(
-              Index_Request(path, entry.args, is_interactive, nullopt,
-                            ICacheManager::Make()), false /*priority*/);
-          if (is_interactive)
-            clang_complete->NotifySave(path);
+          optional<std::string> content = ReadContent(path);
+          if (!content)
+            LOG_S(ERROR) << "Unable to read file content after saving " << path;
+          else {
+            QueueManager::instance()->index_request.Enqueue(
+                Index_Request(path, entry.args, is_interactive, *content,
+                              ICacheManager::Make()), false /*priority*/);
+            if (is_interactive)
+              clang_complete->NotifySave(path);
+          }
           break;
         }
         case lsFileChangeType::Deleted:
