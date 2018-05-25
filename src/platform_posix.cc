@@ -310,11 +310,11 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   // fork returns 0 for the child, non-zero for the parent process.
   if (child == 0) {
     // Redirect stdin/stdout/stderr to the pipes.
-    if (dup2(pipe_stdin[kPipeRead], STDIN_FILENO) < 0)
+    if (dup2(pipe_stdout[kPipeRead], STDIN_FILENO) < 0)
       exit(errno);
-    if (dup2(pipe_stdout[kPipeWrite], STDOUT_FILENO) < 0)
+    if (dup2(pipe_stdin[kPipeWrite], STDOUT_FILENO) < 0)
       exit(errno);
-    if (dup2(pipe_stdout[kPipeWrite], STDERR_FILENO) < 0)
+    if (dup2(pipe_stdin[kPipeWrite], STDERR_FILENO) < 0)
       exit(errno);
 
     // These pipes should be used only by the parent.
