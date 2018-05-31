@@ -306,6 +306,13 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     return nullopt;
   }
 
+  // Build argv. We must do this before the call to fork() per
+  // https://github.com/cquery-project/cquery/issues/693.
+  auto argv = new char*[command.size() + 1];
+  for (size_t i = 0; i < command.size(); i++)
+    argv[i] = const_cast<char*>(command[i].c_str());
+  argv[command.size()] = nullptr;
+
   pid_t child = fork();
   // fork returns 0 for the child, non-zero for the parent process.
   if (child == 0) {
@@ -323,15 +330,12 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     close(pipe_stdout[kPipeRead]);
     close(pipe_stdout[kPipeWrite]);
 
-    // Build argv
-    auto argv = new char*[command.size() + 1];
-    for (size_t i = 0; i < command.size(); i++)
-      argv[i] = const_cast<char*>(command[i].c_str());
-    argv[command.size()] = nullptr;
-
     int exec_result = execvp(argv[0], argv);
     exit(exec_result);  // Should not be possible.
   }
+
+  // argv is not needed by the cquery process.
+  delete [] argv;
 
   // The parent cannot read from stdin and can not write to stdout.
   close(pipe_stdin[kPipeRead]);
