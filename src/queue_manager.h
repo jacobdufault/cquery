@@ -74,7 +74,7 @@ struct Index_OnIndexed {
 
 class QueueManager {
  public:
-  static QueueManager* instance() { return instance_.get(); }
+  static QueueManager* instance() { return instance_; }
   static void Init();
   static void WriteStdout(MethodType method, lsBaseOutMessage& response);
 
@@ -105,5 +105,8 @@ class QueueManager {
 
  private:
   explicit QueueManager();
-  static std::unique_ptr<QueueManager> instance_;
+
+  // Note: we do not destroy |instance_| on shutdown; see
+  // https://github.com/cquery-project/cquery/issues/695
+  static QueueManager* instance_;
 };
