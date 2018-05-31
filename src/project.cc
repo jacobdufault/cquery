@@ -43,7 +43,6 @@ MAKE_REFLECT_STRUCT(CompileCommandsEntry, directory, file, command, args);
 namespace {
 
 bool g_disable_normalize_path_for_test = false;
-optional<CompilerType> g_use_compiler_type_for_test = nullopt;
 
 struct NormalizationCache {
   // input path -> normalized path
@@ -315,14 +314,6 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
   if (FindAnyPartial(compiler_driver, {"/", ".."}))
     compiler_driver = cleanup_maybe_relative_path(compiler_driver).path;
   result.args.push_back(compiler_driver);
-
-  CompilerType compiler_type;
-
-  if (g_use_compiler_type_for_test) {
-    compiler_type = g_use_compiler_type_for_test.value();
-  } else {
-    compiler_type = FindCompilerType(compiler_driver);
-  }
 
   // Add -working-directory if not provided.
   if (!clang_cl && !AnyStartsWith(args, "-working-directory"))
@@ -810,10 +801,9 @@ void Project::Index(QueueManager* queue,
 
 TEST_SUITE("Project") {
   void CheckFlags(const std::string& directory, const std::string& file,
-                  CompilerType compiler_type, std::vector<std::string> raw,
+                  std::vector<std::string> raw,
                   std::vector<std::string> expected) {
     g_disable_normalize_path_for_test = true;
-    g_use_compiler_type_for_test = compiler_type;
     gTestOutputMode = true;
 
     ProjectConfig project;
@@ -845,7 +835,7 @@ TEST_SUITE("Project") {
 
   void CheckFlags(std::vector<std::string> raw,
                   std::vector<std::string> expected) {
-    CheckFlags("/dir/", "file.cc", CompilerType::Clang, raw, expected);
+    CheckFlags("/dir/", "file.cc", raw, expected);
   }
 
   TEST_CASE("strip meta-compiler invocations") {
@@ -878,29 +868,27 @@ TEST_SUITE("Project") {
   }
 
   TEST_CASE("Windows path normalization") {
-    CheckFlags("E:/workdir", "E:/workdir/bar.cc", CompilerType::Clang,
+    CheckFlags("E:/workdir", "E:/workdir/bar.cc",
                /* raw */ {"clang", "bar.cc"},
                /* expected */
                {"clang", "-working-directory=E:/workdir", "&E:/workdir/bar.cc",
                 "-resource-dir=/w/resource_dir/", "-Wno-unknown-warning-option",
                 "-fparse-all-comments"});
 
-    CheckFlags("E:/workdir", "E:/workdir/bar.cc", CompilerType::Clang,
+    CheckFlags("E:/workdir", "E:/workdir/bar.cc",
                /* raw */ {"clang", "E:/workdir/bar.cc"},
                /* expected */
                {"clang", "-working-directory=E:/workdir", "&E:/workdir/bar.cc",
                 "-resource-dir=/w/resource_dir/", "-Wno-unknown-warning-option",
                 "-fparse-all-comments"});
 
-    CheckFlags("E:/workdir", "E:/workdir/bar.cc", CompilerType::Clang,
+    CheckFlags("E:/workdir", "E:/workdir/bar.cc",
                /* raw */ {"clang-cl.exe", "/I./test", "E:/workdir/bar.cc"},
                /* expected */
-               {"clang-cl.exe", "-working-directory=E:/workdir",
-                "/I&E:/workdir/./test", "&E:/workdir/bar.cc",
-                "-resource-dir=/w/resource_dir/", "-Wno-unknown-warning-option",
-                "-fparse-all-comments"});
+               {"clang-cl.exe",
+                "/I&E:/workdir/./test", "&E:/workdir/bar.cc"});
 
-    CheckFlags("E:/workdir", "E:/workdir/bar.cc", CompilerType::MSVC,
+    CheckFlags("E:/workdir", "E:/workdir/bar.cc",
                /* raw */
                {"cl.exe", "/I../third_party/test/include", "E:/workdir/bar.cc"},
                /* expected */
@@ -909,7 +897,7 @@ TEST_SUITE("Project") {
   }
 
   TEST_CASE("Path in args") {
-    CheckFlags("/home/user", "/home/user/foo/bar.c", CompilerType::Clang,
+    CheckFlags("/home/user", "/home/user/foo/bar.c",
                /* raw */ {"cc", "-O0", "foo/bar.c"},
                /* expected */
                {"cc", "-working-directory=/home/user", "-O0",
@@ -918,7 +906,7 @@ TEST_SUITE("Project") {
   }
 
   TEST_CASE("Implied binary") {
-    CheckFlags("/home/user", "/home/user/foo/bar.cc", CompilerType::Clang,
+    CheckFlags("/home/user", "/home/user/foo/bar.cc",
                /* raw */ {"clang", "-DDONT_IGNORE_ME"},
                /* expected */
                {"clang", "-working-directory=/home/user", "-DDONT_IGNORE_ME",
@@ -931,7 +919,6 @@ TEST_SUITE("Project") {
   TEST_CASE("ycm") {
     CheckFlags(
         "/w/c/s/out/Release", "../../ash/login/lock_screen_sanity_unittest.cc",
-        CompilerType::Clang,
 
         /* raw */
         {
@@ -1281,7 +1268,6 @@ TEST_SUITE("Project") {
   TEST_CASE("chromium") {
     CheckFlags(
         "/w/c/s/out/Release", "../../apps/app_lifetime_monitor.cc",
-        CompilerType::Clang,
         /* raw */
         {"/work/goma/gomacc",
          "../../third_party/llvm-build/Release+Asserts/bin/clang++",
