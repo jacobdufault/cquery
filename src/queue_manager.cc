@@ -46,12 +46,13 @@ Index_OnIdMapped::Index_OnIdMapped(
 Index_OnIndexed::Index_OnIndexed(IndexUpdate&& update)
     : update(std::move(update)) {}
 
-std::unique_ptr<QueueManager> QueueManager::instance_;
+QueueManager* QueueManager::instance_;
 
 // static
 void QueueManager::Init() {
-  // QueueManager ctor is inaccessible to std::make_unique
-  instance_ = std::unique_ptr<QueueManager>(new QueueManager());
+  if (instance_)
+    delete instance_;
+  instance_ = new QueueManager();
 }
 
 // static
