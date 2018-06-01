@@ -27,13 +27,6 @@ struct ImportPipelineStatus {
   ImportPipelineStatus();
 };
 
-void IndexWithTuFromCodeCompletion(
-    FileConsumerSharedState* file_consumer_shared,
-    ClangTranslationUnit* tu,
-    const std::vector<CXUnsavedFile>& file_contents,
-    const AbsolutePath& path,
-    const std::vector<std::string>& args);
-
 void Indexer_Main(DiagnosticsEngine* diag_engine,
                   FileConsumerSharedState* file_consumer_shared,
                   TimestampManager* timestamp_manager,

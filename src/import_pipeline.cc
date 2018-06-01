@@ -525,44 +525,6 @@ bool IndexMergeIndexUpdates() {
 ImportPipelineStatus::ImportPipelineStatus()
     : num_active_threads(0), next_progress_output(0) {}
 
-// Index a file using an already-parsed translation unit from code completion.
-// Since most of the time for indexing a file comes from parsing, we can do
-// real-time indexing.
-// TODO: add option to disable this.
-void IndexWithTuFromCodeCompletion(
-    FileConsumerSharedState* file_consumer_shared,
-    ClangTranslationUnit* tu,
-    const std::vector<CXUnsavedFile>& file_contents,
-    const AbsolutePath& path,
-    const std::vector<std::string>& args) {
-  file_consumer_shared->Reset(path);
-
-  ClangIndex index;
-  auto indexes = ParseWithTu(file_consumer_shared, tu, &index, path,
-                             args, file_contents);
-  if (!indexes)
-    return;
-
-  std::vector<Index_DoIdMap> result;
-  for (std::unique_ptr<IndexFile>& new_index : *indexes) {
-    Timer time;
-
-    std::shared_ptr<ICacheManager> cache_manager;
-    assert(false && "FIXME cache_manager");
-    // When main thread does IdMap request it will request the previous index if
-    // needed.
-    LOG_S(INFO) << "Emitting index result for " << new_index->path;
-    result.push_back(Index_DoIdMap(std::move(new_index), cache_manager,
-                                   true /*is_interactive*/,
-                                   true /*write_to_disk*/));
-  }
-
-  LOG_IF_S(WARNING, result.size() > 1)
-      << "Code completion index update generated more than one index";
-
-  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result), true /*priority*/);
-}
-
 void Indexer_Main(DiagnosticsEngine* diag_engine,
                   FileConsumerSharedState* file_consumer_shared,
                   TimestampManager* timestamp_manager,
