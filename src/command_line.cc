@@ -219,18 +219,13 @@ void RunQueryDbThread(const std::string& bin_name) {
       [&](std::string path, std::vector<lsDiagnostic> diagnostics) {
         diag_engine.Publish(&working_files, path, diagnostics);
       },
-      [&](ClangTranslationUnit* tu, const std::vector<CXUnsavedFile>& unsaved,
-          const std::string& path, const std::vector<std::string>& args) {
-        IndexWithTuFromCodeCompletion(&file_consumer_shared, tu, unsaved, path,
-                                      args);
-      },
       [](lsRequestId id) {
         if (id.has_value()) {
           Out_Error out;
           out.id = id;
           out.error.code = lsErrorCodes::InternalError;
           out.error.message =
-              "Dropping completion request; a newer request has come in that"
+              "Dropping completion request; a newer request has come in that "
               "will be serviced instead. This is not an error.";
           QueueManager::WriteStdout(kMethodType_Unknown, out);
         }
