@@ -331,7 +331,10 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     close(pipe_stdout[kPipeWrite]);
 
     int exec_result = execvp(argv[0], argv);
-    exit(exec_result);  // Should not be possible.
+    // Happens if execvp fails, ie, if the target process cannot be found. Call
+    // _exit instead of exit because exit will run static dtors and the like.
+    // See https://github.com/cquery-project/cquery/issues/693.
+    _exit(exec_result);
   }
 
   // argv is not needed by the cquery process.
