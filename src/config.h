@@ -161,6 +161,12 @@ struct Config {
   };
   Completion completion;
 
+  struct Formatting {
+    // Whether formatting should be enabled.
+    bool enabled = true;
+  };
+  Formatting formatting;
+
   struct Diagnostics {
     // Like index.{whitelist,blacklist}, don't publish diagnostics to
     // blacklisted files.
@@ -255,6 +261,8 @@ MAKE_REFLECT_STRUCT(Config::Completion,
                     includeSuffixWhitelist,
                     includeBlacklist,
                     includeWhitelist);
+MAKE_REFLECT_STRUCT(Config::Formatting,
+                    enabled)
 MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     blacklist,
                     whitelist,
@@ -290,6 +298,7 @@ MAKE_REFLECT_STRUCT(Config,
 
                     codeLens,
                     completion,
+                    formatting,
                     diagnostics,
                     highlight,
                     index,
