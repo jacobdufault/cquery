@@ -141,11 +141,11 @@ target_include_directories(cquery PRIVATE
 
 install(TARGETS cquery RUNTIME DESTINATION bin)
 
-# If downloaded Clang is used we have to bundle the required files from 
+# If downloaded Clang is used we have to bundle the required files from
 # the downloaded Clang along with the cquery executable
 if(NOT SYSTEM_CLANG)
 
-  # On Linux/FreeBSD/Darwin we set the rpath so cquery can find 
+  # On Linux/FreeBSD/Darwin we set the rpath so cquery can find
   # libclang.[so,dylib]. On Windows we install libclang.dll to the bin directory
   # to do the same.
 
@@ -156,7 +156,7 @@ if(NOT SYSTEM_CLANG)
     set_property(TARGET cquery APPEND PROPERTY
                  INSTALL_RPATH @loader_path/../lib)
   elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-    install(FILES ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll DESTINATION bin) 
+    install(FILES ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll DESTINATION bin)
   endif()
 
   # Install libclang.[so,lib,dylib] to lib directory
@@ -199,15 +199,15 @@ if(NOT SYSTEM_CLANG)
   # prefix.
 
   file(GLOB CLANG_INCLUDE_DIR ${DOWNLOADED_CLANG_DIR}/lib/clang/*/include)
-  string(REPLACE ${DOWNLOADED_CLANG_DIR}/ "" 
+  string(REPLACE ${DOWNLOADED_CLANG_DIR}/ ""
          CLANG_INCLUDE_DIR ${CLANG_INCLUDE_DIR})
 
   # Add trailing slash to overwrite destination directory instead of putting the
   # directory inside the destination directory
   install(DIRECTORY ${DOWNLOADED_CLANG_DIR}/${CLANG_INCLUDE_DIR}/
           DESTINATION ${CLANG_INCLUDE_DIR})
-  
-  # include/c++/v1 is not included in every Clang download (Windows) so we check 
+
+  # include/c++/v1 is not included in every Clang download (Windows) so we check
   # if it exists first
   if(IS_DIRECTORY ${DOWNLOADED_CLANG_DIR}/include/c++/v1)
     install(DIRECTORY ${DOWNLOADED_CLANG_DIR}/include/c++/v1/
