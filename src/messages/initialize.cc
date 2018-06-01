@@ -566,11 +566,25 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
 
       // Send initialization before starting indexers, so we don't send a
       // status update too early.
-      // TODO: query request->params.capabilities.textDocument and support
-      // only things the client supports.
 
       Out_InitializeResponse out;
       out.id = request->id;
+
+      // Check if formatting should be enabled.
+      out.result.capabilities.documentFormattingProvider = false;
+      out.result.capabilities.documentRangeFormattingProvider = false;
+      out.result.capabilities.documentOnTypeFormattingProvider.reset();
+      if (g_config->formatting.enabled) {
+        if (request->params.capabilities.textDocument->formatting) {
+          out.result.capabilities.documentFormattingProvider = true;
+        }
+        if (request->params.capabilities.textDocument->rangeFormatting) {
+          out.result.capabilities.documentRangeFormattingProvider = true;
+        }
+      }
+
+      // TODO: query request->params.capabilities.textDocument and support
+      // only things the client supports.
 
       // out.result.capabilities.textDocumentSync =
       // lsTextDocumentSyncOptions();
