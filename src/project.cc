@@ -521,7 +521,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     return LoadFromDirectoryListing(project);
 
   // If |compilationDatabaseCommand| is specified, execute it to get the compdb.
-  std::string comp_db_dir;
+  std::string comp_db_dir(opt_compilation_db_dir);
   if (g_config->compilationDatabaseCommand.empty()) {
     project->mode = ProjectMode::CompileCommandsJson;
     // Try to load compile_commands.json, but fallback to a project listing.
@@ -550,8 +550,6 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
   CXCompilationDatabase_Error cx_db_load_error =
       CXCompilationDatabase_CanNotLoadDatabase;
   CXCompilationDatabase cx_db = nullptr;
-
-  comp_db_dir = opt_compilation_db_dir;
 
   if (!IsAbsolutePath(comp_db_dir)) {
     comp_db_dir =
