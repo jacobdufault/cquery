@@ -84,15 +84,15 @@ struct optionals_mandatory_tag {};
 
 #define MAKE_REFLECT_TYPE_PROXY(type_name) \
   MAKE_REFLECT_TYPE_PROXY2(type_name, std::underlying_type<type_name>::type)
-#define MAKE_REFLECT_TYPE_PROXY2(type, as_type)                        \
-  inline void Reflect(Reader& visitor, type& value) {                  \
-    as_type value0;                                                    \
-    ::Reflect(visitor, value0);                                        \
-    value = static_cast<type>(value0);                                 \
-  }                                                                    \
-  inline void Reflect(Writer& visitor, type& value) {                  \
-    auto value0 = static_cast<as_type>(value);                         \
-    ::Reflect(visitor, value0);                                        \
+#define MAKE_REFLECT_TYPE_PROXY2(type, as_type)       \
+  inline void Reflect(Reader& visitor, type& value) { \
+    as_type value0;                                   \
+    ::Reflect(visitor, value0);                       \
+    value = static_cast<type>(value0);                \
+  }                                                   \
+  inline void Reflect(Writer& visitor, type& value) { \
+    auto value0 = static_cast<as_type>(value);        \
+    ::Reflect(visitor, value0);                       \
   }
 
 #define _MAPPABLE_REFLECT_MEMBER(name) REFLECT_MEMBER(name);

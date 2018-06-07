@@ -63,7 +63,7 @@ struct MultiQueueWaiter {
 
   template <typename... BaseThreadQueue>
   void Wait(BaseThreadQueue... queues) {
-    assert(ValidateWaiter({ queues... }));
+    assert(ValidateWaiter({queues...}));
 
     MultiQueueLock<BaseThreadQueue...> l(queues...);
     while (!HasState({queues...}))
@@ -121,9 +121,7 @@ struct ThreadedQueue : public BaseThreadQueue {
   }
 
   // Returns true if the queue is empty. This is lock-free.
-  bool IsEmpty() {
-    return total_count_ == 0;
-  }
+  bool IsEmpty() { return total_count_ == 0; }
 
   // Get the first element from the queue. Blocks until one is available.
   T Dequeue() {
@@ -154,7 +152,8 @@ struct ThreadedQueue : public BaseThreadQueue {
       return std::move(val);
     };
 
-    auto get_result = [&](std::deque<T>* first, std::deque<T>* second) -> optional<T> {
+    auto get_result = [&](std::deque<T>* first,
+                          std::deque<T>* second) -> optional<T> {
       if (!first->empty())
         return pop(first);
       if (!second->empty())

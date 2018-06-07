@@ -726,9 +726,11 @@ void ClangCompleteManager::CodeComplete(
     const lsRequestId& id,
     const lsTextDocumentPositionParams& completion_location,
     const OnComplete& on_complete) {
-  completion_request_.Enqueue(std::make_unique<CompletionRequest>(
-      id, completion_location.textDocument.uri.GetAbsolutePath(),
-      completion_location.position, on_complete), true /*priority*/);
+  completion_request_.Enqueue(
+      std::make_unique<CompletionRequest>(
+          id, completion_location.textDocument.uri.GetAbsolutePath(),
+          completion_location.position, on_complete),
+      true /*priority*/);
 }
 
 void ClangCompleteManager::DiagnosticsUpdate(const std::string& path) {
@@ -740,7 +742,7 @@ void ClangCompleteManager::DiagnosticsUpdate(const std::string& path) {
       });
   if (!has) {
     diagnostics_request_.Enqueue(std::make_unique<DiagnosticRequest>(path),
-                                  true /*priority*/);
+                                 true /*priority*/);
   }
 }
 

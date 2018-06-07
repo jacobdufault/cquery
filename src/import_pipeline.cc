@@ -113,7 +113,8 @@ struct ActiveThread {
     out.params.doIdMapCount = queue->do_id_map.Size();
     out.params.loadPreviousIndexCount = queue->load_previous_index.Size();
     out.params.onIdMappedCount = queue->on_id_mapped.Size();
-    out.params.onIndexedCount = queue->on_indexed_for_merge.Size() + queue->on_indexed_for_querydb.Size();
+    out.params.onIndexedCount = queue->on_indexed_for_merge.Size() +
+                                queue->on_indexed_for_querydb.Size();
     out.params.activeThreads = status_->num_active_threads;
 
     // Ignore this progress update if the last update was too recent.
@@ -292,7 +293,8 @@ CacheLoadResult TryLoadFromCache(
                                    is_interactive, false /*write_to_disk*/));
   }
 
-  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result), false /*priority*/);
+  QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
+                                                 false /*priority*/);
   return CacheLoadResult::DoNotParse;
 }
 
@@ -407,7 +409,8 @@ void ParseFile(DiagnosticsEngine* diag_engine,
     // needed.
     LOG_S(INFO) << "Emitting index result for " << new_index->path;
     result.push_back(Index_DoIdMap(std::move(new_index), request.cache_manager,
-                                   request.is_interactive, true /*write_to_disk*/));
+                                   request.is_interactive,
+                                   true /*write_to_disk*/));
   }
 
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
@@ -423,7 +426,8 @@ bool IndexMain_DoParse(
     ImportManager* import_manager,
     IIndexer* indexer) {
   auto* queue = QueueManager::instance();
-  optional<Index_Request> request = queue->index_request.TryDequeue(true /*priority*/);
+  optional<Index_Request> request =
+      queue->index_request.TryDequeue(true /*priority*/);
   if (!request)
     return false;
 
@@ -442,7 +446,8 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
   bool did_work = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIdMapped> response = queue->on_id_mapped.TryDequeue(true /*priority*/);
+    optional<Index_OnIdMapped> response =
+        queue->on_id_mapped.TryDequeue(true /*priority*/);
     if (!response)
       return did_work;
 
@@ -474,7 +479,10 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
 
     Index_OnIndexed reply(std::move(update));
     const int kMaxSizeForQuerydb = 5000;
-    ThreadedQueue<Index_OnIndexed>& q = queue->on_indexed_for_querydb.Size() < kMaxSizeForQuerydb ? queue->on_indexed_for_querydb : queue->on_indexed_for_merge;
+    ThreadedQueue<Index_OnIndexed>& q =
+        queue->on_indexed_for_querydb.Size() < kMaxSizeForQuerydb
+            ? queue->on_indexed_for_querydb
+            : queue->on_indexed_for_merge;
     q.Enqueue(std::move(reply), response->is_interactive /*priority*/);
   }
 
@@ -483,7 +491,8 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
 
 bool IndexMain_LoadPreviousIndex() {
   auto* queue = QueueManager::instance();
-  optional<Index_DoIdMap> response = queue->load_previous_index.TryDequeue(true /*priority*/);
+  optional<Index_DoIdMap> response =
+      queue->load_previous_index.TryDequeue(true /*priority*/);
   if (!response)
     return false;
 
@@ -493,7 +502,8 @@ bool IndexMain_LoadPreviousIndex() {
       << "Unable to load previous index for already imported index "
       << response->current->path;
 
-  queue->do_id_map.Enqueue(std::move(*response), response->is_interactive /*priority*/);
+  queue->do_id_map.Enqueue(std::move(*response),
+                           response->is_interactive /*priority*/);
   return true;
 }
 
@@ -502,14 +512,16 @@ bool IndexMergeIndexUpdates() {
   // by querydb asap.
 
   auto* queue = QueueManager::instance();
-  optional<Index_OnIndexed> root = queue->on_indexed_for_merge.TryDequeue(false /*priority*/);
+  optional<Index_OnIndexed> root =
+      queue->on_indexed_for_merge.TryDequeue(false /*priority*/);
   if (!root)
     return false;
 
   bool did_merge = false;
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_OnIndexed> to_join = queue->on_indexed_for_merge.TryDequeue(false /*priority*/);
+    optional<Index_OnIndexed> to_join =
+        queue->on_indexed_for_merge.TryDequeue(false /*priority*/);
     if (!to_join)
       break;
     did_merge = true;
@@ -570,8 +582,9 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
 
     // We didn't do any work, so wait for a notification.
     if (!did_work) {
-      QueueManager::instance()->indexer_waiter->Wait(&queue->index_request,
-                   &queue->on_id_mapped, &queue->load_previous_index, &queue->on_indexed_for_merge);
+      QueueManager::instance()->indexer_waiter->Wait(
+          &queue->index_request, &queue->on_id_mapped,
+          &queue->load_previous_index, &queue->on_indexed_for_merge);
     }
   }
 }
@@ -587,11 +600,11 @@ void QueryDb_DoIdMap(QueueManager* queue,
   // it, load the previous state from disk and rerun IdMap logic later. Do not
   // do this if we have already attempted in the past.
   if (!request->load_previous && !request->previous &&
-      db->usr_to_file.find(request->current->path) !=
-          db->usr_to_file.end()) {
+      db->usr_to_file.find(request->current->path) != db->usr_to_file.end()) {
     assert(!request->load_previous);
     request->load_previous = true;
-    queue->load_previous_index.Enqueue(std::move(*request), request->is_interactive /*priority*/);
+    queue->load_previous_index.Enqueue(std::move(*request),
+                                       request->is_interactive /*priority*/);
     return;
   }
 
@@ -606,8 +619,8 @@ void QueryDb_DoIdMap(QueueManager* queue,
     return;
   }
 
-  Index_OnIdMapped response(request->cache_manager,
-                            request->is_interactive, request->write_to_disk);
+  Index_OnIdMapped response(request->cache_manager, request->is_interactive,
+                            request->write_to_disk);
   auto make_map = [db](std::unique_ptr<IndexFile> file)
       -> std::unique_ptr<Index_OnIdMapped::File> {
     if (!file)
@@ -620,7 +633,8 @@ void QueryDb_DoIdMap(QueueManager* queue,
   response.current = make_map(std::move(request->current));
   response.previous = make_map(std::move(request->previous));
 
-  queue->on_id_mapped.Enqueue(std::move(response), response.is_interactive /*priority*/);
+  queue->on_id_mapped.Enqueue(std::move(response),
+                              response.is_interactive /*priority*/);
 }
 
 void QueryDb_OnIndexed(QueueManager* queue,
@@ -650,8 +664,7 @@ void QueryDb_OnIndexed(QueueManager* queue,
       EmitInactiveLines(working_file, updated_file.value.inactive_regions);
 
       // Semantic highlighting.
-      QueryFileId file_id =
-          db->usr_to_file[working_file->filename];
+      QueryFileId file_id = db->usr_to_file[working_file->filename];
       QueryFile* file = &db->files[file_id.id];
       EmitSemanticHighlighting(db, semantic_cache, working_file, file);
     }
@@ -677,7 +690,8 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   IterationLoop loop;
   while (loop.Next()) {
-    optional<Index_DoIdMap> request = queue->do_id_map.TryDequeue(true /*priority*/);
+    optional<Index_DoIdMap> request =
+        queue->do_id_map.TryDequeue(true /*priority*/);
     if (!request)
       break;
     did_work = true;
@@ -686,7 +700,8 @@ bool QueryDb_ImportMain(QueryDatabase* db,
 
   loop.Reset();
   while (loop.Next()) {
-    optional<Index_OnIndexed> response = queue->on_indexed_for_querydb.TryDequeue(true /*priority*/);
+    optional<Index_OnIndexed> response =
+        queue->on_indexed_for_querydb.TryDequeue(true /*priority*/);
     if (!response)
       break;
     did_work = true;
@@ -720,7 +735,8 @@ TEST_SUITE("ImportPipeline") {
                      bool is_interactive = false,
                      const std::string& contents = "void foo();") {
       queue->index_request.Enqueue(
-          Index_Request(path, args, is_interactive, contents, cache_manager), false /*priority*/);
+          Index_Request(path, args, is_interactive, contents, cache_manager),
+          false /*priority*/);
     }
 
     QueueManager* queue = nullptr;
