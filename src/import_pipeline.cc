@@ -28,7 +28,6 @@ struct Out_Progress : public lsOutMessage<Out_Progress> {
   struct Params {
     int indexRequestCount = 0;
     int doIdMapCount = 0;
-    int loadPreviousIndexCount = 0;
     int onIdMappedCount = 0;
     int onIndexedCount = 0;
     int activeThreads = 0;
@@ -39,7 +38,6 @@ struct Out_Progress : public lsOutMessage<Out_Progress> {
 MAKE_REFLECT_STRUCT(Out_Progress::Params,
                     indexRequestCount,
                     doIdMapCount,
-                    loadPreviousIndexCount,
                     onIdMappedCount,
                     onIndexedCount,
                     activeThreads);
@@ -111,7 +109,6 @@ struct ActiveThread {
     Out_Progress out;
     out.params.indexRequestCount = queue->index_request.Size();
     out.params.doIdMapCount = queue->do_id_map.Size();
-    out.params.loadPreviousIndexCount = queue->load_previous_index.Size();
     out.params.onIdMappedCount = queue->on_id_mapped.Size();
     out.params.onIndexedCount = queue->on_indexed_for_merge.Size() +
                                 queue->on_indexed_for_querydb.Size();
@@ -122,7 +119,6 @@ struct ActiveThread {
       // Make sure we output a status update if queue lengths are zero.
       bool all_zero =
           out.params.indexRequestCount == 0 && out.params.doIdMapCount == 0 &&
-          out.params.loadPreviousIndexCount == 0 &&
           out.params.onIdMappedCount == 0 && out.params.onIndexedCount == 0 &&
           out.params.activeThreads == 0;
       if (!all_zero &&
@@ -413,6 +409,17 @@ void ParseFile(DiagnosticsEngine* diag_engine,
                                    true /*write_to_disk*/));
   }
 
+  // Load previous indexes if the file has already been imported.
+  for (Index_DoIdMap& request : result) {
+    if (!import_manager->IsInitialImport(request.current->path)) {
+      request.previous =
+          request.cache_manager->TryTakeOrLoad(request.current->path);
+      LOG_IF_S(ERROR, !request.previous)
+          << "Unable to load previous index for already imported index "
+          << request.current->path;
+    }
+  }
+
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
                                                  request.is_interactive);
 }
@@ -489,24 +496,6 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
   return did_work;
 }
 
-bool IndexMain_LoadPreviousIndex() {
-  auto* queue = QueueManager::instance();
-  optional<Index_DoIdMap> response =
-      queue->load_previous_index.TryDequeue(true /*priority*/);
-  if (!response)
-    return false;
-
-  response->previous =
-      response->cache_manager->TryTakeOrLoad(response->current->path);
-  LOG_IF_S(ERROR, !response->previous)
-      << "Unable to load previous index for already imported index "
-      << response->current->path;
-
-  queue->do_id_map.Enqueue(std::move(*response),
-                           response->is_interactive /*priority*/);
-  return true;
-}
-
 bool IndexMergeIndexUpdates() {
   // Merge low-priority requests, since priority requests should get serviced
   // by querydb asap.
@@ -572,8 +561,6 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
 
       did_work = IndexMain_DoCreateIndexUpdate(timestamp_manager) || did_work;
 
-      did_work = IndexMain_LoadPreviousIndex() || did_work;
-
       // Nothing to index and no index updates to create, so join some already
       // created index updates to reduce work on querydb thread.
       if (!did_work)
@@ -595,18 +582,6 @@ void QueryDb_DoIdMap(QueueManager* queue,
                      ImportManager* import_manager,
                      Index_DoIdMap* request) {
   assert(request->current);
-
-  // If the request does not have previous state and we have already imported
-  // it, load the previous state from disk and rerun IdMap logic later. Do not
-  // do this if we have already attempted in the past.
-  if (!request->load_previous && !request->previous &&
-      db->usr_to_file.find(request->current->path) != db->usr_to_file.end()) {
-    assert(!request->load_previous);
-    request->load_previous = true;
-    queue->load_previous_index.Enqueue(std::move(*request),
-                                       request->is_interactive /*priority*/);
-    return;
-  }
 
   // Check if the file is already being imported into querydb. If it is, drop
   // the request.
@@ -813,7 +788,6 @@ TEST_SUITE("ImportPipeline") {
   // FIXME: add more interesting tests that are not the happy path
   // FIXME: test
   //   - IndexMain_DoCreateIndexUpdate
-  //   - IndexMain_LoadPreviousIndex
   //   - QueryDb_ImportMain
 
   TEST_CASE_FIXTURE(Fixture, "index request with zero results") {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mutex>
+#include <shared_mutex>
 #include <string>
 #include <unordered_set>
 
@@ -9,6 +9,9 @@
 //
 // NOTE: This is not thread safe and should only be used on the querydb thread.
 struct ImportManager {
+  // Check if this is the first time this file has been imported.
+  bool IsInitialImport(const std::string& path);
+
   // Try to mark the given dependency as imported. A dependency can only ever be
   // imported once.
   bool TryMarkDependencyImported(const std::string& path);
@@ -23,7 +26,11 @@ struct ImportManager {
 
   std::unordered_set<std::string> querydb_processing_;
 
-  // TODO: use std::shared_mutex so we can have multiple readers.
-  std::mutex dependency_mutex_;
+  // TODO: use shared_mutex
+  std::shared_timed_mutex dependency_mutex_;
   std::unordered_set<std::string> dependency_imported_;
+
+  // TODO: use shared_mutex
+  std::shared_timed_mutex initial_import_mutex_;
+  std::unordered_set<std::string> initial_import_;
 };

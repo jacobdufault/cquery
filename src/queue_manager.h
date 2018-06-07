@@ -38,7 +38,6 @@ struct Index_DoIdMap {
 
   bool is_interactive = false;
   bool write_to_disk = false;
-  bool load_previous = false;
 
   Index_DoIdMap(std::unique_ptr<IndexFile> current,
                 const std::shared_ptr<ICacheManager>& cache_manager,
