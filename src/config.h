@@ -89,6 +89,9 @@ struct Config {
   // querydb thread is busy or idle.
   bool emitQueryDbBlocked = false;
 
+  // If true, inactive regions notifications will be sent to the client.
+  bool emitInactiveRegions = false;
+
   // If true, document links are reported for #include directives.
   bool showDocumentLinksOnIncludes = true;
 
@@ -183,6 +186,9 @@ struct Config {
 
   // Semantic highlighting
   struct Highlight {
+    // Set to true to enable semantic highlighting.
+    bool enabled = false;
+
     // Like index.{whitelist,blacklist}, don't publish semantic highlighting to
     // blacklisted files.
     std::vector<std::string> blacklist;
@@ -264,7 +270,7 @@ MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     frequencyMs,
                     onParse,
                     onType)
-MAKE_REFLECT_STRUCT(Config::Highlight, blacklist, whitelist)
+MAKE_REFLECT_STRUCT(Config::Highlight, enabled, blacklist, whitelist)
 MAKE_REFLECT_STRUCT(Config::Index,
                     attributeMakeCallsToCtor,
                     blacklist,
@@ -287,6 +293,7 @@ MAKE_REFLECT_STRUCT(Config,
 
                     progressReportFrequencyMs,
                     emitQueryDbBlocked,
+                    emitInactiveRegions,
 
                     showDocumentLinksOnIncludes,
 

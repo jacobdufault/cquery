@@ -100,6 +100,9 @@ bool FindFileOrFail(QueryDatabase* db,
 
 void EmitInactiveLines(WorkingFile* working_file,
                        const std::vector<Range>& inactive_regions) {
+  if (!g_config->emitInactiveRegions)
+    return;
+
   Out_CquerySetInactiveRegion out;
   out.params.uri = lsDocumentUri::FromPath(working_file->filename);
   for (Range skipped : inactive_regions) {
@@ -114,6 +117,9 @@ void EmitSemanticHighlighting(QueryDatabase* db,
                               SemanticHighlightSymbolCache* semantic_cache,
                               WorkingFile* working_file,
                               QueryFile* file) {
+  if (!g_config->highlight.enabled)
+    return;
+
   assert(file->def);
   if (!semantic_cache->match_->IsMatch(file->def->path))
     return;
