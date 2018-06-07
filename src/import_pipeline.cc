@@ -290,6 +290,11 @@ CacheLoadResult TryLoadFromCache(
                                    is_interactive, false /*write_to_disk*/));
   }
 
+  // Mark all of the entries as imported so we will load do delta loads next
+  // time.
+  for (Index_DoIdMap& entry : result)
+    import_manager->IsInitialImport(entry.current->path);
+
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
                                                  false /*priority*/);
   return CacheLoadResult::DoNotParse;
@@ -394,14 +399,13 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   }
 
   for (std::unique_ptr<IndexFile>& new_index : *indexes) {
-    Timer time;
-
     // Only emit diagnostics for non-interactive sessions, which makes it easier
     // to identify indexing problems. For interactive sessions, diagnostics are
     // handled by code completion.
-    if (!request.is_interactive)
+    if (!request.is_interactive) {
       diag_engine->Publish(working_files, new_index->path,
                            new_index->diagnostics_);
+    }
 
     // When main thread does IdMap request it will request the previous index if
     // needed.
@@ -411,7 +415,8 @@ void ParseFile(DiagnosticsEngine* diag_engine,
                                    true /*write_to_disk*/));
   }
 
-  // Load previous indexes if the file has already been imported.
+  // Load previous index if the file has already been imported so we can do a
+  // delta update.
   for (Index_DoIdMap& request : result) {
     if (!import_manager->IsInitialImport(request.current->path)) {
       request.previous =
@@ -419,6 +424,18 @@ void ParseFile(DiagnosticsEngine* diag_engine,
       LOG_IF_S(ERROR, !request.previous)
           << "Unable to load previous index for already imported index "
           << request.current->path;
+    }
+  }
+
+  // Write index to disk if requested.
+  for (Index_DoIdMap& request : result) {
+    if (request.write_to_disk) {
+      LOG_S(INFO) << "Writing cached index to disk for "
+                  << request.current->path;
+      request.cache_manager->WriteToCache(*request.current);
+      timestamp_manager->UpdateCachedModificationTime(
+          request.current->path,
+          request.current->last_modification_time);
     }
   }
 
@@ -475,16 +492,6 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
                                  previous_index, response->current->file.get());
     LOG_S(INFO) << "Built index update for " << response->current->file->path
                 << " (is_delta=" << !!response->previous << ")";
-
-    // Write current index to disk if requested.
-    if (response->write_to_disk) {
-      LOG_S(INFO) << "Writing cached index to disk for "
-                  << response->current->file->path;
-      response->cache_manager->Write(*response->current->file);
-      timestamp_manager->UpdateCachedModificationTime(
-          response->current->file->path,
-          response->current->file->last_modification_time);
-    }
 
     Index_OnIndexed reply(std::move(update));
     const int kMaxSizeForQuerydb = 5000;
