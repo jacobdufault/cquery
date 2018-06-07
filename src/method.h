@@ -10,6 +10,7 @@ extern MethodType kMethodType_Unknown;
 extern MethodType kMethodType_Exit;
 extern MethodType kMethodType_TextDocumentPublishDiagnostics;
 extern MethodType kMethodType_CqueryPublishInactiveRegions;
+extern MethodType kMethodType_CqueryQueryDbStatus;
 extern MethodType kMethodType_CqueryPublishSemanticHighlighting;
 
 struct lsRequestId {
