@@ -1201,9 +1201,10 @@ ClangCursor::VisitResult AddDeclInitializerUsagesVisitor(ClangCursor cursor,
       // cursor.get_referenced().template_specialization_to_template_definition().get_type().strip_qualifiers().get_usr_hash();
       // std::string ref_usr =
       // cursor.get_referenced().template_specialization_to_template_definition().get_type().strip_qualifiers().get_usr_hash();
-      optional<Usr> ref_usr = cursor.get_referenced()
-                         .template_specialization_to_template_definition()
-                         .get_usr_hash();
+      optional<Usr> ref_usr =
+          cursor.get_referenced()
+              .template_specialization_to_template_definition()
+              .get_usr_hash();
       // std::string ref_usr = ref.get_usr_hash();
       if (!ref_usr)
         break;

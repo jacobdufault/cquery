@@ -176,9 +176,16 @@ std::vector<std::string> kBlacklistMulti = {
     "-MF", "-MT", "-MQ", "-o", "--serialize-diagnostics", "-Xclang"};
 
 // Blacklisted flags which are always removed from the command line.
-std::vector<std::string> kBlacklist = {
-    "-c", "-MP", "-MD", "-MMD", "--fcolor-diagnostics", "-showIncludes",
-    "/permissive", /* These are MSVC PCH flags: */ "/Fp", "/Yc", "/Yu" };
+std::vector<std::string> kBlacklist = {"-c",
+                                       "-MP",
+                                       "-MD",
+                                       "-MMD",
+                                       "--fcolor-diagnostics",
+                                       "-showIncludes",
+                                       "/permissive",
+                                       /* These are MSVC PCH flags: */ "/Fp",
+                                       "/Yc",
+                                       "/Yu"};
 
 // Arguments which are followed by a potentially relative path. We need to make
 // all relative paths absolute, otherwise libclang will not resolve them.
@@ -408,7 +415,8 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
 
   // Add -resource-dir so clang can correctly resolve system includes like
   // <cstddef>
-  if (!clang_cl && !AnyStartsWith(result.args, "-resource-dir") && !config->resource_dir.empty()) {
+  if (!clang_cl && !AnyStartsWith(result.args, "-resource-dir") &&
+      !config->resource_dir.empty()) {
     result.args.push_back("-resource-dir=" + config->resource_dir);
   }
 
@@ -793,9 +801,10 @@ void Project::Index(QueueManager* queue,
     }
     bool is_interactive =
         working_files->GetFileByFilename(entry.filename) != nullptr;
-    queue->index_request.Enqueue(Index_Request(entry.filename, entry.args,
-                                               is_interactive, *content,
-                                               MakeIndexCache(g_config->cacheStore), id), false /*priority*/);
+    queue->index_request.Enqueue(
+        Index_Request(entry.filename, entry.args, is_interactive, *content,
+                      MakeIndexCache(g_config->cacheStore), id),
+        false /*priority*/);
   });
 }
 
@@ -885,8 +894,7 @@ TEST_SUITE("Project") {
     CheckFlags("E:/workdir", "E:/workdir/bar.cc",
                /* raw */ {"clang-cl.exe", "/I./test", "E:/workdir/bar.cc"},
                /* expected */
-               {"clang-cl.exe",
-                "/I&E:/workdir/./test", "&E:/workdir/bar.cc"});
+               {"clang-cl.exe", "/I&E:/workdir/./test", "&E:/workdir/bar.cc"});
 
     CheckFlags("E:/workdir", "E:/workdir/bar.cc",
                /* raw */

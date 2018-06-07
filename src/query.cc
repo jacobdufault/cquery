@@ -1100,7 +1100,8 @@ TEST_SUITE("query") {
 
   TEST_CASE("Remove variable with usage") {
     auto load_index_from_json = [](const char* json) {
-      return Deserialize(SerializeFormat::Json, AbsolutePath::BuildDoNotUse("foo.cc"), json, "<empty>",
+      return Deserialize(SerializeFormat::Json,
+                         AbsolutePath::BuildDoNotUse("foo.cc"), json, "<empty>",
                          nullopt);
     };
 

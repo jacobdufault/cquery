@@ -1,7 +1,7 @@
 #include "method.h"
 
-#include <iostream>
 #include <doctest/doctest.h>
+#include <iostream>
 #include "serializers/json.h"
 
 MethodType kMethodType_Unknown = "$unknown";

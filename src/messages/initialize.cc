@@ -546,9 +546,12 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       // Should snippets be enabled?
       if (!request->params.capabilities.textDocument ||
           !request->params.capabilities.textDocument->completion ||
-          !request->params.capabilities.textDocument->completion->completionItem ||
-          !request->params.capabilities.textDocument->completion->completionItem->snippetSupport ||
-          !request->params.capabilities.textDocument->completion->completionItem->snippetSupport.value()) {
+          !request->params.capabilities.textDocument->completion
+               ->completionItem ||
+          !request->params.capabilities.textDocument->completion->completionItem
+               ->snippetSupport ||
+          !request->params.capabilities.textDocument->completion->completionItem
+               ->snippetSupport.value()) {
         g_config->completion.enableSnippets = false;
       }
 

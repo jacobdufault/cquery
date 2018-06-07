@@ -45,7 +45,8 @@ struct Handler_TextDocumentDocumentLink
     out.id = request->id;
 
     if (g_config->showDocumentLinksOnIncludes &&
-        !ShouldIgnoreFileForIndexing(request->params.textDocument.uri.GetAbsolutePath())) {
+        !ShouldIgnoreFileForIndexing(
+            request->params.textDocument.uri.GetAbsolutePath())) {
       QueryFile* file;
       if (!FindFileOrFail(db, project, request->id,
                           request->params.textDocument.uri.GetAbsolutePath(),

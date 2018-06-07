@@ -36,8 +36,7 @@ struct Handler_CqueryCallers : BaseMessageHandler<In_CqueryCallers> {
           uses.push_back(func_ref);
         for (Use func_ref : GetUsesForAllDerived(db, func))
           uses.push_back(func_ref);
-        out.result =
-            GetLsLocations(db, working_files, uses);
+        out.result = GetLsLocations(db, working_files, uses);
         break;
       }
     }

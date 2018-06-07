@@ -1,7 +1,8 @@
 #include "threaded_queue.h"
 
 // static
-bool MultiQueueWaiter::HasState(std::initializer_list<BaseThreadQueue*> queues) {
+bool MultiQueueWaiter::HasState(
+    std::initializer_list<BaseThreadQueue*> queues) {
   for (BaseThreadQueue* queue : queues) {
     if (!queue->IsEmpty())
       return true;
@@ -9,7 +10,8 @@ bool MultiQueueWaiter::HasState(std::initializer_list<BaseThreadQueue*> queues) 
   return false;
 }
 
-bool MultiQueueWaiter::ValidateWaiter(std::initializer_list<BaseThreadQueue*> queues) {
+bool MultiQueueWaiter::ValidateWaiter(
+    std::initializer_list<BaseThreadQueue*> queues) {
   for (BaseThreadQueue* queue : queues) {
     if (queue->waiter.get() != this)
       return false;

@@ -34,9 +34,11 @@ struct Handler_CqueryIndexFile : BaseMessageHandler<In_CqueryIndexFile> {
       ABORT_S() << "Unable to find " << request->params.path;
 
     LOG_S(INFO) << "Indexing file " << request->params.path;
-    QueueManager::instance()->index_request.Enqueue(Index_Request(
-        path->path, request->params.args, request->params.is_interactive,
-        request->params.contents, MakeIndexCache(g_config->cacheStore))), true /*priority*/);
+    QueueManager::instance()->index_request.Enqueue(
+        Index_Request(path->path, request->params.args,
+                      request->params.is_interactive, request->params.contents,
+                      MakeIndexCache(g_config->cacheStore)),
+        true /*priority*/);
   }
 };
 REGISTER_MESSAGE_HANDLER(Handler_CqueryIndexFile);

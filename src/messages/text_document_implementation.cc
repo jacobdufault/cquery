@@ -32,18 +32,17 @@ struct Handler_TextDocumentImplementation
     Out_LocationList out;
     out.id = request->id;
 
-
     for (SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       if (sym.kind == SymbolKind::Type) {
         QueryType& type = db->GetType(sym);
-        out.result = GetLsLocations(
-            db, working_files, GetDeclarations(db, type.derived));
+        out.result = GetLsLocations(db, working_files,
+                                    GetDeclarations(db, type.derived));
         break;
       } else if (sym.kind == SymbolKind::Func) {
         QueryFunc& func = db->GetFunc(sym);
-        out.result = GetLsLocations(
-            db, working_files, GetDeclarations(db, func.derived));
+        out.result = GetLsLocations(db, working_files,
+                                    GetDeclarations(db, func.derived));
         break;
       }
     }

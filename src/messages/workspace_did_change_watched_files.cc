@@ -56,7 +56,8 @@ struct Handler_WorkspaceDidChangeWatchedFiles
           else {
             QueueManager::instance()->index_request.Enqueue(
                 Index_Request(path, entry.args, is_interactive, *content,
-                              MakeIndexCache(g_config->cacheStore)), false /*priority*/);
+                              MakeIndexCache(g_config->cacheStore)),
+                false /*priority*/);
             if (is_interactive)
               clang_complete->NotifySave(path);
           }
@@ -65,7 +66,8 @@ struct Handler_WorkspaceDidChangeWatchedFiles
         case lsFileChangeType::Deleted:
           QueueManager::instance()->index_request.Enqueue(
               Index_Request(path, entry.args, is_interactive, std::string(),
-                            MakeIndexCache(g_config->cacheStore)), false /*priority*/);
+                            MakeIndexCache(g_config->cacheStore)),
+              false /*priority*/);
           break;
       }
     }

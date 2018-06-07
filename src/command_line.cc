@@ -66,8 +66,7 @@ bool ShouldDisplayMethodTiming(MethodType type) {
 }
 
 void PrintHelp() {
-  std::cout
-      << R"help(cquery is a low-latency C/C++/Objective-C language server.
+  std::cout << R"help(cquery is a low-latency C/C++/Objective-C language server.
 
 Mode:
   --check <path>
@@ -122,12 +121,8 @@ struct Out_CqueryQueryDbStatus : public lsOutMessage<Out_CqueryQueryDbStatus> {
   std::string method = "$cquery/queryDbStatus";
   Params params;
 };
-MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus::Params,
-                    isActive);
-MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus,
-                    jsonrpc,
-                    method,
-                    params);
+MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus::Params, isActive);
+MAKE_REFLECT_STRUCT(Out_CqueryQueryDbStatus, jsonrpc, method, params);
 
 void WriteQueryDbStatus(bool is_active) {
   if (!g_config->emitQueryDbBlocked)
@@ -178,7 +173,8 @@ bool QueryDbMainLoop(QueryDatabase* db,
   auto* queue = QueueManager::instance();
   bool did_work = false;
 
-  optional<std::unique_ptr<InMessage>> message = queue->for_querydb.TryDequeue(true /*priority*/);
+  optional<std::unique_ptr<InMessage>> message =
+      queue->for_querydb.TryDequeue(true /*priority*/);
   while (message) {
     did_work = true;
 
@@ -276,8 +272,9 @@ void RunQueryDbThread(const std::string& bin_name) {
     if (!did_work) {
       WriteQueryDbStatus(false);
       auto* queue = QueueManager::instance();
-      QueueManager::instance()->querydb_waiter->Wait(&queue->for_querydb,
-                           &queue->do_id_map, &queue->on_indexed_for_querydb);
+      QueueManager::instance()->querydb_waiter->Wait(
+          &queue->for_querydb, &queue->do_id_map,
+          &queue->on_indexed_for_querydb);
     }
   }
 }

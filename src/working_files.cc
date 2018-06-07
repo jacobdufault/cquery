@@ -552,7 +552,8 @@ WorkingFiles::Snapshot WorkingFiles::AsSnapshot(
   Snapshot result;
   result.files.reserve(files.size());
   for (const auto& file : files) {
-    if (filter_paths.empty() || FindAnyPartial(file->filename.path, filter_paths))
+    if (filter_paths.empty() ||
+        FindAnyPartial(file->filename.path, filter_paths))
       result.files.push_back({file->filename.path, file->buffer_content});
   }
   return result;

@@ -338,7 +338,7 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   }
 
   // argv is not needed by the cquery process.
-  delete [] argv;
+  delete[] argv;
 
   // The parent cannot read from stdin and can not write to stdout.
   close(pipe_stdin[kPipeRead]);
