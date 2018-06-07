@@ -10,6 +10,7 @@ MethodType kMethodType_TextDocumentPublishDiagnostics =
     "textDocument/publishDiagnostics";
 MethodType kMethodType_CqueryPublishInactiveRegions =
     "$cquery/publishInactiveRegions";
+MethodType kMethodType_CqueryQueryDbStatus = "$cquery/queryDbStatus";
 MethodType kMethodType_CqueryPublishSemanticHighlighting =
     "$cquery/publishSemanticHighlighting";
 
