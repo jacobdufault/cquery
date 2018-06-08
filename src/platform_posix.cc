@@ -368,4 +368,16 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   return result;
 }
 
+optional<std::string> GetHomeDirectory() {
+  char const* home = std::getenv("HOME");
+  if (!home)
+    return {};
+
+  // Guarantee that the returned string ends in a /
+  std::string home_str(home);
+  if (home_str.size() && home_str.back() != '/')
+    home_str.push_back('/');
+  return home_str;
+}
+
 #endif

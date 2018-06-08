@@ -351,4 +351,9 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   return output;
 }
 
+optional<std::string> GetHomeDirectory() {
+  // TODO: Not sure what to do on Windows
+  return {}
+}
+
 #endif
