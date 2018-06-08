@@ -47,12 +47,13 @@ MAKE_REFLECT_STRUCT(Out_Progress, jsonrpc, method, params);
 // |kIterationSize| messages of a type at one time. While the import time
 // likely stays the same, this should reduce overall queue lengths which means
 // the user gets a usable index faster.
+constexpr int kIterationSize = 200;
 struct IterationLoop {
-  const int kIterationSize = 100;
-  int count = 0;
+  int remaining = kIterationSize;
+  void IncreaseCount() { remaining *= 50; }
 
-  bool Next() { return count++ < kIterationSize; }
-  void Reset() { count = 0; }
+  bool Next() { return remaining-- > 0; }
+  void Reset() { remaining = kIterationSize; }
 };
 
 struct IModificationTimestampFetcher {
@@ -495,7 +496,7 @@ bool IndexMain_DoCreateIndexUpdate(TimestampManager* timestamp_manager) {
                 << " (is_delta=" << !!response->previous << ")";
 
     Index_OnIndexed reply(std::move(update));
-    const int kMaxSizeForQuerydb = 5000;
+    const int kMaxSizeForQuerydb = 1000;
     ThreadedQueue<Index_OnIndexed>& q =
         queue->on_indexed_for_querydb.Size() < kMaxSizeForQuerydb
             ? queue->on_indexed_for_querydb
@@ -527,7 +528,12 @@ bool IndexMergeIndexUpdates() {
     root->update.Merge(std::move(to_join->update));
   }
 
-  queue->on_indexed_for_querydb.Enqueue(std::move(*root), false /*priority*/);
+  const int kMaxSizeForQuerydb = 1500;
+  ThreadedQueue<Index_OnIndexed>& q =
+      queue->on_indexed_for_querydb.Size() < kMaxSizeForQuerydb
+          ? queue->on_indexed_for_querydb
+          : queue->on_indexed_for_merge;
+  q.Enqueue(std::move(*root), false /*priority*/);
   return did_merge;
 }
 
@@ -674,6 +680,7 @@ bool QueryDb_ImportMain(QueryDatabase* db,
   bool did_work = false;
 
   IterationLoop loop;
+  loop.IncreaseCount();
   while (loop.Next()) {
     optional<Index_DoIdMap> request =
         queue->do_id_map.TryDequeue(true /*priority*/);
