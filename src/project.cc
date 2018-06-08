@@ -791,16 +791,10 @@ void Project::Index(QueueManager* queue,
                     WorkingFiles* working_files,
                     lsRequestId id) {
   ForAllFilteredFiles([&](int i, const Project::Entry& entry) {
-    optional<std::string> content = ReadContent(entry.filename);
-    if (!content) {
-      LOG_S(ERROR) << "When loading project, canont read file "
-                   << entry.filename;
-      return;
-    }
     bool is_interactive =
         working_files->GetFileByFilename(entry.filename) != nullptr;
     queue->index_request.Enqueue(
-        Index_Request(entry.filename, entry.args, is_interactive, *content,
+        Index_Request(entry.filename, entry.args, is_interactive, nullopt,
                       ICacheManager::Make(), id),
         false /*priority*/);
   });
