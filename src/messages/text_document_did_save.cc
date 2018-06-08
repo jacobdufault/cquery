@@ -50,16 +50,11 @@ struct Handler_TextDocumentDidSave
     //      if so, ignore that index response.
     // TODO: send as priority request
     if (!g_config->enableIndexOnDidChange) {
-      optional<std::string> content = ReadContent(path);
-      if (!content) {
-        LOG_S(ERROR) << "Unable to read file content after saving " << path;
-      } else {
-        Project::Entry entry = project->FindCompilationEntryForFile(path);
-        QueueManager::instance()->index_request.Enqueue(
-            Index_Request(entry.filename, entry.args, true /*is_interactive*/,
-                          *content, MakeIndexCache(g_config->cacheStore)),
-            true /*priority*/);
-      }
+      Project::Entry entry = project->FindCompilationEntryForFile(path);
+      QueueManager::instance()->index_request.Enqueue(
+          Index_Request(entry.filename, entry.args, true /*is_interactive*/,
+                        nullopt, MakeIndexCache(g_config->cacheStore)),
+          true /*priority*/);
     }
 
     clang_complete->NotifySave(path);
