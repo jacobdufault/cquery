@@ -267,10 +267,10 @@ void RunQueryDbThread(const std::string& bin_name) {
         global_code_complete_cache.get(), non_global_code_complete_cache.get(),
         signature_cache.get());
 
-    // Cleanup and free any unused memory.
-    FreeUnusedMemory();
-
     if (!did_work) {
+      // Cleanup and free any unused memory.
+      FreeUnusedMemory();
+
       WriteQueryDbStatus(false);
       auto* queue = QueueManager::instance();
       QueueManager::instance()->querydb_waiter->Wait(
