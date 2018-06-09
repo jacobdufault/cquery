@@ -368,16 +368,20 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   return result;
 }
 
-optional<std::string> GetHomeDirectory() {
+optional<std::string> GetGlobalConfigDirectory() {
+  char const* xdg_config_home = std::getenv("XDG_CONFIG_HOME");
   char const* home = std::getenv("HOME");
-  if (!home)
+  std::string config;
+
+  if (xdg_config_home)
+    config = std::string(xdg_config_home);
+  else if (home)
+    config = std::string(home);
+  else
     return {};
 
-  // Guarantee that the returned string ends in a /
-  std::string home_str(home);
-  if (home_str.size() && home_str.back() != '/')
-    home_str.push_back('/');
-  return home_str;
+  EnsureEndsInSlash(config);
+  return config;
 }
 
 #endif
