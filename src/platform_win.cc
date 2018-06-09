@@ -351,9 +351,22 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   return output;
 }
 
-optional<std::string> GetHomeDirectory() {
-  // TODO: Not sure what to do on Windows
-  return {}
+optional<std::string> GetGlobalConfigDirectory() {
+	wchar_t  *roaming_path = NULL;
+	optional<std::string> cfg_path = std::nullopt;
+	if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_DEFAULT,
+					   NULL, &roaming_path))) {
+	  std::wstringstream roaming_stream;
+          roaming_stream << roaming_path << L"/cquery";
+
+	  // Convert the roaming path string to a normal string so it
+	  // is analogous with the string returned by the posix version.
+	  using convert_type = std::codecvt_utf8<wchar_t>;
+	  std::wstring_convert<convert_type, wchar_t> converter;
+	  cfg_path = converter.to_bytes(roaming_stream.str())
+	}
+	CoTaskMemFree(static_cast<void*>(roaming_path));
+	return cfg_path
 }
 
 #endif
