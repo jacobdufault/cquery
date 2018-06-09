@@ -474,10 +474,14 @@ std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
                      }
                    });
 
-  std::string home = *GetHomeDirectory();
-  if (home.size() && FileExists(home + ".cquery") && folder_args.empty())
-    LOG_S(INFO) << "Using .cquery arguments from " << (home + ".cquery");
-    folder_args.emplace(home, ReadCompilerArgumentsFromFile(home + ".cquery"));
+  optional<std::string> maybe_cfg = GetGlobalConfigDirectory();
+  if (folder_args.empty() && maybe_cfg) {
+    std::string cfg(*maybe_cfg + ".cquery");
+    if (cfg.size() && FileExists(cfg)) {
+      LOG_S(INFO) << "Using .cquery arguments from " << cfg;
+      folder_args.emplace(config->project_dir, ReadCompilerArgumentsFromFile(cfg));
+    }
+  }
 
   LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty())
       << "cquery has no clang arguments. Considering adding either a "
@@ -526,8 +530,10 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
   // If there is a .cquery file always load using directory listing.
   // The .cquery file can be in the project or home dir but the project
   // dir takes precedence.
-  if (FileExists(project->project_dir + ".cquery") ||
-      (GetHomeDirectory() && FileExists(*GetHomeDirectory() + ".cquery")))
+  if (FileExists(project->project_dir + ".cquery"))
+    return LoadFromDirectoryListing(project);
+  else if (GetGlobalConfigDirectory() &&
+           FileExists(*GetGlobalConfigDirectory() + ".cquery"))
     return LoadFromDirectoryListing(project);
 
   // If |compilationDatabaseCommand| is specified, execute it to get the compdb.
