@@ -359,12 +359,6 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
 optional<std::string> GetGlobalConfigDirectory() {
 	wchar_t  *roaming_path = NULL;
 	optional<std::string> cfg_path = {};
-	// As per
-	// https://blogs.msdn.microsoft.com/patricka/2010/03/18/where-should-i-store-my-data-and-configuration-files-if-i-target-multiple-os-versions/
-	// we use SHGetKnownFolderPath to find the directory to put
-	// config files in on Windows. When this succeeds and once
-	// we're done using roaming_path, we must free the memory
-	// using CoTaskMemFree.
 	if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_DEFAULT,
 					   NULL, &roaming_path))) {
 	  std::wstringstream roaming_stream;
@@ -375,6 +369,11 @@ optional<std::string> GetGlobalConfigDirectory() {
 	  using convert_type = std::codecvt_utf8<wchar_t>;
 	  std::wstring_convert<convert_type, wchar_t> converter;
 	  cfg_path = converter.to_bytes(roaming_stream.str());
+
+	  // As per the docs for SHGetKnownFolderPath
+	  // (https://msdn.microsoft.com/en-us/library/bb762188(VS.85).aspx)
+	  // we must free roaming_path using CoTaskMemFree once
+	  // finished with it.
 	  CoTaskMemFree(static_cast<void*>(roaming_path));
 	}
 	return cfg_path;
