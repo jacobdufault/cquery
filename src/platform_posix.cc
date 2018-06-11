@@ -371,7 +371,7 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
 optional<std::string> GetGlobalConfigDirectory() {
   char const* xdg_config_home = std::getenv("XDG_CONFIG_HOME");
   char const* home = std::getenv("HOME");
-  std::string config;
+  optional<std::string> config;
 
   // If it exists use XDG_CONFIG_HOME to comply with the XDG base
   // directory spec. Otherwise, use HOME if available.
@@ -380,15 +380,15 @@ optional<std::string> GetGlobalConfigDirectory() {
     EnsureEndsInSlash(config);
     config += "cquery";
     if (!FileExists(config)) {
-      MakeDirectoryRecursive(AbsolutePath(config, true));
+      MakeDirectoryRecursive(AbsolutePath(config, false));
     }
   } else if (home) {
     config = home;
-  } else {
-    return {};
   }
 
-  EnsureEndsInSlash(config);
+  if (config) {
+    EnsureEndsInSlash(*config);
+  }
   return config;
 }
 
