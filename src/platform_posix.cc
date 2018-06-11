@@ -376,7 +376,7 @@ optional<std::string> GetGlobalConfigDirectory() {
   // If it exists use XDG_CONFIG_HOME to comply with the XDG base
   // directory spec. Otherwise, use HOME if available.
   if (xdg_config_home) {
-    *config = xdg_config_home;
+    config = std::string(xdg_config_home);
     EnsureEndsInSlash(*config);
     *config += "cquery";
     if (!FileExists(*config)) {
