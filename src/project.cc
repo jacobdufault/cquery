@@ -530,11 +530,12 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
   // If there is a .cquery file always load using directory listing.
   // The .cquery file can be in the project or home dir but the project
   // dir takes precedence.
-  if (FileExists(project->project_dir + ".cquery"))
+  if (FileExists(project->project_dir + ".cquery")) {
     return LoadFromDirectoryListing(project);
-  else if (GetGlobalConfigDirectory() &&
-           FileExists(*GetGlobalConfigDirectory() + ".cquery"))
+  } else if (GetGlobalConfigDirectory() &&
+	     FileExists(*GetGlobalConfigDirectory() + ".cquery")) {
     return LoadFromDirectoryListing(project);
+  }
 
   // If |compilationDatabaseCommand| is specified, execute it to get the compdb.
   std::string comp_db_dir(opt_compilation_db_dir);
