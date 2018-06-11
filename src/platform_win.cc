@@ -369,8 +369,8 @@ optional<std::string> GetGlobalConfigDirectory() {
 	  using convert_type = std::codecvt_utf8<wchar_t>;
 	  std::wstring_convert<convert_type, wchar_t> converter;
 	  cfg_path = converter.to_bytes(roaming_stream.str());
+	  CoTaskMemFree(static_cast<void*>(roaming_path));
 	}
-	CoTaskMemFree(static_cast<void*>(roaming_path));
 	return cfg_path;
 }
 
