@@ -476,10 +476,10 @@ std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
 
   optional<std::string> maybe_cfg = GetGlobalConfigDirectory();
   if (folder_args.empty() && maybe_cfg) {
-    std::string cfg(*maybe_cfg + ".cquery");
-    if (cfg.size() && FileExists(cfg)) {
-      LOG_S(INFO) << "Using .cquery arguments from " << cfg;
-      folder_args.emplace(config->project_dir, ReadCompilerArgumentsFromFile(cfg));
+    std::string config = *maybe_config + ".cquery";
+    if (config.size() && FileExists(config)) {
+      LOG_S(INFO) << "Using .cquery arguments from " << config;
+      folder_args.emplace(config->project_dir, ReadCompilerArgumentsFromFile(config));
     }
   }
 
