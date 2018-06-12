@@ -183,6 +183,8 @@ std::vector<std::string> kBlacklist = {"-c",
                                        "--fcolor-diagnostics",
                                        "-showIncludes",
                                        "/permissive",
+                                       "-march=",
+                                       "-Wl,-arch",
                                        /* These are MSVC PCH flags: */ "/Fp",
                                        "/Yc",
                                        "/Yu"};
