@@ -428,15 +428,15 @@ IdMap::IdMap(QueryDatabase* query_db, const IdCache& local_ids)
         *GetQueryVarIdFromUsr(query_db, entry.second, true);
 }
 
-QueryTypeId IdMap::ToQuery(IndexTypeId id) const {
+QueryTypeId IdMap::ToQuery(IndexFamily::TypeId id) const {
   assert(cached_type_ids_.find(id) != cached_type_ids_.end());
   return QueryTypeId(cached_type_ids_.find(id)->second);
 }
-QueryFuncId IdMap::ToQuery(IndexFuncId id) const {
+QueryFuncId IdMap::ToQuery(IndexFamily::FuncId id) const {
   assert(cached_func_ids_.find(id) != cached_func_ids_.end());
   return QueryFuncId(cached_func_ids_.find(id)->second);
 }
-QueryVarId IdMap::ToQuery(IndexVarId id) const {
+QueryVarId IdMap::ToQuery(IndexFamily::VarId id) const {
   assert(cached_var_ids_.find(id) != cached_var_ids_.end());
   return QueryVarId(cached_var_ids_.find(id)->second);
 }
@@ -450,13 +450,13 @@ Use IdMap::ToQuery(Reference ref) const {
       ret.id = primary_file;
       break;
     case SymbolKind::Func:
-      ret.id = ToQuery(IndexFuncId(ref.id));
+      ret.id = ToQuery(IndexFamily::FuncId(ref.id));
       break;
     case SymbolKind::Type:
-      ret.id = ToQuery(IndexTypeId(ref.id));
+      ret.id = ToQuery(IndexFamily::TypeId(ref.id));
       break;
     case SymbolKind::Var:
-      ret.id = ToQuery(IndexVarId(ref.id));
+      ret.id = ToQuery(IndexFamily::VarId(ref.id));
       break;
   }
   return ret;

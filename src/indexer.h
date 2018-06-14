@@ -74,11 +74,6 @@ void Reflect(TVisitor& visitor, Id<T>& id) {
   Reflect(visitor, id.id);
 }
 
-using IndexFileId = Id<IndexFile>;
-using IndexTypeId = Id<IndexType>;
-using IndexFuncId = Id<IndexFunc>;
-using IndexVarId = Id<IndexVar>;
-
 struct SymbolIdx {
   Id<void> id;
   SymbolKind kind;
@@ -218,23 +213,23 @@ struct IndexType {
   using Def = TypeDefDefinitionData<IndexFamily>;
 
   Usr usr;
-  IndexTypeId id;
+  IndexFamily::TypeId id;
 
   Def def;
   std::vector<Use> declarations;
 
   // Immediate derived types.
-  std::vector<IndexTypeId> derived;
+  std::vector<IndexFamily::TypeId> derived;
 
   // Declared variables of this type.
-  std::vector<IndexVarId> instances;
+  std::vector<IndexFamily::VarId> instances;
 
   // Every usage, useful for things like renames.
   // NOTE: Do not insert directly! Use AddUsage instead.
   std::vector<Use> uses;
 
   IndexType() {}  // For serialization.
-  IndexType(IndexTypeId id, Usr usr);
+  IndexType(IndexFamily::TypeId id, Usr usr);
 
   bool operator<(const IndexType& other) const { return id < other.id; }
 };
@@ -313,7 +308,7 @@ struct IndexFunc {
   using Def = FuncDefDefinitionData<IndexFamily>;
 
   Usr usr;
-  IndexFuncId id;
+  IndexFamily::FuncId id;
 
   Def def;
 
@@ -328,7 +323,7 @@ struct IndexFunc {
   std::vector<Declaration> declarations;
 
   // Methods which directly override this one.
-  std::vector<IndexFuncId> derived;
+  std::vector<IndexFamily::FuncId> derived;
 
   // Calls/usages of this function. If the call is coming from outside a
   // function context then the FuncRef will not have an associated id.
@@ -338,7 +333,7 @@ struct IndexFunc {
   std::vector<Use> uses;
 
   IndexFunc() {}  // For serialization.
-  IndexFunc(IndexFuncId id, Usr usr) : usr(usr), id(id) {}
+  IndexFunc(IndexFamily::FuncId id, Usr usr) : usr(usr), id(id) {}
 
   bool operator<(const IndexFunc& other) const { return id < other.id; }
 };
@@ -421,7 +416,7 @@ struct IndexVar {
   using Def = VarDefDefinitionData<IndexFamily>;
 
   Usr usr;
-  IndexVarId id;
+  IndexFamily::VarId id;
 
   Def def;
 
@@ -429,7 +424,7 @@ struct IndexVar {
   std::vector<Use> uses;
 
   IndexVar() {}  // For serialization.
-  IndexVar(IndexVarId id, Usr usr) : usr(usr), id(id) {}
+  IndexVar(IndexFamily::VarId id, Usr usr) : usr(usr), id(id) {}
 
   bool operator<(const IndexVar& other) const { return id < other.id; }
 };
@@ -437,12 +432,12 @@ MAKE_HASHABLE(IndexVar, t.id);
 
 struct IdCache {
   AbsolutePath primary_file;
-  std::unordered_map<Usr, IndexTypeId> usr_to_type_id;
-  std::unordered_map<Usr, IndexFuncId> usr_to_func_id;
-  std::unordered_map<Usr, IndexVarId> usr_to_var_id;
-  std::unordered_map<IndexTypeId, Usr> type_id_to_usr;
-  std::unordered_map<IndexFuncId, Usr> func_id_to_usr;
-  std::unordered_map<IndexVarId, Usr> var_id_to_usr;
+  std::unordered_map<Usr, IndexFamily::TypeId> usr_to_type_id;
+  std::unordered_map<Usr, IndexFamily::FuncId> usr_to_func_id;
+  std::unordered_map<Usr, IndexFamily::VarId> usr_to_var_id;
+  std::unordered_map<IndexFamily::TypeId, Usr> type_id_to_usr;
+  std::unordered_map<IndexFamily::FuncId, Usr> func_id_to_usr;
+  std::unordered_map<IndexFamily::VarId, Usr> var_id_to_usr;
 
   IdCache(const AbsolutePath& primary_file);
 };
@@ -493,15 +488,15 @@ struct IndexFile {
 
   IndexFile(const AbsolutePath& path, const std::string& contents);
 
-  IndexTypeId ToTypeId(Usr usr);
-  IndexFuncId ToFuncId(Usr usr);
-  IndexVarId ToVarId(Usr usr);
-  IndexTypeId ToTypeId(const CXCursor& usr);
-  IndexFuncId ToFuncId(const CXCursor& usr);
-  IndexVarId ToVarId(const CXCursor& usr);
-  IndexType* Resolve(IndexTypeId id);
-  IndexFunc* Resolve(IndexFuncId id);
-  IndexVar* Resolve(IndexVarId id);
+  IndexFamily::TypeId ToTypeId(Usr usr);
+  IndexFamily::FuncId ToFuncId(Usr usr);
+  IndexFamily::VarId ToVarId(Usr usr);
+  IndexFamily::TypeId ToTypeId(const CXCursor& usr);
+  IndexFamily::FuncId ToFuncId(const CXCursor& usr);
+  IndexFamily::VarId ToVarId(const CXCursor& usr);
+  IndexType* Resolve(IndexFamily::TypeId id);
+  IndexFunc* Resolve(IndexFamily::FuncId id);
+  IndexVar* Resolve(IndexFamily::VarId id);
 
   std::string ToString();
 };
