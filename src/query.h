@@ -307,10 +307,10 @@ template <typename I>
 struct IndexToQuery;
 
 // clang-format off
-template <> struct IndexToQuery<IndexFileId> { using type = QueryFileId; };
-template <> struct IndexToQuery<IndexFuncId> { using type = QueryFuncId; };
-template <> struct IndexToQuery<IndexTypeId> { using type = QueryTypeId; };
-template <> struct IndexToQuery<IndexVarId> { using type = QueryVarId; };
+template <> struct IndexToQuery<IndexFamily::FileId> { using type = QueryFileId; };
+template <> struct IndexToQuery<IndexFamily::FuncId> { using type = QueryFuncId; };
+template <> struct IndexToQuery<IndexFamily::TypeId> { using type = QueryTypeId; };
+template <> struct IndexToQuery<IndexFamily::VarId> { using type = QueryVarId; };
 template <> struct IndexToQuery<Use> { using type = Use; };
 template <> struct IndexToQuery<SymbolRef> { using type = SymbolRef; };
 template <> struct IndexToQuery<IndexFunc::Declaration> { using type = Use; };
@@ -330,9 +330,9 @@ struct IdMap {
 
   // FIXME Too verbose
   // clang-format off
-  QueryTypeId ToQuery(IndexTypeId id) const;
-  QueryFuncId ToQuery(IndexFuncId id) const;
-  QueryVarId ToQuery(IndexVarId id) const;
+  QueryTypeId ToQuery(IndexFamily::TypeId id) const;
+  QueryFuncId ToQuery(IndexFamily::FuncId id) const;
+  QueryVarId ToQuery(IndexFamily::VarId id) const;
   SymbolRef ToQuery(SymbolRef ref) const;
   Use ToQuery(Reference ref) const;
   Use ToQuery(Use ref) const;
@@ -354,7 +354,7 @@ struct IdMap {
   // clang-format on
 
  private:
-  spp::sparse_hash_map<IndexTypeId, QueryTypeId> cached_type_ids_;
-  spp::sparse_hash_map<IndexFuncId, QueryFuncId> cached_func_ids_;
-  spp::sparse_hash_map<IndexVarId, QueryVarId> cached_var_ids_;
+  spp::sparse_hash_map<IndexFamily::TypeId, QueryTypeId> cached_type_ids_;
+  spp::sparse_hash_map<IndexFamily::FuncId, QueryFuncId> cached_func_ids_;
+  spp::sparse_hash_map<IndexFamily::VarId, QueryVarId> cached_var_ids_;
 };
