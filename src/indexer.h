@@ -133,7 +133,6 @@ struct IndexFamily {
   using FuncId = Id<IndexFunc>;
   using TypeId = Id<IndexType>;
   using VarId = Id<IndexVar>;
-  using Range = ::Range;
 };
 
 template <typename F>

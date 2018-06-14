@@ -92,7 +92,6 @@ struct QueryFamily {
   using FuncId = Id<QueryFunc>;
   using TypeId = Id<QueryType>;
   using VarId = Id<QueryVar>;
-  using Range = Reference;
 };
 
 struct QueryFile {
