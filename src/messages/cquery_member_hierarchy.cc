@@ -14,7 +14,7 @@ struct In_CqueryMemberHierarchy : public RequestInMessage {
     lsTextDocumentIdentifier textDocument;
     lsPosition position;
 
-    Maybe<QueryTypeId> id;
+    Maybe<QueryFamily::TypeId> id;
 
     bool detailedName = false;
     int levels = 1;
@@ -34,7 +34,7 @@ REGISTER_IN_MESSAGE(In_CqueryMemberHierarchy);
 struct Out_CqueryMemberHierarchy
     : public lsOutMessage<Out_CqueryMemberHierarchy> {
   struct Entry {
-    QueryTypeId id;
+    QueryFamily::TypeId id;
     std::string name;
     std::string fieldName;
     lsLocation location;
@@ -88,7 +88,7 @@ void DoField(MessageHandler* m,
     if (Expand(m, &entry1, detailed_name, levels))
       entry->children.push_back(std::move(entry1));
   } else {
-    entry1.id = QueryTypeId();
+    entry1.id = QueryFamily::TypeId();
     entry->children.push_back(std::move(entry1));
   }
 }
@@ -167,7 +167,7 @@ struct Handler_CqueryMemberHierarchy
     : BaseMessageHandler<In_CqueryMemberHierarchy> {
   MethodType GetMethodType() const override { return kMethodType; }
 
-  optional<Out_CqueryMemberHierarchy::Entry> BuildInitial(QueryFuncId root_id,
+  optional<Out_CqueryMemberHierarchy::Entry> BuildInitial(QueryFamily::FuncId root_id,
                                                           bool detailed_name,
                                                           int levels) {
     const auto* def = db->funcs[root_id.id].AnyDef();
@@ -191,7 +191,7 @@ struct Handler_CqueryMemberHierarchy
     return entry;
   }
 
-  optional<Out_CqueryMemberHierarchy::Entry> BuildInitial(QueryTypeId root_id,
+  optional<Out_CqueryMemberHierarchy::Entry> BuildInitial(QueryFamily::TypeId root_id,
                                                           bool detailed_name,
                                                           int levels) {
     const auto* def = db->types[root_id.id].AnyDef();
@@ -232,17 +232,17 @@ struct Handler_CqueryMemberHierarchy
            FindSymbolsAtLocation(working_file, file, params.position)) {
         switch (sym.kind) {
           case SymbolKind::Func:
-            out.result = BuildInitial(QueryFuncId(sym.id), params.detailedName,
+            out.result = BuildInitial(QueryFamily::FuncId(sym.id), params.detailedName,
                                       params.levels);
             break;
           case SymbolKind::Type:
-            out.result = BuildInitial(QueryTypeId(sym.id), params.detailedName,
+            out.result = BuildInitial(QueryFamily::TypeId(sym.id), params.detailedName,
                                       params.levels);
             break;
           case SymbolKind::Var: {
             const QueryVar::Def* def = db->GetVar(sym).AnyDef();
             if (def && def->type)
-              out.result = BuildInitial(QueryTypeId(*def->type),
+              out.result = BuildInitial(QueryFamily::TypeId(*def->type),
                                         params.detailedName, params.levels);
             break;
           }

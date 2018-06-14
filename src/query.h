@@ -14,11 +14,6 @@ struct QueryFunc;
 struct QueryVar;
 struct QueryDatabase;
 
-using QueryFileId = Id<QueryFile>;
-using QueryTypeId = Id<QueryType>;
-using QueryFuncId = Id<QueryFunc>;
-using QueryVarId = Id<QueryVar>;
-
 struct IdMap;
 
 // There are two sources of reindex updates: the (single) definition of a
@@ -152,28 +147,28 @@ struct QueryEntity {
 };
 
 struct QueryType : QueryEntity<QueryType, TypeDefDefinitionData<QueryFamily>> {
-  using DerivedUpdate = MergeableUpdate<QueryTypeId, QueryTypeId>;
-  using InstancesUpdate = MergeableUpdate<QueryTypeId, QueryVarId>;
+  using DerivedUpdate = MergeableUpdate<QueryFamily::TypeId, QueryFamily::TypeId>;
+  using InstancesUpdate = MergeableUpdate<QueryFamily::TypeId, QueryFamily::VarId>;
 
   Usr usr;
   Maybe<Id<void>> symbol_idx;
   std::forward_list<Def> def;
   std::vector<Use> declarations;
-  std::vector<QueryTypeId> derived;
-  std::vector<QueryVarId> instances;
+  std::vector<QueryFamily::TypeId> derived;
+  std::vector<QueryFamily::VarId> instances;
   std::vector<Use> uses;
 
   explicit QueryType(const Usr& usr) : usr(usr) {}
 };
 
 struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryFamily>> {
-  using DerivedUpdate = MergeableUpdate<QueryFuncId, QueryFuncId>;
+  using DerivedUpdate = MergeableUpdate<QueryFamily::FuncId, QueryFamily::FuncId>;
 
   Usr usr;
   Maybe<Id<void>> symbol_idx;
   std::forward_list<Def> def;
   std::vector<Use> declarations;
-  std::vector<QueryFuncId> derived;
+  std::vector<QueryFamily::FuncId> derived;
   std::vector<Use> uses;
 
   explicit QueryFunc(const Usr& usr) : usr(usr) {}
@@ -217,14 +212,14 @@ struct IndexUpdate {
   std::vector<QueryType::UsesUpdate> types_uses;
 
   // Function updates.
-  std::vector<WithUsr<QueryFileId>> funcs_removed;
+  std::vector<WithUsr<QueryFamily::FileId>> funcs_removed;
   std::vector<QueryFunc::DefUpdate> funcs_def_update;
   std::vector<QueryFunc::DeclarationsUpdate> funcs_declarations;
   std::vector<QueryFunc::DerivedUpdate> funcs_derived;
   std::vector<QueryFunc::UsesUpdate> funcs_uses;
 
   // Variable updates.
-  std::vector<WithUsr<QueryFileId>> vars_removed;
+  std::vector<WithUsr<QueryFamily::FileId>> vars_removed;
   std::vector<QueryVar::DefUpdate> vars_def_update;
   std::vector<QueryVar::DeclarationsUpdate> vars_declarations;
   std::vector<QueryVar::UsesUpdate> vars_uses;
@@ -269,15 +264,15 @@ struct QueryDatabase {
   std::vector<QueryVar> vars;
 
   // Lookup symbol based on a usr.
-  spp::sparse_hash_map<AbsolutePath, QueryFileId> usr_to_file;
-  spp::sparse_hash_map<Usr, QueryTypeId> usr_to_type;
-  spp::sparse_hash_map<Usr, QueryFuncId> usr_to_func;
-  spp::sparse_hash_map<Usr, QueryVarId> usr_to_var;
+  spp::sparse_hash_map<AbsolutePath, QueryFamily::FileId> usr_to_file;
+  spp::sparse_hash_map<Usr, QueryFamily::TypeId> usr_to_type;
+  spp::sparse_hash_map<Usr, QueryFamily::FuncId> usr_to_func;
+  spp::sparse_hash_map<Usr, QueryFamily::VarId> usr_to_var;
 
   // Marks the given Usrs as invalid.
   void RemoveUsrs(SymbolKind usr_kind, const std::vector<Usr>& to_remove);
   void RemoveUsrs(SymbolKind usr_kind,
-                  const std::vector<WithUsr<QueryFileId>>& to_remove);
+                  const std::vector<WithUsr<QueryFamily::FileId>>& to_remove);
   // Insert the contents of |update| into |db|.
   void ApplyIndexUpdate(IndexUpdate* update);
   void ImportOrUpdate(const std::vector<QueryFile::DefUpdate>& updates);
@@ -291,10 +286,10 @@ struct QueryDatabase {
   std::string_view GetSymbolShortName(RawId symbol_idx) const;
 
   // Query the indexing structure to look up symbol id for given Usr.
-  Maybe<QueryFileId> GetQueryFileIdFromPath(const std::string& path);
-  Maybe<QueryTypeId> GetQueryTypeIdFromUsr(Usr usr);
-  Maybe<QueryFuncId> GetQueryFuncIdFromUsr(Usr usr);
-  Maybe<QueryVarId> GetQueryVarIdFromUsr(Usr usr);
+  Maybe<QueryFamily::FileId> GetQueryFileIdFromPath(const std::string& path);
+  Maybe<QueryFamily::TypeId> GetQueryTypeIdFromUsr(Usr usr);
+  Maybe<QueryFamily::FuncId> GetQueryFuncIdFromUsr(Usr usr);
+  Maybe<QueryFamily::VarId> GetQueryVarIdFromUsr(Usr usr);
 
   QueryFile& GetFile(SymbolIdx ref) { return files[ref.id.id]; }
   QueryFunc& GetFunc(SymbolIdx ref) { return funcs[ref.id.id]; }
@@ -306,10 +301,10 @@ template <typename I>
 struct IndexToQuery;
 
 // clang-format off
-template <> struct IndexToQuery<IndexFamily::FileId> { using type = QueryFileId; };
-template <> struct IndexToQuery<IndexFamily::FuncId> { using type = QueryFuncId; };
-template <> struct IndexToQuery<IndexFamily::TypeId> { using type = QueryTypeId; };
-template <> struct IndexToQuery<IndexFamily::VarId> { using type = QueryVarId; };
+template <> struct IndexToQuery<IndexFamily::FileId> { using type = QueryFamily::FileId; };
+template <> struct IndexToQuery<IndexFamily::FuncId> { using type = QueryFamily::FuncId; };
+template <> struct IndexToQuery<IndexFamily::TypeId> { using type = QueryFamily::TypeId; };
+template <> struct IndexToQuery<IndexFamily::VarId> { using type = QueryFamily::VarId; };
 template <> struct IndexToQuery<Use> { using type = Use; };
 template <> struct IndexToQuery<SymbolRef> { using type = SymbolRef; };
 template <> struct IndexToQuery<IndexFunc::Declaration> { using type = Use; };
@@ -323,15 +318,15 @@ template <typename I> struct IndexToQuery<std::vector<I>> {
 
 struct IdMap {
   const IdCache& local_ids;
-  QueryFileId primary_file;
+  QueryFamily::FileId primary_file;
 
   IdMap(QueryDatabase* query_db, const IdCache& local_ids);
 
   // FIXME Too verbose
   // clang-format off
-  QueryTypeId ToQuery(IndexFamily::TypeId id) const;
-  QueryFuncId ToQuery(IndexFamily::FuncId id) const;
-  QueryVarId ToQuery(IndexFamily::VarId id) const;
+  QueryFamily::TypeId ToQuery(IndexFamily::TypeId id) const;
+  QueryFamily::FuncId ToQuery(IndexFamily::FuncId id) const;
+  QueryFamily::VarId ToQuery(IndexFamily::VarId id) const;
   SymbolRef ToQuery(SymbolRef ref) const;
   Use ToQuery(Reference ref) const;
   Use ToQuery(Use ref) const;
@@ -353,7 +348,7 @@ struct IdMap {
   // clang-format on
 
  private:
-  spp::sparse_hash_map<IndexFamily::TypeId, QueryTypeId> cached_type_ids_;
-  spp::sparse_hash_map<IndexFamily::FuncId, QueryFuncId> cached_func_ids_;
-  spp::sparse_hash_map<IndexFamily::VarId, QueryVarId> cached_var_ids_;
+  spp::sparse_hash_map<IndexFamily::TypeId, QueryFamily::TypeId> cached_type_ids_;
+  spp::sparse_hash_map<IndexFamily::FuncId, QueryFamily::FuncId> cached_func_ids_;
+  spp::sparse_hash_map<IndexFamily::VarId, QueryFamily::VarId> cached_var_ids_;
 };

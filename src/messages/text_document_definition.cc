@@ -43,7 +43,7 @@ struct Handler_TextDocumentDefinition
     : BaseMessageHandler<In_TextDocumentDefinition> {
   MethodType GetMethodType() const override { return kMethodType; }
   void Run(In_TextDocumentDefinition* request) override {
-    QueryFileId file_id;
+    QueryFamily::FileId file_id;
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
                         request->params.textDocument.uri.GetAbsolutePath(),

@@ -655,7 +655,7 @@ void QueryDb_OnIndexed(QueueManager* queue,
       EmitInactiveLines(working_file, updated_file.value.inactive_regions);
 
       // Semantic highlighting.
-      QueryFileId file_id = db->usr_to_file[working_file->filename];
+      QueryFamily::FileId file_id = db->usr_to_file[working_file->filename];
       QueryFile* file = &db->files[file_id.id];
       EmitSemanticHighlighting(db, semantic_cache, working_file, file);
     }

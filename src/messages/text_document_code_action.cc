@@ -65,8 +65,8 @@ optional<int> FindIncludeLine(const std::vector<std::string>& lines,
   return 0;
 }
 
-optional<QueryFileId> GetImplementationFile(QueryDatabase* db,
-                                            QueryFileId file_id,
+optional<QueryFamily::FileId> GetImplementationFile(QueryDatabase* db,
+                                            QueryFamily::FileId file_id,
                                             QueryFile* file) {
   for (SymbolRef sym : file->def->outline) {
     switch (sym.kind) {
@@ -75,7 +75,7 @@ optional<QueryFileId> GetImplementationFile(QueryDatabase* db,
           // Note: we ignore the definition if it is in the same file (ie,
           // possibly a header).
           if (def->extent) {
-            QueryFileId t = def->extent->file;
+            QueryFamily::FileId t = def->extent->file;
             if (t != file_id)
               return t;
           }
@@ -87,7 +87,7 @@ optional<QueryFileId> GetImplementationFile(QueryDatabase* db,
         // Note: we ignore the definition if it is in the same file (ie,
         // possibly a header).
         if (def && def->extent) {
-          QueryFileId t = def->extent->file;
+          QueryFamily::FileId t = def->extent->file;
           if (t != file_id)
             return t;
         }
@@ -126,9 +126,9 @@ optional<QueryFileId> GetImplementationFile(QueryDatabase* db,
 }
 
 void EnsureImplFile(QueryDatabase* db,
-                    QueryFileId file_id,
+                    QueryFamily::FileId file_id,
                     optional<lsDocumentUri>& impl_uri,
-                    optional<QueryFileId>& impl_file_id) {
+                    optional<QueryFamily::FileId>& impl_file_id) {
   if (!impl_uri.has_value()) {
     QueryFile& file = db->files[file_id.id];
     assert(file.def);
@@ -149,8 +149,8 @@ optional<lsTextEdit> BuildAutoImplementForFunction(QueryDatabase* db,
                                                    WorkingFiles* working_files,
                                                    WorkingFile* working_file,
                                                    int default_line,
-                                                   QueryFileId decl_file_id,
-                                                   QueryFileId impl_file_id,
+                                                   QueryFamily::FileId decl_file_id,
+                                                   QueryFamily::FileId impl_file_id,
                                                    QueryFunc& func) {
   const QueryFunc::Def* def = func.AnyDef();
   assert(def);
@@ -311,7 +311,7 @@ struct Handler_TextDocumentCodeAction
     //    }
     //
 
-    QueryFileId file_id;
+    QueryFamily::FileId file_id;
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
                         request->params.textDocument.uri.GetAbsolutePath(),
@@ -339,7 +339,7 @@ struct Handler_TextDocumentCodeAction
     // them because computing the values could involve an entire project
     // scan.
     optional<lsDocumentUri> impl_uri;
-    optional<QueryFileId> impl_file_id;
+    optional<QueryFamily::FileId> impl_file_id;
 
     std::vector<SymbolRef> syms =
         FindSymbolsAtLocation(working_file, file, request->params.range.start);
@@ -460,7 +460,7 @@ struct Handler_TextDocumentCodeAction
               std::string::npos)
             continue;
 
-          optional<QueryFileId> decl_file_id =
+          optional<QueryFamily::FileId> decl_file_id =
               GetDeclarationFileForSymbol(db, db->symbols[i]);
           if (!decl_file_id)
             continue;
