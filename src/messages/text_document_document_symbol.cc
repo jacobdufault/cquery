@@ -32,7 +32,7 @@ struct Handler_TextDocumentDocumentSymbol
     out.id = request->id;
 
     QueryFile* file;
-    QueryFileId file_id;
+    QueryFamily::FileId file_id;
     if (!FindFileOrFail(db, project, request->id,
                         request->params.textDocument.uri.GetAbsolutePath(),
                         &file, &file_id)) {

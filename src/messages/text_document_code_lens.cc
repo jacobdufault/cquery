@@ -50,7 +50,7 @@ void AddCodeLens(const char* singular,
   optional<lsRange> range = GetLsRange(common->working_file, use.range);
   if (!range)
     return;
-  if (use.file == QueryFileId())
+  if (use.file == QueryFamily::FileId())
     return;
   code_lens.range = *range;
   code_lens.command = lsCommand<lsCodeLensCommandArguments>();

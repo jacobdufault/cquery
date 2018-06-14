@@ -29,7 +29,7 @@ struct In_CqueryCallHierarchy : public RequestInMessage {
     lsTextDocumentIdentifier textDocument;
     lsPosition position;
 
-    Maybe<QueryFuncId> id;
+    Maybe<QueryFamily::FuncId> id;
 
     // true: callee tree (functions called by this function); false: caller tree
     // (where this function is called)
@@ -55,7 +55,7 @@ REGISTER_IN_MESSAGE(In_CqueryCallHierarchy);
 
 struct Out_CqueryCallHierarchy : public lsOutMessage<Out_CqueryCallHierarchy> {
   struct Entry {
-    QueryFuncId id;
+    QueryFamily::FuncId id;
     std::string_view name;
     lsLocation location;
     CallType callType = CallType::Direct;
@@ -94,7 +94,7 @@ bool Expand(MessageHandler* m,
     entry->numChildren++;
     if (levels > 0) {
       Out_CqueryCallHierarchy::Entry entry1;
-      entry1.id = QueryFuncId(use.id);
+      entry1.id = QueryFamily::FuncId(use.id);
       if (auto loc = GetLsLocation(m->db, m->working_files, use))
         entry1.location = *loc;
       entry1.callType = call_type;
@@ -165,7 +165,7 @@ struct Handler_CqueryCallHierarchy
     : BaseMessageHandler<In_CqueryCallHierarchy> {
   MethodType GetMethodType() const override { return kMethodType; }
 
-  optional<Out_CqueryCallHierarchy::Entry> BuildInitial(QueryFuncId root_id,
+  optional<Out_CqueryCallHierarchy::Entry> BuildInitial(QueryFamily::FuncId root_id,
                                                         bool callee,
                                                         CallType call_type,
                                                         bool detailed_name,
@@ -210,7 +210,7 @@ struct Handler_CqueryCallHierarchy
            FindSymbolsAtLocation(working_file, file, params.position)) {
         if (sym.kind == SymbolKind::Func) {
           out.result =
-              BuildInitial(QueryFuncId(sym.id), params.callee, params.callType,
+              BuildInitial(QueryFamily::FuncId(sym.id), params.callee, params.callType,
                            params.detailedName, params.levels);
           break;
         }
