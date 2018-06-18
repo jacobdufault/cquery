@@ -120,7 +120,7 @@ std::vector<QueryId::LexicalRef> GetNonDefDeclarations(QueryDatabase* db,
   }
 }
 
-std::vector<QueryId::LexicalRef> GetUsesForAllBases(QueryDatabase* db,
+std::vector<QueryId::LexicalRef> GetRefsForAllBases(QueryDatabase* db,
                                                     QueryFunc& root) {
   std::vector<QueryId::LexicalRef> ret;
   std::vector<QueryFunc*> stack{&root};
@@ -143,7 +143,7 @@ std::vector<QueryId::LexicalRef> GetUsesForAllBases(QueryDatabase* db,
   return ret;
 }
 
-std::vector<QueryId::LexicalRef> GetUsesForAllDerived(QueryDatabase* db,
+std::vector<QueryId::LexicalRef> GetRefsForAllDerived(QueryDatabase* db,
                                                       QueryFunc& root) {
   std::vector<QueryId::LexicalRef> ret;
   std::vector<QueryFunc*> stack{&root};
@@ -229,11 +229,11 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryId::File file_id) {
 
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
-                                   QueryId::LexicalRef use) {
+                                   QueryId::LexicalRef ref) {
   AbsolutePath path;
-  lsDocumentUri uri = GetLsDocumentUri(db, use.file, &path);
+  lsDocumentUri uri = GetLsDocumentUri(db, ref.file, &path);
   optional<lsRange> range =
-      GetLsRange(working_files->GetFileByFilename(path), use.range);
+      GetLsRange(working_files->GetFileByFilename(path), ref.range);
   if (!range)
     return nullopt;
   return lsLocation(uri, *range);
@@ -242,10 +242,10 @@ optional<lsLocation> GetLsLocation(QueryDatabase* db,
 std::vector<lsLocation> GetLsLocations(
     QueryDatabase* db,
     WorkingFiles* working_files,
-    const std::vector<QueryId::LexicalRef>& uses) {
+    const std::vector<QueryId::LexicalRef>& refs) {
   std::vector<lsLocation> result;
-  for (QueryId::LexicalRef use : uses) {
-    if (optional<lsLocation> l = GetLsLocation(db, working_files, use))
+  for (QueryId::LexicalRef ref : refs) {
+    if (optional<lsLocation> l = GetLsLocation(db, working_files, ref))
       result.push_back(*l);
   }
 

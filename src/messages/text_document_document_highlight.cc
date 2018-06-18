@@ -41,16 +41,16 @@ struct Handler_TextDocumentDocumentHighlight
     for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       // Found symbol. Return references to highlight.
-      EachOccurrence(db, sym, true, [&](QueryId::LexicalRef use) {
-        if (use.file != file_id)
+      EachOccurrence(db, sym, true, [&](QueryId::LexicalRef ref) {
+        if (ref.file != file_id)
           return;
         if (optional<lsLocation> ls_loc =
-                GetLsLocation(db, working_files, use)) {
+                GetLsLocation(db, working_files, ref)) {
           lsDocumentHighlight highlight;
           highlight.range = ls_loc->range;
-          if (use.role & Role::Write)
+          if (ref.role & Role::Write)
             highlight.kind = lsDocumentHighlightKind::Write;
-          else if (use.role & Role::Read)
+          else if (ref.role & Role::Read)
             highlight.kind = lsDocumentHighlightKind::Read;
           else
             highlight.kind = lsDocumentHighlightKind::Text;

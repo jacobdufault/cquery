@@ -28,9 +28,9 @@ std::vector<QueryId::LexicalRef> GetDeclarations(
 std::vector<QueryId::LexicalRef> GetNonDefDeclarations(QueryDatabase* db,
                                                        SymbolIdx sym);
 
-std::vector<QueryId::LexicalRef> GetUsesForAllBases(QueryDatabase* db,
+std::vector<QueryId::LexicalRef> GetRefsForAllBases(QueryDatabase* db,
                                                     QueryFunc& root);
-std::vector<QueryId::LexicalRef> GetUsesForAllDerived(QueryDatabase* db,
+std::vector<QueryId::LexicalRef> GetRefsForAllDerived(QueryDatabase* db,
                                                       QueryFunc& root);
 optional<lsPosition> GetLsPosition(WorkingFile* working_file,
                                    const Position& position);
@@ -42,7 +42,7 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryId::File file_id);
 
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
-                                   QueryId::LexicalRef use);
+                                   QueryId::LexicalRef ref);
 std::vector<lsLocation> GetLsLocations(
     QueryDatabase* db,
     WorkingFiles* working_files,
@@ -91,14 +91,14 @@ void EachOccurrence(QueryDatabase* db,
                     bool include_decl,
                     Fn&& fn) {
   WithEntity(db, sym, [&](const auto& entity) {
-    for (QueryId::LexicalRef use : entity.uses)
-      fn(use);
+    for (QueryId::LexicalRef ref : entity.uses)
+      fn(ref);
     if (include_decl) {
       for (auto& def : entity.def)
         if (def.spell)
           fn(*def.spell);
-      for (QueryId::LexicalRef use : entity.declarations)
-        fn(use);
+      for (QueryId::LexicalRef ref : entity.declarations)
+        fn(ref);
     }
   });
 }
@@ -117,14 +117,14 @@ void EachOccurrenceWithParent(QueryDatabase* db,
         parent_kind = GetSymbolKind(db, sym);
         break;
       }
-    for (QueryId::LexicalRef use : entity.uses)
-      fn(use, parent_kind);
+    for (QueryId::LexicalRef ref : entity.uses)
+      fn(ref, parent_kind);
     if (include_decl) {
       for (auto& def : entity.def)
         if (def.spell)
           fn(*def.spell, parent_kind);
-      for (QueryId::LexicalRef use : entity.declarations)
-        fn(use, parent_kind);
+      for (QueryId::LexicalRef ref : entity.declarations)
+        fn(ref, parent_kind);
     }
   });
 }

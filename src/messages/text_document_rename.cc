@@ -11,12 +11,12 @@ lsWorkspaceEdit BuildWorkspaceEdit(QueryDatabase* db,
                                    const std::string& new_text) {
   std::unordered_map<QueryId::File, lsTextDocumentEdit> path_to_edit;
 
-  EachOccurrence(db, sym, true, [&](QueryId::LexicalRef use) {
-    optional<lsLocation> ls_location = GetLsLocation(db, working_files, use);
+  EachOccurrence(db, sym, true, [&](QueryId::LexicalRef ref) {
+    optional<lsLocation> ls_location = GetLsLocation(db, working_files, ref);
     if (!ls_location)
       return;
 
-    QueryId::File file_id = use.file;
+    QueryId::File file_id = ref.file;
     if (path_to_edit.find(file_id) == path_to_edit.end()) {
       path_to_edit[file_id] = lsTextDocumentEdit();
 

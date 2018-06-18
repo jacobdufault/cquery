@@ -32,9 +32,9 @@ struct Handler_CqueryCallers : BaseMessageHandler<In_CqueryCallers> {
       if (sym.kind == SymbolKind::Func) {
         QueryFunc& func = db->GetFunc(sym);
         std::vector<QueryId::LexicalRef> uses = func.uses;
-        for (QueryId::LexicalRef func_ref : GetUsesForAllBases(db, func))
+        for (QueryId::LexicalRef func_ref : GetRefsForAllBases(db, func))
           uses.push_back(func_ref);
-        for (QueryId::LexicalRef func_ref : GetUsesForAllDerived(db, func))
+        for (QueryId::LexicalRef func_ref : GetRefsForAllDerived(db, func))
           uses.push_back(func_ref);
         out.result = GetLsLocations(db, working_files, uses);
         break;
