@@ -16,11 +16,34 @@ struct QueryDatabase;
 
 struct IdMap;
 
+// |id|,|kind| refer to the referenced entity.
+struct QuerySymbolRef : Reference {
+  QuerySymbolRef() = default;
+  QuerySymbolRef(Range range, AnyId id, SymbolKind kind, Role role)
+      : Reference{range, id, kind, role} {}
+};
+
+// |id|,|kind| refer to the lexical parent.
+struct QueryLexicalRef : Reference {
+  Id<QueryFile> file;
+  QueryLexicalRef() = default;
+  QueryLexicalRef(Range range,
+                  AnyId id,
+                  SymbolKind kind,
+                  Role role,
+                  Id<QueryFile> file)
+      : Reference{range, id, kind, role}, file(file) {}
+};
+// Used by |HANDLE_MERGEABLE| so only |range| is needed.
+MAKE_HASHABLE(QueryLexicalRef, t.range);
+
 struct QueryId {
   using File = Id<QueryFile>;
   using Func = Id<QueryFunc>;
   using Type = Id<QueryType>;
   using Var = Id<QueryVar>;
+  using SymbolRef = QuerySymbolRef;
+  using LexicalRef = QueryLexicalRef;
 };
 
 // There are two sources of reindex updates: the (single) definition of a
@@ -99,9 +122,9 @@ struct QueryFile {
     // Includes in the file.
     std::vector<IndexInclude> includes;
     // Outline of the file (ie, for code lens).
-    std::vector<SymbolRef> outline;
+    std::vector<QueryId::SymbolRef> outline;
     // Every symbol found in the file (ie, for goto definition)
-    std::vector<SymbolRef> all_symbols;
+    std::vector<QueryId::SymbolRef> all_symbols;
     // Parts of the file which are disabled.
     std::vector<Range> inactive_regions;
     // Used by |$cquery/freshenIndex|.
@@ -132,8 +155,8 @@ template <typename Q, typename QDef>
 struct QueryEntity {
   using Def = QDef;
   using DefUpdate = WithUsr<Def>;
-  using DeclarationsUpdate = MergeableUpdate<Id<Q>, Use>;
-  using UsesUpdate = MergeableUpdate<Id<Q>, Use>;
+  using DeclarationsUpdate = MergeableUpdate<Id<Q>, QueryId::LexicalRef>;
+  using UsesUpdate = MergeableUpdate<Id<Q>, QueryId::LexicalRef>;
   Def* AnyDef() {
     Def* ret = nullptr;
     for (auto& i : static_cast<Q*>(this)->def) {
@@ -153,10 +176,10 @@ struct QueryType : QueryEntity<QueryType, TypeDefDefinitionData<QueryId>> {
   Usr usr;
   Maybe<AnyId> symbol_idx;
   std::forward_list<Def> def;
-  std::vector<Use> declarations;
+  std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::Type> derived;
   std::vector<QueryId::Var> instances;
-  std::vector<Use> uses;
+  std::vector<QueryId::LexicalRef> uses;
 
   explicit QueryType(const Usr& usr) : usr(usr) {}
 };
@@ -167,9 +190,9 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
   Usr usr;
   Maybe<AnyId> symbol_idx;
   std::forward_list<Def> def;
-  std::vector<Use> declarations;
+  std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::Func> derived;
-  std::vector<Use> uses;
+  std::vector<QueryId::LexicalRef> uses;
 
   explicit QueryFunc(const Usr& usr) : usr(usr) {}
 };
@@ -178,8 +201,8 @@ struct QueryVar : QueryEntity<QueryVar, VarDefDefinitionData<QueryId>> {
   Usr usr;
   Maybe<AnyId> symbol_idx;
   std::forward_list<Def> def;
-  std::vector<Use> declarations;
-  std::vector<Use> uses;
+  std::vector<QueryId::LexicalRef> declarations;
+  std::vector<QueryId::LexicalRef> uses;
 
   explicit QueryVar(const Usr& usr) : usr(usr) {}
 };
@@ -303,10 +326,9 @@ template <> struct IndexToQuery<IndexId::File> { using type = QueryId::File; };
 template <> struct IndexToQuery<IndexId::Func> { using type = QueryId::Func; };
 template <> struct IndexToQuery<IndexId::Type> { using type = QueryId::Type; };
 template <> struct IndexToQuery<IndexId::Var> { using type = QueryId::Var; };
-template <> struct IndexToQuery<LexicalRef> { using type = Use; };
-template <> struct IndexToQuery<Use> { using type = Use; }; // FIXME: remove, indexer should never generate Use
-template <> struct IndexToQuery<SymbolRef> { using type = SymbolRef; };
-template <> struct IndexToQuery<IndexFunc::Declaration> { using type = Use; };
+template <> struct IndexToQuery<IndexId::SymbolRef> { using type = QueryId::SymbolRef; };
+template <> struct IndexToQuery<IndexId::LexicalRef> { using type = QueryId::LexicalRef; };
+template <> struct IndexToQuery<IndexFunc::Declaration> { using type = QueryId::LexicalRef; };
 template <typename I> struct IndexToQuery<optional<I>> {
   using type = optional<typename IndexToQuery<I>::type>;
 };
@@ -321,15 +343,14 @@ struct IdMap {
 
   IdMap(QueryDatabase* query_db, const IdCache& local_ids);
 
-  // FIXME Too verbose
   // clang-format off
+  Id<void> ToQuery(SymbolKind kind, Id<void> id) const;
   QueryId::Type ToQuery(IndexId::Type id) const;
   QueryId::Func ToQuery(IndexId::Func id) const;
   QueryId::Var ToQuery(IndexId::Var id) const;
-  SymbolRef ToQuery(SymbolRef ref) const;
-  Use ToQuery(Reference ref) const;
-  Use ToQuery(Use ref) const;
-  Use ToQuery(IndexFunc::Declaration decl) const;
+  QueryId::SymbolRef ToQuery(IndexId::SymbolRef ref) const;
+  QueryId::LexicalRef ToQuery(IndexId::LexicalRef ref) const;
+  QueryId::LexicalRef ToQuery(IndexFunc::Declaration decl) const;
   template <typename I>
   Maybe<typename IndexToQuery<I>::type> ToQuery(Maybe<I> id) const {
     if (!id)

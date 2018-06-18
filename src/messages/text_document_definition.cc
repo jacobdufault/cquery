@@ -17,15 +17,17 @@ struct In_TextDocumentDefinition : public RequestInMessage {
 MAKE_REFLECT_STRUCT(In_TextDocumentDefinition, id, params);
 REGISTER_IN_MESSAGE(In_TextDocumentDefinition);
 
-std::vector<Use> GetNonDefDeclarationTargets(QueryDatabase* db, SymbolRef sym) {
+std::vector<QueryId::LexicalRef> GetNonDefDeclarationTargets(
+    QueryDatabase* db,
+    QueryId::SymbolRef sym) {
   switch (sym.kind) {
     case SymbolKind::Var: {
-      std::vector<Use> ret = GetNonDefDeclarations(db, sym);
+      std::vector<QueryId::LexicalRef> ret = GetNonDefDeclarations(db, sym);
       // If there is no declaration, jump the its type.
       if (ret.empty()) {
         for (auto& def : db->GetVar(sym).def)
           if (def.type) {
-            if (optional<Use> use = GetDefinitionSpell(
+            if (auto use = GetDefinitionSpell(
                     db, SymbolIdx{*def.type, SymbolKind::Type})) {
               ret.push_back(*use);
               break;
@@ -57,12 +59,12 @@ struct Handler_TextDocumentDefinition
     Out_LocationList out;
     out.id = request->id;
 
-    Maybe<Use> on_def;
+    Maybe<QueryId::LexicalRef> on_def;
     bool has_symbol = false;
     int target_line = request->params.position.line;
     int target_column = request->params.position.character;
 
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       // Found symbol. Return definition.
       has_symbol = true;
@@ -71,10 +73,10 @@ struct Handler_TextDocumentDefinition
       //  - symbol has declaration but no definition (ie, pure virtual)
       //  - start at spelling but end at extent for better mouse tooltip
       //  - goto declaration while in definition of recursive type
-      std::vector<Use> uses;
+      std::vector<QueryId::LexicalRef> uses;
       EachEntityDef(db, sym, [&](const auto& def) {
         if (def.spell && def.extent) {
-          Use spell = *def.spell;
+          QueryId::LexicalRef spell = *def.spell;
           // If on a definition, clear |uses| to find declarations below.
           if (spell.file == file_id &&
               spell.range.Contains(target_line, target_column)) {
@@ -141,7 +143,8 @@ struct Handler_TextDocumentDefinition
           auto pos = name.rfind(short_query);
           if (pos == std::string::npos)
             continue;
-          if (optional<Use> use = GetDefinitionSpell(db, db->symbols[i])) {
+          if (optional<QueryId::LexicalRef> use =
+                  GetDefinitionSpell(db, db->symbols[i])) {
             std::tuple<int, int, bool, int> score{
                 int(name.size() - short_query.size()), -int(pos),
                 use->file != file_id,
@@ -160,7 +163,8 @@ struct Handler_TextDocumentDefinition
           }
         }
         if (best_i != -1) {
-          optional<Use> use = GetDefinitionSpell(db, db->symbols[best_i]);
+          optional<QueryId::LexicalRef> use =
+              GetDefinitionSpell(db, db->symbols[best_i]);
           assert(use);
           if (auto ls_loc = GetLsLocation(db, working_files, *use))
             out.result.push_back(*ls_loc);

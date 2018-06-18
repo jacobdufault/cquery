@@ -32,7 +32,7 @@ struct Handler_TextDocumentImplementation
     Out_LocationList out;
     out.id = request->id;
 
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       if (sym.kind == SymbolKind::Type) {
         QueryType& type = db->GetType(sym);

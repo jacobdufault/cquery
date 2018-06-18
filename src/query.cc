@@ -242,10 +242,11 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
   }();
 
   auto add_all_symbols = [&](Reference ref, AnyId id, SymbolKind kind) {
-    def.all_symbols.push_back(SymbolRef(ref.range, id, kind, ref.role));
+    def.all_symbols.push_back(
+        QueryId::SymbolRef(ref.range, id, kind, ref.role));
   };
   auto add_outline = [&](Reference ref, AnyId id, SymbolKind kind) {
-    def.outline.push_back(SymbolRef(ref.range, id, kind, ref.role));
+    def.outline.push_back(QueryId::SymbolRef(ref.range, id, kind, ref.role));
   };
 
   for (const IndexType& type : indexed.types) {
@@ -302,11 +303,11 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
   }
 
   std::sort(def.outline.begin(), def.outline.end(),
-            [](const SymbolRef& a, const SymbolRef& b) {
+            [](const QueryId::SymbolRef& a, const QueryId::SymbolRef& b) {
               return a.range.start < b.range.start;
             });
   std::sort(def.all_symbols.begin(), def.all_symbols.end(),
-            [](const SymbolRef& a, const SymbolRef& b) {
+            [](const QueryId::SymbolRef& a, const QueryId::SymbolRef& b) {
               return a.range.start < b.range.start;
             });
 
@@ -426,6 +427,23 @@ IdMap::IdMap(QueryDatabase* query_db, const IdCache& local_ids)
         *GetQueryVarIdFromUsr(query_db, entry.second, true);
 }
 
+Id<void> IdMap::ToQuery(SymbolKind kind, Id<void> id) const {
+  switch (kind) {
+    case SymbolKind::File:
+      return primary_file;
+    case SymbolKind::Type:
+      return ToQuery(IndexId::Type(id.id));
+    case SymbolKind::Func:
+      return ToQuery(IndexId::Func(id.id));
+    case SymbolKind::Var:
+      return ToQuery(IndexId::Var(id.id));
+    case SymbolKind::Invalid:
+      break;
+  }
+  assert(false);
+  return Id<void>(-1);
+}
+
 QueryId::Type IdMap::ToQuery(IndexId::Type id) const {
   assert(cached_type_ids_.find(id) != cached_type_ids_.end());
   return QueryId::Type(cached_type_ids_.find(id)->second);
@@ -439,36 +457,25 @@ QueryId::Var IdMap::ToQuery(IndexId::Var id) const {
   return QueryId::Var(cached_var_ids_.find(id)->second);
 }
 
-Use IdMap::ToQuery(Reference ref) const {
-  Use ret(ref.range, ref.id, ref.kind, ref.role, primary_file);
-  switch (ref.kind) {
-    case SymbolKind::Invalid:
-      break;
-    case SymbolKind::File:
-      ret.id = primary_file;
-      break;
-    case SymbolKind::Func:
-      ret.id = ToQuery(IndexId::Func(ref.id));
-      break;
-    case SymbolKind::Type:
-      ret.id = ToQuery(IndexId::Type(ref.id));
-      break;
-    case SymbolKind::Var:
-      ret.id = ToQuery(IndexId::Var(ref.id));
-      break;
-  }
-  return ret;
+QueryId::SymbolRef IdMap::ToQuery(IndexId::SymbolRef ref) const {
+  QueryId::SymbolRef result;
+  result.range = ref.range;
+  result.id = ToQuery(ref.kind, ref.id);
+  result.kind = ref.kind;
+  result.role = ref.role;
+  return result;
 }
-SymbolRef IdMap::ToQuery(SymbolRef ref) const {
-  ref.Reference::operator=(ToQuery(static_cast<Reference>(ref)));
-  return ref;
+QueryId::LexicalRef IdMap::ToQuery(IndexId::LexicalRef ref) const {
+  QueryId::LexicalRef result;
+  result.file = primary_file;
+  result.range = ref.range;
+  result.id = ToQuery(ref.kind, ref.id);
+  result.kind = ref.kind;
+  result.role = ref.role;
+  return result;
 }
-Use IdMap::ToQuery(Use use) const {
-  return ToQuery(static_cast<Reference>(use));
-}
-
-Use IdMap::ToQuery(IndexFunc::Declaration decl) const {
-  return ToQuery(static_cast<Reference>(decl.spell));
+QueryId::LexicalRef IdMap::ToQuery(IndexFunc::Declaration decl) const {
+  return ToQuery(decl.spell);
 }
 
 // ----------------------
@@ -585,12 +592,13 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
         }
 
         PROCESS_UPDATE_DIFF(QueryId::Type, types_declarations, declarations,
-                            Use);
+                            QueryId::LexicalRef);
         PROCESS_UPDATE_DIFF(QueryId::Type, types_derived, derived,
                             QueryId::Type);
         PROCESS_UPDATE_DIFF(QueryId::Type, types_instances, instances,
                             QueryId::Var);
-        PROCESS_UPDATE_DIFF(QueryId::Type, types_uses, uses, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_uses, uses,
+                            QueryId::LexicalRef);
       });
 
   // Functions
@@ -648,10 +656,11 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
         }
 
         PROCESS_UPDATE_DIFF(QueryId::Func, funcs_declarations, declarations,
-                            Use);
+                            QueryId::LexicalRef);
         PROCESS_UPDATE_DIFF(QueryId::Func, funcs_derived, derived,
                             QueryId::Func);
-        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_uses, uses, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_uses, uses,
+                            QueryId::LexicalRef);
       });
 
   // Variables
@@ -698,8 +707,9 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
           vars_def_update.push_back(QueryVar::DefUpdate(
               current->usr, std::move(*current_remapped_def)));
 
-        PROCESS_UPDATE_DIFF(QueryId::Var, vars_declarations, declarations, Use);
-        PROCESS_UPDATE_DIFF(QueryId::Var, vars_uses, uses, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Var, vars_declarations, declarations,
+                            QueryId::LexicalRef);
+        PROCESS_UPDATE_DIFF(QueryId::Var, vars_uses, uses, QueryId::LexicalRef);
       });
 
 #undef PROCESS_UPDATE_DIFF
@@ -993,11 +1003,11 @@ TEST_SUITE("query") {
     IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))->def.spell =
-        Use(Range(Position(1, 0)), {}, {}, {}, {});
+        IndexId::LexicalRef(Range(Position(1, 0)), {}, {}, {});
     previous.Resolve(previous.ToFuncId(HashUsr("usr2")))->def.spell =
-        Use(Range(Position(2, 0)), {}, {}, {}, {});
+        IndexId::LexicalRef(Range(Position(2, 0)), {}, {}, {});
     previous.Resolve(previous.ToVarId(HashUsr("usr3")))->def.spell =
-        Use(Range(Position(3, 0)), {}, {}, {}, {});
+        IndexId::LexicalRef(Range(Position(3, 0)), {}, {}, {});
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1013,11 +1023,14 @@ TEST_SUITE("query") {
     IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))
-        ->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+        ->uses.push_back(
+            IndexId::LexicalRef(Range(Position(1, 0)), {}, {}, {}));
     previous.Resolve(previous.ToFuncId(HashUsr("usr2")))
-        ->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
+        ->uses.push_back(
+            IndexId::LexicalRef(Range(Position(2, 0)), {}, {}, {}));
     previous.Resolve(previous.ToVarId(HashUsr("usr3")))
-        ->uses.push_back(LexicalRef(Range(Position(3, 0)), {}, {}, {}));
+        ->uses.push_back(
+            IndexId::LexicalRef(Range(Position(3, 0)), {}, {}, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1033,8 +1046,8 @@ TEST_SUITE("query") {
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
 
-    pf->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
-    cf->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
+    pf->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+    cf->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), {}, {}, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1054,8 +1067,8 @@ TEST_SUITE("query") {
     IndexType* pt = previous.Resolve(previous.ToTypeId(HashUsr("usr")));
     IndexType* ct = current.Resolve(current.ToTypeId(HashUsr("usr")));
 
-    pt->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
-    ct->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
+    pt->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+    ct->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), {}, {}, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1074,10 +1087,10 @@ TEST_SUITE("query") {
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
-    pf->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
-    pf->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
-    cf->uses.push_back(LexicalRef(Range(Position(4, 0)), {}, {}, {}));
-    cf->uses.push_back(LexicalRef(Range(Position(5, 0)), {}, {}, {}));
+    pf->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+    pf->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), {}, {}, {}));
+    cf->uses.push_back(IndexId::LexicalRef(Range(Position(4, 0)), {}, {}, {}));
+    cf->uses.push_back(IndexId::LexicalRef(Range(Position(5, 0)), {}, {}, {}));
 
     QueryDatabase db;
     IdMap previous_map(&db, previous.id_cache);

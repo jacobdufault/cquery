@@ -75,13 +75,6 @@ void Reflect(TVisitor& visitor, Id<T>& id) {
   Reflect(visitor, id.id);
 }
 
-struct IndexId {
-  using File = Id<IndexFile>;
-  using Func = Id<IndexFunc>;
-  using Type = Id<IndexType>;
-  using Var = Id<IndexVar>;
-};
-
 struct SymbolIdx {
   AnyId id;
   SymbolKind kind;
@@ -117,31 +110,27 @@ struct Reference {
 };
 
 // |id|,|kind| refer to the referenced entity.
-struct SymbolRef : Reference {
-  SymbolRef() = default;
-  SymbolRef(Range range, AnyId id, SymbolKind kind, Role role)
+struct IndexSymbolRef : Reference {
+  IndexSymbolRef() = default;
+  IndexSymbolRef(Range range, AnyId id, SymbolKind kind, Role role)
       : Reference{range, id, kind, role} {}
 };
 
 // |id|,|kind| refer to the lexical parent.
-struct LexicalRef : Reference {
-  LexicalRef() = default;
-  LexicalRef(Range range, AnyId id, SymbolKind kind, Role role)
+struct IndexLexicalRef : Reference {
+  IndexLexicalRef() = default;
+  IndexLexicalRef(Range range, AnyId id, SymbolKind kind, Role role)
       : Reference{range, id, kind, role} {}
 };
 
-// Represents an occurrence of a variable/type;
-// |id|,|kind| refer to the lexical parent.
-// FIXME: this is never used in indexing. we should move it over to query only
-struct Use : Reference {
-  // |file| is used in Query* but not in Index*
-  Id<QueryFile> file;  // FIXME, we should not have be specific to Query ids.
-  Use() = default;
-  Use(Range range, AnyId id, SymbolKind kind, Role role, Id<QueryFile> file)
-      : Reference{range, id, kind, role}, file(file) {}
+struct IndexId {
+  using File = Id<IndexFile>;
+  using Func = Id<IndexFunc>;
+  using Type = Id<IndexType>;
+  using Var = Id<IndexVar>;
+  using SymbolRef = IndexSymbolRef;
+  using LexicalRef = IndexLexicalRef;
 };
-// Used by |HANDLE_MERGEABLE| so only |range| is needed.
-MAKE_HASHABLE(Use, t.range);
 
 void Reflect(Reader& visitor, Reference& value);
 void Reflect(Writer& visitor, Reference& value);
@@ -162,8 +151,8 @@ struct TypeDefDefinitionData {
   // It's also difficult to identify a `class Foo;` statement with the clang
   // indexer API (it's doable using cursor AST traversal), so we don't bother
   // supporting the feature.
-  Maybe<Use> spell;
-  Maybe<Use> extent;
+  Maybe<typename Id::LexicalRef> spell;
+  Maybe<typename Id::LexicalRef> extent;
 
   // Immediate parent types.
   std::vector<typename Id::Type> bases;
@@ -226,7 +215,7 @@ struct IndexType {
   IndexId::Type id;
 
   Def def;
-  std::vector<LexicalRef> declarations;
+  std::vector<IndexId::LexicalRef> declarations;
 
   // Immediate derived types.
   std::vector<IndexId::Type> derived;
@@ -236,7 +225,7 @@ struct IndexType {
 
   // Every usage, useful for things like renames.
   // NOTE: Do not insert directly! Use AddUsage instead.
-  std::vector<LexicalRef> uses;
+  std::vector<IndexId::LexicalRef> uses;
 
   IndexType() {}  // For serialization.
   IndexType(IndexId::Type id, Usr usr);
@@ -251,8 +240,8 @@ struct FuncDefDefinitionData {
   std::string detailed_name;
   std::string hover;
   std::string comments;
-  Maybe<Use> spell;
-  Maybe<Use> extent;
+  Maybe<typename Id::LexicalRef> spell;
+  Maybe<typename Id::LexicalRef> extent;
 
   // Method this method overrides.
   std::vector<typename Id::Func> bases;
@@ -261,7 +250,7 @@ struct FuncDefDefinitionData {
   std::vector<typename Id::Var> vars;
 
   // Functions that this function calls.
-  std::vector<SymbolRef> callees;
+  std::vector<typename Id::SymbolRef> callees;
 
   typename Id::File file;
   // Type which declares this one (ie, it is a method)
@@ -324,7 +313,7 @@ struct IndexFunc {
 
   struct Declaration {
     // Range of only the function name.
-    Use spell;
+    IndexId::LexicalRef spell;
     // Location of the parameter names.
     std::vector<Range> param_spellings;
   };
@@ -340,7 +329,7 @@ struct IndexFunc {
   //
   // To get all usages, also include the ranges inside of declarations and
   // def.spell.
-  std::vector<LexicalRef> uses;
+  std::vector<IndexId::LexicalRef> uses;
 
   IndexFunc() {}  // For serialization.
   IndexFunc(IndexId::Func id, Usr usr) : usr(usr), id(id) {}
@@ -358,8 +347,8 @@ struct VarDefDefinitionData {
   std::string comments;
   // TODO: definitions should be a list of ranges, since there can be more
   //       than one - when??
-  Maybe<Use> spell;
-  Maybe<Use> extent;
+  Maybe<typename Id::LexicalRef> spell;
+  Maybe<typename Id::LexicalRef> extent;
 
   typename Id::File file;
   // Type of the variable.
@@ -430,8 +419,8 @@ struct IndexVar {
 
   Def def;
 
-  std::vector<LexicalRef> declarations;
-  std::vector<LexicalRef> uses;
+  std::vector<IndexId::LexicalRef> declarations;
+  std::vector<IndexId::LexicalRef> uses;
 
   IndexVar() {}  // For serialization.
   IndexVar(IndexId::Var id, Usr usr) : usr(usr), id(id) {}

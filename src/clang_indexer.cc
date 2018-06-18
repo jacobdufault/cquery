@@ -475,33 +475,42 @@ void SetUsePreflight(IndexFile* db, ClangCursor parent) {
 
 // |parent| should be resolved before using |SetUsePreflight| so that |def| will
 // not be invalidated by |To{Func,Type,Var}Id|.
-Use SetUse(IndexFile* db, Range range, ClangCursor parent, Role role) {
+IndexId::LexicalRef SetUse(IndexFile* db,
+                           Range range,
+                           ClangCursor parent,
+                           Role role) {
   switch (GetSymbolKind(parent.get_kind())) {
     case SymbolKind::Func:
-      return Use(range, db->ToFuncId(parent.cx_cursor), SymbolKind::Func, role,
-                 {});
+      return IndexId::LexicalRef(range, db->ToFuncId(parent.cx_cursor),
+                                 SymbolKind::Func, role);
     case SymbolKind::Type:
-      return Use(range, db->ToTypeId(parent.cx_cursor), SymbolKind::Type, role,
-                 {});
+      return IndexId::LexicalRef(range, db->ToTypeId(parent.cx_cursor),
+                                 SymbolKind::Type, role);
     case SymbolKind::Var:
-      return Use(range, db->ToVarId(parent.cx_cursor), SymbolKind::Var, role,
-                 {});
+      return IndexId::LexicalRef(range, db->ToVarId(parent.cx_cursor),
+                                 SymbolKind::Var, role);
     default:
-      return Use(range, AnyId(), SymbolKind::File, role, {});
+      return IndexId::LexicalRef(range, AnyId(), SymbolKind::File, role);
   }
 }
 // |parent| should be resolved before using |SetUsePreflight| so that |def| will
 // not be invalidated by |To{Func,Type,Var}Id|.
-LexicalRef SetRef(IndexFile* db, Range range, ClangCursor parent, Role role) {
+IndexId::LexicalRef SetRef(IndexFile* db,
+                           Range range,
+                           ClangCursor parent,
+                           Role role) {
   switch (GetSymbolKind(parent.get_kind())) {
     case SymbolKind::Func:
-      return LexicalRef(range, db->ToFuncId(parent.cx_cursor), SymbolKind::Func, role);
+      return IndexId::LexicalRef(range, db->ToFuncId(parent.cx_cursor),
+                                 SymbolKind::Func, role);
     case SymbolKind::Type:
-      return LexicalRef(range, db->ToTypeId(parent.cx_cursor), SymbolKind::Type, role);
+      return IndexId::LexicalRef(range, db->ToTypeId(parent.cx_cursor),
+                                 SymbolKind::Type, role);
     case SymbolKind::Var:
-      return LexicalRef(range, db->ToVarId(parent.cx_cursor), SymbolKind::Var, role);
+      return IndexId::LexicalRef(range, db->ToVarId(parent.cx_cursor),
+                                 SymbolKind::Var, role);
     default:
-      return LexicalRef(range, AnyId(), SymbolKind::File, role);
+      return IndexId::LexicalRef(range, AnyId(), SymbolKind::File, role);
   }
 }
 
@@ -678,20 +687,23 @@ void OnIndexReference_Function(IndexFile* db,
       IndexFunc* parent = db->Resolve(db->ToFuncId(parent_cursor.cx_cursor));
       IndexFunc* called = db->Resolve(called_id);
       parent->def.callees.push_back(
-          SymbolRef(loc, called->id, SymbolKind::Func, role));
-      called->uses.push_back(LexicalRef(loc, parent->id, SymbolKind::Func, role));
+          IndexId::SymbolRef(loc, called->id, SymbolKind::Func, role));
+      called->uses.push_back(
+          IndexId::LexicalRef(loc, parent->id, SymbolKind::Func, role));
       break;
     }
     case SymbolKind::Type: {
       IndexType* parent = db->Resolve(db->ToTypeId(parent_cursor.cx_cursor));
       IndexFunc* called = db->Resolve(called_id);
       called = db->Resolve(called_id);
-      called->uses.push_back(LexicalRef(loc, parent->id, SymbolKind::Type, role));
+      called->uses.push_back(
+          IndexId::LexicalRef(loc, parent->id, SymbolKind::Type, role));
       break;
     }
     default: {
       IndexFunc* called = db->Resolve(called_id);
-      called->uses.push_back(LexicalRef(loc, AnyId(), SymbolKind::File, role));
+      called->uses.push_back(
+          IndexId::LexicalRef(loc, AnyId(), SymbolKind::File, role));
       break;
     }
   }
@@ -707,7 +719,7 @@ void Uniquify(std::vector<Id<T>>& ids) {
   ids.resize(n);
 }
 
-void Uniquify(std::vector<LexicalRef>& refs) {
+void Uniquify(std::vector<IndexId::LexicalRef>& refs) {
   std::unordered_set<Range> seen;
   size_t n = 0;
   for (size_t i = 0; i < refs.size(); i++)
@@ -789,27 +801,28 @@ std::string IndexFile::ToString() {
 IndexType::IndexType(IndexId::Type id, Usr usr) : usr(usr), id(id) {}
 
 void AddRef(IndexFile* db,
-            std::vector<LexicalRef>& refs,
+            std::vector<IndexId::LexicalRef>& refs,
             Range range,
             ClangCursor parent,
             Role role = Role::Reference) {
   switch (GetSymbolKind(parent.get_kind())) {
     case SymbolKind::Func:
-      refs.push_back(LexicalRef(range, db->ToFuncId(parent.cx_cursor),
-                               SymbolKind::Func, role));
+      refs.push_back(IndexId::LexicalRef(range, db->ToFuncId(parent.cx_cursor),
+                                         SymbolKind::Func, role));
       break;
     case SymbolKind::Type:
-      refs.push_back(LexicalRef(range, db->ToTypeId(parent.cx_cursor),
-                               SymbolKind::Type, role));
+      refs.push_back(IndexId::LexicalRef(range, db->ToTypeId(parent.cx_cursor),
+                                         SymbolKind::Type, role));
       break;
     default:
-      refs.push_back(LexicalRef(range, AnyId(), SymbolKind::File, role));
+      refs.push_back(
+          IndexId::LexicalRef(range, AnyId(), SymbolKind::File, role));
       break;
   }
 }
 
 void AddRefSpell(IndexFile* db,
-                 std::vector<LexicalRef>& refs,
+                 std::vector<IndexId::LexicalRef>& refs,
                  ClangCursor cursor) {
   AddRef(db, refs, cursor.get_spell(), cursor.get_lexical_parent().cx_cursor);
 }
@@ -2144,8 +2157,8 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
               param->ctors.TryFindConstructorUsr(ctor_type_usr, call_type_desc);
           if (ctor_usr) {
             IndexFunc* ctor = db->Resolve(db->ToFuncId(*ctor_usr));
-            ctor->uses.push_back(LexicalRef(loc, AnyId(), SymbolKind::File,
-                                     Role::Call | Role::Implicit));
+            ctor->uses.push_back(IndexId::LexicalRef(
+                loc, AnyId(), SymbolKind::File, Role::Call | Role::Implicit));
           }
         }
       }

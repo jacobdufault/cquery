@@ -5,25 +5,33 @@
 
 #include <optional.h>
 
-optional<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym);
-optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym);
+optional<QueryId::LexicalRef> GetDefinitionSpell(QueryDatabase* db,
+                                                 SymbolIdx sym);
+optional<QueryId::LexicalRef> GetDefinitionExtent(QueryDatabase* db,
+                                                  SymbolIdx sym);
 optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
                                                     SymbolIdx sym);
 
 // Get defining declaration (if exists) or an arbitrary declaration (otherwise)
 // for each id.
-std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryId::Func>& ids);
-std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryId::Type>& ids);
-std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryId::Var>& ids);
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    QueryDatabase* db,
+    const std::vector<QueryId::Func>& ids);
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    QueryDatabase* db,
+    const std::vector<QueryId::Type>& ids);
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    QueryDatabase* db,
+    const std::vector<QueryId::Var>& ids);
 
 // Get non-defining declarations.
-std::vector<Use> GetNonDefDeclarations(QueryDatabase* db, SymbolIdx sym);
+std::vector<QueryId::LexicalRef> GetNonDefDeclarations(QueryDatabase* db,
+                                                       SymbolIdx sym);
 
-std::vector<Use> GetUsesForAllBases(QueryDatabase* db, QueryFunc& root);
-std::vector<Use> GetUsesForAllDerived(QueryDatabase* db, QueryFunc& root);
+std::vector<QueryId::LexicalRef> GetUsesForAllBases(QueryDatabase* db,
+                                                    QueryFunc& root);
+std::vector<QueryId::LexicalRef> GetUsesForAllDerived(QueryDatabase* db,
+                                                      QueryFunc& root);
 optional<lsPosition> GetLsPosition(WorkingFile* working_file,
                                    const Position& position);
 optional<lsRange> GetLsRange(WorkingFile* working_file, const Range& location);
@@ -34,19 +42,20 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryId::File file_id);
 
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
-                                   Use use);
-std::vector<lsLocation> GetLsLocations(QueryDatabase* db,
-                                       WorkingFiles* working_files,
-                                       const std::vector<Use>& refs);
+                                   QueryId::LexicalRef use);
+std::vector<lsLocation> GetLsLocations(
+    QueryDatabase* db,
+    WorkingFiles* working_files,
+    const std::vector<QueryId::LexicalRef>& refs);
 // Returns a symbol. The symbol will have *NOT* have a location assigned.
 optional<lsSymbolInformation> GetSymbolInfo(QueryDatabase* db,
                                             WorkingFiles* working_files,
                                             SymbolIdx sym,
                                             bool use_short_name);
 
-std::vector<SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
-                                             QueryFile* file,
-                                             lsPosition position);
+std::vector<QueryId::SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
+                                                      QueryFile* file,
+                                                      lsPosition position);
 
 // Calls fn with a QueryFunc, QueryType, or QueryVar instance.
 template <typename Fn>
@@ -82,13 +91,13 @@ void EachOccurrence(QueryDatabase* db,
                     bool include_decl,
                     Fn&& fn) {
   WithEntity(db, sym, [&](const auto& entity) {
-    for (Use use : entity.uses)
+    for (QueryId::LexicalRef use : entity.uses)
       fn(use);
     if (include_decl) {
       for (auto& def : entity.def)
         if (def.spell)
           fn(*def.spell);
-      for (Use use : entity.declarations)
+      for (QueryId::LexicalRef use : entity.declarations)
         fn(use);
     }
   });
@@ -108,13 +117,13 @@ void EachOccurrenceWithParent(QueryDatabase* db,
         parent_kind = GetSymbolKind(db, sym);
         break;
       }
-    for (Use use : entity.uses)
+    for (QueryId::LexicalRef use : entity.uses)
       fn(use, parent_kind);
     if (include_decl) {
       for (auto& def : entity.def)
         if (def.spell)
           fn(*def.spell, parent_kind);
-      for (Use use : entity.declarations)
+      for (QueryId::LexicalRef use : entity.declarations)
         fn(use, parent_kind);
     }
   });

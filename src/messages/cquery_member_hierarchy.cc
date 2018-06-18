@@ -228,7 +228,7 @@ struct Handler_CqueryMemberHierarchy
         return;
       WorkingFile* working_file =
           working_files->GetFileByFilename(file->def->path);
-      for (SymbolRef sym :
+      for (QueryId::SymbolRef sym :
            FindSymbolsAtLocation(working_file, file, params.position)) {
         switch (sym.kind) {
           case SymbolKind::Func:

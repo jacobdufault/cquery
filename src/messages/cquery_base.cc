@@ -30,7 +30,7 @@ struct Handler_CqueryBase : BaseMessageHandler<In_CqueryBase> {
 
     Out_LocationList out;
     out.id = request->id;
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       if (sym.kind == SymbolKind::Type) {
         if (const auto* def = db->GetType(sym).AnyDef()) {

@@ -68,7 +68,7 @@ optional<int> FindIncludeLine(const std::vector<std::string>& lines,
 optional<QueryId::File> GetImplementationFile(QueryDatabase* db,
                                               QueryId::File file_id,
                                               QueryFile* file) {
-  for (SymbolRef sym : file->def->outline) {
+  for (QueryId::SymbolRef sym : file->def->outline) {
     switch (sym.kind) {
       case SymbolKind::Func: {
         if (const auto* def = db->GetFunc(sym).AnyDef()) {
@@ -154,7 +154,7 @@ optional<lsTextEdit> BuildAutoImplementForFunction(QueryDatabase* db,
                                                    QueryFunc& func) {
   const QueryFunc::Def* def = func.AnyDef();
   assert(def);
-  for (Use decl : func.declarations) {
+  for (QueryId::LexicalRef decl : func.declarations) {
     if (decl.file != decl_file_id)
       continue;
 
@@ -201,7 +201,7 @@ optional<lsTextEdit> BuildAutoImplementForFunction(QueryDatabase* db,
 
       QueryFile& file = db->files[impl_file_id.id];
       assert(file.def);
-      for (SymbolRef sym : file.def->outline) {
+      for (QueryId::SymbolRef sym : file.def->outline) {
         switch (sym.kind) {
           case SymbolKind::Func: {
             QueryFunc& sym_func = db->GetFunc(sym);
@@ -209,7 +209,7 @@ optional<lsTextEdit> BuildAutoImplementForFunction(QueryDatabase* db,
             if (!def1 || !def1->extent)
               break;
 
-            for (Use func_decl : sym_func.declarations) {
+            for (QueryId::LexicalRef func_decl : sym_func.declarations) {
               if (func_decl.file == decl_file_id) {
                 int dist = func_decl.range.start.line - decl.range.start.line;
                 if (abs(dist) < abs(best_dist)) {
@@ -341,9 +341,9 @@ struct Handler_TextDocumentCodeAction
     optional<lsDocumentUri> impl_uri;
     optional<QueryId::File> impl_file_id;
 
-    std::vector<SymbolRef> syms =
+    std::vector<QueryId::SymbolRef> syms =
         FindSymbolsAtLocation(working_file, file, request->params.range.start);
-    for (SymbolRef sym : syms) {
+    for (QueryId::SymbolRef sym : syms) {
       switch (sym.kind) {
         case SymbolKind::Type: {
           QueryType& type = db->GetType(sym);

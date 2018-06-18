@@ -17,9 +17,10 @@ int ComputeRangeSize(const Range& range) {
 }
 
 template <typename Q>
-std::vector<Use> GetDeclarations(std::vector<Q>& entities,
-                                 const std::vector<Id<Q>>& ids) {
-  std::vector<Use> ret;
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    std::vector<Q>& entities,
+    const std::vector<Id<Q>>& ids) {
+  std::vector<QueryId::LexicalRef> ret;
   ret.reserve(ids.size());
   for (auto id : ids) {
     Q& entity = entities[id.id];
@@ -38,18 +39,20 @@ std::vector<Use> GetDeclarations(std::vector<Q>& entities,
 
 }  // namespace
 
-optional<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym) {
-  optional<Use> ret;
+optional<QueryId::LexicalRef> GetDefinitionSpell(QueryDatabase* db,
+                                                 SymbolIdx sym) {
+  optional<QueryId::LexicalRef> ret;
   EachEntityDef(db, sym, [&](const auto& def) { return !(ret = def.spell); });
   return ret;
 }
 
-optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym) {
+optional<QueryId::LexicalRef> GetDefinitionExtent(QueryDatabase* db,
+                                                  SymbolIdx sym) {
   // Used to jump to file.
   if (sym.kind == SymbolKind::File)
-    return Use(Range(Position(0, 0), Position(0, 0)), sym.id, sym.kind,
-               Role::None, QueryId::File(sym.id));
-  Maybe<Use> ret;
+    return QueryId::LexicalRef(Range(Position(0, 0), Position(0, 0)), sym.id,
+                               sym.kind, Role::None, QueryId::File(sym.id));
+  Maybe<QueryId::LexicalRef> ret;
   EachEntityDef(db, sym, [&](const auto& def) { return !(ret = def.extent); });
   return ret;
 }
@@ -85,22 +88,26 @@ optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
   return nullopt;
 }
 
-std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryId::Func>& ids) {
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    QueryDatabase* db,
+    const std::vector<QueryId::Func>& ids) {
   return GetDeclarations(db->funcs, ids);
 }
 
-std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryId::Type>& ids) {
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    QueryDatabase* db,
+    const std::vector<QueryId::Type>& ids) {
   return GetDeclarations(db->types, ids);
 }
 
-std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryId::Var>& ids) {
+std::vector<QueryId::LexicalRef> GetDeclarations(
+    QueryDatabase* db,
+    const std::vector<QueryId::Var>& ids) {
   return GetDeclarations(db->vars, ids);
 }
 
-std::vector<Use> GetNonDefDeclarations(QueryDatabase* db, SymbolIdx sym) {
+std::vector<QueryId::LexicalRef> GetNonDefDeclarations(QueryDatabase* db,
+                                                       SymbolIdx sym) {
   switch (sym.kind) {
     case SymbolKind::Func:
       return db->GetFunc(sym).declarations;
@@ -113,8 +120,9 @@ std::vector<Use> GetNonDefDeclarations(QueryDatabase* db, SymbolIdx sym) {
   }
 }
 
-std::vector<Use> GetUsesForAllBases(QueryDatabase* db, QueryFunc& root) {
-  std::vector<Use> ret;
+std::vector<QueryId::LexicalRef> GetUsesForAllBases(QueryDatabase* db,
+                                                    QueryFunc& root) {
+  std::vector<QueryId::LexicalRef> ret;
   std::vector<QueryFunc*> stack{&root};
   std::unordered_set<Usr> seen;
   seen.insert(root.usr);
@@ -135,8 +143,9 @@ std::vector<Use> GetUsesForAllBases(QueryDatabase* db, QueryFunc& root) {
   return ret;
 }
 
-std::vector<Use> GetUsesForAllDerived(QueryDatabase* db, QueryFunc& root) {
-  std::vector<Use> ret;
+std::vector<QueryId::LexicalRef> GetUsesForAllDerived(QueryDatabase* db,
+                                                      QueryFunc& root) {
+  std::vector<QueryId::LexicalRef> ret;
   std::vector<QueryFunc*> stack{&root};
   std::unordered_set<Usr> seen;
   seen.insert(root.usr);
@@ -220,7 +229,7 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryId::File file_id) {
 
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
-                                   Use use) {
+                                   QueryId::LexicalRef use) {
   AbsolutePath path;
   lsDocumentUri uri = GetLsDocumentUri(db, use.file, &path);
   optional<lsRange> range =
@@ -230,11 +239,12 @@ optional<lsLocation> GetLsLocation(QueryDatabase* db,
   return lsLocation(uri, *range);
 }
 
-std::vector<lsLocation> GetLsLocations(QueryDatabase* db,
-                                       WorkingFiles* working_files,
-                                       const std::vector<Use>& uses) {
+std::vector<lsLocation> GetLsLocations(
+    QueryDatabase* db,
+    WorkingFiles* working_files,
+    const std::vector<QueryId::LexicalRef>& uses) {
   std::vector<lsLocation> result;
-  for (Use use : uses) {
+  for (QueryId::LexicalRef use : uses) {
     if (optional<lsLocation> l = GetLsLocation(db, working_files, use))
       result.push_back(*l);
   }
@@ -298,10 +308,10 @@ optional<lsSymbolInformation> GetSymbolInfo(QueryDatabase* db,
   return nullopt;
 }
 
-std::vector<SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
-                                             QueryFile* file,
-                                             lsPosition position) {
-  std::vector<SymbolRef> symbols;
+std::vector<QueryId::SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
+                                                      QueryFile* file,
+                                                      lsPosition position) {
+  std::vector<QueryId::SymbolRef> symbols;
   symbols.reserve(1);
 
   int target_line = position.line;
@@ -313,7 +323,7 @@ std::vector<SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
       target_line = *index_line;
   }
 
-  for (const SymbolRef& sym : file->def->all_symbols) {
+  for (const QueryId::SymbolRef& sym : file->def->all_symbols) {
     if (sym.range.Contains(target_line, target_column))
       symbols.push_back(sym);
   }
@@ -330,7 +340,7 @@ std::vector<SymbolRef> FindSymbolsAtLocation(WorkingFile* working_file,
   // Then order functions before other types, which makes goto definition work
   // better on constructors.
   std::sort(symbols.begin(), symbols.end(),
-            [](const SymbolRef& a, const SymbolRef& b) {
+            [](const QueryId::SymbolRef& a, const QueryId::SymbolRef& b) {
               int t = ComputeRangeSize(a.range) - ComputeRangeSize(b.range);
               if (t)
                 return t < 0;

@@ -39,7 +39,7 @@ struct Handler_TextDocumentDocumentSymbol
       return;
     }
 
-    for (SymbolRef sym : file->def->outline) {
+    for (QueryId::SymbolRef sym : file->def->outline) {
       optional<lsSymbolInformation> info =
           GetSymbolInfo(db, working_files, sym, true /*use_short_name*/);
       if (!info)
@@ -56,9 +56,10 @@ struct Handler_TextDocumentDocumentSymbol
           continue;
       }
 
-      if (optional<lsLocation> location = GetLsLocation(
-              db, working_files,
-              Use(sym.range, sym.id, sym.kind, sym.role, file_id))) {
+      if (optional<lsLocation> location =
+              GetLsLocation(db, working_files,
+                            QueryId::LexicalRef(sym.range, sym.id, sym.kind,
+                                                sym.role, file_id))) {
         info->location = *location;
         out.result.push_back(*info);
       }

@@ -135,8 +135,11 @@ struct Handler_CqueryInheritanceHierarchy
     : BaseMessageHandler<In_CqueryInheritanceHierarchy> {
   MethodType GetMethodType() const override { return kMethodType; }
 
-  optional<Out_CqueryInheritanceHierarchy::Entry>
-  BuildInitial(SymbolRef sym, bool derived, bool detailed_name, int levels) {
+  optional<Out_CqueryInheritanceHierarchy::Entry> BuildInitial(
+      QueryId::SymbolRef sym,
+      bool derived,
+      bool detailed_name,
+      int levels) {
     Out_CqueryInheritanceHierarchy::Entry entry;
     entry.id = sym.id;
     entry.kind = sym.kind;
@@ -167,8 +170,8 @@ struct Handler_CqueryInheritanceHierarchy
       WorkingFile* working_file =
           working_files->GetFileByFilename(file->def->path);
 
-      for (SymbolRef sym : FindSymbolsAtLocation(working_file, file,
-                                                 request->params.position)) {
+      for (QueryId::SymbolRef sym : FindSymbolsAtLocation(
+               working_file, file, request->params.position)) {
         if (sym.kind == SymbolKind::Func || sym.kind == SymbolKind::Type) {
           out.result = BuildInitial(sym, params.derived, params.detailedName,
                                     params.levels);
