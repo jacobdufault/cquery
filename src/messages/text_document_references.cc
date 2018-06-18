@@ -56,10 +56,10 @@ struct Handler_TextDocumentReferences
       // Found symbol. Return references.
       EachOccurrenceWithParent(
           db, sym, request->params.context.includeDeclaration,
-          [&](QueryId::LexicalRef use, lsSymbolKind parent_kind) {
-            if (use.role & request->params.context.role)
+          [&](QueryId::LexicalRef ref, lsSymbolKind parent_kind) {
+            if (ref.role & request->params.context.role)
               if (optional<lsLocation> ls_loc =
-                      GetLsLocation(db, working_files, use)) {
+                      GetLsLocation(db, working_files, ref)) {
                 out.result.push_back(*ls_loc);
               }
           });

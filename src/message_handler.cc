@@ -144,8 +144,8 @@ void EmitSemanticHighlighting(QueryDatabase* db,
         if (def->spell)
           parent_kind = GetSymbolKind(db, *def->spell);
         if (parent_kind == lsSymbolKind::Unknown) {
-          for (QueryId::LexicalRef use : func.declarations) {
-            parent_kind = GetSymbolKind(db, use);
+          for (QueryId::LexicalRef ref : func.declarations) {
+            parent_kind = GetSymbolKind(db, ref);
             break;
           }
         }

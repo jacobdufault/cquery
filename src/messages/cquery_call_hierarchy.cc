@@ -90,12 +90,12 @@ bool Expand(MessageHandler* m,
   entry->numChildren = 0;
   if (!def)
     return false;
-  auto handle = [&](QueryId::LexicalRef use, CallType call_type) {
+  auto handle = [&](QueryId::LexicalRef ref, CallType call_type) {
     entry->numChildren++;
     if (levels > 0) {
       Out_CqueryCallHierarchy::Entry entry1;
-      entry1.id = QueryId::Func(use.id);
-      if (auto loc = GetLsLocation(m->db, m->working_files, use))
+      entry1.id = QueryId::Func(ref.id);
+      if (auto loc = GetLsLocation(m->db, m->working_files, ref))
         entry1.location = *loc;
       entry1.callType = call_type;
       if (Expand(m, &entry1, callee, call_type, detailed_name, levels - 1))
