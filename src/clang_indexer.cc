@@ -487,7 +487,7 @@ Use SetUse(IndexFile* db, Range range, ClangCursor parent, Role role) {
       return Use(range, db->ToVarId(parent.cx_cursor), SymbolKind::Var, role,
                  {});
     default:
-      return Use(range, Id<void>(), SymbolKind::File, role, {});
+      return Use(range, AnyId(), SymbolKind::File, role, {});
   }
 }
 
@@ -677,7 +677,7 @@ void OnIndexReference_Function(IndexFile* db,
     }
     default: {
       IndexFunc* called = db->Resolve(called_id);
-      called->uses.push_back(Use(loc, Id<void>(), SymbolKind::File, role, {}));
+      called->uses.push_back(Use(loc, AnyId(), SymbolKind::File, role, {}));
       break;
     }
   }
@@ -777,7 +777,7 @@ void Uniquify(std::vector<Use>& uses) {
 // FIXME Reference: set id in call sites and remove this
 // void AddUse(std::vector<Use>& values, Range value) {
 //  values.push_back(
-//      Use(value, Id<void>(), SymbolKind::File, Role::Reference, {}));
+//      Use(value, AnyId(), SymbolKind::File, Role::Reference, {}));
 //}
 
 void AddUse(IndexFile* db,
@@ -795,7 +795,7 @@ void AddUse(IndexFile* db,
                          SymbolKind::Type, role, {}));
       break;
     default:
-      uses.push_back(Use(range, Id<void>(), SymbolKind::File, role, {}));
+      uses.push_back(Use(range, AnyId(), SymbolKind::File, role, {}));
       break;
   }
 }
@@ -2134,7 +2134,7 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
               param->ctors.TryFindConstructorUsr(ctor_type_usr, call_type_desc);
           if (ctor_usr) {
             IndexFunc* ctor = db->Resolve(db->ToFuncId(*ctor_usr));
-            ctor->uses.push_back(Use(loc, Id<void>(), SymbolKind::File,
+            ctor->uses.push_back(Use(loc, AnyId(), SymbolKind::File,
                                      Role::Call | Role::Implicit, {}));
           }
         }

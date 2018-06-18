@@ -29,7 +29,7 @@ struct Handler_TextDocumentTypeDefinition
     out.id = request->id;
     for (SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
-      Id<void> id = sym.id;
+      AnyId id = sym.id;
       switch (sym.kind) {
         case SymbolKind::Var: {
           const QueryVar::Def* def = db->GetVar(sym).AnyDef();

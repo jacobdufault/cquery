@@ -61,6 +61,7 @@ struct Id {
   bool operator!=(const Id& o) const { return id != o.id; }
   bool operator<(const Id& o) const { return id < o.id; }
 };
+using AnyId = Id<void>;
 
 namespace std {
 template <typename T>
@@ -75,7 +76,7 @@ void Reflect(TVisitor& visitor, Id<T>& id) {
 }
 
 struct SymbolIdx {
-  Id<void> id;
+  AnyId id;
   SymbolKind kind;
 
   bool operator==(const SymbolIdx& o) const {
@@ -93,13 +94,13 @@ MAKE_HASHABLE(SymbolIdx, t.kind, t.id);
 
 struct Reference {
   Range range;
-  Id<void> id;
+  AnyId id;
   SymbolKind kind;
   Role role;
 
   bool HasValueForMaybe_() const { return range.HasValueForMaybe_(); }
   operator SymbolIdx() const { return {id, kind}; }
-  std::tuple<Range, Id<void>, SymbolKind, Role> ToTuple() const {
+  std::tuple<Range, AnyId, SymbolKind, Role> ToTuple() const {
     return std::make_tuple(range, id, kind, role);
   }
   bool operator==(const Reference& o) const { return ToTuple() == o.ToTuple(); }
@@ -109,7 +110,7 @@ struct Reference {
 // |id,kind| refer to the referenced entity.
 struct SymbolRef : Reference {
   SymbolRef() = default;
-  SymbolRef(Range range, Id<void> id, SymbolKind kind, Role role)
+  SymbolRef(Range range, AnyId id, SymbolKind kind, Role role)
       : Reference{range, id, kind, role} {}
 };
 
@@ -119,7 +120,7 @@ struct Use : Reference {
   // |file| is used in Query* but not in Index*
   Id<QueryFile> file;
   Use() = default;
-  Use(Range range, Id<void> id, SymbolKind kind, Role role, Id<QueryFile> file)
+  Use(Range range, AnyId id, SymbolKind kind, Role role, Id<QueryFile> file)
       : Reference{range, id, kind, role}, file(file) {}
 };
 // Used by |HANDLE_MERGEABLE| so only |range| is needed.

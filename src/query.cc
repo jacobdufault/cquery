@@ -243,10 +243,10 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
     }
   }();
 
-  auto add_all_symbols = [&](Use use, Id<void> id, SymbolKind kind) {
+  auto add_all_symbols = [&](Use use, AnyId id, SymbolKind kind) {
     def.all_symbols.push_back(SymbolRef(use.range, id, kind, use.role));
   };
-  auto add_outline = [&](Use use, Id<void> id, SymbolKind kind) {
+  auto add_outline = [&](Use use, AnyId id, SymbolKind kind) {
     def.outline.push_back(SymbolRef(use.range, id, kind, use.role));
   };
 
@@ -921,11 +921,11 @@ void QueryDatabase::ImportOrUpdate(std::vector<QueryVar::DefUpdate>&& updates) {
   }
 }
 
-void QueryDatabase::UpdateSymbols(Maybe<Id<void>>* symbol_idx,
+void QueryDatabase::UpdateSymbols(Maybe<AnyId>* symbol_idx,
                                   SymbolKind kind,
-                                  Id<void> idx) {
+                                  AnyId idx) {
   if (!symbol_idx->HasValue()) {
-    *symbol_idx = Id<void>(symbols.size());
+    *symbol_idx = AnyId(symbols.size());
     symbols.push_back(SymbolIdx{idx, kind});
   }
 }

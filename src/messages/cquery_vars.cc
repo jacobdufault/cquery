@@ -31,7 +31,7 @@ struct Handler_CqueryVars : BaseMessageHandler<In_CqueryVars> {
     out.id = request->id;
     for (SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
-      Id<void> id = sym.id;
+      AnyId id = sym.id;
       switch (sym.kind) {
         default:
           break;
