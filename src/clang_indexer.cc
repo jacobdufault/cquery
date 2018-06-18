@@ -683,6 +683,25 @@ void OnIndexReference_Function(IndexFile* db,
   }
 }
 
+template <typename T>
+void Uniquify(std::vector<Id<T>>& ids) {
+  std::unordered_set<Id<T>> seen;
+  size_t n = 0;
+  for (size_t i = 0; i < ids.size(); i++)
+    if (seen.insert(ids[i]).second)
+      ids[n++] = ids[i];
+  ids.resize(n);
+}
+
+void Uniquify(std::vector<Use>& uses) {
+  std::unordered_set<Range> seen;
+  size_t n = 0;
+  for (size_t i = 0; i < uses.size(); i++)
+    if (seen.insert(uses[i].range).second)
+      uses[n++] = uses[i];
+  uses.resize(n);
+}
+
 }  // namespace
 
 // static
@@ -754,25 +773,6 @@ std::string IndexFile::ToString() {
 }
 
 IndexType::IndexType(IndexId::Type id, Usr usr) : usr(usr), id(id) {}
-
-template <typename T>
-void Uniquify(std::vector<Id<T>>& ids) {
-  std::unordered_set<Id<T>> seen;
-  size_t n = 0;
-  for (size_t i = 0; i < ids.size(); i++)
-    if (seen.insert(ids[i]).second)
-      ids[n++] = ids[i];
-  ids.resize(n);
-}
-
-void Uniquify(std::vector<Use>& uses) {
-  std::unordered_set<Range> seen;
-  size_t n = 0;
-  for (size_t i = 0; i < uses.size(); i++)
-    if (seen.insert(uses[i].range).second)
-      uses[n++] = uses[i];
-  uses.resize(n);
-}
 
 // FIXME Reference: set id in call sites and remove this
 // void AddUse(std::vector<Use>& values, Range value) {
