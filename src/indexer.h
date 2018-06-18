@@ -105,6 +105,10 @@ struct Reference {
   SymbolKind kind;
   Role role;
 
+  Reference() = default;
+  Reference(Range range, AnyId id, SymbolKind kind, Role role)
+      : range(range), id(id), kind(kind), role(role) {}
+
   bool HasValueForMaybe_() const { return range.HasValueForMaybe_(); }
   operator SymbolIdx() const { return {id, kind}; }
   std::tuple<Range, AnyId, SymbolKind, Role> ToTuple() const {
@@ -118,17 +122,18 @@ struct Reference {
 struct SymbolRef : Reference {
   SymbolRef() = default;
   SymbolRef(Range range, AnyId id, SymbolKind kind, Role role)
-      : Reference{range, id, kind, role} {}
+      : Reference(range, id, kind, role) {}
 };
 
 // Represents an occurrence of a variable/type, |id,kind| refer to the lexical
 // parent.
+// FIXME: this is never used in indexing. we should move it over to query only
 struct Use : Reference {
   // |file| is used in Query* but not in Index*
-  Id<QueryFile> file; // FIXME, we should not have be specific to Query ids.
+  Id<QueryFile> file;  // FIXME, we should not have be specific to Query ids.
   Use() = default;
   Use(Range range, AnyId id, SymbolKind kind, Role role, Id<QueryFile> file)
-      : Reference{range, id, kind, role}, file(file) {}
+      : Reference(range, id, kind, role), file(file) {}
 };
 // Used by |HANDLE_MERGEABLE| so only |range| is needed.
 MAKE_HASHABLE(Use, t.range);
@@ -216,7 +221,7 @@ struct IndexType {
   IndexId::Type id;
 
   Def def;
-  std::vector<Use> declarations;
+  std::vector<Reference> declarations;
 
   // Immediate derived types.
   std::vector<IndexId::Type> derived;
@@ -226,7 +231,7 @@ struct IndexType {
 
   // Every usage, useful for things like renames.
   // NOTE: Do not insert directly! Use AddUsage instead.
-  std::vector<Use> uses;
+  std::vector<Reference> uses;
 
   IndexType() {}  // For serialization.
   IndexType(IndexId::Type id, Usr usr);
@@ -330,7 +335,7 @@ struct IndexFunc {
   //
   // To get all usages, also include the ranges inside of declarations and
   // def.spell.
-  std::vector<Use> uses;
+  std::vector<Reference> uses;
 
   IndexFunc() {}  // For serialization.
   IndexFunc(IndexId::Func id, Usr usr) : usr(usr), id(id) {}
@@ -420,8 +425,8 @@ struct IndexVar {
 
   Def def;
 
-  std::vector<Use> declarations;
-  std::vector<Use> uses;
+  std::vector<Reference> declarations;
+  std::vector<Reference> uses;
 
   IndexVar() {}  // For serialization.
   IndexVar(IndexId::Var id, Usr usr) : usr(usr), id(id) {}

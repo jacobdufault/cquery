@@ -16,6 +16,13 @@ struct QueryDatabase;
 
 struct IdMap;
 
+struct QueryId {
+  using File = Id<QueryFile>;
+  using Func = Id<QueryFunc>;
+  using Type = Id<QueryType>;
+  using Var = Id<QueryVar>;
+};
+
 // There are two sources of reindex updates: the (single) definition of a
 // symbol has changed, or one of many users of the symbol has changed.
 //
@@ -81,13 +88,6 @@ void Reflect(TVisitor& visitor, WithFileContent<T>& value) {
   REFLECT_MEMBER(file_content);
   REFLECT_MEMBER_END();
 }
-
-struct QueryId {
-  using File = Id<QueryFile>;
-  using Func = Id<QueryFunc>;
-  using Type = Id<QueryType>;
-  using Var = Id<QueryVar>;
-};
 
 struct QueryFile {
   struct Def {
@@ -303,7 +303,8 @@ template <> struct IndexToQuery<IndexId::File> { using type = QueryId::File; };
 template <> struct IndexToQuery<IndexId::Func> { using type = QueryId::Func; };
 template <> struct IndexToQuery<IndexId::Type> { using type = QueryId::Type; };
 template <> struct IndexToQuery<IndexId::Var> { using type = QueryId::Var; };
-template <> struct IndexToQuery<Use> { using type = Use; };
+template <> struct IndexToQuery<Reference> { using type = Use; };
+template <> struct IndexToQuery<Use> { using type = Use; }; // FIXME: remove, indexer should never generate Use
 template <> struct IndexToQuery<SymbolRef> { using type = SymbolRef; };
 template <> struct IndexToQuery<IndexFunc::Declaration> { using type = Use; };
 template <typename I> struct IndexToQuery<optional<I>> {
