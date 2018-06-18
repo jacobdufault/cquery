@@ -262,8 +262,7 @@ MAKE_REFLECT_STRUCT(Config::Completion,
                     includeSuffixWhitelist,
                     includeBlacklist,
                     includeWhitelist);
-MAKE_REFLECT_STRUCT(Config::Formatting,
-                    enabled)
+MAKE_REFLECT_STRUCT(Config::Formatting, enabled)
 MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     blacklist,
                     whitelist,

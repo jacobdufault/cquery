@@ -8,7 +8,7 @@
 optional<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym);
 optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym);
 optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
-                                                  SymbolIdx sym);
+                                                    SymbolIdx sym);
 
 // Get defining declaration (if exists) or an arbitrary declaration (otherwise)
 // for each id.

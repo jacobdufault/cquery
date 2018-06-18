@@ -66,8 +66,8 @@ optional<int> FindIncludeLine(const std::vector<std::string>& lines,
 }
 
 optional<QueryId::File> GetImplementationFile(QueryDatabase* db,
-                                            QueryId::File file_id,
-                                            QueryFile* file) {
+                                              QueryId::File file_id,
+                                              QueryFile* file) {
   for (SymbolRef sym : file->def->outline) {
     switch (sym.kind) {
       case SymbolKind::Func: {

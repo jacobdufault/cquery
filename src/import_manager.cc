@@ -7,7 +7,7 @@ bool ImportManager::IsInitialImport(const std::string& path) {
     if (initial_import_.find(path) != initial_import_.end())
       return false;
   }
-  
+
   // Try inserting the value
   {
     std::unique_lock<std::shared_timed_mutex> lock(initial_import_mutex_);

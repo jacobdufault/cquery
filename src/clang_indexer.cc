@@ -534,8 +534,8 @@ void SetTypeName(IndexType* type,
 // qualifies from |cursor| (ie, Foo* => Foo) and removes template arguments
 // (ie, Foo<A,B> => Foo<*,*>).
 optional<IndexId::Type> ResolveToDeclarationType(IndexFile* db,
-                                               ClangCursor cursor,
-                                               IndexParam* param) {
+                                                 ClangCursor cursor,
+                                                 IndexParam* param) {
   ClangType type = cursor.get_type();
 
   // auto x = new Foo() will not be deduced to |Foo| if we do not use the
@@ -936,7 +936,8 @@ struct VisitDeclForTypeUsageParam {
   optional<ClangCursor> previous_cursor;
   optional<IndexId::Type> initial_type;
 
-  VisitDeclForTypeUsageParam(IndexFile* db, optional<IndexId::Type> toplevel_type)
+  VisitDeclForTypeUsageParam(IndexFile* db,
+                             optional<IndexId::Type> toplevel_type)
       : db(db), toplevel_type(toplevel_type) {}
 };
 
@@ -2060,7 +2061,8 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
       // TODO: search full history?
       Range loc = cursor.get_spell();
 
-      IndexId::Func called_id = db->ToFuncId(HashUsr(ref->referencedEntity->USR));
+      IndexId::Func called_id =
+          db->ToFuncId(HashUsr(ref->referencedEntity->USR));
       IndexFunc* called = db->Resolve(called_id);
 
       std::string_view short_name = called->def.ShortName();

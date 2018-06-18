@@ -314,8 +314,8 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
 }
 
 Maybe<QueryId::File> GetQueryFileIdFromPath(QueryDatabase* query_db,
-                                          const AbsolutePath& path,
-                                          bool create_if_missing) {
+                                            const AbsolutePath& path,
+                                            bool create_if_missing) {
   auto it = query_db->usr_to_file.find(path);
   if (it != query_db->usr_to_file.end())
     return QueryId::File(it->second.id);
@@ -329,8 +329,8 @@ Maybe<QueryId::File> GetQueryFileIdFromPath(QueryDatabase* query_db,
 }
 
 Maybe<QueryId::Type> GetQueryTypeIdFromUsr(QueryDatabase* query_db,
-                                         Usr usr,
-                                         bool create_if_missing) {
+                                           Usr usr,
+                                           bool create_if_missing) {
   auto it = query_db->usr_to_type.find(usr);
   if (it != query_db->usr_to_type.end())
     return QueryId::Type(it->second.id);
@@ -344,8 +344,8 @@ Maybe<QueryId::Type> GetQueryTypeIdFromUsr(QueryDatabase* query_db,
 }
 
 Maybe<QueryId::Func> GetQueryFuncIdFromUsr(QueryDatabase* query_db,
-                                         Usr usr,
-                                         bool create_if_missing) {
+                                           Usr usr,
+                                           bool create_if_missing) {
   auto it = query_db->usr_to_func.find(usr);
   if (it != query_db->usr_to_func.end())
     return QueryId::Func(it->second.id);
@@ -359,8 +359,8 @@ Maybe<QueryId::Func> GetQueryFuncIdFromUsr(QueryDatabase* query_db,
 }
 
 Maybe<QueryId::Var> GetQueryVarIdFromUsr(QueryDatabase* query_db,
-                                       Usr usr,
-                                       bool create_if_missing) {
+                                         Usr usr,
+                                         bool create_if_missing) {
   auto it = query_db->usr_to_var.find(usr);
   if (it != query_db->usr_to_var.end())
     return QueryId::Var(it->second.id);
@@ -584,8 +584,10 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
               current->usr, std::move(*current_remapped_def)));
         }
 
-        PROCESS_UPDATE_DIFF(QueryId::Type, types_declarations, declarations, Use);
-        PROCESS_UPDATE_DIFF(QueryId::Type, types_derived, derived, QueryId::Type);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_declarations, declarations,
+                            Use);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_derived, derived,
+                            QueryId::Type);
         PROCESS_UPDATE_DIFF(QueryId::Type, types_instances, instances,
                             QueryId::Var);
         PROCESS_UPDATE_DIFF(QueryId::Type, types_uses, uses, Use);
@@ -645,8 +647,10 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
               current->usr, std::move(*current_remapped_def)));
         }
 
-        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_declarations, declarations, Use);
-        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_derived, derived, QueryId::Func);
+        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_declarations, declarations,
+                            Use);
+        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_derived, derived,
+                            QueryId::Func);
         PROCESS_UPDATE_DIFF(QueryId::Func, funcs_uses, uses, Use);
       });
 
@@ -808,8 +812,8 @@ void QueryDatabase::ApplyIndexUpdate(IndexUpdate* update) {
 // Example types:
 //  storage_name       =>  std::vector<optional<QueryType>>
 //  merge_update       =>  QueryType::DerivedUpdate =>
-//  MergeableUpdate<QueryId::Type, QueryId::Type> def                =>  QueryType
-//  def->def_var_name  =>  std::vector<QueryId::Type>
+//  MergeableUpdate<QueryId::Type, QueryId::Type> def                =>
+//  QueryType def->def_var_name  =>  std::vector<QueryId::Type>
 #define HANDLE_MERGEABLE(update_var_name, def_var_name, storage_name) \
   for (auto merge_update : update->update_var_name) {                 \
     auto& def = storage_name[merge_update.id.id];                     \

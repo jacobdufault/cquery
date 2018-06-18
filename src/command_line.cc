@@ -62,8 +62,7 @@ std::vector<std::string> kEmptyArgs;
 bool ShouldDisplayMethodTiming(MethodType type) {
   return type != kMethodType_TextDocumentPublishDiagnostics &&
          type != kMethodType_CqueryPublishInactiveRegions &&
-         type != kMethodType_CqueryQueryDbStatus &&
-         type != kMethodType_Unknown;
+         type != kMethodType_CqueryQueryDbStatus && type != kMethodType_Unknown;
 }
 
 void PrintHelp() {

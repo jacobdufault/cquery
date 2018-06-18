@@ -210,8 +210,8 @@ struct Handler_CqueryCallHierarchy
            FindSymbolsAtLocation(working_file, file, params.position)) {
         if (sym.kind == SymbolKind::Func) {
           out.result =
-              BuildInitial(QueryId::Func(sym.id), params.callee, params.callType,
-                           params.detailedName, params.levels);
+              BuildInitial(QueryId::Func(sym.id), params.callee,
+                           params.callType, params.detailedName, params.levels);
           break;
         }
       }

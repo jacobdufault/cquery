@@ -434,8 +434,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
                   << request.current->path;
       request.cache_manager->WriteToCache(*request.current);
       timestamp_manager->UpdateCachedModificationTime(
-          request.current->path,
-          request.current->last_modification_time);
+          request.current->path, request.current->last_modification_time);
     }
   }
 

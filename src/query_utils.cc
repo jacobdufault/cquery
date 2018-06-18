@@ -55,7 +55,7 @@ optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym) {
 }
 
 optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
-                                                  SymbolIdx sym) {
+                                                    SymbolIdx sym) {
   switch (sym.kind) {
     case SymbolKind::File:
       return QueryId::File(sym.id);
