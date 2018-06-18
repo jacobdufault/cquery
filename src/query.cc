@@ -251,7 +251,7 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
   };
 
   for (const IndexType& type : indexed.types) {
-    QueryFamily::TypeId id = id_map.ToQuery(type.id);
+    QueryId::Type id = id_map.ToQuery(type.id);
     if (type.def.spell)
       add_all_symbols(*type.def.spell, id, SymbolKind::Type);
     if (type.def.extent)
@@ -267,7 +267,7 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
       add_all_symbols(use, id, SymbolKind::Type);
   }
   for (const IndexFunc& func : indexed.funcs) {
-    QueryFamily::FuncId id = id_map.ToQuery(func.id);
+    QueryId::Func id = id_map.ToQuery(func.id);
     if (func.def.spell)
       add_all_symbols(*func.def.spell, id, SymbolKind::Func);
     if (func.def.extent)
@@ -290,7 +290,7 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
     }
   }
   for (const IndexVar& var : indexed.vars) {
-    QueryFamily::VarId id = id_map.ToQuery(var.id);
+    QueryId::Var id = id_map.ToQuery(var.id);
     if (var.def.spell)
       add_all_symbols(*var.def.spell, id, SymbolKind::Var);
     if (var.def.extent)
@@ -315,64 +315,64 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
   return QueryFile::DefUpdate(def, indexed.file_contents);
 }
 
-Maybe<QueryFamily::FileId> GetQueryFileIdFromPath(QueryDatabase* query_db,
+Maybe<QueryId::File> GetQueryFileIdFromPath(QueryDatabase* query_db,
                                           const AbsolutePath& path,
                                           bool create_if_missing) {
   auto it = query_db->usr_to_file.find(path);
   if (it != query_db->usr_to_file.end())
-    return QueryFamily::FileId(it->second.id);
+    return QueryId::File(it->second.id);
   if (!create_if_missing)
     return {};
 
   RawId idx = query_db->files.size();
-  query_db->usr_to_file[path] = QueryFamily::FileId(idx);
+  query_db->usr_to_file[path] = QueryId::File(idx);
   query_db->files.push_back(QueryFile(path));
-  return QueryFamily::FileId(idx);
+  return QueryId::File(idx);
 }
 
-Maybe<QueryFamily::TypeId> GetQueryTypeIdFromUsr(QueryDatabase* query_db,
+Maybe<QueryId::Type> GetQueryTypeIdFromUsr(QueryDatabase* query_db,
                                          Usr usr,
                                          bool create_if_missing) {
   auto it = query_db->usr_to_type.find(usr);
   if (it != query_db->usr_to_type.end())
-    return QueryFamily::TypeId(it->second.id);
+    return QueryId::Type(it->second.id);
   if (!create_if_missing)
     return {};
 
   RawId idx = query_db->types.size();
-  query_db->usr_to_type[usr] = QueryFamily::TypeId(idx);
+  query_db->usr_to_type[usr] = QueryId::Type(idx);
   query_db->types.push_back(QueryType(usr));
-  return QueryFamily::TypeId(idx);
+  return QueryId::Type(idx);
 }
 
-Maybe<QueryFamily::FuncId> GetQueryFuncIdFromUsr(QueryDatabase* query_db,
+Maybe<QueryId::Func> GetQueryFuncIdFromUsr(QueryDatabase* query_db,
                                          Usr usr,
                                          bool create_if_missing) {
   auto it = query_db->usr_to_func.find(usr);
   if (it != query_db->usr_to_func.end())
-    return QueryFamily::FuncId(it->second.id);
+    return QueryId::Func(it->second.id);
   if (!create_if_missing)
     return {};
 
   RawId idx = query_db->funcs.size();
-  query_db->usr_to_func[usr] = QueryFamily::FuncId(idx);
+  query_db->usr_to_func[usr] = QueryId::Func(idx);
   query_db->funcs.push_back(QueryFunc(usr));
-  return QueryFamily::FuncId(idx);
+  return QueryId::Func(idx);
 }
 
-Maybe<QueryFamily::VarId> GetQueryVarIdFromUsr(QueryDatabase* query_db,
+Maybe<QueryId::Var> GetQueryVarIdFromUsr(QueryDatabase* query_db,
                                        Usr usr,
                                        bool create_if_missing) {
   auto it = query_db->usr_to_var.find(usr);
   if (it != query_db->usr_to_var.end())
-    return QueryFamily::VarId(it->second.id);
+    return QueryId::Var(it->second.id);
   if (!create_if_missing)
     return {};
 
   RawId idx = query_db->vars.size();
-  query_db->usr_to_var[usr] = QueryFamily::VarId(idx);
+  query_db->usr_to_var[usr] = QueryId::Var(idx);
   query_db->vars.push_back(QueryVar(usr));
-  return QueryFamily::VarId(idx);
+  return QueryId::Var(idx);
 }
 
 // Returns true if an element with the same file is found.
@@ -389,20 +389,20 @@ bool TryReplaceDef(std::forward_list<Q>& def_list, Q&& def) {
 
 }  // namespace
 
-Maybe<QueryFamily::FileId> QueryDatabase::GetQueryFileIdFromPath(
+Maybe<QueryId::File> QueryDatabase::GetQueryFileIdFromPath(
     const std::string& path) {
   return ::GetQueryFileIdFromPath(this, path, false);
 }
 
-Maybe<QueryFamily::TypeId> QueryDatabase::GetQueryTypeIdFromUsr(Usr usr) {
+Maybe<QueryId::Type> QueryDatabase::GetQueryTypeIdFromUsr(Usr usr) {
   return ::GetQueryTypeIdFromUsr(this, usr, false);
 }
 
-Maybe<QueryFamily::FuncId> QueryDatabase::GetQueryFuncIdFromUsr(Usr usr) {
+Maybe<QueryId::Func> QueryDatabase::GetQueryFuncIdFromUsr(Usr usr) {
   return ::GetQueryFuncIdFromUsr(this, usr, false);
 }
 
-Maybe<QueryFamily::VarId> QueryDatabase::GetQueryVarIdFromUsr(Usr usr) {
+Maybe<QueryId::Var> QueryDatabase::GetQueryVarIdFromUsr(Usr usr) {
   return ::GetQueryVarIdFromUsr(this, usr, false);
 }
 
@@ -428,17 +428,17 @@ IdMap::IdMap(QueryDatabase* query_db, const IdCache& local_ids)
         *GetQueryVarIdFromUsr(query_db, entry.second, true);
 }
 
-QueryFamily::TypeId IdMap::ToQuery(IndexFamily::TypeId id) const {
+QueryId::Type IdMap::ToQuery(IndexId::Type id) const {
   assert(cached_type_ids_.find(id) != cached_type_ids_.end());
-  return QueryFamily::TypeId(cached_type_ids_.find(id)->second);
+  return QueryId::Type(cached_type_ids_.find(id)->second);
 }
-QueryFamily::FuncId IdMap::ToQuery(IndexFamily::FuncId id) const {
+QueryId::Func IdMap::ToQuery(IndexId::Func id) const {
   assert(cached_func_ids_.find(id) != cached_func_ids_.end());
-  return QueryFamily::FuncId(cached_func_ids_.find(id)->second);
+  return QueryId::Func(cached_func_ids_.find(id)->second);
 }
-QueryFamily::VarId IdMap::ToQuery(IndexFamily::VarId id) const {
+QueryId::Var IdMap::ToQuery(IndexId::Var id) const {
   assert(cached_var_ids_.find(id) != cached_var_ids_.end());
-  return QueryFamily::VarId(cached_var_ids_.find(id)->second);
+  return QueryId::Var(cached_var_ids_.find(id)->second);
 }
 
 Use IdMap::ToQuery(Reference ref) const {
@@ -450,13 +450,13 @@ Use IdMap::ToQuery(Reference ref) const {
       ret.id = primary_file;
       break;
     case SymbolKind::Func:
-      ret.id = ToQuery(IndexFamily::FuncId(ref.id));
+      ret.id = ToQuery(IndexId::Func(ref.id));
       break;
     case SymbolKind::Type:
-      ret.id = ToQuery(IndexFamily::TypeId(ref.id));
+      ret.id = ToQuery(IndexId::Type(ref.id));
       break;
     case SymbolKind::Var:
-      ret.id = ToQuery(IndexFamily::VarId(ref.id));
+      ret.id = ToQuery(IndexId::Var(ref.id));
       break;
   }
   return ret;
@@ -586,11 +586,11 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
               current->usr, std::move(*current_remapped_def)));
         }
 
-        PROCESS_UPDATE_DIFF(QueryFamily::TypeId, types_declarations, declarations, Use);
-        PROCESS_UPDATE_DIFF(QueryFamily::TypeId, types_derived, derived, QueryFamily::TypeId);
-        PROCESS_UPDATE_DIFF(QueryFamily::TypeId, types_instances, instances,
-                            QueryFamily::VarId);
-        PROCESS_UPDATE_DIFF(QueryFamily::TypeId, types_uses, uses, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_declarations, declarations, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_derived, derived, QueryId::Type);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_instances, instances,
+                            QueryId::Var);
+        PROCESS_UPDATE_DIFF(QueryId::Type, types_uses, uses, Use);
       });
 
   // Functions
@@ -647,9 +647,9 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
               current->usr, std::move(*current_remapped_def)));
         }
 
-        PROCESS_UPDATE_DIFF(QueryFamily::FuncId, funcs_declarations, declarations, Use);
-        PROCESS_UPDATE_DIFF(QueryFamily::FuncId, funcs_derived, derived, QueryFamily::FuncId);
-        PROCESS_UPDATE_DIFF(QueryFamily::FuncId, funcs_uses, uses, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_declarations, declarations, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_derived, derived, QueryId::Func);
+        PROCESS_UPDATE_DIFF(QueryId::Func, funcs_uses, uses, Use);
       });
 
   // Variables
@@ -696,8 +696,8 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
           vars_def_update.push_back(QueryVar::DefUpdate(
               current->usr, std::move(*current_remapped_def)));
 
-        PROCESS_UPDATE_DIFF(QueryFamily::VarId, vars_declarations, declarations, Use);
-        PROCESS_UPDATE_DIFF(QueryFamily::VarId, vars_uses, uses, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Var, vars_declarations, declarations, Use);
+        PROCESS_UPDATE_DIFF(QueryId::Var, vars_uses, uses, Use);
       });
 
 #undef PROCESS_UPDATE_DIFF
@@ -778,7 +778,7 @@ void QueryDatabase::RemoveUsrs(SymbolKind usr_kind,
 
 void QueryDatabase::RemoveUsrs(
     SymbolKind usr_kind,
-    const std::vector<WithUsr<QueryFamily::FileId>>& to_remove) {
+    const std::vector<WithUsr<QueryId::File>>& to_remove) {
   switch (usr_kind) {
     case SymbolKind::Func: {
       for (const auto& usr_file : to_remove) {
@@ -810,8 +810,8 @@ void QueryDatabase::ApplyIndexUpdate(IndexUpdate* update) {
 // Example types:
 //  storage_name       =>  std::vector<optional<QueryType>>
 //  merge_update       =>  QueryType::DerivedUpdate =>
-//  MergeableUpdate<QueryFamily::TypeId, QueryFamily::TypeId> def                =>  QueryType
-//  def->def_var_name  =>  std::vector<QueryFamily::TypeId>
+//  MergeableUpdate<QueryId::Type, QueryId::Type> def                =>  QueryType
+//  def->def_var_name  =>  std::vector<QueryId::Type>
 #define HANDLE_MERGEABLE(update_var_name, def_var_name, storage_name) \
   for (auto merge_update : update->update_var_name) {                 \
     auto& def = storage_name[merge_update.id.id];                     \
@@ -1038,7 +1038,7 @@ TEST_SUITE("query") {
 
     REQUIRE(update.funcs_removed.empty());
     REQUIRE(update.funcs_uses.size() == 1);
-    REQUIRE(update.funcs_uses[0].id == QueryFamily::FuncId(0));
+    REQUIRE(update.funcs_uses[0].id == QueryId::Func(0));
     REQUIRE(update.funcs_uses[0].to_remove.size() == 1);
     REQUIRE(update.funcs_uses[0].to_remove[0].range == Range(Position(1, 0)));
     REQUIRE(update.funcs_uses[0].to_add.size() == 1);

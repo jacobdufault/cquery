@@ -7,17 +7,17 @@
 
 optional<Use> GetDefinitionSpell(QueryDatabase* db, SymbolIdx sym);
 optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym);
-optional<QueryFamily::FileId> GetDeclarationFileForSymbol(QueryDatabase* db,
+optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
                                                   SymbolIdx sym);
 
 // Get defining declaration (if exists) or an arbitrary declaration (otherwise)
 // for each id.
 std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryFamily::FuncId>& ids);
+                                 const std::vector<QueryId::Func>& ids);
 std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryFamily::TypeId>& ids);
+                                 const std::vector<QueryId::Type>& ids);
 std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryFamily::VarId>& ids);
+                                 const std::vector<QueryId::Var>& ids);
 
 // Get non-defining declarations.
 std::vector<Use> GetNonDefDeclarations(QueryDatabase* db, SymbolIdx sym);
@@ -28,9 +28,9 @@ optional<lsPosition> GetLsPosition(WorkingFile* working_file,
                                    const Position& position);
 optional<lsRange> GetLsRange(WorkingFile* working_file, const Range& location);
 lsDocumentUri GetLsDocumentUri(QueryDatabase* db,
-                               QueryFamily::FileId file_id,
+                               QueryId::File file_id,
                                AbsolutePath* path);
-lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryFamily::FileId file_id);
+lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryId::File file_id);
 
 optional<lsLocation> GetLsLocation(QueryDatabase* db,
                                    WorkingFiles* working_files,
