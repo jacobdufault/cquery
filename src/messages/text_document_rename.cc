@@ -7,11 +7,11 @@ MethodType kMethodType = "textDocument/rename";
 
 lsWorkspaceEdit BuildWorkspaceEdit(QueryDatabase* db,
                                    WorkingFiles* working_files,
-                                   SymbolRef sym,
+                                   QueryId::SymbolRef sym,
                                    const std::string& new_text) {
   std::unordered_map<QueryId::File, lsTextDocumentEdit> path_to_edit;
 
-  EachOccurrence(db, sym, true, [&](Use use) {
+  EachOccurrence(db, sym, true, [&](QueryId::LexicalRef use) {
     optional<lsLocation> ls_location = GetLsLocation(db, working_files, use);
     if (!ls_location)
       return;
@@ -94,7 +94,7 @@ struct Handler_TextDocumentRename : BaseMessageHandler<In_TextDocumentRename> {
     Out_TextDocumentRename out;
     out.id = request->id;
 
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       // Found symbol. Return references to rename.
       out.result =

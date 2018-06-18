@@ -90,7 +90,7 @@ bool Expand(MessageHandler* m,
   entry->numChildren = 0;
   if (!def)
     return false;
-  auto handle = [&](Use use, CallType call_type) {
+  auto handle = [&](QueryId::LexicalRef use, CallType call_type) {
     entry->numChildren++;
     if (levels > 0) {
       Out_CqueryCallHierarchy::Entry entry1;
@@ -105,14 +105,16 @@ bool Expand(MessageHandler* m,
   auto handle_uses = [&](const QueryFunc& func, CallType call_type) {
     if (callee) {
       if (const auto* def = func.AnyDef())
-        for (SymbolRef ref : def->callees)
+        for (const QueryId::SymbolRef& ref : def->callees) {
           if (ref.kind == SymbolKind::Func)
-            handle(Use(ref.range, ref.id, ref.kind, ref.role, def->file),
+            handle(QueryId::LexicalRef(ref.range, ref.id, ref.kind, ref.role,
+                                       def->file),
                    call_type);
+        }
     } else {
-      for (Use use : func.uses)
-        if (use.kind == SymbolKind::Func)
-          handle(use, call_type);
+      for (QueryId::LexicalRef ref : func.uses)
+        if (ref.kind == SymbolKind::Func)
+          handle(ref, call_type);
     }
   };
 
@@ -206,7 +208,7 @@ struct Handler_CqueryCallHierarchy
         return;
       WorkingFile* working_file =
           working_files->GetFileByFilename(file->def->path);
-      for (SymbolRef sym :
+      for (QueryId::SymbolRef sym :
            FindSymbolsAtLocation(working_file, file, params.position)) {
         if (sym.kind == SymbolKind::Func) {
           out.result =

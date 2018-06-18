@@ -27,7 +27,7 @@ struct Handler_TextDocumentTypeDefinition
 
     Out_LocationList out;
     out.id = request->id;
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       AnyId id = sym.id;
       switch (sym.kind) {

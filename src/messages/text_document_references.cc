@@ -51,12 +51,12 @@ struct Handler_TextDocumentReferences
     Out_LocationList out;
     out.id = request->id;
 
-    for (const SymbolRef& sym :
+    for (const QueryId::SymbolRef& sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       // Found symbol. Return references.
       EachOccurrenceWithParent(
           db, sym, request->params.context.includeDeclaration,
-          [&](Use use, lsSymbolKind parent_kind) {
+          [&](QueryId::LexicalRef use, lsSymbolKind parent_kind) {
             if (use.role & request->params.context.role)
               if (optional<lsLocation> ls_loc =
                       GetLsLocation(db, working_files, use)) {

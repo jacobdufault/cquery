@@ -35,7 +35,7 @@ struct CommonCodeLensParams {
   WorkingFile* working_file;
 };
 
-Use OffsetStartColumn(Use use, int16_t offset) {
+QueryId::LexicalRef OffsetStartColumn(QueryId::LexicalRef use, int16_t offset) {
   use.range.start.column += offset;
   return use;
 }
@@ -43,8 +43,8 @@ Use OffsetStartColumn(Use use, int16_t offset) {
 void AddCodeLens(const char* singular,
                  const char* plural,
                  CommonCodeLensParams* common,
-                 Use use,
-                 const std::vector<Use>& uses,
+                 QueryId::LexicalRef use,
+                 const std::vector<QueryId::LexicalRef>& uses,
                  bool force_display) {
   TCodeLens code_lens;
   optional<lsRange> range = GetLsRange(common->working_file, use.range);
@@ -60,7 +60,7 @@ void AddCodeLens(const char* singular,
 
   // Add unique uses.
   std::unordered_set<lsLocation> unique_uses;
-  for (Use use1 : uses) {
+  for (QueryId::LexicalRef use1 : uses) {
     optional<lsLocation> location =
         GetLsLocation(common->db, common->working_files, use1);
     if (!location)
@@ -107,10 +107,11 @@ struct Handler_TextDocumentCodeLens
     common.working_files = working_files;
     common.working_file = working_files->GetFileByFilename(file->def->path);
 
-    for (SymbolRef sym : file->def->outline) {
+    for (QueryId::SymbolRef sym : file->def->outline) {
       // NOTE: We OffsetColumn so that the code lens always show up in a
       // predictable order. Otherwise, the client may randomize it.
-      Use use(sym.range, sym.id, sym.kind, sym.role, file->def->file);
+      QueryId::LexicalRef use(sym.range, sym.id, sym.kind, sym.role,
+                              file->def->file);
 
       switch (sym.kind) {
         case SymbolKind::Type: {
@@ -139,23 +140,25 @@ struct Handler_TextDocumentCodeLens
           // For functions, the outline will report a location that is using the
           // extent since that is better for outline. This tries to convert the
           // extent location to the spelling location.
-          auto try_ensure_spelling = [&](Use use) {
-            optional<Use> def = GetDefinitionSpell(db, use);
+          auto try_ensure_spelling = [&](QueryId::LexicalRef use) {
+            optional<QueryId::LexicalRef> def = GetDefinitionSpell(db, use);
             if (!def || def->range.start.line != use.range.start.line) {
               return use;
             }
             return *def;
           };
 
-          std::vector<Use> base_callers = GetUsesForAllBases(db, func);
-          std::vector<Use> derived_callers = GetUsesForAllDerived(db, func);
+          std::vector<QueryId::LexicalRef> base_callers =
+              GetUsesForAllBases(db, func);
+          std::vector<QueryId::LexicalRef> derived_callers =
+              GetUsesForAllDerived(db, func);
           if (base_callers.empty() && derived_callers.empty()) {
-            Use loc = try_ensure_spelling(use);
+            QueryId::LexicalRef loc = try_ensure_spelling(use);
             AddCodeLens("call", "calls", &common,
                         OffsetStartColumn(loc, offset++), func.uses,
                         true /*force_display*/);
           } else {
-            Use loc = try_ensure_spelling(use);
+            QueryId::LexicalRef loc = try_ensure_spelling(use);
             AddCodeLens("direct call", "direct calls", &common,
                         OffsetStartColumn(loc, offset++), func.uses,
                         false /*force_display*/);
@@ -175,7 +178,7 @@ struct Handler_TextDocumentCodeLens
 
           // "Base"
           if (def->bases.size() == 1) {
-            optional<Use> base_loc = GetDefinitionSpell(
+            optional<QueryId::LexicalRef> base_loc = GetDefinitionSpell(
                 db, SymbolIdx{def->bases[0], SymbolKind::Func});
             if (base_loc) {
               optional<lsLocation> ls_base =

@@ -24,8 +24,8 @@ bool InsertSymbolIntoResult(QueryDatabase* db,
   if (!info)
     return false;
 
-  optional<Use> location = GetDefinitionExtent(db, symbol);
-  Use loc;
+  optional<QueryId::LexicalRef> location = GetDefinitionExtent(db, symbol);
+  QueryId::LexicalRef loc;
   if (location)
     loc = *location;
   else {

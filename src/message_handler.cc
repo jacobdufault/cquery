@@ -129,7 +129,7 @@ void EmitSemanticHighlighting(QueryDatabase* db,
   // Group symbols together.
   std::unordered_map<SymbolIdx, Out_CqueryPublishSemanticHighlighting::Symbol>
       grouped_symbols;
-  for (SymbolRef sym : file->def->all_symbols) {
+  for (QueryId::SymbolRef sym : file->def->all_symbols) {
     std::string_view detailed_name;
     lsSymbolKind parent_kind = lsSymbolKind::Unknown;
     lsSymbolKind kind = lsSymbolKind::Unknown;
@@ -144,7 +144,7 @@ void EmitSemanticHighlighting(QueryDatabase* db,
         if (def->spell)
           parent_kind = GetSymbolKind(db, *def->spell);
         if (parent_kind == lsSymbolKind::Unknown) {
-          for (Use use : func.declarations) {
+          for (QueryId::LexicalRef use : func.declarations) {
             parent_kind = GetSymbolKind(db, use);
             break;
           }
@@ -205,8 +205,8 @@ void EmitSemanticHighlighting(QueryDatabase* db,
           }
         }
         if (parent_kind == lsSymbolKind::Unknown) {
-          for (Use use : var.declarations) {
-            parent_kind = GetSymbolKind(db, use);
+          for (QueryId::LexicalRef ref : var.declarations) {
+            parent_kind = GetSymbolKind(db, ref);
             break;
           }
         }

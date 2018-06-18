@@ -6,7 +6,8 @@ namespace {
 MethodType kMethodType = "textDocument/hover";
 
 // Find the comments for |sym|, if any.
-optional<lsMarkedString> GetComments(QueryDatabase* db, SymbolRef sym) {
+optional<lsMarkedString> GetComments(QueryDatabase* db,
+                                     QueryId::SymbolRef sym) {
   auto make = [](std::string_view comment) -> optional<lsMarkedString> {
     lsMarkedString result;
     result.value = std::string(comment.data(), comment.length());
@@ -26,7 +27,7 @@ optional<lsMarkedString> GetComments(QueryDatabase* db, SymbolRef sym) {
 // Returns the hover or detailed name for `sym`, if any.
 optional<lsMarkedString> GetHoverOrName(QueryDatabase* db,
                                         const std::string& language,
-                                        SymbolRef sym) {
+                                        QueryId::SymbolRef sym) {
   auto make = [&](std::string_view comment) {
     lsMarkedString result;
     result.language = language;
@@ -84,7 +85,7 @@ struct Handler_TextDocumentHover : BaseMessageHandler<In_TextDocumentHover> {
     Out_TextDocumentHover out;
     out.id = request->id;
 
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       // Found symbol. Return hover.
       optional<lsRange> ls_range = GetLsRange(

@@ -38,10 +38,10 @@ struct Handler_TextDocumentDocumentHighlight
     Out_TextDocumentDocumentHighlight out;
     out.id = request->id;
 
-    for (SymbolRef sym :
+    for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
       // Found symbol. Return references to highlight.
-      EachOccurrence(db, sym, true, [&](Use use) {
+      EachOccurrence(db, sym, true, [&](QueryId::LexicalRef use) {
         if (use.file != file_id)
           return;
         if (optional<lsLocation> ls_loc =
