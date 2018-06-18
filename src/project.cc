@@ -16,6 +16,7 @@
 #include <clang-c/CXCompilationDatabase.h>
 #include <doctest/doctest.h>
 #include <rapidjson/writer.h>
+#include <rapidjson/document.h>
 #include <loguru.hpp>
 
 #if defined(__unix__) || defined(__APPLE__)
@@ -71,7 +72,7 @@ struct NormalizationCache {
   }
 };
 
-enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
+enum class ProjectMode { CCppProperties, CompileCommandsJson, DotCquery, ExternalCommand };
 
 struct ProjectConfig {
   std::unordered_map<LanguageId, std::vector<std::string>>
@@ -453,12 +454,100 @@ std::vector<std::string> ReadCompilerArgumentsFromFile(
   return args;
 }
 
+struct CCppProperties {
+  std::string cstd;
+  std::string cppstd;
+  std::vector<std::string> args;
+  bool good = false;
+  void Load(
+    const std::string& json_full_path,
+    const ProjectConfig& config);
+};
+
+void CCppProperties::Load(
+    const std::string& json_full_path,
+    const ProjectConfig& config) {
+  using namespace std::string_literals;
+
+  assert(args.empty());
+  args.push_back("%clang");
+  rapidjson::Document document;
+  std::ifstream fc_stream(json_full_path);
+  if (!fc_stream)
+    return;
+  std::string filecontent { std::istreambuf_iterator<char>(fc_stream),
+                            std::istreambuf_iterator<char>() };
+  document.Parse(filecontent.c_str());
+  if (!document.IsObject())
+    return;
+  auto conf_it = document.FindMember("configurations");
+  if (conf_it == document.MemberEnd())
+    return;
+  if (!conf_it->value.IsArray())
+    return;
+  std::string current_platform = 
+  #ifdef _WIN32
+  "Win32";
+  #elif defined(__APPLE__)
+  "Mac";
+  #else
+  "Linux";
+  #endif
+
+  for (auto& conf : conf_it->value.GetArray()) {
+    if (!conf.HasMember("name") || conf["name"].GetString() != current_platform)
+      continue;
+    auto def_it = conf.FindMember("defines");
+    if (def_it != conf.MemberEnd() && def_it->value.IsArray()) {
+      for (auto& def : def_it->value.GetArray()) {
+        args.push_back("-D"s + def.GetString());
+      }
+    }
+
+    auto inc_it = conf.FindMember("includePath");
+    if (inc_it != conf.MemberEnd() && inc_it->value.IsArray()) {
+      for (auto& inc : inc_it->value.GetArray()) {
+        // TODO maybe handle ** ?
+        auto incpath = std::regex_replace(
+          std::string(inc.GetString()),
+          std::regex{"\\$\\{workspaceFolder\\}"s},
+          config.project_dir);
+        args.push_back("-I" + incpath);
+      }
+    }
+
+    if (cstd.empty() && conf.HasMember("cStandard")) {
+      cstd = conf["cStandard"].GetString();
+      args.push_back("%c " + cstd);
+    }
+    if (cppstd.empty() && conf.HasMember("cppStandard")) {
+      cppstd = conf["cppStandard"].GetString();
+      args.push_back("%cpp " + cppstd);
+    }
+  }
+
+  good = true;
+}
+
 std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
   std::vector<Project::Entry> result;
   config->mode = ProjectMode::DotCquery;
 
   std::unordered_map<std::string, std::vector<std::string>> folder_args;
   std::vector<std::string> files;
+
+  CCppProperties c_cpp_props;
+  std::string c_cpp_props_path =
+      config->project_dir + ".vscode/c_cpp_properties.json";
+  if (FileExists(c_cpp_props_path)) {
+    LOG_S(INFO) << "Trying to load c_cpp_properties.json";
+    c_cpp_props.Load(c_cpp_props_path, *config);
+    if (c_cpp_props.good) {
+      LOG_S(INFO) << "Loaded c_cpp_properties.json as args: " << StringJoin(c_cpp_props.args);
+    } else {
+      LOG_S(WARNING) << "Failed to load c_cpp_properties.json";
+    }
+  }
 
   GetFilesInFolder(config->project_dir, true /*recursive*/,
                    true /*add_folder_to_path*/,
@@ -472,17 +561,25 @@ std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
                      }
                    });
 
-  LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty())
-      << "cquery has no clang arguments. Considering adding either a "
-         "compile_commands.json or .cquery file. See the cquery README for "
-         "more information.";
+  LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty()
+           && !c_cpp_props.good)
+      << "cquery has no clang arguments. Considering adding a "
+         ".cquery file or c_cpp_properties.json or compile_commands.json. "
+         "See the cquery README for more information.";
 
-  const auto& project_dir_args = folder_args[config->project_dir];
-  LOG_IF_S(INFO, !project_dir_args.empty())
-      << "Using .cquery arguments " << StringJoin(project_dir_args);
+  auto& project_dir_args = folder_args[config->project_dir];
+  if (project_dir_args.empty() && c_cpp_props.good) {
+    config->mode = ProjectMode::CCppProperties;
+    project_dir_args = c_cpp_props.args;
+    LOG_S(INFO) << "Using c_cpp_properties.json";
+  } else if(!project_dir_args.empty()) {
+    LOG_S(INFO) << "Using .cquery arguments " << StringJoin(project_dir_args);
+  }
 
   auto GetCompilerArgumentForFile = [&config,
-                                     &folder_args](const std::string& path) {
+                                     &folder_args,
+                                     &project_dir_args
+                                     ](const std::string& path) {
     for (std::string cur = GetDirName(path);; cur = GetDirName(cur)) {
       auto it = folder_args.find(cur);
       if (it != folder_args.end())
@@ -496,7 +593,7 @@ std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
                                    config->project_dir) != 0)
         break;
     }
-    return folder_args[config->project_dir];
+    return project_dir_args;
   };
 
   for (const std::string& file : files) {
