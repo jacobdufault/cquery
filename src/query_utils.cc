@@ -48,17 +48,17 @@ optional<Use> GetDefinitionExtent(QueryDatabase* db, SymbolIdx sym) {
   // Used to jump to file.
   if (sym.kind == SymbolKind::File)
     return Use(Range(Position(0, 0), Position(0, 0)), sym.id, sym.kind,
-               Role::None, QueryFamily::FileId(sym.id));
+               Role::None, QueryId::File(sym.id));
   Maybe<Use> ret;
   EachEntityDef(db, sym, [&](const auto& def) { return !(ret = def.extent); });
   return ret;
 }
 
-optional<QueryFamily::FileId> GetDeclarationFileForSymbol(QueryDatabase* db,
+optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
                                                   SymbolIdx sym) {
   switch (sym.kind) {
     case SymbolKind::File:
-      return QueryFamily::FileId(sym.id);
+      return QueryId::File(sym.id);
     case SymbolKind::Func: {
       QueryFunc& func = db->GetFunc(sym);
       if (!func.declarations.empty())
@@ -86,17 +86,17 @@ optional<QueryFamily::FileId> GetDeclarationFileForSymbol(QueryDatabase* db,
 }
 
 std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryFamily::FuncId>& ids) {
+                                 const std::vector<QueryId::Func>& ids) {
   return GetDeclarations(db->funcs, ids);
 }
 
 std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryFamily::TypeId>& ids) {
+                                 const std::vector<QueryId::Type>& ids) {
   return GetDeclarations(db->types, ids);
 }
 
 std::vector<Use> GetDeclarations(QueryDatabase* db,
-                                 const std::vector<QueryFamily::VarId>& ids) {
+                                 const std::vector<QueryId::Var>& ids) {
   return GetDeclarations(db->vars, ids);
 }
 
@@ -197,7 +197,7 @@ optional<lsRange> GetLsRange(WorkingFile* working_file, const Range& location) {
 }
 
 lsDocumentUri GetLsDocumentUri(QueryDatabase* db,
-                               QueryFamily::FileId file_id,
+                               QueryId::File file_id,
                                AbsolutePath* path) {
   QueryFile& file = db->files[file_id.id];
   if (file.def) {
@@ -209,7 +209,7 @@ lsDocumentUri GetLsDocumentUri(QueryDatabase* db,
   }
 }
 
-lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryFamily::FileId file_id) {
+lsDocumentUri GetLsDocumentUri(QueryDatabase* db, QueryId::File file_id) {
   QueryFile& file = db->files[file_id.id];
   if (file.def) {
     return lsDocumentUri::FromPath(file.def->path);

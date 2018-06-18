@@ -24,7 +24,7 @@ struct Handler_TextDocumentDocumentHighlight
     : BaseMessageHandler<In_TextDocumentDocumentHighlight> {
   MethodType GetMethodType() const override { return kMethodType; }
   void Run(In_TextDocumentDocumentHighlight* request) override {
-    QueryFamily::FileId file_id;
+    QueryId::File file_id;
     QueryFile* file;
     if (!FindFileOrFail(db, project, request->id,
                         request->params.textDocument.uri.GetAbsolutePath(),

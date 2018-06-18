@@ -533,7 +533,7 @@ void SetTypeName(IndexType* type,
 // strips
 // qualifies from |cursor| (ie, Foo* => Foo) and removes template arguments
 // (ie, Foo<A,B> => Foo<*,*>).
-optional<IndexFamily::TypeId> ResolveToDeclarationType(IndexFile* db,
+optional<IndexId::Type> ResolveToDeclarationType(IndexFile* db,
                                                ClangCursor cursor,
                                                IndexParam* param) {
   ClangType type = cursor.get_type();
@@ -556,7 +556,7 @@ optional<IndexFamily::TypeId> ResolveToDeclarationType(IndexFile* db,
   optional<Usr> usr = declaration.get_opt_usr_hash();
   if (!usr)
     return nullopt;
-  IndexFamily::TypeId type_id = db->ToTypeId(*usr);
+  IndexId::Type type_id = db->ToTypeId(*usr);
   IndexType* typ = db->Resolve(type_id);
   if (typ->def.detailed_name.empty()) {
     std::string name = declaration.get_spell_name();
@@ -640,7 +640,7 @@ void SetVarDetail(IndexVar* var,
   def.short_name_size = short_name.size();
 
   if (is_first_seen) {
-    optional<IndexFamily::TypeId> var_type =
+    optional<IndexId::Type> var_type =
         ResolveToDeclarationType(db, cursor, param);
     if (var_type) {
       // Don't treat enum definition variables as instantiations.
@@ -657,7 +657,7 @@ void SetVarDetail(IndexVar* var,
 void OnIndexReference_Function(IndexFile* db,
                                Range loc,
                                ClangCursor parent_cursor,
-                               IndexFamily::FuncId called_id,
+                               IndexId::Func called_id,
                                Role role) {
   switch (GetSymbolKind(parent_cursor.get_kind())) {
     case SymbolKind::Func: {
@@ -693,59 +693,59 @@ const int IndexFile::kMinorVersion = 0;
 IndexFile::IndexFile(const AbsolutePath& path, const std::string& contents)
     : id_cache(path), path(path), file_contents(contents) {}
 
-IndexFamily::TypeId IndexFile::ToTypeId(Usr usr) {
+IndexId::Type IndexFile::ToTypeId(Usr usr) {
   auto it = id_cache.usr_to_type_id.find(usr);
   if (it != id_cache.usr_to_type_id.end())
     return it->second;
 
-  IndexFamily::TypeId id(types.size());
+  IndexId::Type id(types.size());
   types.push_back(IndexType(id, usr));
   id_cache.usr_to_type_id[usr] = id;
   id_cache.type_id_to_usr[id] = usr;
   return id;
 }
-IndexFamily::FuncId IndexFile::ToFuncId(Usr usr) {
+IndexId::Func IndexFile::ToFuncId(Usr usr) {
   auto it = id_cache.usr_to_func_id.find(usr);
   if (it != id_cache.usr_to_func_id.end())
     return it->second;
 
-  IndexFamily::FuncId id(funcs.size());
+  IndexId::Func id(funcs.size());
   funcs.push_back(IndexFunc(id, usr));
   id_cache.usr_to_func_id[usr] = id;
   id_cache.func_id_to_usr[id] = usr;
   return id;
 }
-IndexFamily::VarId IndexFile::ToVarId(Usr usr) {
+IndexId::Var IndexFile::ToVarId(Usr usr) {
   auto it = id_cache.usr_to_var_id.find(usr);
   if (it != id_cache.usr_to_var_id.end())
     return it->second;
 
-  IndexFamily::VarId id(vars.size());
+  IndexId::Var id(vars.size());
   vars.push_back(IndexVar(id, usr));
   id_cache.usr_to_var_id[usr] = id;
   id_cache.var_id_to_usr[id] = usr;
   return id;
 }
 
-IndexFamily::TypeId IndexFile::ToTypeId(const CXCursor& cursor) {
+IndexId::Type IndexFile::ToTypeId(const CXCursor& cursor) {
   return ToTypeId(ClangCursor(cursor).get_usr_hash());
 }
 
-IndexFamily::FuncId IndexFile::ToFuncId(const CXCursor& cursor) {
+IndexId::Func IndexFile::ToFuncId(const CXCursor& cursor) {
   return ToFuncId(ClangCursor(cursor).get_usr_hash());
 }
 
-IndexFamily::VarId IndexFile::ToVarId(const CXCursor& cursor) {
+IndexId::Var IndexFile::ToVarId(const CXCursor& cursor) {
   return ToVarId(ClangCursor(cursor).get_usr_hash());
 }
 
-IndexType* IndexFile::Resolve(IndexFamily::TypeId id) {
+IndexType* IndexFile::Resolve(IndexId::Type id) {
   return &types[id.id];
 }
-IndexFunc* IndexFile::Resolve(IndexFamily::FuncId id) {
+IndexFunc* IndexFile::Resolve(IndexId::Func id) {
   return &funcs[id.id];
 }
-IndexVar* IndexFile::Resolve(IndexFamily::VarId id) {
+IndexVar* IndexFile::Resolve(IndexId::Var id) {
   return &vars[id.id];
 }
 
@@ -753,7 +753,7 @@ std::string IndexFile::ToString() {
   return Serialize(SerializeFormat::Json, *this);
 }
 
-IndexType::IndexType(IndexFamily::TypeId id, Usr usr) : usr(usr), id(id) {}
+IndexType::IndexType(IndexId::Type id, Usr usr) : usr(usr), id(id) {}
 
 template <typename T>
 void Uniquify(std::vector<Id<T>>& ids) {
@@ -931,12 +931,12 @@ bool IsTypeDefinition(const CXIdxContainerInfo* container) {
 
 struct VisitDeclForTypeUsageParam {
   IndexFile* db;
-  optional<IndexFamily::TypeId> toplevel_type;
+  optional<IndexId::Type> toplevel_type;
   int has_processed_any = false;
   optional<ClangCursor> previous_cursor;
-  optional<IndexFamily::TypeId> initial_type;
+  optional<IndexId::Type> initial_type;
 
-  VisitDeclForTypeUsageParam(IndexFile* db, optional<IndexFamily::TypeId> toplevel_type)
+  VisitDeclForTypeUsageParam(IndexFile* db, optional<IndexId::Type> toplevel_type)
       : db(db), toplevel_type(toplevel_type) {}
 };
 
@@ -976,7 +976,7 @@ void VisitDeclForTypeUsageVisitorHandler(ClangCursor cursor,
   if (!referenced_usr)
     return;
 
-  IndexFamily::TypeId ref_type_id = db->ToTypeId(*referenced_usr);
+  IndexId::Type ref_type_id = db->ToTypeId(*referenced_usr);
 
   if (!param->initial_type)
     param->initial_type = ref_type_id;
@@ -1034,10 +1034,10 @@ ClangCursor::VisitResult VisitDeclForTypeUsageVisitor(
 // template.
 // We use |toplevel_type| to attribute the use to the specialized template
 // instead of the primary template.
-optional<IndexFamily::TypeId> AddDeclTypeUsages(
+optional<IndexId::Type> AddDeclTypeUsages(
     IndexFile* db,
     ClangCursor decl_cursor,
-    optional<IndexFamily::TypeId> toplevel_type,
+    optional<IndexId::Type> toplevel_type,
     const CXIdxContainerInfo* semantic_container,
     const CXIdxContainerInfo* lexical_container) {
   //
@@ -1295,7 +1295,7 @@ ClangCursor::VisitResult TemplateVisitor(ClangCursor cursor,
     case CXCursor_DeclRefExpr: {
       ClangCursor ref_cursor = clang_getCursorReferenced(cursor.cx_cursor);
       if (ref_cursor.get_kind() == CXCursor_NonTypeTemplateParameter) {
-        IndexFamily::VarId ref_var_id = db->ToVarId(ref_cursor.get_usr_hash());
+        IndexId::Var ref_var_id = db->ToVarId(ref_cursor.get_usr_hash());
         IndexVar* ref_var = db->Resolve(ref_var_id);
         if (ref_var->def.detailed_name.empty()) {
           ClangCursor sem_parent = ref_cursor.get_semantic_parent();
@@ -1338,7 +1338,7 @@ ClangCursor::VisitResult TemplateVisitor(ClangCursor cursor,
             break;
           case CXCursor_FunctionDecl:
           case CXCursor_FunctionTemplate: {
-            IndexFamily::FuncId called_id = db->ToFuncId(overloaded.get_usr_hash());
+            IndexId::Func called_id = db->ToFuncId(overloaded.get_usr_hash());
             OnIndexReference_Function(db, cursor.get_spell(), data->container,
                                       called_id, Role::Call);
             break;
@@ -1350,7 +1350,7 @@ ClangCursor::VisitResult TemplateVisitor(ClangCursor cursor,
     case CXCursor_TemplateRef: {
       ClangCursor ref_cursor = clang_getCursorReferenced(cursor.cx_cursor);
       if (ref_cursor.get_kind() == CXCursor_TemplateTemplateParameter) {
-        IndexFamily::TypeId ref_type_id = db->ToTypeId(ref_cursor.get_usr_hash());
+        IndexId::Type ref_type_id = db->ToTypeId(ref_cursor.get_usr_hash());
         IndexType* ref_type = db->Resolve(ref_type_id);
         // TODO It seems difficult to get references to template template
         // parameters.
@@ -1384,7 +1384,7 @@ ClangCursor::VisitResult TemplateVisitor(ClangCursor cursor,
     case CXCursor_TypeRef: {
       ClangCursor ref_cursor = clang_getCursorReferenced(cursor.cx_cursor);
       if (ref_cursor.get_kind() == CXCursor_TemplateTypeParameter) {
-        IndexFamily::TypeId ref_type_id = db->ToTypeId(ref_cursor.get_usr_hash());
+        IndexId::Type ref_type_id = db->ToTypeId(ref_cursor.get_usr_hash());
         IndexType* ref_type = db->Resolve(ref_type_id);
         // TODO It seems difficult to get a FunctionTemplate's template
         // parameters.
@@ -1507,7 +1507,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
 
     case CXIdxEntity_CXXNamespace: {
       Range spell = cursor.get_spell();
-      IndexFamily::TypeId ns_id = db->ToTypeId(HashUsr(decl->entityInfo->USR));
+      IndexId::Type ns_id = db->ToTypeId(HashUsr(decl->entityInfo->USR));
       IndexType* ns = db->Resolve(ns_id);
       ns->def.kind = GetSymbolKind(decl->entityInfo->kind);
       if (ns->def.detailed_name.empty()) {
@@ -1517,7 +1517,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
         ns->def.extent =
             SetUse(db, cursor.get_extent(), lex_parent, Role::None);
         if (decl->semanticContainer) {
-          IndexFamily::TypeId parent_id = db->ToTypeId(
+          IndexId::Type parent_id = db->ToTypeId(
               ClangCursor(decl->semanticContainer->cursor).get_usr_hash());
           db->Resolve(parent_id)->derived.push_back(ns_id);
           // |ns| may be invalidated.
@@ -1545,7 +1545,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
       if (cursor != cursor.template_specialization_to_template_definition())
         break;
 
-      IndexFamily::VarId var_id = db->ToVarId(HashUsr(decl->entityInfo->USR));
+      IndexId::Var var_id = db->ToVarId(HashUsr(decl->entityInfo->USR));
       IndexVar* var = db->Resolve(var_id);
 
       // TODO: Eventually run with this if. Right now I want to iron out bugs
@@ -1621,7 +1621,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
           cursor.template_specialization_to_template_definition();
       bool is_template_specialization = cursor != decl_cursor_resolved;
 
-      IndexFamily::FuncId func_id = db->ToFuncId(decl_cursor_resolved.cx_cursor);
+      IndexId::Func func_id = db->ToFuncId(decl_cursor_resolved.cx_cursor);
       IndexFunc* func = db->Resolve(func_id);
       if (g_config->index.comments)
         func->def.comments = cursor.get_comments();
@@ -1709,7 +1709,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
         // definition/declaration. Do it on definition since there should only
         // ever be one of those in the entire program.
         if (IsTypeDefinition(decl->semanticContainer)) {
-          IndexFamily::TypeId declaring_type_id =
+          IndexId::Type declaring_type_id =
               db->ToTypeId(decl->semanticContainer->cursor);
           IndexType* declaring_type_def = db->Resolve(declaring_type_id);
           func->def.declaring_type = declaring_type_id;
@@ -1734,7 +1734,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
             ClangCursor parent =
                 ClangCursor(overridden[i])
                     .template_specialization_to_template_definition();
-            IndexFamily::FuncId parent_id = db->ToFuncId(parent.get_usr_hash());
+            IndexId::Func parent_id = db->ToFuncId(parent.get_usr_hash());
             IndexFunc* parent_def = db->Resolve(parent_id);
             func = db->Resolve(func_id);  // ToFuncId invalidated func_def
 
@@ -1753,10 +1753,10 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
       // Note we want to fetch the first TypeRef. Running
       // ResolveCursorType(decl->cursor) would return
       // the type of the typedef/using, not the type of the referenced type.
-      optional<IndexFamily::TypeId> alias_of = AddDeclTypeUsages(
+      optional<IndexId::Type> alias_of = AddDeclTypeUsages(
           db, cursor, nullopt, decl->semanticContainer, decl->lexicalContainer);
 
-      IndexFamily::TypeId type_id = db->ToTypeId(HashUsr(decl->entityInfo->USR));
+      IndexId::Type type_id = db->ToTypeId(HashUsr(decl->entityInfo->USR));
       IndexType* type = db->Resolve(type_id);
 
       if (alias_of)
@@ -1807,7 +1807,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
     case CXIdxEntity_CXXClass: {
       Range spell = cursor.get_spell();
 
-      IndexFamily::TypeId type_id = db->ToTypeId(HashUsr(decl->entityInfo->USR));
+      IndexId::Type type_id = db->ToTypeId(HashUsr(decl->entityInfo->USR));
       IndexType* type = db->Resolve(type_id);
 
       // TODO: Eventually run with this if. Right now I want to iron out bugs
@@ -1850,7 +1850,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
           // TODO Use a different dimension
           ClangCursor origin_cursor =
               cursor.template_specialization_to_template_definition();
-          IndexFamily::TypeId origin_id = db->ToTypeId(origin_cursor.get_usr_hash());
+          IndexId::Type origin_id = db->ToTypeId(origin_cursor.get_usr_hash());
           IndexType* origin = db->Resolve(origin_id);
           // |type| may be invalidated.
           type = db->Resolve(type_id);
@@ -1907,7 +1907,7 @@ void OnIndexDeclaration(CXClientData client_data, const CXIdxDeclInfo* decl) {
 
           AddDeclTypeUsages(db, base_class->cursor, nullopt,
                             decl->semanticContainer, decl->lexicalContainer);
-          optional<IndexFamily::TypeId> parent_type_id =
+          optional<IndexId::Type> parent_type_id =
               ResolveToDeclarationType(db, base_class->cursor, param);
           // type_def ptr could be invalidated by ResolveToDeclarationType and
           // TemplateVisitor.
@@ -2013,7 +2013,7 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
 
       referenced = referenced.template_specialization_to_template_definition();
 
-      IndexFamily::VarId var_id = db->ToVarId(referenced.get_usr_hash());
+      IndexId::Var var_id = db->ToVarId(referenced.get_usr_hash());
       IndexVar* var = db->Resolve(var_id);
       // Lambda paramaters are not processed by OnIndexDeclaration and
       // may not have a short_name yet. Note that we only process the lambda
@@ -2060,7 +2060,7 @@ void OnIndexReference(CXClientData client_data, const CXIdxEntityRefInfo* ref) {
       // TODO: search full history?
       Range loc = cursor.get_spell();
 
-      IndexFamily::FuncId called_id = db->ToFuncId(HashUsr(ref->referencedEntity->USR));
+      IndexId::Func called_id = db->ToFuncId(HashUsr(ref->referencedEntity->USR));
       IndexFunc* called = db->Resolve(called_id);
 
       std::string_view short_name = called->def.ShortName();

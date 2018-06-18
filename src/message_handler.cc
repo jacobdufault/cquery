@@ -58,7 +58,7 @@ bool FindFileOrFail(QueryDatabase* db,
                     optional<lsRequestId> id,
                     const AbsolutePath& absolute_path,
                     QueryFile** out_query_file,
-                    QueryFamily::FileId* out_file_id) {
+                    QueryId::File* out_file_id) {
   *out_query_file = nullptr;
 
   auto it = db->usr_to_file.find(absolute_path);
@@ -67,13 +67,13 @@ bool FindFileOrFail(QueryDatabase* db,
     if (file.def) {
       *out_query_file = &file;
       if (out_file_id)
-        *out_file_id = QueryFamily::FileId(it->second.id);
+        *out_file_id = QueryId::File(it->second.id);
       return true;
     }
   }
 
   if (out_file_id)
-    *out_file_id = QueryFamily::FileId();
+    *out_file_id = QueryId::File();
 
   bool indexing = project->absolute_path_to_entry_index_.find(absolute_path) !=
                   project->absolute_path_to_entry_index_.end();

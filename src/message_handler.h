@@ -108,7 +108,7 @@ bool FindFileOrFail(QueryDatabase* db,
                     optional<lsRequestId> id,
                     const AbsolutePath& absolute_path,
                     QueryFile** out_query_file,
-                    QueryFamily::FileId* out_file_id = nullptr);
+                    QueryId::File* out_file_id = nullptr);
 
 void EmitInactiveLines(WorkingFile* working_file,
                        const std::vector<Range>& inactive_regions);

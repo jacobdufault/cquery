@@ -128,14 +128,14 @@ MAKE_HASHABLE(Use, t.range);
 void Reflect(Reader& visitor, Reference& value);
 void Reflect(Writer& visitor, Reference& value);
 
-struct IndexFamily {
-  using FileId = Id<IndexFile>;
-  using FuncId = Id<IndexFunc>;
-  using TypeId = Id<IndexType>;
-  using VarId = Id<IndexVar>;
+struct IndexId {
+  using File = Id<IndexFile>;
+  using Func = Id<IndexFunc>;
+  using Type = Id<IndexType>;
+  using Var = Id<IndexVar>;
 };
 
-template <typename F>
+template <typename Id>
 struct TypeDefDefinitionData {
   // General metadata.
   std::string detailed_name;
@@ -155,17 +155,17 @@ struct TypeDefDefinitionData {
   Maybe<Use> extent;
 
   // Immediate parent types.
-  std::vector<typename F::TypeId> bases;
+  std::vector<typename Id::Type> bases;
 
   // Types, functions, and variables defined in this type.
-  std::vector<typename F::TypeId> types;
-  std::vector<typename F::FuncId> funcs;
-  std::vector<typename F::VarId> vars;
+  std::vector<typename Id::Type> types;
+  std::vector<typename Id::Func> funcs;
+  std::vector<typename Id::Var> vars;
 
-  typename F::FileId file;
+  typename Id::File file;
   // If set, then this is the same underlying type as the given value (ie, this
   // type comes from a using or typedef statement).
-  Maybe<typename F::TypeId> alias_of;
+  Maybe<typename Id::Type> alias_of;
 
   int16_t short_name_offset = 0;
   int16_t short_name_size = 0;
@@ -209,32 +209,32 @@ void Reflect(TVisitor& visitor, TypeDefDefinitionData<Family>& value) {
 }
 
 struct IndexType {
-  using Def = TypeDefDefinitionData<IndexFamily>;
+  using Def = TypeDefDefinitionData<IndexId>;
 
   Usr usr;
-  IndexFamily::TypeId id;
+  IndexId::Type id;
 
   Def def;
   std::vector<Use> declarations;
 
   // Immediate derived types.
-  std::vector<IndexFamily::TypeId> derived;
+  std::vector<IndexId::Type> derived;
 
   // Declared variables of this type.
-  std::vector<IndexFamily::VarId> instances;
+  std::vector<IndexId::Var> instances;
 
   // Every usage, useful for things like renames.
   // NOTE: Do not insert directly! Use AddUsage instead.
   std::vector<Use> uses;
 
   IndexType() {}  // For serialization.
-  IndexType(IndexFamily::TypeId id, Usr usr);
+  IndexType(IndexId::Type id, Usr usr);
 
   bool operator<(const IndexType& other) const { return id < other.id; }
 };
 MAKE_HASHABLE(IndexType, t.id);
 
-template <typename F>
+template <typename Id>
 struct FuncDefDefinitionData {
   // General metadata.
   std::string detailed_name;
@@ -244,17 +244,17 @@ struct FuncDefDefinitionData {
   Maybe<Use> extent;
 
   // Method this method overrides.
-  std::vector<typename F::FuncId> bases;
+  std::vector<typename Id::Func> bases;
 
   // Local variables or parameters.
-  std::vector<typename F::VarId> vars;
+  std::vector<typename Id::Var> vars;
 
   // Functions that this function calls.
   std::vector<SymbolRef> callees;
 
-  typename F::FileId file;
+  typename Id::File file;
   // Type which declares this one (ie, it is a method)
-  Maybe<typename F::TypeId> declaring_type;
+  Maybe<typename Id::Type> declaring_type;
   int16_t short_name_offset = 0;
   int16_t short_name_size = 0;
   lsSymbolKind kind = lsSymbolKind::Unknown;
@@ -304,10 +304,10 @@ void Reflect(TVisitor& visitor, FuncDefDefinitionData<Family>& value) {
 }
 
 struct IndexFunc {
-  using Def = FuncDefDefinitionData<IndexFamily>;
+  using Def = FuncDefDefinitionData<IndexId>;
 
   Usr usr;
-  IndexFamily::FuncId id;
+  IndexId::Func id;
 
   Def def;
 
@@ -322,7 +322,7 @@ struct IndexFunc {
   std::vector<Declaration> declarations;
 
   // Methods which directly override this one.
-  std::vector<IndexFamily::FuncId> derived;
+  std::vector<IndexId::Func> derived;
 
   // Calls/usages of this function. If the call is coming from outside a
   // function context then the FuncRef will not have an associated id.
@@ -332,14 +332,14 @@ struct IndexFunc {
   std::vector<Use> uses;
 
   IndexFunc() {}  // For serialization.
-  IndexFunc(IndexFamily::FuncId id, Usr usr) : usr(usr), id(id) {}
+  IndexFunc(IndexId::Func id, Usr usr) : usr(usr), id(id) {}
 
   bool operator<(const IndexFunc& other) const { return id < other.id; }
 };
 MAKE_HASHABLE(IndexFunc, t.id);
 MAKE_REFLECT_STRUCT(IndexFunc::Declaration, spell, param_spellings);
 
-template <typename F>
+template <typename Id>
 struct VarDefDefinitionData {
   // General metadata.
   std::string detailed_name;
@@ -350,9 +350,9 @@ struct VarDefDefinitionData {
   Maybe<Use> spell;
   Maybe<Use> extent;
 
-  typename F::FileId file;
+  typename Id::File file;
   // Type of the variable.
-  Maybe<typename F::TypeId> type;
+  Maybe<typename Id::Type> type;
 
   // Function/type which declares this one.
   int16_t short_name_offset = 0;
@@ -412,10 +412,10 @@ void Reflect(TVisitor& visitor, VarDefDefinitionData<Family>& value) {
 }
 
 struct IndexVar {
-  using Def = VarDefDefinitionData<IndexFamily>;
+  using Def = VarDefDefinitionData<IndexId>;
 
   Usr usr;
-  IndexFamily::VarId id;
+  IndexId::Var id;
 
   Def def;
 
@@ -423,7 +423,7 @@ struct IndexVar {
   std::vector<Use> uses;
 
   IndexVar() {}  // For serialization.
-  IndexVar(IndexFamily::VarId id, Usr usr) : usr(usr), id(id) {}
+  IndexVar(IndexId::Var id, Usr usr) : usr(usr), id(id) {}
 
   bool operator<(const IndexVar& other) const { return id < other.id; }
 };
@@ -431,12 +431,12 @@ MAKE_HASHABLE(IndexVar, t.id);
 
 struct IdCache {
   AbsolutePath primary_file;
-  std::unordered_map<Usr, IndexFamily::TypeId> usr_to_type_id;
-  std::unordered_map<Usr, IndexFamily::FuncId> usr_to_func_id;
-  std::unordered_map<Usr, IndexFamily::VarId> usr_to_var_id;
-  std::unordered_map<IndexFamily::TypeId, Usr> type_id_to_usr;
-  std::unordered_map<IndexFamily::FuncId, Usr> func_id_to_usr;
-  std::unordered_map<IndexFamily::VarId, Usr> var_id_to_usr;
+  std::unordered_map<Usr, IndexId::Type> usr_to_type_id;
+  std::unordered_map<Usr, IndexId::Func> usr_to_func_id;
+  std::unordered_map<Usr, IndexId::Var> usr_to_var_id;
+  std::unordered_map<IndexId::Type, Usr> type_id_to_usr;
+  std::unordered_map<IndexId::Func, Usr> func_id_to_usr;
+  std::unordered_map<IndexId::Var, Usr> var_id_to_usr;
 
   IdCache(const AbsolutePath& primary_file);
 };
@@ -487,15 +487,15 @@ struct IndexFile {
 
   IndexFile(const AbsolutePath& path, const std::string& contents);
 
-  IndexFamily::TypeId ToTypeId(Usr usr);
-  IndexFamily::FuncId ToFuncId(Usr usr);
-  IndexFamily::VarId ToVarId(Usr usr);
-  IndexFamily::TypeId ToTypeId(const CXCursor& usr);
-  IndexFamily::FuncId ToFuncId(const CXCursor& usr);
-  IndexFamily::VarId ToVarId(const CXCursor& usr);
-  IndexType* Resolve(IndexFamily::TypeId id);
-  IndexFunc* Resolve(IndexFamily::FuncId id);
-  IndexVar* Resolve(IndexFamily::VarId id);
+  IndexId::Type ToTypeId(Usr usr);
+  IndexId::Func ToFuncId(Usr usr);
+  IndexId::Var ToVarId(Usr usr);
+  IndexId::Type ToTypeId(const CXCursor& usr);
+  IndexId::Func ToFuncId(const CXCursor& usr);
+  IndexId::Var ToVarId(const CXCursor& usr);
+  IndexType* Resolve(IndexId::Type id);
+  IndexFunc* Resolve(IndexId::Func id);
+  IndexVar* Resolve(IndexId::Var id);
 
   std::string ToString();
 };
