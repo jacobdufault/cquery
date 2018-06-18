@@ -13,7 +13,7 @@ struct In_CqueryInheritanceHierarchy : public RequestInMessage {
     lsTextDocumentIdentifier textDocument;
     lsPosition position;
 
-    Maybe<Id<void>> id;
+    Maybe<AnyId> id;
     SymbolKind kind = SymbolKind::Invalid;
 
     // true: derived classes/functions; false: base classes/functions
@@ -38,7 +38,7 @@ REGISTER_IN_MESSAGE(In_CqueryInheritanceHierarchy);
 struct Out_CqueryInheritanceHierarchy
     : public lsOutMessage<Out_CqueryInheritanceHierarchy> {
   struct Entry {
-    Id<void> id;
+    AnyId id;
     SymbolKind kind;
     std::string_view name;
     lsLocation location;

@@ -91,7 +91,7 @@ struct QueryId {
 
 struct QueryFile {
   struct Def {
-    Id<QueryFile> file;
+    QueryId::File file;
     AbsolutePath path;
     std::vector<std::string> args;
     // Language identifier
@@ -111,7 +111,7 @@ struct QueryFile {
   using DefUpdate = WithFileContent<Def>;
 
   optional<Def> def;
-  Maybe<Id<void>> symbol_idx;
+  Maybe<AnyId> symbol_idx;
 
   explicit QueryFile(const AbsolutePath& path) {
     def = Def();
@@ -151,7 +151,7 @@ struct QueryType : QueryEntity<QueryType, TypeDefDefinitionData<QueryId>> {
   using InstancesUpdate = MergeableUpdate<QueryId::Type, QueryId::Var>;
 
   Usr usr;
-  Maybe<Id<void>> symbol_idx;
+  Maybe<AnyId> symbol_idx;
   std::forward_list<Def> def;
   std::vector<Use> declarations;
   std::vector<QueryId::Type> derived;
@@ -165,7 +165,7 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
   using DerivedUpdate = MergeableUpdate<QueryId::Func, QueryId::Func>;
 
   Usr usr;
-  Maybe<Id<void>> symbol_idx;
+  Maybe<AnyId> symbol_idx;
   std::forward_list<Def> def;
   std::vector<Use> declarations;
   std::vector<QueryId::Func> derived;
@@ -176,7 +176,7 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
 
 struct QueryVar : QueryEntity<QueryVar, VarDefDefinitionData<QueryId>> {
   Usr usr;
-  Maybe<Id<void>> symbol_idx;
+  Maybe<AnyId> symbol_idx;
   std::forward_list<Def> def;
   std::vector<Use> declarations;
   std::vector<Use> uses;
@@ -279,9 +279,7 @@ struct QueryDatabase {
   void ImportOrUpdate(std::vector<QueryType::DefUpdate>&& updates);
   void ImportOrUpdate(std::vector<QueryFunc::DefUpdate>&& updates);
   void ImportOrUpdate(std::vector<QueryVar::DefUpdate>&& updates);
-  void UpdateSymbols(Maybe<Id<void>>* symbol_idx,
-                     SymbolKind kind,
-                     Id<void> idx);
+  void UpdateSymbols(Maybe<AnyId>* symbol_idx, SymbolKind kind, AnyId idx);
   std::string_view GetSymbolDetailedName(RawId symbol_idx) const;
   std::string_view GetSymbolShortName(RawId symbol_idx) const;
 
