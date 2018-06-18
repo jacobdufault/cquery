@@ -243,11 +243,11 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
     }
   }();
 
-  auto add_all_symbols = [&](Use use, AnyId id, SymbolKind kind) {
-    def.all_symbols.push_back(SymbolRef(use.range, id, kind, use.role));
+  auto add_all_symbols = [&](Reference ref, AnyId id, SymbolKind kind) {
+    def.all_symbols.push_back(SymbolRef(ref.range, id, kind, ref.role));
   };
-  auto add_outline = [&](Use use, AnyId id, SymbolKind kind) {
-    def.outline.push_back(SymbolRef(use.range, id, kind, use.role));
+  auto add_outline = [&](Reference ref, AnyId id, SymbolKind kind) {
+    def.outline.push_back(SymbolRef(ref.range, id, kind, ref.role));
   };
 
   for (const IndexType& type : indexed.types) {
@@ -256,14 +256,14 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
       add_all_symbols(*type.def.spell, id, SymbolKind::Type);
     if (type.def.extent)
       add_outline(*type.def.extent, id, SymbolKind::Type);
-    for (Use decl : type.declarations) {
+    for (auto decl : type.declarations) {
       add_all_symbols(decl, id, SymbolKind::Type);
       // Constructor positions have references to the class,
       // which we do not want to show in textDocument/documentSymbol
       if (!(decl.role & Role::Reference))
         add_outline(decl, id, SymbolKind::Type);
     }
-    for (Use use : type.uses)
+    for (Reference use : type.uses)
       add_all_symbols(use, id, SymbolKind::Type);
   }
   for (const IndexFunc& func : indexed.funcs) {
@@ -276,7 +276,7 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
       add_all_symbols(decl.spell, id, SymbolKind::Func);
       add_outline(decl.spell, id, SymbolKind::Func);
     }
-    for (Use use : func.uses) {
+    for (auto use : func.uses) {
       // Make ranges of implicit function calls larger (spanning one more column
       // to the left/right). This is hacky but useful. e.g.
       // textDocument/definition on the space/semicolon in `A a;` or `return
@@ -295,11 +295,11 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
       add_all_symbols(*var.def.spell, id, SymbolKind::Var);
     if (var.def.extent)
       add_outline(*var.def.extent, id, SymbolKind::Var);
-    for (Use decl : var.declarations) {
+    for (auto decl : var.declarations) {
       add_all_symbols(decl, id, SymbolKind::Var);
       add_outline(decl, id, SymbolKind::Var);
     }
-    for (Use use : var.uses)
+    for (auto use : var.uses)
       add_all_symbols(use, id, SymbolKind::Var);
   }
 
