@@ -1015,11 +1015,11 @@ TEST_SUITE("query") {
     IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))
-        ->uses.push_back(Use{Range(Position(1, 0)), {}, {}, {}, {}});
+        ->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
     previous.Resolve(previous.ToFuncId(HashUsr("usr2")))
-        ->uses.push_back(Use(Range(Position(2, 0)), {}, {}, {}, {}));
+        ->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
     previous.Resolve(previous.ToVarId(HashUsr("usr3")))
-        ->uses.push_back(Use(Range(Position(3, 0)), {}, {}, {}, {}));
+        ->uses.push_back(LexicalRef(Range(Position(3, 0)), {}, {}, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1035,8 +1035,8 @@ TEST_SUITE("query") {
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
 
-    pf->uses.push_back(Use(Range(Position(1, 0)), {}, {}, {}, {}));
-    cf->uses.push_back(Use(Range(Position(2, 0)), {}, {}, {}, {}));
+    pf->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+    cf->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1056,8 +1056,8 @@ TEST_SUITE("query") {
     IndexType* pt = previous.Resolve(previous.ToTypeId(HashUsr("usr")));
     IndexType* ct = current.Resolve(current.ToTypeId(HashUsr("usr")));
 
-    pt->uses.push_back(Use(Range(Position(1, 0)), {}, {}, {}, {}));
-    ct->uses.push_back(Use(Range(Position(2, 0)), {}, {}, {}, {}));
+    pt->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+    ct->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1076,10 +1076,10 @@ TEST_SUITE("query") {
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
-    pf->uses.push_back(Use(Range(Position(1, 0)), {}, {}, {}, {}));
-    pf->uses.push_back(Use(Range(Position(2, 0)), {}, {}, {}, {}));
-    cf->uses.push_back(Use(Range(Position(4, 0)), {}, {}, {}, {}));
-    cf->uses.push_back(Use(Range(Position(5, 0)), {}, {}, {}, {}));
+    pf->uses.push_back(LexicalRef(Range(Position(1, 0)), {}, {}, {}));
+    pf->uses.push_back(LexicalRef(Range(Position(2, 0)), {}, {}, {}));
+    cf->uses.push_back(LexicalRef(Range(Position(4, 0)), {}, {}, {}));
+    cf->uses.push_back(LexicalRef(Range(Position(5, 0)), {}, {}, {}));
 
     QueryDatabase db;
     IdMap previous_map(&db, previous.id_cache);
