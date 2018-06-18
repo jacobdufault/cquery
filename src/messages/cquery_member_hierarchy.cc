@@ -232,12 +232,12 @@ struct Handler_CqueryMemberHierarchy
            FindSymbolsAtLocation(working_file, file, params.position)) {
         switch (sym.kind) {
           case SymbolKind::Func:
-            out.result = BuildInitial(QueryId::Func(sym.id), params.detailedName,
-                                      params.levels);
+            out.result = BuildInitial(QueryId::Func(sym.id),
+                                      params.detailedName, params.levels);
             break;
           case SymbolKind::Type:
-            out.result = BuildInitial(QueryId::Type(sym.id), params.detailedName,
-                                      params.levels);
+            out.result = BuildInitial(QueryId::Type(sym.id),
+                                      params.detailedName, params.levels);
             break;
           case SymbolKind::Var: {
             const QueryVar::Def* def = db->GetVar(sym).AnyDef();
