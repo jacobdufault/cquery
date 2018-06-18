@@ -75,6 +75,13 @@ void Reflect(TVisitor& visitor, Id<T>& id) {
   Reflect(visitor, id.id);
 }
 
+struct IndexId {
+  using File = Id<IndexFile>;
+  using Func = Id<IndexFunc>;
+  using Type = Id<IndexType>;
+  using Var = Id<IndexVar>;
+};
+
 struct SymbolIdx {
   AnyId id;
   SymbolKind kind;
@@ -118,7 +125,7 @@ struct SymbolRef : Reference {
 // parent.
 struct Use : Reference {
   // |file| is used in Query* but not in Index*
-  Id<QueryFile> file;
+  Id<QueryFile> file; // FIXME, we should not have be specific to Query ids.
   Use() = default;
   Use(Range range, AnyId id, SymbolKind kind, Role role, Id<QueryFile> file)
       : Reference{range, id, kind, role}, file(file) {}
@@ -128,13 +135,6 @@ MAKE_HASHABLE(Use, t.range);
 
 void Reflect(Reader& visitor, Reference& value);
 void Reflect(Writer& visitor, Reference& value);
-
-struct IndexId {
-  using File = Id<IndexFile>;
-  using Func = Id<IndexFunc>;
-  using Type = Id<IndexType>;
-  using Var = Id<IndexVar>;
-};
 
 template <typename Id>
 struct TypeDefDefinitionData {
