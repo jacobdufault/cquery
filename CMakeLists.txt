@@ -250,6 +250,7 @@ target_sources(cquery PRIVATE
                third_party/pugixml/src/pugixml.cpp)
 
 target_sources(cquery PRIVATE
+               src/c_cpp_properties.cc
                src/cache_manager.cc
                src/clang_complete.cc
                src/clang_cursor.cc
