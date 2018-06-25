@@ -1,5 +1,6 @@
 #include "project.h"
 
+#include "c_cpp_properties.h"
 #include "cache_manager.h"
 #include "clang_system_include_extractor.h"
 #include "clang_utils.h"
@@ -71,7 +72,7 @@ struct NormalizationCache {
   }
 };
 
-enum class ProjectMode { CompileCommandsJson, DotCquery, ExternalCommand };
+enum class ProjectMode { CCppProperties, CompileCommandsJson, DotCquery, ExternalCommand };
 
 struct ProjectConfig {
   std::unordered_map<LanguageId, std::vector<std::string>>
@@ -464,6 +465,20 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
   std::unordered_map<std::string, std::vector<std::string>> folder_args;
   std::vector<std::string> files;
 
+  optional<CCppProperties> c_cpp_props;
+  std::string c_cpp_props_path =
+      config->project_dir + ".vscode/c_cpp_properties.json";
+  if (FileExists(c_cpp_props_path)) {
+    LOG_S(INFO) << "Trying to load c_cpp_properties.json";
+    c_cpp_props = LoadCCppProperties(c_cpp_props_path, config->project_dir);
+    if (c_cpp_props) {
+      LOG_S(INFO) << "Loaded c_cpp_properties.json as args: " << StringJoin(c_cpp_props.value().args);
+    } else {
+      LOG_S(WARNING) << "Failed to load c_cpp_properties.json";
+    }
+  }
+
+
   GetFilesInFolder(
       config->project_dir, true /*recursive*/, true /*add_folder_to_path*/,
       [&folder_args, &files](const std::string& path) {
@@ -487,18 +502,26 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
       }
     }
   }
+  
+  LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty()
+           && !c_cpp_props)
+      << "cquery has no clang arguments. Considering adding a "
+         ".cquery file or c_cpp_properties.json or compile_commands.json. "
+         "See the cquery README for more information.";
 
-  LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty())
-      << "cquery has no clang arguments. Considering adding either a "
-         "compile_commands.json or .cquery file. See the cquery README for "
-         "more information.";
-
-  const auto& project_dir_args = folder_args[config->project_dir];
-  LOG_IF_S(INFO, !project_dir_args.empty())
-      << "Using .cquery arguments " << StringJoin(project_dir_args);
+  auto& project_dir_args = folder_args[config->project_dir];
+  if (project_dir_args.empty() && c_cpp_props) {
+    config->mode = ProjectMode::CCppProperties;
+    project_dir_args = c_cpp_props.value().args;
+    LOG_S(INFO) << "Using c_cpp_properties.json";
+  } else if(!project_dir_args.empty()) {
+    LOG_S(INFO) << "Using .cquery arguments " << StringJoin(project_dir_args);
+  }
 
   auto GetCompilerArgumentForFile = [&config,
-                                     &folder_args](const std::string& path) {
+                                     &folder_args,
+                                     &project_dir_args
+                                     ](const std::string& path) {
     for (std::string cur = GetDirName(path);; cur = GetDirName(cur)) {
       auto it = folder_args.find(cur);
       if (it != folder_args.end())
@@ -512,7 +535,7 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
                                    config->project_dir) != 0)
         break;
     }
-    return folder_args[config->project_dir];
+    return project_dir_args;
   };
 
   for (const std::string& file : files) {
@@ -1056,7 +1079,6 @@ TEST_SUITE("Project") {
             "-fcolor-diagnostics",
             "-no-canonical-prefixes",
             "-m64",
-            "-march=x86-64",
             "-Wall",
             "-Werror",
             "-Wextra",
@@ -1234,7 +1256,6 @@ TEST_SUITE("Project") {
          "-fcolor-diagnostics",
          "-no-canonical-prefixes",
          "-m64",
-         "-march=x86-64",
          "-Wall",
          "-Werror",
          "-Wextra",
@@ -1396,7 +1417,6 @@ TEST_SUITE("Project") {
          "-pthread",
          "-fcolor-diagnostics",
          "-m64",
-         "-march=x86-64",
          "-Wall",
          "-Werror",
          "-Wextra",
@@ -1560,7 +1580,6 @@ TEST_SUITE("Project") {
          "-pthread",
          "-fcolor-diagnostics",
          "-m64",
-         "-march=x86-64",
          "-Wall",
          "-Werror",
          "-Wextra",
