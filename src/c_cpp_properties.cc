@@ -4,6 +4,8 @@
 #include <iostream>
 #include <regex>
 
+#include <string_view.h>
+
 #include <rapidjson/document.h>
 #include <doctest/doctest.h>
 
@@ -15,16 +17,17 @@
   #define CURRENT_PLATFORM "Linux"
 #endif
 
-static std::string current_platform = CURRENT_PLATFORM;
+namespace {
 
-static
+std::string_view kCurrentPlatform = CURRENT_PLATFORM;
+
 optional<CCppProperties> LoadCCppPropertiesFromStr(
-    const char* filecontent,
+    const std::string_view filecontent,
     const std::string& project_dir) {
   CCppProperties res;
   res.args.push_back("%clang");
   rapidjson::Document document;
-  document.Parse(filecontent);
+  document.Parse(filecontent.data());
   if (!document.IsObject())
     return {};
   auto conf_it = document.FindMember("configurations");
@@ -33,12 +36,12 @@ optional<CCppProperties> LoadCCppPropertiesFromStr(
   if (!conf_it->value.IsArray())
     return {};
   for (auto& conf : conf_it->value.GetArray()) {
-    if (!conf.HasMember("name") || conf["name"].GetString() != ::current_platform)
+    if (!conf.HasMember("name") || conf["name"].GetString() != kCurrentPlatform)
       continue;
     auto def_it = conf.FindMember("defines");
     if (def_it != conf.MemberEnd() && def_it->value.IsArray()) {
       for (auto& def : def_it->value.GetArray()) {
-        res.args.push_back(std::string{"-D"} + def.GetString());
+        res.args.push_back(std::string("-D") + def.GetString());
       }
     }
 
@@ -48,24 +51,26 @@ optional<CCppProperties> LoadCCppPropertiesFromStr(
         // TODO maybe handle "path/**" ?
         auto incpath = std::regex_replace(
           std::string(inc.GetString()),
-          std::regex{"\\$\\{workspaceFolder\\}"},
+          std::regex("\\$\\{workspaceFolder\\}"),
           project_dir);
         res.args.push_back("-I" + incpath);
       }
     }
 
-    if (res.cstd.empty() && conf.HasMember("cStandard")) {
-      res.cstd = conf["cStandard"].GetString();
-      res.args.push_back("%c -std=" + res.cstd);
+    if (res.cStandard.empty() && conf.HasMember("cStandard")) {
+      res.cStandard = conf["cStandard"].GetString();
+      res.args.push_back("%c -std=" + res.cStandard);
     }
-    if (res.cppstd.empty() && conf.HasMember("cppStandard")) {
-      res.cppstd = conf["cppStandard"].GetString();
-      res.args.push_back("%cpp -std=" + res.cppstd);
+    if (res.cppStandard.empty() && conf.HasMember("cppStandard")) {
+      res.cppStandard = conf["cppStandard"].GetString();
+      res.args.push_back("%cpp -std=" + res.cppStandard);
     }
   }
 
-  return {res};
+  return res;
 }
+
+}  // namespace
 
 optional<CCppProperties> LoadCCppProperties(
     const std::string& json_full_path,
@@ -73,9 +78,9 @@ optional<CCppProperties> LoadCCppProperties(
   std::ifstream fc_stream(json_full_path);
   if (!fc_stream)
     return {};
-  std::string filecontent { std::istreambuf_iterator<char>(fc_stream),
-                            std::istreambuf_iterator<char>() };
-  return LoadCCppPropertiesFromStr(filecontent.c_str(), project_dir);
+  std::string filecontent{ std::istreambuf_iterator<char>(fc_stream),
+                           std::istreambuf_iterator<char>() };
+  return LoadCCppPropertiesFromStr(filecontent, project_dir);
 }
 
 
@@ -111,13 +116,13 @@ TEST_SUITE("CCppProperties") {
       })";
     auto res = LoadCCppPropertiesFromStr(testjson, "/proj/");
     REQUIRE(res.has_value());
-    auto& val = res.value();
-    REQUIRE_EQ(val.cstd, "c11");
-    REQUIRE_EQ(val.cppstd, "c++17");
-    decltype(val.args) args{"%clang", "-DFOO", "-DBAR=1", "-I/proj/", "-Ifoo",
-        "-I/proj//bar", "%c -std=c11", "%cpp -std=c++17"};
-    bool argsequal = val.args == args;
-    if (!argsequal) {
+    CCppProperties& val = res.value();
+    REQUIRE_EQ(val.cStandard, "c11");
+    REQUIRE_EQ(val.cppStandard, "c++17");
+    std::vector<std::string> args{"%clang", "-DFOO", "-DBAR=1", "-I/proj/",
+        "-Ifoo", "-I/proj//bar", "%c -std=c11", "%cpp -std=c++17"};
+    bool args_equal = val.args == args;
+    if (!args_equal) {
       if (val.args.size() != args.size()) {
         std::cout << "\tval.args size " << val.args.size()
           << " , args size " << args.size() << std::endl;
@@ -130,7 +135,7 @@ TEST_SUITE("CCppProperties") {
         }
       }
     }
-    REQUIRE(argsequal);
+    REQUIRE(args_equal);
   }
 }
 
