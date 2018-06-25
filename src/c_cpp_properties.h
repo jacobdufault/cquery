@@ -6,8 +6,8 @@
 #include "optional.h"
 
 struct CCppProperties {
-  std::string cstd;
-  std::string cppstd;
+  std::string cStandard;
+  std::string cppStandard;
   std::vector<std::string> args;
 };
 
