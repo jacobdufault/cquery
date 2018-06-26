@@ -11,6 +11,7 @@ set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
 option(SYSTEM_CLANG "Use system installation of Clang instead of \
        downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
+option(CI "Add -Werror or equivalent to compiler options" OFF) 
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -37,25 +38,27 @@ endif()
 if(MSVC)
   # Common MSVC/Clang(Windows) options
   target_compile_options(cquery PRIVATE
-                         /nologo
-                         /EHsc
-                         /D_CRT_SECURE_NO_WARNINGS # don't try to use MSVC std replacements
-                         /W3 # roughly -Wall
-                         /wd4996 # disable loguru unsafe warnings
-                         /wd4722 # ignores warning C4722
-                                 # (destructor never returns) in loguru
-                         /wd4267 # ignores warning C4267
-                                 # (conversion from 'size_t' to 'type'),
-                                 # roughly -Wno-sign-compare
-                         /wd4800
-                         $<$<CONFIG:Debug>:/FS>
-                         )
+    /nologo
+    /EHsc
+    /D_CRT_SECURE_NO_WARNINGS # don't try to use MSVC std replacements
+    /W3 # roughly -Wall
+    /wd4996 # disable loguru unsafe warnings
+    /wd4722 # ignores warning C4722
+            # (destructor never returns) in loguru
+    /wd4267 # ignores warning C4267
+            # (conversion from 'size_t' to 'type'),
+            # roughly -Wno-sign-compare
+    /wd4800
+    $<$<CONFIG:Debug>:/FS>
+    $<$<BOOL:${CI}>:/WX> 
+  )
 else()
   # Common GCC/Clang(Linux) options
   target_compile_options(cquery PRIVATE
-                         -Wall
-                         -Wno-sign-compare
-                         )
+    -Wall
+    -Wno-sign-compare
+    $<$<BOOL:${CI}>:-Werror>
+  )
 
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     target_compile_options(cquery PRIVATE -Wno-return-type -Wno-unused-result)
