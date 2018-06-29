@@ -49,6 +49,7 @@ if(MSVC)
                                  # (conversion from 'size_t' to 'type'),
                                  # roughly -Wno-sign-compare
                          /wd4800
+                         /wd4068 # Disable unknown pragma warning
                          $<$<CONFIG:Debug>:/FS>
                          $<$<BOOL:${CI}>:/WX> 
                          )
@@ -57,6 +58,7 @@ else()
   target_compile_options(cquery PRIVATE
                          -Wall
                          -Wno-sign-compare
+                         -Wno-unknown-pragmas
                          $<$<BOOL:${CI}>:-Werror>
                          )
 
