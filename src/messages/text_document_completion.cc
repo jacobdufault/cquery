@@ -27,7 +27,10 @@ enum class lsCompletionTriggerKind {
   // the `triggerCharacters` properties of the `CompletionRegistrationOptions`.
   TriggerCharacter = 2
 };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 MAKE_REFLECT_TYPE_PROXY(lsCompletionTriggerKind);
+#pragma clang diagnostic pop
 
 // Contains additional information about the context in which a completion
 // request is triggered.
