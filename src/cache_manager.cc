@@ -73,7 +73,8 @@ struct FakeCacheManager : ICacheManager {
   explicit FakeCacheManager(const std::vector<FakeCacheEntry>& entries)
       : entries_(entries) {}
 
-  void WriteToCache(IndexFile& file) override { assert(false); }
+  // TODO: should we allow tests to write cache files?
+  void WriteToCache(IndexFile& file) override {}
 
   optional<std::string> LoadCachedFileContents(
       const std::string& path) override {
