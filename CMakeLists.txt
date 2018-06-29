@@ -11,6 +11,7 @@ set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
 option(SYSTEM_CLANG "Use system installation of Clang instead of \
        downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
+option(ASSERTS "Compile with asserts enabled" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -72,6 +73,14 @@ else()
     target_link_libraries(cquery PRIVATE -fsanitize=address,undefined)
   endif()
 endif()
+
+
+# Enable asserts
+if(ASSERTS)
+  string(REPLACE "/DNDEBUG" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+  string(REPLACE "-DNDEBUG" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+endif()
+
 
 ### Download Clang if required
 
