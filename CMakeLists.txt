@@ -11,6 +11,7 @@ set(CLANG_DOWNLOAD_LOCATION ${CMAKE_BINARY_DIR}
 option(SYSTEM_CLANG "Use system installation of Clang instead of \
        downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
+option(CI "Add -Werror or equivalent" OFF) 
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -49,12 +50,14 @@ if(MSVC)
                                  # roughly -Wno-sign-compare
                          /wd4800
                          $<$<CONFIG:Debug>:/FS>
+                         $<$<BOOL:${CI}>:/WX> 
                          )
 else()
   # Common GCC/Clang(Linux) options
   target_compile_options(cquery PRIVATE
                          -Wall
                          -Wno-sign-compare
+                         $<$<BOOL:${CI}>:-Werror>
                          )
 
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
