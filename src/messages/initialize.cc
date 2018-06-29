@@ -105,7 +105,10 @@ enum class lsTextDocumentSyncKind {
   // send.
   Incremental = 2
 };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 MAKE_REFLECT_TYPE_PROXY(lsTextDocumentSyncKind)
+#pragma clang diagnostic pop
 
 struct lsTextDocumentSyncOptions {
   // Open and close notifications are sent to the server.
