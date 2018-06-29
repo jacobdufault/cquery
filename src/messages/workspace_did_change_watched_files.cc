@@ -15,7 +15,10 @@ enum class lsFileChangeType {
   Changed = 2,
   Deleted = 3,
 };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 MAKE_REFLECT_TYPE_PROXY(lsFileChangeType);
+#pragma clang diagnostic pop
 
 struct lsFileEvent {
   lsDocumentUri uri;

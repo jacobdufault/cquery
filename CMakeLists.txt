@@ -12,6 +12,7 @@ option(SYSTEM_CLANG "Use system installation of Clang instead of \
        downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(ASSERTS "Compile with asserts enabled" OFF)
+option(CI "Add -Werror or equivalent" OFF) 
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -49,13 +50,17 @@ if(MSVC)
                                  # (conversion from 'size_t' to 'type'),
                                  # roughly -Wno-sign-compare
                          /wd4800
+                         /wd4068 # Disable unknown pragma warning
                          $<$<CONFIG:Debug>:/FS>
+                         $<$<BOOL:${CI}>:/WX> 
                          )
 else()
   # Common GCC/Clang(Linux) options
   target_compile_options(cquery PRIVATE
                          -Wall
                          -Wno-sign-compare
+                         -Wno-unknown-pragmas
+                         $<$<BOOL:${CI}>:-Werror>
                          )
 
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)

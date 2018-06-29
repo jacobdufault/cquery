@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from __future__ import print_function
+
 try:
     from urllib2 import urlopen  # Python 2
 except ImportError:
@@ -36,6 +38,11 @@ elif sys.platform == 'win32':
 
 from waflib.Tools.compiler_cxx import cxx_compiler
 cxx_compiler['linux'] = ['clang++', 'g++']
+
+print('\033[91m' + """### IMPORTANT ### 
+The Waf build is deprecated and will be removed in the future. Build cquery with
+CMake instead.
+### IMPORTANT ###\n""" + '\033[0m', file=sys.stderr)
 
 # Creating symbolic link on Windows requires a special priviledge SeCreateSymboliclinkPrivilege,
 # which an non-elevated process lacks. Starting with Windows 10 build 14972, this got relaxed
