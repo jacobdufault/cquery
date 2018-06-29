@@ -456,7 +456,9 @@ std::vector<std::string> ReadCompilerArgumentsFromFile(
   return args;
 }
 
-std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
+std::vector<Project::Entry> LoadFromDirectoryListing(
+    ProjectConfig* config,
+    bool use_global_config = false) {
   std::vector<Project::Entry> result;
   config->mode = ProjectMode::DotCquery;
 
@@ -476,18 +478,31 @@ std::vector<Project::Entry> LoadFromDirectoryListing(ProjectConfig* config) {
     }
   }
 
-  GetFilesInFolder(config->project_dir, true /*recursive*/,
-                   true /*add_folder_to_path*/,
-                   [&folder_args, &files](const std::string& path) {
-                     if (SourceFileLanguage(path) != LanguageId::Unknown) {
-                       files.push_back(path);
-                     } else if (GetBaseName(path) == ".cquery") {
-                       LOG_S(INFO) << "Using .cquery arguments from " << path;
-                       folder_args.emplace(GetDirName(path),
-                                           ReadCompilerArgumentsFromFile(path));
-                     }
-                   });
 
+  GetFilesInFolder(
+      config->project_dir, true /*recursive*/, true /*add_folder_to_path*/,
+      [&folder_args, &files](const std::string& path) {
+        if (SourceFileLanguage(path) != LanguageId::Unknown) {
+          files.push_back(path);
+        } else if (GetBaseName(path) == ".cquery") {
+          LOG_S(INFO) << "Using .cquery arguments from " << path;
+          folder_args.emplace(GetDirName(path),
+                              ReadCompilerArgumentsFromFile(path));
+        }
+      });
+
+  if (use_global_config) {
+    optional<std::string> maybe_cfg = GetGlobalConfigDirectory();
+    if (folder_args.empty() && maybe_cfg) {
+      std::string cfg = *maybe_cfg + ".cquery";
+      if (cfg.size() && FileExists(cfg)) {
+        LOG_S(INFO) << "Using .cquery arguments from " << cfg;
+        folder_args.emplace(config->project_dir,
+                            ReadCompilerArgumentsFromFile(cfg));
+      }
+    }
+  }
+  
   LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty()
            && !c_cpp_props)
       << "cquery has no clang arguments. Considering adding a "
@@ -541,8 +556,11 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     ProjectConfig* project,
     const std::string& opt_compilation_db_dir) {
   // If there is a .cquery file always load using directory listing.
-  if (FileExists(project->project_dir + ".cquery"))
+  // The .cquery file can be in the project or home dir but the project
+  // dir takes precedence.
+  if (FileExists(project->project_dir + ".cquery")) {
     return LoadFromDirectoryListing(project);
+  }
 
   // If |compilationDatabaseCommand| is specified, execute it to get the compdb.
   std::string comp_db_dir(opt_compilation_db_dir);
@@ -596,6 +614,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
           project->project_dir.c_str(), &cx_db_load_error);
     }
   }
+
   if (!g_config->compilationDatabaseCommand.empty()) {
 #if defined(_WIN32)
 // TODO
@@ -608,7 +627,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
   if (cx_db_load_error != CXCompilationDatabase_NoError) {
     LOG_S(INFO) << "Unable to load compile_commands.json located at \""
                 << comp_db_dir << "\"; using directory listing instead.";
-    return LoadFromDirectoryListing(project);
+    return LoadFromDirectoryListing(project, true);
   }
 
   Timer clang_time;

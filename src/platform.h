@@ -60,3 +60,5 @@ void TraceMe();
 
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input);
+
+optional<std::string> GetGlobalConfigDirectory();
