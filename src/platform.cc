@@ -2,6 +2,7 @@
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
+#include <process.hpp>
 
 #include <iterator>
 #include <sstream>
@@ -84,6 +85,60 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
       exit(1);
     }
   }
+}
+
+optional<std::string> RunExecutable(const std::vector<std::string>& command,
+                                    std::string_view input) {
+  Process::Error error;
+  Process process;
+
+  error = process.start(command, nullptr);
+  if (error) {
+    LOG_S(FATAL) << "Process: Failed to start process";
+    return nullopt;
+  }
+
+  unsigned int actual;
+
+  error = process.write(input.data(), input.length(), &actual);
+  if (error || actual != input.length()) {
+    LOG_S(FATAL) << "Process: Failed to write input";
+    return nullopt;
+  }
+
+  error = process.close_stdin();
+  if (error) {
+    LOG_S(FATAL) << "Process: Failed to close stdin";
+    return nullopt;
+  }
+
+  char buffer[1024];
+  unsigned int buffer_size = 1024;
+
+  std::stringstream output;
+
+  while (true) {
+    error = process.read(buffer, buffer_size - 1, &actual);
+    if (error) {
+      break;
+    }
+
+    buffer[actual] = '\0';
+    output << buffer;
+  }
+
+  if (error != Process::STREAM_CLOSED) {
+    LOG_S(FATAL) << "Process: Failed to read output";
+    return nullopt;
+  }
+
+  error = process.wait(Process::INFINITE);
+  if (error) {
+    LOG_S(FATAL) << "Process: Failed to wait for process exit";
+    return nullopt;
+  }
+
+  return output.str();
 }
 
 TEST_SUITE("Platform") {
