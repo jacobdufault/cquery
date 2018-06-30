@@ -102,6 +102,10 @@ endif()
 
 ### Libraries
 
+set(PROCESS_LIB_BUILD_CPP_WRAPPER ON)
+add_subdirectory(third_party/process-lib)
+target_link_libraries(cquery PRIVATE process)
+
 # See cmake/FindClang.cmake
 find_package(Clang ${CLANG_VERSION} REQUIRED)
 target_link_libraries(cquery PRIVATE Clang::Clang)
