@@ -478,11 +478,10 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
     }
   }
 
-
   GetFilesInFolder(
       config->project_dir, true /*recursive*/, true /*add_folder_to_path*/,
       [&folder_args, &files](const std::string& path) {
-        if (SourceFileLanguage(path) != LanguageId::Unknown) {
+        if (SourceFileLanguage(path) != LanguageId::Unknown && !IsDirectory(path)) {
           files.push_back(path);
         } else if (GetBaseName(path) == ".cquery") {
           LOG_S(INFO) << "Using .cquery arguments from " << path;
@@ -502,7 +501,7 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
       }
     }
   }
-  
+
   LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty()
            && !c_cpp_props)
       << "cquery has no clang arguments. Considering adding a "
