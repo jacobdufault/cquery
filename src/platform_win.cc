@@ -382,14 +382,4 @@ optional<std::string> GetGlobalConfigDirectory() {
 	return cfg_path;
 }
 
-bool IsDirectory(const std::string& path) {
-	struct stat path_stat;
-
-	if (stat(path.c_str(), &path_stat) != 0) {
-		perror("cannot access path");
-		return false;
-	}
-
-	return path_stat.st_mode & S_IFDIR;
-}
 #endif

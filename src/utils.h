@@ -138,3 +138,5 @@ AbsolutePath GetExecutablePathNextToCqueryBinary(const std::string& name);
 bool IsAbsolutePath(const std::string& path);
 bool IsUnixAbsolutePath(const std::string& path);
 bool IsWindowsAbsolutePath(const std::string& path);
+
+bool IsDirectory(const std::string& path);

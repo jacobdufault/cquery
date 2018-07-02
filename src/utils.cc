@@ -17,6 +17,7 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <sys/stat.h>
 
 #if !defined(__APPLE__)
 #include <sparsepp/spp_memory.h>
@@ -464,6 +465,17 @@ bool IsWindowsAbsolutePath(const std::string& path) {
 
   return path.size() > 3 && path[1] == ':' &&
          (path[2] == '/' || path[2] == '\\') && is_drive_letter(path[0]);
+}
+
+bool IsDirectory(const std::string& path) {
+  struct stat path_stat;
+
+  if (stat(path.c_str(), &path_stat) != 0) {
+    perror("cannot access path");
+    return false;
+  }
+
+  return path_stat.st_mode & S_IFDIR;
 }
 
 TEST_SUITE("AbsolutePath") {
