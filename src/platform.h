@@ -62,6 +62,3 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input);
 
 optional<std::string> GetGlobalConfigDirectory();
-
-//Returns True if path points to a directory
-bool IsDirectory(const std::string& path);
