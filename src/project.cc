@@ -481,9 +481,9 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
   GetFilesInFolder(
       config->project_dir, true /*recursive*/, true /*add_folder_to_path*/,
       [&folder_args, &files](const std::string& path) {
-        if (SourceFileLanguage(path) != LanguageId::Unknown && !IsDirectory(path)) {
+        if (SourceFileLanguage(path) != LanguageId::Unknown) {
           files.push_back(path);
-        } else if (GetBaseName(path) == ".cquery") {
+        } else if (GetBaseName(path) == ".cquery"  && !IsDirectory(GetDirName(path) + ".cquery")) {
           LOG_S(INFO) << "Using .cquery arguments from " << path;
           folder_args.emplace(GetDirName(path),
                               ReadCompilerArgumentsFromFile(path));
