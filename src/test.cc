@@ -320,7 +320,7 @@ bool RunIndexTests(const std::string& filter_path, bool enable_update) {
   // FIXME: show diagnostics in STL/headers when running tests. At the moment
   // this can be done by constructing ClangIndex index(1, 1);
   ClangIndex index;
-  for (std::string path : GetFilesInFolder("index_tests", true /*recursive*/,
+  for (std::string path : GetFilesAndDirectoriesInFolder("index_tests", true /*recursive*/,
                                            true /*add_folder_to_path*/)) {
     bool is_fail_allowed = false;
 
