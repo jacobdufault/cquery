@@ -185,7 +185,7 @@ void IncludeComplete::InsertIncludesFromDirectory(std::string directory0,
   }
 
   std::vector<CompletionCandidate> results;
-  GetFilesInFolder(
+  GetFilesAndDirectoriesInFolder(
       directory->path, true /*recursive*/, false /*add_folder_to_path*/,
       [&](const std::string& path) {
         if (!EndsWithAny(path, g_config->completion.includeSuffixWhitelist))

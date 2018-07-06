@@ -226,7 +226,7 @@ static void GetFilesInFolderHelper(
   }
 }
 
-std::vector<std::string> GetFilesInFolder(std::string folder,
+std::vector<std::string> GetFilesAndDirectoriesInFolder(std::string folder,
                                           bool recursive,
                                           bool add_folder_to_path) {
   EnsureEndsInSlash(folder);
@@ -237,7 +237,7 @@ std::vector<std::string> GetFilesInFolder(std::string folder,
   return result;
 }
 
-void GetFilesInFolder(std::string folder,
+void GetFilesAndDirectoriesInFolder(std::string folder,
                       bool recursive,
                       bool add_folder_to_path,
                       const std::function<void(const std::string&)>& handler) {
