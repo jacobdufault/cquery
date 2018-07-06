@@ -478,7 +478,7 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
     }
   }
 
-  GetFilesInFolder(
+  GetFilesAndDirectoriesInFolder(
       config->project_dir, true /*recursive*/, true /*add_folder_to_path*/,
       [&folder_args, &files](const std::string& path) {
         if (SourceFileLanguage(path) != LanguageId::Unknown) {
