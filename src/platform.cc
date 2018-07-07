@@ -1,4 +1,5 @@
 #include "platform.h"
+#include "utils.h"
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
@@ -86,15 +87,22 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
     }
   }
 }
-
+#include <iostream>
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input) {
   Process::Error error;
   Process process;
 
+  for (const auto& arg : command) {
+    std::cerr << arg << " ";
+  }
+  std::cerr << std::endl;
+
   error = process.start(command, nullptr);
   if (error) {
-    LOG_S(FATAL) << "Process: Failed to start process";
+    std::string command_string = StringJoin(command);
+    LOG_S(ERROR) << "Process: Failed to start process \"" << command_string
+                 << "\"";
     return nullopt;
   }
 
