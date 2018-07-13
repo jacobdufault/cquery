@@ -216,7 +216,8 @@ CacheLoadResult TryLoadFromCache(
     const AbsolutePath& path_to_index) {
   // Always run this block, even if we are interactive, so we can check
   // dependencies and reset files in |file_consumer_shared|.
-  IndexFile* previous_index = cache_manager->TryLoad(path_to_index);
+  IndexFile* previous_index =
+      cache_manager->TryLoad(path_to_index);
   if (!previous_index)
     return CacheLoadResult::Parse;
 
@@ -279,7 +280,7 @@ CacheLoadResult TryLoadFromCache(
                 << previous_index->path << ")";
 
     std::unique_ptr<IndexFile> dependency_index =
-        cache_manager->TryTakeOrLoad(NormalizedPath{dependency});
+        cache_manager->TryTakeOrLoad(dependency);
 
     // |dependency_index| may be null if there is no cache for it but
     // another file has already started importing it.

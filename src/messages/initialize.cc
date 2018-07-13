@@ -607,10 +607,10 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
       // Initialize data store
       if (g_config->cacheType == "files") {
         g_config->cacheStore =
-            OpenOrConnectFileStore(NormalizedPath{g_config->projectRoot});
+            OpenOrConnectFileStore(AbsolutePath{g_config->projectRoot});
       } else if (g_config->cacheType == "unqlite") {
         g_config->cacheStore =
-            OpenOrConnectUnqliteStore(NormalizedPath{g_config->projectRoot});
+            OpenOrConnectUnqliteStore(AbsolutePath{g_config->projectRoot});
       } else {
         LOG_S(INFO) << "Invalid cache type \"" << g_config->cacheType << "\".";
       }

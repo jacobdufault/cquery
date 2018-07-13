@@ -10,14 +10,13 @@
 
 #include "query.h"
 
-struct NormalizedPath;
 struct Config;
 struct IndexFile;
 
 struct ICacheStore;
 
-std::string PathToContentKey(const NormalizedPath& path);
-std::string PathToIndexKey(const NormalizedPath& path);
+std::string PathToContentKey(const AbsolutePath& path);
+std::string PathToIndexKey(const AbsolutePath& path);
 
 struct ICacheStore {
   virtual optional<std::string> Read(const std::string& key) = 0;
@@ -27,11 +26,11 @@ struct ICacheStore {
 };
 
 // Returns null if the given root path does not exist
-std::shared_ptr<ICacheStore> OpenOrConnectFileStore(const NormalizedPath& path);
+std::shared_ptr<ICacheStore> OpenOrConnectFileStore(const AbsolutePath& path);
 
 // Return null if the given file path does not exists and cannot be created
 std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(
-    const NormalizedPath& path_to_db);
+    const AbsolutePath& path_to_db);
 
 
 // Note that IndexCaches are _not_ thread-safe.
@@ -42,14 +41,14 @@ struct IndexCache {
   // Tries to recover an index file (content+serialized index) for a given
   // source file from the cache store and returns a non-owning reference or
   // null, buffering the IndexFile internally for later take
-  IndexFile* TryLoad(const NormalizedPath& path);
+  IndexFile* TryLoad(const AbsolutePath& path);
 
   // Tries to recover an index file (content+serialized index) for a given
   // source file from the cache store and returns a non-owning reference or null
-  std::unique_ptr<IndexFile> TryTakeOrLoad(const NormalizedPath& path);
+  std::unique_ptr<IndexFile> TryTakeOrLoad(const AbsolutePath& path);
 
   // Only load the buffered file content from the cache
-  optional<std::string> TryLoadContent(const NormalizedPath& path);
+  optional<std::string> TryLoadContent(const AbsolutePath& path);
 
   // Write an IndexFile to the cache storage
   void Write(IndexFile& file);
@@ -58,7 +57,7 @@ struct IndexCache {
   void IterateLoadedCaches(std::function<void(IndexFile*)> fn);
 
  private:
-  std::unique_ptr<IndexFile> LoadIndexFileFromCache(const NormalizedPath& path);
+  std::unique_ptr<IndexFile> LoadIndexFileFromCache(const AbsolutePath& path);
 
   std::shared_ptr<ICacheStore> driver_;
   std::unordered_map<std::string, std::unique_ptr<IndexFile>>

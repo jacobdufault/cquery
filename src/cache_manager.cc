@@ -156,7 +156,7 @@ IndexCache::IndexCache(std::shared_ptr<ICacheStore> driver)
 
 
 std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(
-    const NormalizedPath& file) {
+    const AbsolutePath& file) {
   optional<std::string> file_content = driver_->Read(file.path);
   optional<std::string> serialized_indexed_content = driver_->Read(
       file.path + SerializationFormatToSuffix(g_config->cacheFormat));
@@ -175,7 +175,7 @@ std::unique_ptr<IndexFile> IndexCache::LoadIndexFileFromCache(
 // Tries to recover an index file (content+serialized index) for a given source
 // file from the cache store and returns a non-owning reference or null,
 // buffering the IndexFile internally for later take
-IndexFile* IndexCache::TryLoad(const NormalizedPath& path) {
+IndexFile* IndexCache::TryLoad(const AbsolutePath& path) {
   IndexFile* result = nullptr;
   auto it = caches_.find(path.path);
   if (it != caches_.end())
@@ -197,7 +197,7 @@ IndexFile* IndexCache::TryLoad(const NormalizedPath& path) {
 // Tries to recover an index file (content+serialized index) for a given source
 // file from the cache store and returns a non-owning reference or null
 std::unique_ptr<IndexFile> IndexCache::TryTakeOrLoad(
-    const NormalizedPath& path) {
+    const AbsolutePath& path) {
   auto it = caches_.find(path.path);
   if (it != caches_.end())
   {
@@ -210,7 +210,7 @@ std::unique_ptr<IndexFile> IndexCache::TryTakeOrLoad(
 }
 
 // Only load the buffered file content from the cache
-optional<std::string> IndexCache::TryLoadContent(const NormalizedPath& path) {
+optional<std::string> IndexCache::TryLoadContent(const AbsolutePath& path) {
   return driver_->Read(path.path);
 }
 
@@ -234,7 +234,7 @@ std::shared_ptr<IndexCache> MakeIndexCache(std::shared_ptr<ICacheStore> store) {
 
 // Returns null if the given root path does not exist
 std::shared_ptr<ICacheStore> OpenOrConnectFileStore(
-    const NormalizedPath& path) {
+    const AbsolutePath& path) {
   const std::string projectDirName = EscapeFileName(g_config->projectRoot);
   const std::string externalsDirName =
       '@' + EscapeFileName(g_config->projectRoot);
@@ -251,7 +251,7 @@ std::shared_ptr<ICacheStore> OpenOrConnectFileStore(
 
 // Return null if the given file path does not exists and cannot be created
 std::shared_ptr<ICacheStore> OpenOrConnectUnqliteStore(
-    const NormalizedPath& path_to_db) {
+    const AbsolutePath& path_to_db) {
   std::string databaseFile =
       g_config->cacheDirectory + EscapeFileName(g_config->projectRoot) + ".db";
   unqlite* database = nullptr;

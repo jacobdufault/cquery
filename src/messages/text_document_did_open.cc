@@ -47,7 +47,7 @@ struct Handler_TextDocumentDidOpen
         MakeIndexCache(g_config->cacheStore);
     WorkingFile* working_file = working_files->OnOpen(params.textDocument);
     optional<std::string> cached_file_contents =
-        cache_manager->TryLoadContent(NormalizedPath{path});
+        cache_manager->TryLoadContent(path);
     if (cached_file_contents)
       working_file->SetIndexContent(*cached_file_contents);
 

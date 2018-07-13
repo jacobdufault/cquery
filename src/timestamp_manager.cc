@@ -12,7 +12,7 @@ optional<int64_t> TimestampManager::GetLastCachedModificationTime(
     if (it != timestamps_.end())
       return it->second;
   }
-  IndexFile* file = cache_manager->TryLoad(NormalizedPath(path));
+  IndexFile* file = cache_manager->TryLoad(AbsolutePath{path});
   if (!file)
     return nullopt;
 
