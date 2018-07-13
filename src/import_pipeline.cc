@@ -434,7 +434,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
     if (request.write_to_disk) {
       LOG_S(INFO) << "Writing cached index to disk for "
                   << request.current->path;
-      request.cache_manager->WriteToCache(*request.current);
+      request.cache_manager->Write(*request.current);
       timestamp_manager->UpdateCachedModificationTime(
           request.current->path, request.current->last_modification_time);
     }
