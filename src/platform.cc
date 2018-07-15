@@ -3,7 +3,7 @@
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
-#include <process.hpp>
+#include <process-lib/process.hpp>
 
 #include <iterator>
 #include <sstream>
@@ -87,64 +87,77 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
     }
   }
 }
-#include <iostream>
+
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input) {
-  Process::Error error;
   Process process;
 
-  for (const auto& arg : command) {
-    std::cerr << arg << " ";
-  }
-  std::cerr << std::endl;
+  std::string command_string = "\"" + StringJoin(command, " ") + "\"";
+  auto command_with_error = [command_string](Process::Error error) {
+    return command_string + ": " + Process::error_to_string(error);
+  };
+
+  Process::Error error = Process::SUCCESS;
 
   error = process.start(command, nullptr);
   if (error) {
-    std::string command_string = StringJoin(command);
-    LOG_S(ERROR) << "Process: Failed to start process \"" << command_string
-                 << "\"";
+    LOG_S(ERROR) << "Error starting process " << command_with_error(error);
     return nullopt;
   }
 
-  unsigned int actual;
-
-  error = process.write(input.data(), input.length(), &actual);
-  if (error || actual != input.length()) {
-    LOG_S(FATAL) << "Process: Failed to write input";
+  unsigned int bytes_written = 0;
+  error = process.write(input.data(), input.length(), &bytes_written);
+  if (error) {
+    LOG_S(ERROR) << "Error writing to stdin of " << command_with_error(error)
+                 << ". " << bytes_written << " out of " << input.length()
+                 << " bytes were written";
     return nullopt;
   }
 
   error = process.close_stdin();
   if (error) {
-    LOG_S(FATAL) << "Process: Failed to close stdin";
+    LOG_S(ERROR) << "Error closing stdin of " << command_with_error(error);
     return nullopt;
   }
 
-  char buffer[1024];
-  unsigned int buffer_size = 1024;
-
-  std::stringstream output;
-
-  while (true) {
-    error = process.read(buffer, buffer_size - 1, &actual);
-    if (error) {
-      break;
-    }
-
-    buffer[actual] = '\0';
-    output << buffer;
-  }
-
-  if (error != Process::STREAM_CLOSED) {
-    LOG_S(FATAL) << "Process: Failed to read output";
+  std::ostringstream output{};
+  error = process.read_all(output);
+  if (error) {
+    LOG_S(ERROR) << "Error reading output of " << command_with_error(error);
     return nullopt;
   }
 
   error = process.wait(Process::INFINITE);
   if (error) {
-    LOG_S(FATAL) << "Process: Failed to wait for process exit";
+    LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(error);
     return nullopt;
   }
+
+  int exit_status = 0;
+  error = process.exit_status(&exit_status);
+  if (error) {
+    LOG_S(ERROR) << "Error retrieving exit status of "
+                 << command_with_error(error);
+    return nullopt;
+  }
+
+  if (exit_status != 0) {
+    LOG_S(ERROR) << command_string << " failed with exit status "
+                 << exit_status;
+
+    std::ostringstream stderr_output{};
+    error = process.read_all_stderr(stderr_output);
+    if (error) {
+      LOG_S(ERROR) << "Error reading stderr output of "
+                   << command_with_error(error);
+      return nullopt;
+    }
+
+    LOG_S(ERROR) << command_string << " stderr output: " << stderr_output.str();
+    return nullopt;
+  }
+
+  LOG_S(INFO) << "Executed " << command_string;
 
   return output.str();
 }
