@@ -104,7 +104,7 @@ endif()
 
 set(PROCESS_LIB_BUILD_CPP_WRAPPER ON CACHE BOOL "" FORCE)
 add_subdirectory(third_party/process-lib)
-target_link_libraries(cquery PRIVATE process)
+target_link_libraries(cquery PRIVATE process-lib::process-lib)
 
 # See cmake/FindClang.cmake
 find_package(Clang ${CLANG_VERSION} REQUIRED)
