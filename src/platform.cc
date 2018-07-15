@@ -127,6 +127,13 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     return nullopt;
   }
 
+  error = process.read_all_stderr(output);
+  if (error) {
+    LOG_S(ERROR) << "Error reading stderr output of "
+                 << command_with_error(error);
+    return nullopt;
+  }
+
   error = process.wait(Process::INFINITE);
   if (error) {
     LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(error);
@@ -144,17 +151,6 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   if (exit_status != 0) {
     LOG_S(ERROR) << command_string << " failed with exit status "
                  << exit_status;
-
-    std::ostringstream stderr_output{};
-    error = process.read_all_stderr(stderr_output);
-    if (error) {
-      LOG_S(ERROR) << "Error reading stderr output of "
-                   << command_with_error(error);
-      return nullopt;
-    }
-
-    LOG_S(ERROR) << command_string << " stderr output: " << stderr_output.str();
-    return nullopt;
   }
 
   LOG_S(INFO) << "Executed " << command_string;
