@@ -90,13 +90,14 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
 
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input) {
-  Process process;
+  using process_lib::Process;
 
   std::string command_string = "\"" + StringJoin(command, " ") + "\"";
   auto command_with_error = [command_string](Process::Error error) {
     return command_string + ": " + Process::error_to_string(error);
   };
 
+  Process process;
   Process::Error error = Process::SUCCESS;
 
   error = process.start(command, nullptr);
@@ -120,7 +121,7 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     return nullopt;
   }
 
-  std::ostringstream output{};
+  std::string output{};
   error = process.read_all(output);
   if (error) {
     LOG_S(ERROR) << "Error reading output of " << command_with_error(error);
@@ -155,7 +156,7 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
 
   LOG_S(INFO) << "Executed " << command_string;
 
-  return output.str();
+  return output;
 }
 
 TEST_SUITE("Platform") {
