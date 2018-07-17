@@ -102,9 +102,9 @@ endif()
 
 ### Libraries
 
-set(PROCESS_LIB_BUILD_CPP_WRAPPER ON CACHE BOOL "" FORCE)
-add_subdirectory(third_party/process-lib)
-target_link_libraries(cquery PRIVATE process-lib::process-lib)
+set(REPROC_BUILD_CPP_WRAPPER ON CACHE BOOL "" FORCE)
+add_subdirectory(third_party/reproc)
+target_link_libraries(cquery PRIVATE reproc::reproc)
 
 # See cmake/FindClang.cmake
 find_package(Clang ${CLANG_VERSION} REQUIRED)
