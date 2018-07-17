@@ -16,6 +16,3 @@
 [submodule "third_party/pugixml"]
 	path = third_party/pugixml
 	url = https://github.com/zeux/pugixml
-[submodule "third_party/process-lib"]
-	path = third_party/process-lib
-	url = https://github.com/DaanDeMeyer/process-lib.git
