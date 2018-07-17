@@ -3,7 +3,7 @@
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
-#include <process-lib/process.hpp>
+#include <reproc/reproc.hpp>
 
 #include <iterator>
 #include <sstream>
@@ -90,24 +90,22 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
 
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input) {
-  using process_lib::Process;
-
   std::string command_string = "\"" + StringJoin(command, " ") + "\"";
-  auto command_with_error = [command_string](Process::Error error) {
-    return command_string + ": " + Process::error_to_string(error);
+  auto command_with_error = [command_string](Reproc::Error error) {
+    return command_string + ": " + Reproc::error_to_string(error);
   };
 
-  Process process;
-  Process::Error error = Process::SUCCESS;
+  Reproc reproc;
+  Reproc::Error error = Reproc::SUCCESS;
 
-  error = process.start(command, nullptr);
+  error = reproc.start(command, nullptr);
   if (error) {
-    LOG_S(ERROR) << "Error starting process " << command_with_error(error);
+    LOG_S(ERROR) << "Error starting reproc " << command_with_error(error);
     return nullopt;
   }
 
   unsigned int bytes_written = 0;
-  error = process.write(input.data(), input.length(), &bytes_written);
+  error = reproc.write(input.data(), input.length(), &bytes_written);
   if (error) {
     LOG_S(ERROR) << "Error writing to stdin of " << command_with_error(error)
                  << ". " << bytes_written << " out of " << input.length()
@@ -115,34 +113,34 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     return nullopt;
   }
 
-  error = process.close_stdin();
+  error = reproc.close_stdin();
   if (error) {
     LOG_S(ERROR) << "Error closing stdin of " << command_with_error(error);
     return nullopt;
   }
 
   std::string output{};
-  error = process.read_all(output);
+  error = reproc.read_all(output);
   if (error) {
     LOG_S(ERROR) << "Error reading output of " << command_with_error(error);
     return nullopt;
   }
 
-  error = process.read_all_stderr(output);
+  error = reproc.read_all_stderr(output);
   if (error) {
     LOG_S(ERROR) << "Error reading stderr output of "
                  << command_with_error(error);
     return nullopt;
   }
 
-  error = process.wait(Process::INFINITE);
+  error = reproc.wait(Reproc::INFINITE);
   if (error) {
     LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(error);
     return nullopt;
   }
 
   int exit_status = 0;
-  error = process.exit_status(&exit_status);
+  error = reproc.exit_status(&exit_status);
   if (error) {
     LOG_S(ERROR) << "Error retrieving exit status of "
                  << command_with_error(error);
