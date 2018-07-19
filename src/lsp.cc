@@ -67,36 +67,49 @@ lsVersionedTextDocumentIdentifier::AsTextDocumentIdentifier() const {
 // Reads a JsonRpc message. |read| returns the next input character.
 optional<std::string> ReadJsonRpcContentFrom(
     std::function<optional<char>()> read) {
-  // Read the content length. It is terminated by the "\r\n" sequence.
-  int exit_seq = 0;
-  std::string stringified_content_length;
-  while (true) {
-    optional<char> opt_c = read();
-    if (!opt_c) {
-      LOG_S(INFO) << "No more input when reading content length header";
-      return nullopt;
-    }
-    char c = *opt_c;
-
-    if (exit_seq == 0 && c == '\r')
-      ++exit_seq;
-    if (exit_seq == 1 && c == '\n')
-      break;
-
-    stringified_content_length += c;
-  }
+  // Read the header. The header itself, along with each field, is terminated by
+  // the "\r\n" sequence.
   const char* kContentLengthStart = "Content-Length: ";
-  assert(StartsWith(stringified_content_length, kContentLengthStart));
-  int content_length =
-      atoi(stringified_content_length.c_str() + strlen(kContentLengthStart));
+  const char* kContentTypeStart = "Content-Type: ";
+  int content_length = -1;
 
-  // There is always a "\r\n" sequence before the actual content.
-  auto expect_char = [&](char expected) {
-    optional<char> opt_c = read();
-    return opt_c && *opt_c == expected;
-  };
-  if (!expect_char('\r') || !expect_char('\n')) {
-    LOG_S(INFO) << "Unexpected token (expected \\r\\n sequence)";
+  while (true) {
+    int exit_seq = 0;
+    std::string stringified_header_field;
+    while (true) {
+      optional<char> opt_c = read();
+      if (!opt_c) {
+        LOG_S(INFO) << "No more input when reading header";
+        return nullopt;
+      }
+      char c = *opt_c;
+
+      if (exit_seq == 0 && c == '\r') {
+        ++exit_seq;
+      } else if (exit_seq == 1 && c == '\n') {
+        break;
+      } else {
+        stringified_header_field += c;
+      }
+    }
+
+    if (stringified_header_field.size()) {
+      if (StartsWith(stringified_header_field, kContentLengthStart)) {
+        content_length =
+          atoi(stringified_header_field.c_str() + strlen(kContentLengthStart));
+      } else if (StartsWith(stringified_header_field, kContentTypeStart)) {
+        // Content-Type field is ignored.
+      } else {
+        LOG_S(INFO) << "Unknown field in the header";
+        return nullopt;
+      }
+    } else {
+      break;
+    }
+  }
+
+  if (content_length == -1) {
+    LOG_S(INFO) << "Missing content length";
     return nullopt;
   }
 
