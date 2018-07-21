@@ -102,7 +102,7 @@ endif()
 
 ### Libraries
 
-set(REPROC_BUILD_CPP_WRAPPER ON CACHE BOOL "" FORCE)
+set(REPROC_BUILD_CXX_WRAPPER ON CACHE BOOL "" FORCE)
 add_subdirectory(third_party/reproc)
 target_link_libraries(cquery PRIVATE reproc::reproc)
 

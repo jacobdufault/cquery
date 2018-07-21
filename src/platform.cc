@@ -3,6 +3,7 @@
 
 #include <doctest/doctest.h>
 #include <loguru.hpp>
+#include <reproc/parser.hpp>
 #include <reproc/reproc.hpp>
 
 #include <iterator>
@@ -90,13 +91,15 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
 
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input) {
+  using reproc::Reproc;
+
   std::string command_string = "\"" + StringJoin(command, " ") + "\"";
-  auto command_with_error = [command_string](Reproc::Error error) {
-    return command_string + ": " + Reproc::error_to_string(error);
+  auto command_with_error = [command_string](reproc::Error error) {
+    return command_string + ": " + reproc::error_to_string(error);
   };
 
   Reproc reproc;
-  Reproc::Error error = Reproc::SUCCESS;
+  reproc::Error error = reproc::SUCCESS;
 
   error = reproc.start(command, nullptr);
   if (error) {
@@ -113,27 +116,27 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     return nullopt;
   }
 
-  error = reproc.close_stdin();
+  error = reproc.close(reproc::STDIN);
   if (error) {
     LOG_S(ERROR) << "Error closing stdin of " << command_with_error(error);
     return nullopt;
   }
 
   std::string output{};
-  error = reproc.read_all(output);
+  error = reproc.read(reproc::STDOUT, reproc::string_parser(output));
   if (error) {
     LOG_S(ERROR) << "Error reading output of " << command_with_error(error);
     return nullopt;
   }
 
-  error = reproc.read_all_stderr(output);
+  error = reproc.read(reproc::STDERR, reproc::string_parser(output));
   if (error) {
     LOG_S(ERROR) << "Error reading stderr output of "
                  << command_with_error(error);
     return nullopt;
   }
 
-  error = reproc.wait(Reproc::INFINITE);
+  error = reproc.wait(reproc::INFINITE);
   if (error) {
     LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(error);
     return nullopt;
