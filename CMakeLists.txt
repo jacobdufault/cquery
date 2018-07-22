@@ -163,13 +163,13 @@ if(NOT SYSTEM_CLANG)
   # libclang.[so,dylib]. On Windows we install libclang.dll to the bin directory
   # to do the same.
 
-  if(UNIX)
-    set_property(TARGET cquery 
-      APPEND PROPERTY INSTALL_RPATH $ORIGIN/../lib
-    )
-  elseif()
+  if(APPLE)
     set_property(TARGET cquery 
       APPEND PROPERTY INSTALL_RPATH @loader_path/../lib
+    )  
+  elseif(UNIX)
+    set_property(TARGET cquery 
+      APPEND PROPERTY INSTALL_RPATH $ORIGIN/../lib
     )
   elseif(WIN32)
     install(FILES ${DOWNLOADED_CLANG_DIR}/bin/libclang.dll DESTINATION bin)
