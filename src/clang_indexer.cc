@@ -2403,7 +2403,7 @@ void ClangSanityCheck(const Project::Entry& entry) {
 
 std::string GetClangVersion() {
   std::string version_string = ToString(clang_getClangVersion());
-  return SplitString(version_string, " ")[1];
+  return SplitString(version_string, " ")[2];
 }
 
 // |SymbolRef| is serialized this way.
