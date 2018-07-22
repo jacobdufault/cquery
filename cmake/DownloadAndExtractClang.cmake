@@ -4,8 +4,9 @@
 # Returns the extracted Clang archive directory in DOWNLOADED_CLANG_DIR
 #
 # Downloads 7-Zip to extract Clang if it isn't available in the PATH
-function(download_and_extract_clang CLANG_VERSION CLANG_DOWNLOAD_LOCATION)
+function(download_and_extract_clang CLANG_DOWNLOAD_LOCATION)
 
+set(CLANG_VERSION 6.0.1)
 set(CLANG_ARCHIVE_EXT .tar.xz)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
@@ -30,6 +31,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 
+  set(CLANG_VERSION 6.0.0)
   set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-x86_64-apple-darwin)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)

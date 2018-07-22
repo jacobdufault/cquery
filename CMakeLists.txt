@@ -91,7 +91,7 @@ if(NOT SYSTEM_CLANG)
   message(STATUS "Using downloaded Clang")
 
   include(DownloadAndExtractClang)
-  download_and_extract_clang(${CLANG_VERSION} ${CLANG_DOWNLOAD_LOCATION})
+  download_and_extract_clang(${CLANG_DOWNLOAD_LOCATION})
   # Used by FindClang
   set(CLANG_ROOT ${DOWNLOADED_CLANG_DIR})
 else()
@@ -105,7 +105,7 @@ add_subdirectory(third_party/reproc)
 target_link_libraries(cquery PRIVATE reproc::reproc)
 
 # See cmake/FindClang.cmake
-find_package(Clang ${CLANG_VERSION} REQUIRED)
+find_package(Clang REQUIRED)
 target_link_libraries(cquery PRIVATE Clang::Clang)
 
 # Enable threading support
