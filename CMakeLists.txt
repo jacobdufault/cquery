@@ -195,13 +195,13 @@ if(NOT SYSTEM_CLANG)
     FILES ${Clang_EXECUTABLE_REALPATH}
     PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
     DESTINATION bin
-    RENAME cquery-clang.${EXE}
+    RENAME cquery-clang${EXE}
   )
   install(
     FILES ${Clang_FORMAT}
     PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
     DESTINATION bin
-    RENAME cquery-clang-format.${EXE}
+    RENAME cquery-clang-format${EXE}
   )
 
   # cquery-clang will search for these directories to resolve system includes.
