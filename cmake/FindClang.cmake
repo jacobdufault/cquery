@@ -33,8 +33,12 @@
 macro(_Clang_find_library VAR NAME)
   # Windows needs lib prefix
   if (CLANG_ROOT)    
-    find_library(${VAR} NAMES ${NAME} lib${NAME} 
-                 NO_DEFAULT_PATH PATHS ${CLANG_ROOT} PATH_SUFFIXES lib)
+    find_library(${VAR} 
+      NAMES ${NAME} lib${NAME} 
+      NO_DEFAULT_PATH 
+      PATHS ${CLANG_ROOT} 
+      PATH_SUFFIXES lib
+    )
   else()
     find_library(${VAR} NAMES ${NAME} lib${NAME})
   endif()
@@ -42,19 +46,27 @@ endmacro()
 
 macro(_Clang_find_path VAR INCLUDE_FILE)
   if (CLANG_ROOT)
-    find_path(${VAR} ${INCLUDE_FILE} 
-              NO_DEFAULT_PATH PATHS ${CLANG_ROOT} PATH_SUFFIXES include)
+    find_path(${VAR} 
+      NAMES ${INCLUDE_FILE} 
+      NO_DEFAULT_PATH 
+      PATHS ${CLANG_ROOT} 
+      PATH_SUFFIXES include
+    )
   else()
-    find_path(${VAR} ${INCLUDE_FILE})
+    find_path(${VAR} NAMES ${INCLUDE_FILE})
   endif()
 endmacro()
 
 macro(_Clang_find_program VAR NAME)
   if (CLANG_ROOT)
-    find_program(${VAR} ${NAME} 
-                 NO_DEFAULT_PATH PATHS ${CLANG_ROOT} PATH_SUFFIXES bin)
+    find_program(${VAR} 
+      NAMES ${NAME} 
+      NO_DEFAULT_PATH 
+      PATHS ${CLANG_ROOT} 
+      PATH_SUFFIXES bin
+    )
   else()
-    find_program(${VAR} ${NAME})
+    find_program(${VAR} NAMES ${NAME})
   endif()
 endmacro()
 
@@ -67,15 +79,17 @@ _Clang_find_library(_libclang_LIBRARY clang)
 _Clang_find_path(_libclang_INCLUDE_DIR clang-c/Index.h)
 
 _Clang_find_program(Clang_FORMAT clang-format)
-_Clang_find_program(Clang_EXECUTABLE clang)
+_Clang_find_program(Clang_EXECUTABLE clang++)
 
 if(Clang_EXECUTABLE)
   # Find Clang resource directory with Clang executable
-  execute_process(COMMAND ${Clang_EXECUTABLE} -print-resource-dir
-                  RESULT_VARIABLE _Clang_FIND_RESOURCE_DIR_RESULT
-                  OUTPUT_VARIABLE Clang_RESOURCE_DIR
-                  ERROR_VARIABLE _Clang_FIND_RESOURCE_DIR_ERROR
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(
+    COMMAND ${Clang_EXECUTABLE} -print-resource-dir
+    RESULT_VARIABLE _Clang_FIND_RESOURCE_DIR_RESULT
+    OUTPUT_VARIABLE Clang_RESOURCE_DIR
+    ERROR_VARIABLE _Clang_FIND_RESOURCE_DIR_ERROR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
 
   if(_Clang_FIND_RESOURCE_DIR_RESULT)
     message(FATAL_ERROR "Error retrieving Clang resource directory with Clang \
@@ -84,20 +98,24 @@ executable. Output:\n ${_Clang_FIND_RESOURCE_DIR_ERROR}")
 
   # Find Clang version
   set(_Clang_VERSION_REGEX "([0-9]+)\\.([0-9]+)\\.([0-9]+)")
-  execute_process(COMMAND ${Clang_EXECUTABLE} --version 
-                  OUTPUT_VARIABLE Clang_VERSION)
+  execute_process(
+    COMMAND ${Clang_EXECUTABLE} --version 
+    OUTPUT_VARIABLE Clang_VERSION
+  )
   string(REGEX MATCH ${_Clang_VERSION_REGEX} Clang_VERSION ${Clang_VERSION})
 endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Clang
-                                  FOUND_VAR Clang_FOUND
-                                  REQUIRED_VARS ${_Clang_REQUIRED_VARS}
-                                  VERSION_VAR Clang_VERSION)
+  FOUND_VAR Clang_FOUND
+  REQUIRED_VARS ${_Clang_REQUIRED_VARS}
+  VERSION_VAR Clang_VERSION
+)
 
 if(Clang_FOUND AND NOT TARGET Clang::Clang)
   add_library(Clang::Clang UNKNOWN IMPORTED)
   set_target_properties(Clang::Clang PROPERTIES
-                        IMPORTED_LOCATION ${_libclang_LIBRARY}
-                        INTERFACE_INCLUDE_DIRECTORIES ${_libclang_INCLUDE_DIR})
+    IMPORTED_LOCATION ${_libclang_LIBRARY}
+    INTERFACE_INCLUDE_DIRECTORIES ${_libclang_INCLUDE_DIR}
+  )
 endif()

@@ -10,8 +10,23 @@ set(CLANG_ARCHIVE_EXT .tar.xz)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
 
-  set(CLANG_ARCHIVE_NAME
-      clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04)
+  # Default to Ubuntu 16.04
+  set(CLANG_ARCHIVE_NAME 
+      clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-16.04)
+
+  find_program(LSB_RELEASE lsb_release)
+  if(LSB_RELEASE)
+    execute_process(
+      COMMAND ${LSB_RELEASE} -r 
+      OUTPUT_VARIABLE UBUNTU_VERSION 
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
+    if(${UBUNTU_VERSION} MATCHES 14.04)
+      set(CLANG_ARCHIVE_NAME 
+          clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04)
+    endif()
+  endif()
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 
@@ -24,11 +39,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
 
-  if(${CLANG_VERSION} STREQUAL 6.0.0)
-    set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-amd64-unknown-freebsd-10)
-  else()
-    set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-amd64-unknown-freebsd10)
-  endif()
+  set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-amd64-unknown-freebsd10)
 
 endif()
 
@@ -92,8 +103,11 @@ if(${CLANG_ARCHIVE_EXT} STREQUAL .exe)
     
     include(DownloadAndExtract7zip)
     download_and_extract_7zip(${CLANG_DOWNLOAD_LOCATION})
-    find_program(7ZIP_EXECUTABLE 7z NO_DEFAULT_PATH
-                  PATHS ${DOWNLOADED_7ZIP_DIR})
+    find_program(7ZIP_EXECUTABLE 
+      NAMES 7z 
+      NO_DEFAULT_PATH
+      PATHS ${DOWNLOADED_7ZIP_DIR}
+    )
   else()
     message(STATUS "7-Zip found in PATH")
   endif()
@@ -101,22 +115,26 @@ if(${CLANG_ARCHIVE_EXT} STREQUAL .exe)
   message(STATUS "Extracting downloaded Clang with 7-Zip ...")
 
   # Avoid running the Clang installer by extracting the exe with 7-Zip
-  execute_process(COMMAND ${7ZIP_EXECUTABLE} x
-                          -o${CLANG_ARCHIVE_EXTRACT_DIR}
-                          -xr!$PLUGINSDIR ${CLANG_ARCHIVE_FILE}
-                  WORKING_DIRECTORY ${CLANG_DOWNLOAD_LOCATION}
-                  OUTPUT_QUIET)
+  execute_process(
+    COMMAND ${7ZIP_EXECUTABLE} x 
+            -o${CLANG_ARCHIVE_EXTRACT_DIR} 
+            -xr!$PLUGINSDIR ${CLANG_ARCHIVE_FILE}
+    WORKING_DIRECTORY ${CLANG_DOWNLOAD_LOCATION}
+    OUTPUT_QUIET
+  )
 
 elseif(${CLANG_ARCHIVE_EXT} STREQUAL .tar.xz)
   message(STATUS "Extracting downloaded Clang with CMake built-in tar ...")
   
   # CMake has builtin support for tar via the -E flag
-  execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xf ${CLANG_ARCHIVE_FILE}
-                  # Specify working directory to allow running cmake from 
-                  # everywhere
-                  # (example: cmake -H"$HOME/cquery" -B"$home/cquery/build")
-                  WORKING_DIRECTORY ${CLANG_DOWNLOAD_LOCATION}
-                  OUTPUT_QUIET)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E tar -xf ${CLANG_ARCHIVE_FILE}
+    # Specify working directory to allow running cmake from 
+    # everywhere
+    # (example: cmake -H"$HOME/cquery" -B"$home/cquery/build")
+    WORKING_DIRECTORY ${CLANG_DOWNLOAD_LOCATION}
+    OUTPUT_QUIET
+  )
 endif()
 
 set(DOWNLOADED_CLANG_DIR ${CLANG_ARCHIVE_EXTRACT_DIR} PARENT_SCOPE)
