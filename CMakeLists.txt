@@ -304,7 +304,6 @@ target_sources(cquery PRIVATE
                src/recorder.cc
                src/semantic_highlight_symbol_cache.cc
                src/serializer.cc
-               src/standard_includes.cc
                src/task.cc
                src/test.cc
                src/third_party_impl.cc

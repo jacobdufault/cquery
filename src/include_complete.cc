@@ -3,7 +3,6 @@
 #include "match.h"
 #include "platform.h"
 #include "project.h"
-#include "standard_includes.h"
 #include "timer.h"
 #include "work_thread.h"
 
@@ -119,7 +118,6 @@ void IncludeComplete::Rescan() {
   WorkThread::StartThread("scan_includes", [this]() {
     Timer timer;
 
-    InsertStlIncludes();
     InsertIncludesFromDirectory(g_config->projectRoot,
                                 false /*use_angle_brackets*/);
     for (const Directory& dir : project_->quote_include_directories)
@@ -204,14 +202,6 @@ void IncludeComplete::InsertIncludesFromDirectory(std::string directory0,
   for (CompletionCandidate& result : results)
     InsertCompletionItem(result.absolute_path,
                          std::move(result.completion_item));
-}
-
-void IncludeComplete::InsertStlIncludes() {
-  std::lock_guard<std::mutex> lock(completion_items_mutex);
-  for (const char* stl_header : kStandardLibraryIncludes) {
-    completion_items.push_back(BuildCompletionItem(
-        stl_header, true /*use_angle_brackets*/, true /*is_stl*/));
-  }
 }
 
 optional<lsCompletionItem> IncludeComplete::FindCompletionItemForAbsolutePath(
