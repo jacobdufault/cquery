@@ -105,7 +105,7 @@ add_subdirectory(third_party/reproc)
 target_link_libraries(cquery PRIVATE reproc::reproc)
 
 # See cmake/FindClang.cmake
-find_package(Clang REQUIRED)
+find_package(Clang 6.0.0)
 target_link_libraries(cquery PRIVATE Clang::Clang)
 
 # Enable threading support
