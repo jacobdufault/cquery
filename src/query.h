@@ -138,15 +138,16 @@ MAKE_REFLECT_STRUCT(QueryFile::Def,
                     inactive_regions,
                     dependencies);
 
-template <typename Q, typename QDef>
+template <typename TDerived, typename TDefinitionData>
 struct QueryEntity {
-  using Def = QDef;
-  using DefUpdate = WithId<Id<Q>, Def>;
-  using DeclarationsUpdate = MergeableUpdate<Id<Q>, QueryId::LexicalRef>;
-  using UsesUpdate = MergeableUpdate<Id<Q>, QueryId::LexicalRef>;
+  using Def = TDefinitionData;
+  using DefUpdate = WithId<Id<TDerived>, Def>;
+  using DeclarationsUpdate = MergeableUpdate<Id<TDerived>, QueryId::LexicalRef>;
+  using UsesUpdate = MergeableUpdate<Id<TDerived>, QueryId::LexicalRef>;
+
   Def* AnyDef() {
     Def* ret = nullptr;
-    for (auto& i : static_cast<Q*>(this)->def) {
+    for (auto& i : static_cast<TDerived*>(this)->def) {
       ret = &i;
       if (i.spell)
         break;
@@ -206,9 +207,6 @@ struct IndexUpdate {
   // work can be parallelized.
   void Merge(IndexUpdate&& update);
 
-  // Dump the update to a string.
-  std::string ToString();
-
   // File updates.
   std::vector<AbsolutePath> files_removed;
   std::vector<QueryFile::DefUpdate> files_def_update;
@@ -243,23 +241,6 @@ struct IndexUpdate {
               IndexFile& previous,
               IndexFile& current);
 };
-// NOTICE: We're not reflecting on files_removed or files_def_update, it is too
-// much output when logging
-MAKE_REFLECT_STRUCT(IndexUpdate,
-                    types_removed,
-                    types_def_update,
-                    types_derived,
-                    types_instances,
-                    types_uses,
-                    funcs_removed,
-                    funcs_def_update,
-                    funcs_declarations,
-                    funcs_derived,
-                    funcs_uses,
-                    vars_removed,
-                    vars_def_update,
-                    vars_declarations,
-                    vars_uses);
 
 // The query database is heavily optimized for fast queries. It is stored
 // in-memory.
