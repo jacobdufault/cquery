@@ -127,18 +127,15 @@ struct ActiveThread {
   ImportPipelineStatus* status_;
 };
 
-enum class ShouldParse { Yes, No, NoSuchFile };
-
 // Checks if |path| needs to be reparsed. This will modify cached state
 // such that calling this function twice with the same path may return true
 // the first time but will return false the second.
 //
 // |from|: The file which generated the parse request for this file.
-ShouldParse FileNeedsParse(
-    bool is_interactive,
+enum class ChangeResult { kYes, kNo, kDeleted };
+ChangeResult ComputeChangeStatus(
     TimestampManager* timestamp_manager,
     IModificationTimestampFetcher* modification_timestamp_fetcher,
-    ImportManager* import_manager,
     const std::shared_ptr<ICacheManager>& cache_manager,
     IndexFile* opt_previous_index,
     const AbsolutePath& path,
@@ -149,21 +146,12 @@ ShouldParse FileNeedsParse(
       return " (via " + opt->path + ")";
     return "";
   };
-
-  // If the file is a dependency, only load it if we have not seen it yet.
-  // FIXME: this needs to also take into account modification timestamps, ie,
-  // freshen index.
-  if (!is_interactive && from &&
-      import_manager->GetStatus(path) != PipelineStatus::kNotSeen) {
-    return ShouldParse::No;
-  }
-
   optional<int64_t> modification_timestamp =
       modification_timestamp_fetcher->GetModificationTime(path);
 
   // Cannot find file.
   if (!modification_timestamp)
-    return ShouldParse::NoSuchFile;
+    return ChangeResult::kDeleted;
 
   optional<int64_t> last_cached_modification =
       timestamp_manager->GetLastCachedModificationTime(cache_manager.get(),
@@ -173,7 +161,7 @@ ShouldParse FileNeedsParse(
   if (!last_cached_modification ||
       modification_timestamp != *last_cached_modification) {
     LOG_S(INFO) << "Timestamp has changed for " << path << unwrap_opt(from);
-    return ShouldParse::Yes;
+    return ChangeResult::kYes;
   }
 
   // Command-line arguments changed.
@@ -189,15 +177,15 @@ ShouldParse FileNeedsParse(
     }
     if (!same) {
       LOG_S(INFO) << "Arguments have changed for " << path << unwrap_opt(from);
-      return ShouldParse::Yes;
+      return ChangeResult::kYes;
     }
   }
 
   // File has not changed, do not parse it.
-  return ShouldParse::No;
-};
+  return ChangeResult::kNo;
+}
 
-enum CacheLoadResult { Parse, DoNotParse };
+enum CacheLoadResult { kParse, kDoNotParse };
 CacheLoadResult TryLoadFromCache(
     FileConsumerSharedState* file_consumer_shared,
     TimestampManager* timestamp_manager,
@@ -211,36 +199,34 @@ CacheLoadResult TryLoadFromCache(
   // dependencies and reset files in |file_consumer_shared|.
   IndexFile* previous_index = cache_manager->TryLoad(path_to_index);
   if (!previous_index)
-    return CacheLoadResult::Parse;
+    return CacheLoadResult::kParse;
 
   // If none of the dependencies have changed and the index is not
   // interactive (ie, requested by a file save), skip parsing and just load
   // from cache.
 
   // Check timestamps and update |file_consumer_shared|.
-  ShouldParse path_state = FileNeedsParse(
-      is_interactive, timestamp_manager, modification_timestamp_fetcher,
-      import_manager, cache_manager, previous_index, path_to_index, entry.args,
-      nullopt);
-  if (path_state == ShouldParse::Yes)
+  ChangeResult path_state = ComputeChangeStatus(
+      timestamp_manager, modification_timestamp_fetcher, cache_manager,
+      previous_index, path_to_index, entry.args, previous_index->path);
+  if (path_state == ChangeResult::kYes)
     file_consumer_shared->Reset(path_to_index);
 
   // Target file does not exist on disk, do not emit any indexes.
   // TODO: Dependencies should be reassigned to other files. We can do this by
   // updating the "primary_file" if it doesn't exist. Might not actually be a
   // problem in practice.
-  if (path_state == ShouldParse::NoSuchFile)
-    return CacheLoadResult::DoNotParse;
+  if (path_state == ChangeResult::kDeleted)
+    return CacheLoadResult::kDoNotParse;
 
-  bool needs_reparse = is_interactive || path_state == ShouldParse::Yes;
+  bool needs_reparse = is_interactive || path_state == ChangeResult::kYes;
 
   for (const AbsolutePath& dependency : previous_index->dependencies) {
     assert(!dependency.path.empty());
 
-    if (FileNeedsParse(is_interactive, timestamp_manager,
-                       modification_timestamp_fetcher, import_manager,
+    if (ComputeChangeStatus(timestamp_manager, modification_timestamp_fetcher,
                        cache_manager, previous_index, dependency, entry.args,
-                       previous_index->path) == ShouldParse::Yes) {
+                       previous_index->path) == ChangeResult::kYes) {
       needs_reparse = true;
 
       // Do not break here, as we need to update |file_consumer_shared| for
@@ -251,7 +237,7 @@ CacheLoadResult TryLoadFromCache(
 
   // FIXME: should we still load from cache?
   if (needs_reparse)
-    return CacheLoadResult::Parse;
+    return CacheLoadResult::kParse;
 
   // No timestamps changed - load directly from cache.
   LOG_S(INFO) << "Skipping parse; no timestamp change for " << path_to_index;
@@ -285,7 +271,7 @@ CacheLoadResult TryLoadFromCache(
 
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
                                                  false /*priority*/);
-  return CacheLoadResult::DoNotParse;
+  return CacheLoadResult::kDoNotParse;
 }
 
 std::vector<FileContents> PreloadFileContents(
@@ -363,7 +349,7 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   if (TryLoadFromCache(file_consumer_shared, timestamp_manager,
                        modification_timestamp_fetcher, import_manager,
                        request.cache_manager, request.is_interactive, entry,
-                       path_to_index) == CacheLoadResult::DoNotParse) {
+                       path_to_index) == CacheLoadResult::kDoNotParse) {
     return;
   }
 
@@ -756,9 +742,8 @@ TEST_SUITE("ImportPipeline") {
       optional<AbsolutePath> from;
       if (is_dependency)
         from = AbsolutePath("---.cc", false /*validate*/);
-      return FileNeedsParse(
-          is_interactive /*is_interactive*/, &timestamp_manager,
-          &modification_timestamp_fetcher, &import_manager, cache_manager,
+      return ComputeChangeStatus(
+          &timestamp_manager, &modification_timestamp_fetcher, cache_manager,
           opt_previous_index.get(), AbsolutePath(file, false /*validate*/),
           new_args, from);
     };
@@ -766,27 +751,27 @@ TEST_SUITE("ImportPipeline") {
     // A file with no timestamp is not imported, since this implies the file no
     // longer exists on disk.
     modification_timestamp_fetcher.entries["bar.h"] = nullopt;
-    REQUIRE(check("bar.h", false /*is_dependency*/) == ShouldParse::NoSuchFile);
+    REQUIRE(check("bar.h", false /*is_dependency*/) == ChangeResult::kDeleted);
 
     // A dependency is only imported once.
     modification_timestamp_fetcher.entries["foo.h"] = 5;
-    REQUIRE(check("foo.h", true /*is_dependency*/) == ShouldParse::Yes);
-    REQUIRE(check("foo.h", true /*is_dependency*/) == ShouldParse::No);
+    REQUIRE(check("foo.h", true /*is_dependency*/) == ChangeResult::kYes);
+    REQUIRE(check("foo.h", true /*is_dependency*/) == ChangeResult::kNo);
 
     // An interactive dependency is imported.
-    REQUIRE(check("foo.h", true /*is_dependency*/) == ShouldParse::No);
+    REQUIRE(check("foo.h", true /*is_dependency*/) == ChangeResult::kNo);
     REQUIRE(check("foo.h", true /*is_dependency*/, true /*is_interactive*/) ==
-            ShouldParse::Yes);
+            ChangeResult::kYes);
 
     // A file whose timestamp has not changed is not imported. When the
     // timestamp changes (either forward or backward) it is reimported.
     auto check_timestamp_change = [&](int64_t timestamp) {
       modification_timestamp_fetcher.entries["aa.cc"] = timestamp;
-      REQUIRE(check("aa.cc") == ShouldParse::Yes);
-      REQUIRE(check("aa.cc") == ShouldParse::Yes);
-      REQUIRE(check("aa.cc") == ShouldParse::Yes);
+      REQUIRE(check("aa.cc") == ChangeResult::kYes);
+      REQUIRE(check("aa.cc") == ChangeResult::kYes);
+      REQUIRE(check("aa.cc") == ChangeResult::kYes);
       timestamp_manager.UpdateCachedModificationTime("aa.cc", timestamp);
-      REQUIRE(check("aa.cc") == ShouldParse::No);
+      REQUIRE(check("aa.cc") == ChangeResult::kNo);
     };
     check_timestamp_change(5);
     check_timestamp_change(6);
@@ -798,7 +783,7 @@ TEST_SUITE("ImportPipeline") {
     modification_timestamp_fetcher.entries["aa.cc"] = 5;
     REQUIRE(check("aa.cc", false /*is_dependency*/, false /*is_interactive*/,
                   {"b"} /*old_args*/,
-                  {"b", "a"} /*new_args*/) == ShouldParse::Yes);
+                  {"b", "a"} /*new_args*/) == ChangeResult::kYes);
   }
 
   // FIXME: validate other state like timestamp_manager, etc.
