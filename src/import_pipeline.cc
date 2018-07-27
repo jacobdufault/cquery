@@ -493,7 +493,7 @@ bool IndexMergeIndexUpdates() {
     root->update.Merge(std::move(to_join->update));
   }
 
-  const int kMaxSizeForQuerydb = 1500;
+  const int kMaxSizeForQuerydb = 10;
   ThreadedQueue<Index_OnIndexed>& q =
       queue->on_indexed_for_querydb.Size() < kMaxSizeForQuerydb
           ? queue->on_indexed_for_querydb
