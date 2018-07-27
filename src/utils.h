@@ -122,6 +122,11 @@ void AddRange(std::vector<T>* dest, std::vector<T>&& to_add) {
                std::make_move_iterator(to_add.end()));
 }
 
+template <typename T, typename Fn>
+void RemoveIf(std::vector<T>* vec, Fn predicate) {
+  vec->erase(std::remove_if(vec->begin(), vec->end(), predicate), vec->end());
+}
+
 float GetProcessMemoryUsedInMb();
 
 std::string FormatMicroseconds(long long microseconds);

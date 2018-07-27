@@ -32,11 +32,8 @@ void VerifyUnique(const std::vector<T>& values0) {
 
 template <typename T>
 void RemoveRange(std::vector<T>* dest, const std::vector<T>& to_remove) {
-  std::unordered_set<T> to_remove_set(to_remove.begin(), to_remove.end());
-  dest->erase(
-      std::remove_if(dest->begin(), dest->end(),
-                     [&](const T& t) { return to_remove_set.count(t) > 0; }),
-      dest->end());
+  std::unordered_set<T> to_remove_lookup(to_remove.begin(), to_remove.end());
+  RemoveIf(dest, [&](const T& t) { return to_remove_lookup.count(t) > 0; });
 }
 
 optional<QueryType::Def> ToQuery(const IdMap& id_map,
@@ -364,7 +361,7 @@ Maybe<QueryId::Var> GetQueryVarIdFromUsr(QueryDatabase* query_db,
 
 // Returns true if an element with the same file is found.
 template <typename Q>
-bool TryReplaceDef(std::forward_list<Q>& def_list, Q&& def) {
+bool TryReplaceDef(std::vector<Q>& def_list, Q&& def) {
   for (auto& def1 : def_list)
     if (def1.file == def.file) {
       if (!def1.spell || def.spell)
@@ -373,6 +370,20 @@ bool TryReplaceDef(std::forward_list<Q>& def_list, Q&& def) {
     }
   return false;
 }
+
+// Adds an element to the front of the vector, potentially swapping the current
+// front element to the back.
+template <typename T>
+void PushFront(std::vector<T>& v, T&& value) {
+  if (v.empty()) {
+    v.push_back(value);
+    return;
+  }
+
+  v.push_back(v.front());
+  v[0] = value;
+}
+
 
 }  // namespace
 
@@ -738,9 +749,8 @@ void QueryDatabase::Remove(const std::vector<WithId<QueryId::File, QueryId::Type
     QueryId::Type type_id = entry.value;
 
     QueryType& type = types[type_id.id];
-    type.def.remove_if([&](const QueryType::Def& def) {
-      return def.file == file_id;
-    });
+    RemoveIf(&type.def,
+             [&](const QueryType::Def& def) { return def.file == file_id; });
     if (type.symbol_idx != size_t(-1) && type.def.empty())
       symbols[type.symbol_idx].kind = SymbolKind::Invalid;
   }
@@ -752,9 +762,8 @@ void QueryDatabase::Remove(const std::vector<WithId<QueryId::File, QueryId::Func
     QueryId::Func func_id = entry.value;
 
     QueryFunc& func = funcs[func_id.id];
-    func.def.remove_if([&](const QueryFunc::Def& def) {
-      return def.file == file_id;
-    });
+    RemoveIf(&func.def,
+             [&](const QueryFunc::Def& def) { return def.file == file_id; });
     if (func.symbol_idx != size_t(-1) && func.def.empty())
       symbols[func.symbol_idx].kind = SymbolKind::Invalid;
   }
@@ -765,9 +774,8 @@ void QueryDatabase::Remove(const std::vector<WithId<QueryId::File, QueryId::Var>
     QueryId::Var var_id = entry.value;
 
     QueryVar& var = vars[var_id.id];
-    var.def.remove_if([&](const QueryVar::Def& def) {
-      return def.file == file_id;
-    });
+    RemoveIf(&var.def,
+             [&](const QueryVar::Def& def) { return def.file == file_id; });
     if (var.symbol_idx != size_t(-1) && var.def.empty())
       symbols[var.symbol_idx].kind = SymbolKind::Invalid;
   }
@@ -836,7 +844,7 @@ void QueryDatabase::ImportOrUpdate(
     assert(def.id.id >= 0 && def.id.id < types.size());
     QueryType& existing = types[def.id.id];
     if (!TryReplaceDef(existing.def, std::move(def.value))) {
-      existing.def.push_front(std::move(def.value));
+      PushFront(existing.def, std::move(def.value));
       UpdateSymbols(&existing.symbol_idx, SymbolKind::Type, def.id);
     }
   }
@@ -851,7 +859,7 @@ void QueryDatabase::ImportOrUpdate(
     assert(def.id.id >= 0 && def.id.id < funcs.size());
     QueryFunc& existing = funcs[def.id.id];
     if (!TryReplaceDef(existing.def, std::move(def.value))) {
-      existing.def.push_front(std::move(def.value));
+      PushFront(existing.def, std::move(def.value));
       UpdateSymbols(&existing.symbol_idx, SymbolKind::Func, def.id);
     }
   }
@@ -865,7 +873,7 @@ void QueryDatabase::ImportOrUpdate(std::vector<QueryVar::DefUpdate>&& updates) {
     assert(def.id.id >= 0 && def.id.id < vars.size());
     QueryVar& existing = vars[def.id.id];
     if (!TryReplaceDef(existing.def, std::move(def.value))) {
-      existing.def.push_front(std::move(def.value));
+      PushFront(existing.def, std::move(def.value));
       if (!existing.def.front().is_local())
         UpdateSymbols(&existing.symbol_idx, SymbolKind::Var, def.id);
     }

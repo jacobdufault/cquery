@@ -5,7 +5,6 @@
 
 #include <sparsepp/spp.h>
 
-#include <forward_list>
 #include <functional>
 
 struct QueryFile;
@@ -163,7 +162,7 @@ struct QueryType : QueryEntity<QueryType, TypeDefDefinitionData<QueryId>> {
 
   Usr usr;
   size_t symbol_idx = -1;
-  std::forward_list<Def> def;
+  std::vector<Def> def;
   std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::Type> derived;
   std::vector<QueryId::Var> instances;
@@ -177,7 +176,7 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
 
   Usr usr;
   size_t symbol_idx = -1;
-  std::forward_list<Def> def;
+  std::vector<Def> def;
   std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::Func> derived;
   std::vector<QueryId::LexicalRef> uses;
@@ -188,7 +187,7 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
 struct QueryVar : QueryEntity<QueryVar, VarDefDefinitionData<QueryId>> {
   Usr usr;
   size_t symbol_idx = -1;
-  std::forward_list<Def> def;
+  std::vector<Def> def;
   std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::LexicalRef> uses;
 
