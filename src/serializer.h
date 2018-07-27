@@ -7,6 +7,7 @@
 #include <string_view.h>
 
 #include <cassert>
+#include <functional>
 #include <memory>
 #include <string>
 #include <type_traits>
