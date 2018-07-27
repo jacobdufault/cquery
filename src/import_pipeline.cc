@@ -195,8 +195,6 @@ CacheLoadResult TryLoadFromCache(
     bool is_interactive,
     const Project::Entry& entry,
     const AbsolutePath& path_to_index) {
-  // Always run this block, even if we are interactive, so we can check
-  // dependencies and reset files in |file_consumer_shared|.
   IndexFile* previous_index = cache_manager->TryLoad(path_to_index);
   if (!previous_index)
     return CacheLoadResult::kParse;
@@ -243,14 +241,27 @@ CacheLoadResult TryLoadFromCache(
   LOG_S(INFO) << "Skipping parse; no timestamp change for " << path_to_index;
 
   std::vector<Index_DoIdMap> result;
-  result.push_back(Index_DoIdMap(cache_manager->TakeOrLoad(path_to_index),
-                                 cache_manager, is_interactive,
-                                 false /*write_to_disk*/));
+  auto try_add_result = [&](Index_DoIdMap request) {
+    // Only add the request if it is not already being imported.
+    bool did_set = import_manager->SetStatusAtomic(
+        request.current->path, [](PipelineStatus current_status) {
+          if (current_status == PipelineStatus::kNotSeen)
+            return PipelineStatus::kProcessingInitialImport;
+          return current_status;
+        });
+    if (did_set)
+      result.push_back(std::move(request));
+  };
+
   for (const AbsolutePath& dependency : previous_index->dependencies) {
     // Only load a dependency if it is not already loaded.
     //
     // This is important for perf in large projects where there are lots of
     // dependencies shared between many files.
+    //
+    // FIXME: perhaps this is not really needed anymore since the import
+    // pipeline takes care of the above issue? we still need to optimize
+    // indexing case, though
     if (!file_consumer_shared->Mark(dependency))
       continue;
 
@@ -265,9 +276,15 @@ CacheLoadResult TryLoadFromCache(
     if (!dependency_index)
       continue;
 
-    result.push_back(Index_DoIdMap(std::move(dependency_index), cache_manager,
-                                   is_interactive, false /*write_to_disk*/));
+    try_add_result(Index_DoIdMap(std::move(dependency_index), cache_manager,
+                                 is_interactive, false /*write_to_disk*/));
   }
+
+  // note: cache_manager->TakeOrLoad invalidates previous_index, so do this
+  // after accessing previous_index->dependencies in the loop above.
+  try_add_result(Index_DoIdMap(cache_manager->TakeOrLoad(path_to_index),
+                               cache_manager, is_interactive,
+                               false /*write_to_disk*/));
 
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
                                                  false /*priority*/);
@@ -357,7 +374,6 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   std::vector<FileContents> file_contents = PreloadFileContents(
       request.cache_manager, entry, request.contents, path_to_index);
 
-  std::vector<Index_DoIdMap> result;
   auto indexes = indexer->Index(file_consumer_shared, path_to_index, entry.args,
                                 file_contents);
 
@@ -372,27 +388,30 @@ void ParseFile(DiagnosticsEngine* diag_engine,
     return;
   }
 
+  std::vector<Index_DoIdMap> result;
+
   // Add the set of indexes we want to actually import from the index operation.
   for (std::unique_ptr<IndexFile>& new_index : *indexes) {
     // Do not allow a file to be imported twice at the same time.
-    PipelineStatus status = import_manager->GetStatus(new_index->path);
-    if (status == PipelineStatus::kProcessingInitialImport ||
-        status == PipelineStatus::kProcessingUpdate) {
-      // TODO: add this file to a queue which will be processed after import is
-      // done?
-      LOG_S(WARNING) << "Dropping duplicate import request for "
-                     << new_index->path;
+    // Set the new pipeline status. Only set it if it is not already in the
+    // pipeline.
+    const std::string path = new_index->path.path;
+    bool did_set = import_manager->SetStatusAtomic(
+        path, [](PipelineStatus current_status) {
+          if (current_status == PipelineStatus::kNotSeen)
+            return PipelineStatus::kProcessingInitialImport;
+          if (current_status == PipelineStatus::kImported)
+            return PipelineStatus::kProcessingUpdate;
+          return current_status;
+        });
+    // We did not change the status, which means the import is currently in the
+    // pipeline. Drop the request.
+    // TODO: add file to a queue which will be processed after import is done?
+    if (!did_set) {
+      LOG_S(INFO) << "Dropping duplicate import request for "
+                  << new_index->path;
       continue;
     }
-
-    // Set new import status.
-    // FIXME: there is a race condition between checking above and here.
-    assert(status == PipelineStatus::kNotSeen ||
-           status == PipelineStatus::kImported);
-    import_manager->SetStatus(new_index->path,
-                              status == PipelineStatus::kNotSeen
-                                  ? PipelineStatus::kProcessingInitialImport
-                                  : PipelineStatus::kProcessingUpdate);
 
     // Only emit diagnostics for non-interactive sessions, which makes it easier
     // to identify indexing problems. For interactive sessions, diagnostics are
@@ -642,12 +661,19 @@ void QueryDb_OnIndexed(QueueManager* queue,
       QueryFile* file = &db->files[file_id.id];
       EmitSemanticHighlighting(db, semantic_cache, working_file, file);
     }
-
-    // TODO/PERF: batch these updates
-    // querydb processing of this file has finished.
-    import_manager->SetStatus(updated_file.value.path,
-                              PipelineStatus::kImported);
   }
+
+  // Set pipeline status to imported so the file can be updated in the future.
+  std::vector<std::string> paths;
+  paths.reserve(response->update.files_def_update.size());
+  for (auto& updated_file : response->update.files_def_update)
+    paths.push_back(updated_file.value.path);
+  import_manager->SetStatusAtomicBatch(
+      paths, [&](PipelineStatus current_status) {
+        assert(current_status == PipelineStatus::kProcessingInitialImport ||
+               current_status == PipelineStatus::kProcessingUpdate);
+        return PipelineStatus::kImported;
+      });
 }
 
 }  // namespace

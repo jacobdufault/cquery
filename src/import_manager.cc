@@ -33,8 +33,3 @@ PipelineStatus ImportManager::GetStatus(const std::string& path) {
   }
   return PipelineStatus::kNotSeen;
 }
-
-void ImportManager::SetStatus(const std::string& path, PipelineStatus status) {
-  std::unique_lock<std::shared_timed_mutex> lock(status_mutex_);
-  status_[path] = status;
-}
