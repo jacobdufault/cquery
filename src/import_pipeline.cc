@@ -753,16 +753,6 @@ TEST_SUITE("ImportPipeline") {
     modification_timestamp_fetcher.entries["bar.h"] = nullopt;
     REQUIRE(check("bar.h", false /*is_dependency*/) == ChangeResult::kDeleted);
 
-    // A dependency is only imported once.
-    modification_timestamp_fetcher.entries["foo.h"] = 5;
-    REQUIRE(check("foo.h", true /*is_dependency*/) == ChangeResult::kYes);
-    REQUIRE(check("foo.h", true /*is_dependency*/) == ChangeResult::kNo);
-
-    // An interactive dependency is imported.
-    REQUIRE(check("foo.h", true /*is_dependency*/) == ChangeResult::kNo);
-    REQUIRE(check("foo.h", true /*is_dependency*/, true /*is_interactive*/) ==
-            ChangeResult::kYes);
-
     // A file whose timestamp has not changed is not imported. When the
     // timestamp changes (either forward or backward) it is reimported.
     auto check_timestamp_change = [&](int64_t timestamp) {
