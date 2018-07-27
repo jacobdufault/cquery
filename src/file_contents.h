@@ -20,5 +20,3 @@ struct FileContents {
   // {0, 1 + position of first newline, 1 + position of second newline, ...}
   std::vector<int> line_offsets_;
 };
-
-using FileContentsMap = std::unordered_map<AbsolutePath, FileContents>;

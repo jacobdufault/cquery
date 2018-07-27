@@ -281,8 +281,8 @@ struct ConstructorCache {
 struct IndexParam {
   std::unordered_set<CXFile> seen_cx_files;
   std::vector<AbsolutePath> seen_files;
-  FileContentsMap file_contents;
-  std::unordered_map<AbsolutePath, int64_t> file_modification_times;
+
+  std::unordered_map<AbsolutePath, FileContents> file_contents;
 
   // Only use this when strictly needed (ie, primary translation unit is
   // needed). Most logic should get the IndexFile instance via
@@ -337,12 +337,15 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
 
   // If we are generating an index for the file:
   if (db) {
+    // Set file contents.
     size_t size;
     const char* contentsPtr =
         clang_getFileContents(param->tu->cx_tu, file, &size);
     std::string contents(contentsPtr, size);
     db->file_contents = contents;
     param->file_contents[db->path] = FileContents(db->path, contents);
+    // Set modification time.
+    db->last_modification_time = clang_getFileTime(file);
   }
 
   // If this is the first time we have seen the file (ignoring if we are
@@ -356,10 +359,6 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
       // Add to all files we have seen so we can generate proper dependency
       // graph.
       param->seen_files.push_back(*file_name);
-
-      // Set modification time.
-      time_t modification_time = clang_getFileTime(file);
-      param->file_modification_times[file_name->path] = modification_time;
     }
   }
 
@@ -2305,9 +2304,6 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
         }
       }
     }
-
-    // Update file contents and modification time.
-    entry->last_modification_time = param.file_modification_times[entry->path];
 
     // Update dependencies for the file. Do not include the file in its own
     // dependency set.
