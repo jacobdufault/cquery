@@ -306,12 +306,6 @@ struct QueryDatabase {
   std::string_view GetSymbolDetailedName(RawId symbol_idx) const;
   std::string_view GetSymbolShortName(RawId symbol_idx) const;
 
-  // Query the indexing structure to look up symbol id for given Usr.
-  Maybe<QueryId::File> GetQueryFileIdFromPath(const std::string& path);
-  Maybe<QueryId::Type> GetQueryTypeIdFromUsr(Usr usr);
-  Maybe<QueryId::Func> GetQueryFuncIdFromUsr(Usr usr);
-  Maybe<QueryId::Var> GetQueryVarIdFromUsr(Usr usr);
-
   QueryFile& GetFile(SymbolIdx ref) { return files[ref.id.id]; }
   QueryFunc& GetFunc(SymbolIdx ref) { return funcs[ref.id.id]; }
   QueryType& GetType(SymbolIdx ref) { return types[ref.id.id]; }
