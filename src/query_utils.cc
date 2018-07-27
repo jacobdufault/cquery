@@ -135,7 +135,7 @@ std::vector<QueryId::LexicalRef> GetRefsForAllBases(QueryDatabase* db,
     QueryFunc& func = *stack.back();
     stack.pop_back();
     if (auto* def = func.AnyDef()) {
-      EachDefinedEntity(db->funcs, def->bases, [&](QueryFunc& func1) {
+      EachDefinedFunc(db, def->bases, [&](QueryFunc& func1) {
         if (!seen.count(func1.usr)) {
           seen.insert(func1.usr);
           stack.push_back(&func1);
@@ -157,7 +157,7 @@ std::vector<QueryId::LexicalRef> GetRefsForAllDerived(QueryDatabase* db,
   while (!stack.empty()) {
     QueryFunc& func = *stack.back();
     stack.pop_back();
-    EachDefinedEntity(db->funcs, func.derived, [&](QueryFunc& func1) {
+    EachDefinedFunc(db, func.derived, [&](QueryFunc& func1) {
       if (!seen.count(func1.usr)) {
         seen.insert(func1.usr);
         stack.push_back(&func1);

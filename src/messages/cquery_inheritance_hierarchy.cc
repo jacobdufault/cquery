@@ -125,10 +125,10 @@ bool Expand(MessageHandler* m,
             int levels) {
   if (entry->kind == SymbolKind::Func)
     return ExpandHelper(m, entry, derived, detailed_name, levels,
-                        m->db->funcs[entry->id.id]);
+                        m->db->GetFunc({entry->id, SymbolKind::Func}));
   else
     return ExpandHelper(m, entry, derived, detailed_name, levels,
-                        m->db->types[entry->id.id]);
+                        m->db->GetType({entry->id, SymbolKind::Type}));
 }
 
 struct Handler_CqueryInheritanceHierarchy

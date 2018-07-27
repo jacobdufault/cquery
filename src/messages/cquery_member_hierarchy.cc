@@ -120,7 +120,7 @@ bool Expand(MessageHandler* m,
       const auto* def = stack.back()->AnyDef();
       stack.pop_back();
       if (def) {
-        EachDefinedEntity(m->db->types, def->bases, [&](QueryType& type1) {
+        EachDefinedType(m->db, def->bases, [&](QueryType& type1) {
           if (!seen.count(type1.usr)) {
             seen.insert(type1.usr);
             stack.push_back(&type1);
@@ -151,7 +151,7 @@ bool Expand(MessageHandler* m,
             entry->children.push_back(std::move(entry1));
           }
         } else {
-          EachDefinedEntity(m->db->vars, def->vars, [&](QueryVar& var) {
+          EachDefinedVar(m->db, def->vars, [&](QueryVar& var) {
             DoField(m, entry, var, detailed_name, levels - 1);
           });
         }
@@ -170,7 +170,7 @@ struct Handler_CqueryMemberHierarchy
   optional<Out_CqueryMemberHierarchy::Entry> BuildInitial(QueryId::Func root_id,
                                                           bool detailed_name,
                                                           int levels) {
-    const auto* def = db->funcs[root_id.id].AnyDef();
+    const auto* def = db->GetFunc(root_id).AnyDef();
     if (!def)
       return {};
 
@@ -185,7 +185,7 @@ struct Handler_CqueryMemberHierarchy
               GetLsLocation(db, working_files, *def->spell))
         entry.location = *loc;
     }
-    EachDefinedEntity(db->vars, def->vars, [&](QueryVar& var) {
+    EachDefinedVar(db, def->vars, [&](QueryVar& var) {
       DoField(this, &entry, var, detailed_name, levels - 1);
     });
     return entry;

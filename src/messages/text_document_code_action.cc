@@ -165,7 +165,7 @@ optional<lsTextEdit> BuildAutoImplementForFunction(QueryDatabase* db,
     optional<std::string> type_name;
     optional<lsPosition> same_file_insert_end;
     if (def->declaring_type) {
-      QueryType& declaring_type = db->types[def->declaring_type->id];
+      QueryType& declaring_type = db->GetType(*def->declaring_type);
       if (const auto* def1 = declaring_type.AnyDef()) {
         type_name = std::string(def1->ShortName());
         optional<lsRange> ls_type_extent =
@@ -356,7 +356,7 @@ struct Handler_TextDocumentCodeAction
           // Get implementation file.
           Out_TextDocumentCodeAction::Command command;
 
-          EachDefinedEntity(db->funcs, def->funcs, [&](QueryFunc& func_def) {
+          EachDefinedFunc(db, def->funcs, [&](QueryFunc& func_def) {
             const QueryFunc::Def* def1 = func_def.AnyDef();
             if (def1->extent)
               return;

@@ -973,15 +973,19 @@ QueryVar& QueryDatabase::GetVar(QueryId::Var id) {
 }
 
 QueryFile& QueryDatabase::GetFile(SymbolIdx id) {
+  assert(id.kind == SymbolKind::File);
   return files[id.id.id];
 }
-QueryFunc& QueryDatabase::GetFunc(SymbolIdx id) {
-  return funcs[id.id.id];
-}
 QueryType& QueryDatabase::GetType(SymbolIdx id) {
+  assert(id.kind == SymbolKind::Type);
   return types[id.id.id];
 }
+QueryFunc& QueryDatabase::GetFunc(SymbolIdx id) {
+  assert(id.kind == SymbolKind::Func);
+  return funcs[id.id.id];
+}
 QueryVar& QueryDatabase::GetVar(SymbolIdx id) {
+  assert(id.kind == SymbolKind::Var);
   return vars[id.id.id];
 }
 

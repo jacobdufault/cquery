@@ -129,12 +129,32 @@ void EachOccurrenceWithParent(QueryDatabase* db,
   });
 }
 
-template <typename Q, typename Fn>
-void EachDefinedEntity(std::vector<Q>& collection,
-                       const std::vector<Id<Q>>& ids,
-                       Fn&& fn) {
-  for (Id<Q> x : ids) {
-    Q& obj = collection[x.id];
+template <typename Fn>
+void EachDefinedType(QueryDatabase* db,
+                     const std::vector<QueryId::Type>& ids,
+                     Fn&& fn) {
+  for (QueryId::Type id : ids) {
+    QueryType& obj = db->GetType(id);
+    if (!obj.def.empty())
+      fn(obj);
+  }
+}
+template <typename Fn>
+void EachDefinedFunc(QueryDatabase* db,
+                     const std::vector<QueryId::Func>& ids,
+                     Fn&& fn) {
+  for (QueryId::Func id : ids) {
+    QueryFunc& obj = db->GetFunc(id);
+    if (!obj.def.empty())
+      fn(obj);
+  }
+}
+template <typename Fn>
+void EachDefinedVar(QueryDatabase* db,
+                    const std::vector<QueryId::Var>& ids,
+                    Fn&& fn) {
+  for (QueryId::Var id : ids) {
+    QueryVar& obj = db->GetVar(id);
     if (!obj.def.empty())
       fn(obj);
   }

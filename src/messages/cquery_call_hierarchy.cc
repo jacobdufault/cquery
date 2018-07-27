@@ -85,7 +85,7 @@ bool Expand(MessageHandler* m,
             CallType call_type,
             bool detailed_name,
             int levels) {
-  const QueryFunc& func = m->db->funcs[entry->id.id];
+  const QueryFunc& func = m->db->GetFunc(entry->id);
   const QueryFunc::Def* def = func.AnyDef();
   entry->numChildren = 0;
   if (!def)
@@ -134,7 +134,7 @@ bool Expand(MessageHandler* m,
       const QueryFunc& func1 = *stack.back();
       stack.pop_back();
       if (auto* def1 = func1.AnyDef()) {
-        EachDefinedEntity(m->db->funcs, def1->bases, [&](QueryFunc& func2) {
+        EachDefinedFunc(m->db, def1->bases, [&](QueryFunc& func2) {
           if (!seen.count(func2.usr)) {
             seen.insert(func2.usr);
             stack.push_back(&func2);
@@ -151,7 +151,7 @@ bool Expand(MessageHandler* m,
     while (stack.size()) {
       const QueryFunc& func1 = *stack.back();
       stack.pop_back();
-      EachDefinedEntity(m->db->funcs, func1.derived, [&](QueryFunc& func2) {
+      EachDefinedFunc(m->db, func1.derived, [&](QueryFunc& func2) {
         if (!seen.count(func2.usr)) {
           seen.insert(func2.usr);
           stack.push_back(&func2);
@@ -172,7 +172,7 @@ struct Handler_CqueryCallHierarchy
                                                         CallType call_type,
                                                         bool detailed_name,
                                                         int levels) {
-    const auto* def = db->funcs[root_id.id].AnyDef();
+    const auto* def = db->GetFunc(root_id).AnyDef();
     if (!def)
       return {};
 

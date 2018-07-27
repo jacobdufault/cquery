@@ -31,7 +31,6 @@ struct Handler_CqueryVars : BaseMessageHandler<In_CqueryVars> {
     out.id = request->id;
     for (QueryId::SymbolRef sym :
          FindSymbolsAtLocation(working_file, file, request->params.position)) {
-      AnyId id = sym.id;
       switch (sym.kind) {
         default:
           break;
@@ -39,11 +38,10 @@ struct Handler_CqueryVars : BaseMessageHandler<In_CqueryVars> {
           const QueryVar::Def* def = db->GetVar(sym).AnyDef();
           if (!def || !def->type)
             continue;
-          id = *def->type;
         }
         // fallthrough
         case SymbolKind::Type: {
-          QueryType& type = db->types[id.id];
+          QueryType& type = db->GetType(sym);
           out.result = GetLsLocations(db, working_files,
                                       GetDeclarations(db, type.instances));
           break;

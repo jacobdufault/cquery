@@ -39,7 +39,7 @@ struct Handler_TextDocumentTypeDefinition
         }
           // fallthrough
         case SymbolKind::Type: {
-          QueryType& type = db->types[id.id];
+          QueryType& type = db->GetType({id, SymbolKind::Type});
           for (const auto& def : type.def)
             if (def.spell) {
               if (auto ls_loc = GetLsLocation(db, working_files, *def.spell))
