@@ -22,7 +22,7 @@ std::vector<QueryId::LexicalRef> GetDeclarations(
   std::vector<QueryId::LexicalRef> ret;
   ret.reserve(ids.size());
   for (auto id : ids) {
-    auto entity = fetch_definition(id);
+    const auto& entity = fetch_definition(id);
     bool has_def = false;
     for (auto& def : entity.def)
       if (def.spell) {
@@ -90,7 +90,7 @@ optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
 std::vector<QueryId::LexicalRef> GetDeclarations(
     QueryDatabase* db,
     const std::vector<QueryId::Func>& ids) {
-  return GetDeclarations(ids, [&](QueryId::Func id) {
+  return GetDeclarations(ids, [&](QueryId::Func id) -> QueryFunc& {
     return db->GetFunc(id);
   });
 }
@@ -98,7 +98,7 @@ std::vector<QueryId::LexicalRef> GetDeclarations(
 std::vector<QueryId::LexicalRef> GetDeclarations(
     QueryDatabase* db,
     const std::vector<QueryId::Type>& ids) {
-  return GetDeclarations(ids, [&](QueryId::Type id) {
+  return GetDeclarations(ids, [&](QueryId::Type id) -> QueryType& {
     return db->GetType(id);
   });
 }
@@ -106,7 +106,7 @@ std::vector<QueryId::LexicalRef> GetDeclarations(
 std::vector<QueryId::LexicalRef> GetDeclarations(
     QueryDatabase* db,
     const std::vector<QueryId::Var>& ids) {
-  return GetDeclarations(ids, [&](QueryId::Var id) {
+  return GetDeclarations(ids, [&](QueryId::Var id) -> QueryVar& {
     return db->GetVar(id);
   });
 }
