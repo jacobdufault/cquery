@@ -81,14 +81,6 @@ struct FakeModificationTimestampFetcher : IModificationTimestampFetcher {
   }
 };
 
-long long GetCurrentTimeInMilliseconds() {
-  auto time_since_epoch = Timer::Clock::now().time_since_epoch();
-  long long elapsed_milliseconds =
-      std::chrono::duration_cast<std::chrono::milliseconds>(time_since_epoch)
-          .count();
-  return elapsed_milliseconds;
-}
-
 struct ActiveThread {
   ActiveThread(ImportPipelineStatus* status) : status_(status) {
     if (g_config->progressReportFrequencyMs < 0)
@@ -123,10 +115,10 @@ struct ActiveThread {
           out.params.onIdMappedCount == 0 && out.params.onIndexedCount == 0 &&
           out.params.activeThreads == 0;
       if (!all_zero &&
-          GetCurrentTimeInMilliseconds() < status_->next_progress_output)
+          Timer::GetCurrentTimeInMilliseconds() < status_->next_progress_output)
         return;
       status_->next_progress_output =
-          GetCurrentTimeInMilliseconds() + g_config->progressReportFrequencyMs;
+          Timer::GetCurrentTimeInMilliseconds() + g_config->progressReportFrequencyMs;
     }
 
     QueueManager::WriteStdout(kMethodType_Unknown, out);

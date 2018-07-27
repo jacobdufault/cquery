@@ -2,17 +2,23 @@
 
 #include <loguru.hpp>
 
+using namespace std::chrono;
+
+// static
+long long Timer::GetCurrentTimeInMilliseconds() {
+  auto time_since_epoch = Clock::now().time_since_epoch();
+  return duration_cast<milliseconds>(time_since_epoch).count();
+}
+
 Timer::Timer() {
   Reset();
 }
 
 long long Timer::ElapsedMicroseconds() const {
-  std::chrono::time_point<Clock> end = Clock::now();
+  time_point<Clock> end = Clock::now();
   long long elapsed = elapsed_;
   if (start_.has_value()) {
-    elapsed +=
-        std::chrono::duration_cast<std::chrono::microseconds>(end - *start_)
-            .count();
+    elapsed += duration_cast<microseconds>(end - *start_).count();
   }
   return elapsed;
 }
@@ -40,10 +46,8 @@ void Timer::ResetAndPrint(const std::string& message) {
 void Timer::Pause() {
   assert(start_.has_value());
 
-  std::chrono::time_point<Clock> end = Clock::now();
-  long long elapsed =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - *start_)
-          .count();
+  time_point<Clock> end = Clock::now();
+  long long elapsed = duration_cast<microseconds>(end - *start_).count();
 
   elapsed_ += elapsed;
   start_ = nullopt;

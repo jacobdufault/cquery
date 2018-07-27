@@ -8,6 +8,8 @@
 struct Timer {
   using Clock = std::chrono::high_resolution_clock;
 
+  static long long GetCurrentTimeInMilliseconds();
+
   // Creates a new timer. A timer is always running.
   Timer();
 
