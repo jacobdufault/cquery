@@ -519,13 +519,6 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
     const std::vector<FileContents>& file_contents,
     ClangIndex* index,
     bool dump_ast = false);
-optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
-    FileConsumerSharedState* file_consumer_shared,
-    ClangTranslationUnit* tu,
-    ClangIndex* index,
-    const AbsolutePath& file,
-    const std::vector<std::string>& args,
-    const std::vector<CXUnsavedFile>& file_contents);
 
 void ConcatTypeAndName(std::string& type, const std::string& name);
 

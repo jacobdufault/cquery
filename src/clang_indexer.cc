@@ -2224,17 +2224,6 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
   if (dump_ast)
     Dump(clang_getTranslationUnitCursor(tu->cx_tu));
 
-  return ParseWithTu(file_consumer_shared, tu.get(), index, *file, args,
-                     unsaved_files);
-}
-
-optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
-    FileConsumerSharedState* file_consumer_shared,
-    ClangTranslationUnit* tu,
-    ClangIndex* index,
-    const AbsolutePath& file,
-    const std::vector<std::string>& args,
-    const std::vector<CXUnsavedFile>& file_contents) {
   IndexerCallbacks callback = {0};
   // Available callbacks:
   // - abortQuery
@@ -2247,15 +2236,12 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
   callback.indexDeclaration = &OnIndexDeclaration;
   callback.indexEntityReference = &OnIndexReference;
 
-  FileConsumer file_consumer(file_consumer_shared, file);
-  IndexParam param(tu, &file_consumer);
-  for (const CXUnsavedFile& contents : file_contents) {
-    AbsolutePath contents_path(contents.Filename);
-    param.file_contents[contents_path] = FileContents(
-        contents_path, std::string(contents.Contents, contents.Length));
-  }
+  FileConsumer file_consumer(file_consumer_shared, *file);
+  IndexParam param(tu.get(), &file_consumer);
+  for (const FileContents& contents : file_contents)
+    param.file_contents[contents.path] = contents;
 
-  CXFile cx_file = clang_getFile(tu->cx_tu, file.path.c_str());
+  CXFile cx_file = clang_getFile(tu->cx_tu, file->path.c_str());
   param.primary_file = ConsumeFile(&param, cx_file);
 
   CXIndexAction index_action = clang_IndexAction_create(index->cx_index);
@@ -2268,7 +2254,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
           CXIndexOpt_IndexImplicitTemplateInstantiations,
       tu->cx_tu);
   if (index_result != CXError_Success) {
-    LOG_S(ERROR) << "Indexing " << file
+    LOG_S(ERROR) << "Indexing " << *file
                  << " failed with errno=" << index_result;
     return nullopt;
   }
@@ -2286,7 +2272,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> ParseWithTu(
 
   auto result = param.file_consumer->TakeLocalState();
   for (std::unique_ptr<IndexFile>& entry : result) {
-    entry->import_file = file;
+    entry->import_file = *file;
     entry->args = args;
     for (IndexFunc& func : entry->funcs) {
       // e.g. declaration + out-of-line definition
