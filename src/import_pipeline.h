@@ -1,16 +1,7 @@
 #pragma once
 
-// FIXME: do not include clang-c outside of clang_ files.
-#include <clang-c/Index.h>
-
 #include <atomic>
-#include <memory>
-#include <string>
-#include <vector>
 
-struct AbsolutePath;
-struct ClangTranslationUnit;
-struct Config;
 class DiagnosticsEngine;
 struct FileConsumerSharedState;
 struct ImportManager;
