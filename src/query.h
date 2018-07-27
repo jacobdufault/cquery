@@ -134,7 +134,7 @@ struct QueryFile {
   using DefUpdate = WithFileContent<Def>;
 
   optional<Def> def;
-  Maybe<AnyId> symbol_idx;
+  size_t symbol_idx = -1;
 
   explicit QueryFile(const AbsolutePath& path) {
     def = Def();
@@ -174,7 +174,7 @@ struct QueryType : QueryEntity<QueryType, TypeDefDefinitionData<QueryId>> {
   using InstancesUpdate = MergeableUpdate<QueryId::Type, QueryId::Var>;
 
   Usr usr;
-  Maybe<AnyId> symbol_idx;
+  size_t symbol_idx = -1;
   std::forward_list<Def> def;
   std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::Type> derived;
@@ -188,7 +188,7 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
   using DerivedUpdate = MergeableUpdate<QueryId::Func, QueryId::Func>;
 
   Usr usr;
-  Maybe<AnyId> symbol_idx;
+  size_t symbol_idx = -1;
   std::forward_list<Def> def;
   std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::Func> derived;
@@ -199,7 +199,7 @@ struct QueryFunc : QueryEntity<QueryFunc, FuncDefDefinitionData<QueryId>> {
 
 struct QueryVar : QueryEntity<QueryVar, VarDefDefinitionData<QueryId>> {
   Usr usr;
-  Maybe<AnyId> symbol_idx;
+  size_t symbol_idx = -1;
   std::forward_list<Def> def;
   std::vector<QueryId::LexicalRef> declarations;
   std::vector<QueryId::LexicalRef> uses;
@@ -302,7 +302,7 @@ struct QueryDatabase {
   void ImportOrUpdate(std::vector<QueryType::DefUpdate>&& updates);
   void ImportOrUpdate(std::vector<QueryFunc::DefUpdate>&& updates);
   void ImportOrUpdate(std::vector<QueryVar::DefUpdate>&& updates);
-  void UpdateSymbols(Maybe<AnyId>* symbol_idx, SymbolKind kind, AnyId idx);
+  void UpdateSymbols(size_t* symbol_idx, SymbolKind kind, AnyId idx);
   std::string_view GetSymbolDetailedName(RawId symbol_idx) const;
   std::string_view GetSymbolShortName(RawId symbol_idx) const;
 

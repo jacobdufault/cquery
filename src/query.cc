@@ -748,7 +748,7 @@ void QueryDatabase::RemoveUsrs(SymbolKind usr_kind,
       for (const Usr& usr : to_remove) {
         QueryType& type = types[usr_to_type[usr].id];
         if (type.symbol_idx)
-          symbols[type.symbol_idx->id].kind = SymbolKind::Invalid;
+          symbols[type.symbol_idx].kind = SymbolKind::Invalid;
         type.def.clear();
       }
       break;
@@ -899,11 +899,11 @@ void QueryDatabase::ImportOrUpdate(std::vector<QueryVar::DefUpdate>&& updates) {
   }
 }
 
-void QueryDatabase::UpdateSymbols(Maybe<AnyId>* symbol_idx,
+void QueryDatabase::UpdateSymbols(size_t* symbol_idx,
                                   SymbolKind kind,
                                   AnyId idx) {
-  if (!symbol_idx->HasValue()) {
-    *symbol_idx = AnyId(symbols.size());
+  if (*symbol_idx == -1) {
+    *symbol_idx = symbols.size();
     symbols.push_back(SymbolIdx{idx, kind});
   }
 }
