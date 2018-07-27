@@ -21,6 +21,7 @@ std::ostream& operator<<(std::ostream& os, const PipelineStatus& status) {
     default:
       assert(false);
   }
+  return os;
 }
 
 PipelineStatus ImportManager::GetStatus(const std::string& path) {
