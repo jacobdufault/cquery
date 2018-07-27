@@ -7,22 +7,6 @@
 
 #include <loguru.hpp>
 
-namespace {
-
-optional<std::string> GetFileContents(const std::string& path,
-                                      FileContentsMap* file_contents) {
-  auto it = file_contents->find(path);
-  if (it == file_contents->end()) {
-    optional<std::string> content = ReadContent(path);
-    if (content)
-      (*file_contents)[path] = FileContents(path, *content);
-    return content;
-  }
-  return it->second.content;
-}
-
-}  // namespace
-
 bool operator==(const CXFileUniqueID& a, const CXFileUniqueID& b) {
   return a.data[0] == b.data[0] && a.data[1] == b.data[1] &&
          a.data[2] == b.data[2];
@@ -45,8 +29,7 @@ FileConsumer::FileConsumer(FileConsumerSharedState* shared_state,
     : shared_(shared_state), parse_file_(parse_file) {}
 
 IndexFile* FileConsumer::TryConsumeFile(CXFile file,
-                                        bool* is_first_ownership,
-                                        FileContentsMap* file_contents_map) {
+                                        bool* is_first_ownership) {
   assert(is_first_ownership);
 
   CXFileUniqueID file_id;
@@ -79,17 +62,9 @@ IndexFile* FileConsumer::TryConsumeFile(CXFile file,
     return nullptr;
   }
 
-  // Read the file contents, if we fail then we cannot index the file.
-  optional<std::string> contents =
-      GetFileContents(file_name->path, file_contents_map);
-  if (!contents) {
-    *is_first_ownership = false;
-    return nullptr;
-  }
-
   // Build IndexFile instance.
   *is_first_ownership = true;
-  local_[file_id] = std::make_unique<IndexFile>(file_name->path, *contents);
+  local_[file_id] = std::make_unique<IndexFile>(file_name->path, "<NONE>");
   return local_[file_id].get();
 }
 

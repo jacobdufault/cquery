@@ -291,57 +291,6 @@ CacheLoadResult TryLoadFromCache(
   return CacheLoadResult::kDoNotParse;
 }
 
-std::vector<FileContents> PreloadFileContents(
-    const std::shared_ptr<ICacheManager>& cache_manager,
-    const Project::Entry& entry,
-    const optional<std::string>& entry_contents,
-    const AbsolutePath& path_to_index) {
-  // Load file contents for all dependencies into memory. If the dependencies
-  // for the file changed we may not end up using all of the files we
-  // preloaded. If a new dependency was added the indexer will grab the file
-  // contents as soon as possible.
-  //
-  // We do this to minimize the race between indexing a file and capturing the
-  // file contents.
-  //
-  // TODO: We might be able to optimize perf by only copying for files in
-  //       working_files. We can pass that same set of files to the indexer as
-  //       well. We then default to a fast file-copy if not in working set.
-
-  // index->file_contents comes from cache, so we need to check if that cache is
-  // still valid. if so, we can use it, otherwise we need to load from disk.
-  auto get_latest_content = [](const AbsolutePath& path, int64_t cached_time,
-                               const std::string& cached) -> std::string {
-    optional<int64_t> mod_time = GetLastModificationTime(path);
-    if (!mod_time)
-      return "";
-
-    if (*mod_time == cached_time)
-      return cached;
-
-    optional<std::string> fresh_content = ReadContent(path);
-    if (!fresh_content) {
-      LOG_S(ERROR) << "Failed to load content for " << path;
-      return "";
-    }
-    return *fresh_content;
-  };
-
-  std::vector<FileContents> file_contents;
-  if (entry_contents)
-    file_contents.push_back(FileContents(entry.filename, *entry_contents));
-  cache_manager->IterateLoadedCaches([&](IndexFile* index) {
-    if (entry_contents && index->path == entry.filename)
-      return;
-    file_contents.push_back(FileContents(
-        index->path,
-        get_latest_content(index->path, index->last_modification_time,
-                           index->file_contents)));
-  });
-
-  return file_contents;
-}
-
 void ParseFile(DiagnosticsEngine* diag_engine,
                WorkingFiles* working_files,
                FileConsumerSharedState* file_consumer_shared,
@@ -371,9 +320,9 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   }
 
   LOG_S(INFO) << "Parsing " << path_to_index;
-  std::vector<FileContents> file_contents = PreloadFileContents(
-      request.cache_manager, entry, request.contents, path_to_index);
-
+  std::vector<FileContents> file_contents;
+  if (request.contents)
+    file_contents.push_back(FileContents(request.path, *request.contents));
   auto indexes = indexer->Index(file_consumer_shared, path_to_index, entry.args,
                                 file_contents);
 

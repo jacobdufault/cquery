@@ -47,8 +47,7 @@ struct FileConsumer {
   // note: file_contents is passed as a parameter instead of as a member
   // variable since it is large and we do not want to copy it.
   IndexFile* TryConsumeFile(CXFile file,
-                            bool* is_first_ownership,
-                            FileContentsMap* file_contents);
+                            bool* is_first_ownership);
 
   // Returns and passes ownership of all local state.
   std::vector<std::unique_ptr<IndexFile>> TakeLocalState();

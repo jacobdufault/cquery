@@ -332,8 +332,18 @@ struct IndexParam {
 
 IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
   bool is_first_ownership = false;
-  IndexFile* db = param->file_consumer->TryConsumeFile(
-      file, &is_first_ownership, &param->file_contents);
+  IndexFile* db =
+      param->file_consumer->TryConsumeFile(file, &is_first_ownership);
+
+  // If we are generating an index for the file:
+  if (db) {
+    size_t size;
+    const char* contentsPtr =
+        clang_getFileContents(param->tu->cx_tu, file, &size);
+    std::string contents(contentsPtr, size);
+    db->file_contents = contents;
+    param->file_contents[db->path] = FileContents(db->path, contents);
+  }
 
   // If this is the first time we have seen the file (ignoring if we are
   // generating an index for it):
@@ -348,11 +358,8 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
       param->seen_files.push_back(*file_name);
 
       // Set modification time.
-      optional<int64_t> modification_time = GetLastModificationTime(*file_name);
-      LOG_IF_S(ERROR, !modification_time)
-          << "Failed fetching modification time for " << *file_name;
-      if (modification_time)
-        param->file_modification_times[file_name->path] = *modification_time;
+      time_t modification_time = clang_getFileTime(file);
+      param->file_modification_times[file_name->path] = modification_time;
     }
   }
 
@@ -361,11 +368,6 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
     CXSourceRangeList* skipped = clang_getSkippedRanges(param->tu->cx_tu, file);
     for (unsigned i = 0; i < skipped->count; ++i) {
       Range range = ResolveCXSourceRange(skipped->ranges[i]);
-#if CINDEX_VERSION < 45  // Before clang 6.0.0
-      // clang_getSkippedRanges reports start one token after the '#', move it
-      // back so it starts at the '#'
-      range.start.column -= 1;
-#endif
       db->skipped_by_preprocessor.push_back(range);
     }
     clang_disposeSourceRangeList(skipped);
