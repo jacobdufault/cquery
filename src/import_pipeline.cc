@@ -623,10 +623,8 @@ void QueryDb_OnIndexed(QueueManager* queue,
   Timer time;
   db->ApplyIndexUpdate(&response->update);
   time.ResetAndPrint("Applying index update for " +
-                     StringJoinMap(response->update.files_def_update,
-                                   [](const QueryFile::DefUpdate& value) {
-                                     return value.value.path;
-                                   }));
+                     std::to_string(response->update.files_def_update.size()) +
+                     " files");
 
   // Update indexed content, inactive lines, and semantic highlighting.
   for (auto& updated_file : response->update.files_def_update) {
