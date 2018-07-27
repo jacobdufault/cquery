@@ -12,7 +12,7 @@
 struct ClangCompleteManager;
 struct CodeCompleteCache;
 struct Config;
-class DiagnosticsEngine;
+struct DiagnosticsEngine;
 struct FileConsumerSharedState;
 struct ImportManager;
 struct ImportPipelineStatus;
