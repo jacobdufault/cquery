@@ -508,13 +508,8 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
     }
   }
 
-<<<<<<< HEAD
-  LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty()
-           && !c_cpp_props)
-=======
   LOG_IF_S(WARNING,
            folder_args.empty() && config->extra_flags.empty() && !c_cpp_props)
->>>>>>> Reformat
       << "cquery has no clang arguments. Considering adding a "
          ".cquery file or c_cpp_properties.json or compile_commands.json. "
          "See the cquery README for more information.";
