@@ -150,10 +150,11 @@ ShouldParse FileNeedsParse(
     return "";
   };
 
-  // If the file is a dependency but another file as already imported it,
-  // don't bother.
+  // If the file is a dependency, only load it if we have not seen it yet.
+  // FIXME: this needs to also take into account modification timestamps, ie,
+  // freshen index.
   if (!is_interactive && from &&
-      !import_manager->TryMarkDependencyImported(path)) {
+      import_manager->GetStatus(path) != PipelineStatus::kNotSeen) {
     return ShouldParse::No;
   }
 
@@ -282,11 +283,6 @@ CacheLoadResult TryLoadFromCache(
                                    is_interactive, false /*write_to_disk*/));
   }
 
-  // Mark all of the entries as imported so we will load do delta loads next
-  // time.
-  for (Index_DoIdMap& entry : result)
-    import_manager->IsInitialImport(entry.current->path);
-
   QueueManager::instance()->do_id_map.EnqueueAll(std::move(result),
                                                  false /*priority*/);
   return CacheLoadResult::DoNotParse;
@@ -390,7 +386,28 @@ void ParseFile(DiagnosticsEngine* diag_engine,
     return;
   }
 
+  // Add the set of indexes we want to actually import from the index operation.
   for (std::unique_ptr<IndexFile>& new_index : *indexes) {
+    // Do not allow a file to be imported twice at the same time.
+    PipelineStatus status = import_manager->GetStatus(new_index->path);
+    if (status == PipelineStatus::kProcessingInitialImport ||
+        status == PipelineStatus::kProcessingUpdate) {
+      // TODO: add this file to a queue which will be processed after import is
+      // done?
+      LOG_S(WARNING) << "Dropping duplicate import request for "
+                     << new_index->path;
+      continue;
+    }
+
+    // Set new import status.
+    // FIXME: there is a race condition between checking above and here.
+    assert(status == PipelineStatus::kNotSeen ||
+           status == PipelineStatus::kImported);
+    import_manager->SetStatus(new_index->path,
+                              status == PipelineStatus::kNotSeen
+                                  ? PipelineStatus::kProcessingInitialImport
+                                  : PipelineStatus::kProcessingUpdate);
+
     // Only emit diagnostics for non-interactive sessions, which makes it easier
     // to identify indexing problems. For interactive sessions, diagnostics are
     // handled by code completion.
@@ -410,7 +427,12 @@ void ParseFile(DiagnosticsEngine* diag_engine,
   // Load previous index if the file has already been imported so we can do a
   // delta update.
   for (Index_DoIdMap& request : result) {
-    if (!import_manager->IsInitialImport(request.current->path)) {
+    PipelineStatus status = import_manager->GetStatus(request.current->path);
+    assert(status == PipelineStatus::kProcessingInitialImport ||
+           status == PipelineStatus::kProcessingUpdate);
+
+    // Do a delta update if we have already imported this file.
+    if (status == PipelineStatus::kProcessingUpdate) {
       request.previous =
           request.cache_manager->TryTakeOrLoad(request.current->path);
       LOG_IF_S(ERROR, !request.previous)
@@ -587,18 +609,6 @@ void QueryDb_DoIdMap(QueueManager* queue,
                      ImportManager* import_manager,
                      Index_DoIdMap* request) {
   assert(request->current);
-
-  // Check if the file is already being imported into querydb. If it is, drop
-  // the request.
-  //
-  // Note, we must do this *after* we have checked for the previous index,
-  // otherwise we will never actually generate the IdMap.
-  if (!import_manager->StartQueryDbImport(request->current->path)) {
-    LOG_S(INFO) << "Dropping index as it is already being imported for "
-                << request->current->path;
-    return;
-  }
-
   Index_OnIdMapped response(request->cache_manager, request->is_interactive,
                             request->write_to_disk);
   auto make_map = [db](std::unique_ptr<IndexFile> file)
@@ -649,9 +659,10 @@ void QueryDb_OnIndexed(QueueManager* queue,
       EmitSemanticHighlighting(db, semantic_cache, working_file, file);
     }
 
-    // Mark the files as being done in querydb stage after we apply the index
-    // update.
-    import_manager->DoneQueryDbImport(updated_file.value.path);
+    // TODO/PERF: batch these updates
+    // querydb processing of this file has finished.
+    import_manager->SetStatus(updated_file.value.path,
+                              PipelineStatus::kImported);
   }
 }
 

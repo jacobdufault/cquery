@@ -1,39 +1,40 @@
 #include "import_manager.h"
 
-bool ImportManager::IsInitialImport(const std::string& path) {
+#include "assert.h"
+
+#include <ostream>
+
+std::ostream& operator<<(std::ostream& os, const PipelineStatus& status) {
+  switch (status) {
+    case PipelineStatus::kNotSeen:
+      os << "kNotSeen";
+      break;
+    case PipelineStatus::kProcessingInitialImport:
+      os << "kProcessingInitialImport";
+      break;
+    case PipelineStatus::kImported:
+      os << "kImported";
+      break;
+    case PipelineStatus::kProcessingUpdate:
+      os << "kProcessingUpdate";
+      break;
+    default:
+      assert(false);
+  }
+}
+
+PipelineStatus ImportManager::GetStatus(const std::string& path) {
   // Try reading the value
   {
-    std::shared_lock<std::shared_timed_mutex> lock(initial_import_mutex_);
-    if (initial_import_.find(path) != initial_import_.end())
-      return false;
+    std::shared_lock<std::shared_timed_mutex> lock(status_mutex_);
+    auto it = status_.find(path);
+    if (it != status_.end())
+      return it->second;
   }
-
-  // Try inserting the value
-  {
-    std::unique_lock<std::shared_timed_mutex> lock(initial_import_mutex_);
-    return initial_import_.insert(path).second;
-  }
+  return PipelineStatus::kNotSeen;
 }
 
-bool ImportManager::TryMarkDependencyImported(const std::string& path) {
-  // Try reading the value
-  {
-    std::shared_lock<std::shared_timed_mutex> lock(dependency_mutex_);
-    if (dependency_imported_.find(path) != dependency_imported_.end())
-      return false;
-  }
-
-  // Try inserting the value
-  {
-    std::unique_lock<std::shared_timed_mutex> lock(dependency_mutex_);
-    return dependency_imported_.insert(path).second;
-  }
-}
-
-bool ImportManager::StartQueryDbImport(const std::string& path) {
-  return querydb_processing_.insert(path).second;
-}
-
-void ImportManager::DoneQueryDbImport(const std::string& path) {
-  querydb_processing_.erase(path);
+void ImportManager::SetStatus(const std::string& path, PipelineStatus status) {
+  std::unique_lock<std::shared_timed_mutex> lock(status_mutex_);
+  status_[path] = status;
 }

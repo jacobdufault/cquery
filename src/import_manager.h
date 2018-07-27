@@ -1,36 +1,31 @@
 #pragma once
 
+#include <iosfwd>
 #include <shared_mutex>
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
+
+enum class PipelineStatus {
+  // The file is has not been processed by the import pipeline in any way.
+  kNotSeen,
+  // The file is currently in the pipeline but has not been added to querydb
+  // yet.
+  kProcessingInitialImport,
+  // The file is imported, but not currently in the pipeline.
+  kImported,
+  // The file is imported and also being updated, ie, it is currently in the
+  // pipeline.
+  kProcessingUpdate
+};
+std::ostream& operator<<(std::ostream& os, const PipelineStatus& status);
 
 // Manages files inside of the indexing pipeline so we don't have the same file
 // being imported multiple times.
-//
-// NOTE: This is not thread safe and should only be used on the querydb thread.
 struct ImportManager {
-  // Check if this is the first time this file has been imported.
-  bool IsInitialImport(const std::string& path);
-
-  // Try to mark the given dependency as imported. A dependency can only ever be
-  // imported once.
-  bool TryMarkDependencyImported(const std::string& path);
-
-  // Try to import the given file into querydb. We should only ever be
-  // importing a file into querydb once per file. Returns true if the file
-  // can be imported.
-  bool StartQueryDbImport(const std::string& path);
-
-  // The file has been fully imported and can be imported again later on.
-  void DoneQueryDbImport(const std::string& path);
-
-  std::unordered_set<std::string> querydb_processing_;
+  PipelineStatus GetStatus(const std::string& path);
+  void SetStatus(const std::string& path, PipelineStatus status);
 
   // TODO: use shared_mutex
-  std::shared_timed_mutex dependency_mutex_;
-  std::unordered_set<std::string> dependency_imported_;
-
-  // TODO: use shared_mutex
-  std::shared_timed_mutex initial_import_mutex_;
-  std::unordered_set<std::string> initial_import_;
+  std::shared_timed_mutex status_mutex_;
+  std::unordered_map<std::string, PipelineStatus> status_;
 };
