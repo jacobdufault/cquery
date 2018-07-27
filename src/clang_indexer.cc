@@ -337,29 +337,29 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
 
   // If we are generating an index for the file:
   if (db) {
-    // Set file contents.
+    // Fetch indexed file contents from libclang.
     size_t size;
     const char* contentsPtr =
         clang_getFileContents(param->tu->cx_tu, file, &size);
     std::string contents(contentsPtr, size);
+
+    // Update cached file contents.
     db->file_contents = contents;
+    // Setup quick access to line offsets with the file.
     param->file_contents[db->path] = FileContents(db->path, contents);
     // Set modification time.
     db->last_modification_time = clang_getFileTime(file);
   }
 
-  // If this is the first time we have seen the file (ignoring if we are
-  // generating an index for it):
+  // Register that we saw this file even if it is not being indexed so that we
+  // can generate a dependency graph.
   if (param->seen_cx_files.insert(file).second) {
     optional<AbsolutePath> file_name = FileName(file);
     // file_name may be empty when it contains .. and is outside of WorkingDir.
     // https://reviews.llvm.org/D42893
     // https://github.com/cquery-project/cquery/issues/413
-    if (file_name && !file_name->path.empty()) {
-      // Add to all files we have seen so we can generate proper dependency
-      // graph.
+    if (file_name && !file_name->path.empty())
       param->seen_files.push_back(*file_name);
-    }
   }
 
   if (is_first_ownership) {
