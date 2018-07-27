@@ -306,10 +306,15 @@ struct QueryDatabase {
   std::string_view GetSymbolDetailedName(RawId symbol_idx) const;
   std::string_view GetSymbolShortName(RawId symbol_idx) const;
 
-  QueryFile& GetFile(SymbolIdx ref) { return files[ref.id.id]; }
-  QueryFunc& GetFunc(SymbolIdx ref) { return funcs[ref.id.id]; }
-  QueryType& GetType(SymbolIdx ref) { return types[ref.id.id]; }
-  QueryVar& GetVar(SymbolIdx ref) { return vars[ref.id.id]; }
+  QueryFile& GetFile(QueryId::File id);
+  QueryFunc& GetFunc(QueryId::Func id);
+  QueryType& GetType(QueryId::Type id);
+  QueryVar& GetVar(QueryId::Var id);
+
+  QueryFile& GetFile(SymbolIdx id);
+  QueryFunc& GetFunc(SymbolIdx id);
+  QueryType& GetType(SymbolIdx id);
+  QueryVar& GetVar(SymbolIdx id);
 };
 
 template <typename I>

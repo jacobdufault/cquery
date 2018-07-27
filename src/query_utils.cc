@@ -16,14 +16,13 @@ int ComputeRangeSize(const Range& range) {
   return range.end.column - range.start.column;
 }
 
-template <typename Q>
+template <typename T, typename Fn>
 std::vector<QueryId::LexicalRef> GetDeclarations(
-    std::vector<Q>& entities,
-    const std::vector<Id<Q>>& ids) {
+    const std::vector<Id<T>>& ids, Fn&& fetch_definition) {
   std::vector<QueryId::LexicalRef> ret;
   ret.reserve(ids.size());
   for (auto id : ids) {
-    Q& entity = entities[id.id];
+    auto entity = fetch_definition(id);
     bool has_def = false;
     for (auto& def : entity.def)
       if (def.spell) {
@@ -91,19 +90,25 @@ optional<QueryId::File> GetDeclarationFileForSymbol(QueryDatabase* db,
 std::vector<QueryId::LexicalRef> GetDeclarations(
     QueryDatabase* db,
     const std::vector<QueryId::Func>& ids) {
-  return GetDeclarations(db->funcs, ids);
+  return GetDeclarations(ids, [&](QueryId::Func id) {
+    return db->GetFunc(id);
+  });
 }
 
 std::vector<QueryId::LexicalRef> GetDeclarations(
     QueryDatabase* db,
     const std::vector<QueryId::Type>& ids) {
-  return GetDeclarations(db->types, ids);
+  return GetDeclarations(ids, [&](QueryId::Type id) {
+    return db->GetType(id);
+  });
 }
 
 std::vector<QueryId::LexicalRef> GetDeclarations(
     QueryDatabase* db,
     const std::vector<QueryId::Var>& ids) {
-  return GetDeclarations(db->vars, ids);
+  return GetDeclarations(ids, [&](QueryId::Var id) {
+    return db->GetVar(id);
+  });
 }
 
 std::vector<QueryId::LexicalRef> GetNonDefDeclarations(QueryDatabase* db,

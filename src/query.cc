@@ -959,6 +959,32 @@ std::string_view QueryDatabase::GetSymbolShortName(RawId symbol_idx) const {
   return "";
 }
 
+QueryFile& QueryDatabase::GetFile(QueryId::File id) {
+  return files[id.id];
+}
+QueryFunc& QueryDatabase::GetFunc(QueryId::Func id) {
+  return funcs[id.id];
+}
+QueryType& QueryDatabase::GetType(QueryId::Type id) {
+  return types[id.id];
+}
+QueryVar& QueryDatabase::GetVar(QueryId::Var id) {
+  return vars[id.id];
+}
+
+QueryFile& QueryDatabase::GetFile(SymbolIdx id) {
+  return files[id.id.id];
+}
+QueryFunc& QueryDatabase::GetFunc(SymbolIdx id) {
+  return funcs[id.id.id];
+}
+QueryType& QueryDatabase::GetType(SymbolIdx id) {
+  return types[id.id.id];
+}
+QueryVar& QueryDatabase::GetVar(SymbolIdx id) {
+  return vars[id.id.id];
+}
+
 TEST_SUITE("query") {
   IndexUpdate GetDelta(IndexFile previous, IndexFile current) {
     QueryDatabase db;
