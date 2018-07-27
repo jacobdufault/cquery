@@ -12,7 +12,7 @@ option(SYSTEM_CLANG "Use system installation of Clang instead of \
        downloading Clang" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(ASSERTS "Compile with asserts enabled" OFF)
-option(CI "Add -Werror or equivalent" OFF) 
+option(CI "Add -Werror or equivalent" OFF)
 
 # Sources for the executable are specified at end of CMakeLists.txt
 add_executable(cquery "")
@@ -52,7 +52,7 @@ if(MSVC)
                          /wd4800
                          /wd4068 # Disable unknown pragma warning
                          $<$<CONFIG:Debug>:/FS>
-                         $<$<BOOL:${CI}>:/WX> 
+                         $<$<BOOL:${CI}>:/WX>
                          )
 else()
   # Common GCC/Clang(Linux) options
@@ -325,7 +325,6 @@ target_sources(cquery PRIVATE
                src/messages/cquery_freshen_index.cc
                src/messages/cquery_index_file.cc
                src/messages/cquery_inheritance_hierarchy.cc
-               src/messages/cquery_member_hierarchy.cc
                src/messages/cquery_vars.cc
                src/messages/cquery_wait.cc
                src/messages/exit.cc
