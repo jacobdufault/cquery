@@ -11,6 +11,5 @@ struct CCppProperties {
   std::vector<std::string> args;
 };
 
-optional<CCppProperties> LoadCCppProperties(
-    const std::string& json_full_path,
-    const std::string& project_dir);
+optional<CCppProperties> LoadCCppProperties(const std::string& json_full_path,
+                                            const std::string& project_dir);

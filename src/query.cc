@@ -1023,14 +1023,14 @@ TEST_SUITE("query") {
     IndexFile current(AbsolutePath("foo.cc"), "<empty>");
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))
-        ->uses.push_back(
-            IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0), SymbolKind::Func, {}));
+        ->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0),
+                                             SymbolKind::Func, {}));
     previous.Resolve(previous.ToFuncId(HashUsr("usr2")))
-        ->uses.push_back(
-            IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0), SymbolKind::Func, {}));
+        ->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0),
+                                             SymbolKind::Func, {}));
     previous.Resolve(previous.ToVarId(HashUsr("usr3")))
-        ->uses.push_back(
-            IndexId::LexicalRef(Range(Position(3, 0)), AnyId(0), SymbolKind::Func, {}));
+        ->uses.push_back(IndexId::LexicalRef(Range(Position(3, 0)), AnyId(0),
+                                             SymbolKind::Func, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1046,8 +1046,10 @@ TEST_SUITE("query") {
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
 
-    pf->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0), SymbolKind::Func, {}));
-    cf->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0), SymbolKind::Func, {}));
+    pf->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0),
+                                           SymbolKind::Func, {}));
+    cf->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0),
+                                           SymbolKind::Func, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1067,8 +1069,10 @@ TEST_SUITE("query") {
     IndexType* pt = previous.Resolve(previous.ToTypeId(HashUsr("usr")));
     IndexType* ct = current.Resolve(current.ToTypeId(HashUsr("usr")));
 
-    pt->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0), SymbolKind::Type, {}));
-    ct->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0), SymbolKind::Type, {}));
+    pt->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0),
+                                           SymbolKind::Type, {}));
+    ct->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0),
+                                           SymbolKind::Type, {}));
 
     IndexUpdate update = GetDelta(previous, current);
 
@@ -1087,10 +1091,14 @@ TEST_SUITE("query") {
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
-    pf->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0), SymbolKind::Func, {}));
-    pf->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0), SymbolKind::Func, {}));
-    cf->uses.push_back(IndexId::LexicalRef(Range(Position(4, 0)), AnyId(0), SymbolKind::Func, {}));
-    cf->uses.push_back(IndexId::LexicalRef(Range(Position(5, 0)), AnyId(0), SymbolKind::Func, {}));
+    pf->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0),
+                                           SymbolKind::Func, {}));
+    pf->uses.push_back(IndexId::LexicalRef(Range(Position(2, 0)), AnyId(0),
+                                           SymbolKind::Func, {}));
+    cf->uses.push_back(IndexId::LexicalRef(Range(Position(4, 0)), AnyId(0),
+                                           SymbolKind::Func, {}));
+    cf->uses.push_back(IndexId::LexicalRef(Range(Position(5, 0)), AnyId(0),
+                                           SymbolKind::Func, {}));
 
     QueryDatabase db;
     IdMap previous_map(&db, previous.id_cache);

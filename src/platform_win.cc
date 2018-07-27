@@ -5,23 +5,23 @@
 
 #include <loguru.hpp>
 
+#include <Knownfolders.h>
+#include <Objbase.h>
+#include <Shlobj.h>
 #include <direct.h>
 #include <fcntl.h>
 #include <io.h>
 #include <windows.h>
-#include <Shlobj.h>
-#include <Objbase.h>
-#include <Knownfolders.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
 
 #include <algorithm>
 #include <cassert>
-#include <iostream>
-#include <string>
-#include <locale>
 #include <codecvt>
+#include <iostream>
+#include <locale>
+#include <string>
 
 namespace {
 void EmitError(const std::string& message) {
@@ -218,26 +218,26 @@ bool RunObjectiveCIndexTests() {
 void TraceMe() {}
 
 optional<std::string> GetGlobalConfigDirectory() {
-	wchar_t  *roaming_path = NULL;
-	optional<std::string> cfg_path = {};
-	if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_DEFAULT,
-					   NULL, &roaming_path))) {
-	  std::wstringstream roaming_stream;
-          roaming_stream << roaming_path << L"/cquery";
+  wchar_t* roaming_path = NULL;
+  optional<std::string> cfg_path = {};
+  if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_DEFAULT,
+                                     NULL, &roaming_path))) {
+    std::wstringstream roaming_stream;
+    roaming_stream << roaming_path << L"/cquery";
 
-	  // Convert the roaming path string to a normal string so it
-	  // is analogous with the string returned by the posix version.
-	  using convert_type = std::codecvt_utf8<wchar_t>;
-	  std::wstring_convert<convert_type, wchar_t> converter;
-	  cfg_path = converter.to_bytes(roaming_stream.str());
+    // Convert the roaming path string to a normal string so it
+    // is analogous with the string returned by the posix version.
+    using convert_type = std::codecvt_utf8<wchar_t>;
+    std::wstring_convert<convert_type, wchar_t> converter;
+    cfg_path = converter.to_bytes(roaming_stream.str());
 
-	  // As per the docs for SHGetKnownFolderPath
-	  // (https://msdn.microsoft.com/en-us/library/bb762188(VS.85).aspx)
-	  // we must free roaming_path using CoTaskMemFree once
-	  // finished with it.
-	  CoTaskMemFree(static_cast<void*>(roaming_path));
-	}
-	return cfg_path;
+    // As per the docs for SHGetKnownFolderPath
+    // (https://msdn.microsoft.com/en-us/library/bb762188(VS.85).aspx)
+    // we must free roaming_path using CoTaskMemFree once
+    // finished with it.
+    CoTaskMemFree(static_cast<void*>(roaming_path));
+  }
+  return cfg_path;
 }
 
 #endif

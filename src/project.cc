@@ -72,7 +72,12 @@ struct NormalizationCache {
   }
 };
 
-enum class ProjectMode { CCppProperties, CompileCommandsJson, DotCquery, ExternalCommand };
+enum class ProjectMode {
+  CCppProperties,
+  CompileCommandsJson,
+  DotCquery,
+  ExternalCommand
+};
 
 struct ProjectConfig {
   std::unordered_map<LanguageId, std::vector<std::string>>
@@ -472,7 +477,8 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
     LOG_S(INFO) << "Trying to load c_cpp_properties.json";
     c_cpp_props = LoadCCppProperties(c_cpp_props_path, config->project_dir);
     if (c_cpp_props) {
-      LOG_S(INFO) << "Loaded c_cpp_properties.json as args: " << StringJoin(c_cpp_props.value().args);
+      LOG_S(INFO) << "Loaded c_cpp_properties.json as args: "
+                  << StringJoin(c_cpp_props.value().args);
     } else {
       LOG_S(WARNING) << "Failed to load c_cpp_properties.json";
     }
@@ -502,8 +508,13 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
     }
   }
 
+<<<<<<< HEAD
   LOG_IF_S(WARNING, folder_args.empty() && config->extra_flags.empty()
            && !c_cpp_props)
+=======
+  LOG_IF_S(WARNING,
+           folder_args.empty() && config->extra_flags.empty() && !c_cpp_props)
+>>>>>>> Reformat
       << "cquery has no clang arguments. Considering adding a "
          ".cquery file or c_cpp_properties.json or compile_commands.json. "
          "See the cquery README for more information.";
@@ -513,29 +524,27 @@ std::vector<Project::Entry> LoadFromDirectoryListing(
     config->mode = ProjectMode::CCppProperties;
     project_dir_args = c_cpp_props.value().args;
     LOG_S(INFO) << "Using c_cpp_properties.json";
-  } else if(!project_dir_args.empty()) {
+  } else if (!project_dir_args.empty()) {
     LOG_S(INFO) << "Using .cquery arguments " << StringJoin(project_dir_args);
   }
 
-  auto GetCompilerArgumentForFile = [&config,
-                                     &folder_args,
-                                     &project_dir_args
-                                     ](const std::string& path) {
-    for (std::string cur = GetDirName(path);; cur = GetDirName(cur)) {
-      auto it = folder_args.find(cur);
-      if (it != folder_args.end())
-        return it->second;
-      optional<AbsolutePath> normalized = NormalizePath(cur);
-      if (!normalized)
-        break;
-      // Break if outside of the project root.
-      if (normalized->path.size() <= config->project_dir.size() ||
-          normalized->path.compare(0, config->project_dir.size(),
-                                   config->project_dir) != 0)
-        break;
-    }
-    return project_dir_args;
-  };
+  auto GetCompilerArgumentForFile =
+      [&config, &folder_args, &project_dir_args](const std::string& path) {
+        for (std::string cur = GetDirName(path);; cur = GetDirName(cur)) {
+          auto it = folder_args.find(cur);
+          if (it != folder_args.end())
+            return it->second;
+          optional<AbsolutePath> normalized = NormalizePath(cur);
+          if (!normalized)
+            break;
+          // Break if outside of the project root.
+          if (normalized->path.size() <= config->project_dir.size() ||
+              normalized->path.compare(0, config->project_dir.size(),
+                                       config->project_dir) != 0)
+            break;
+        }
+        return project_dir_args;
+      };
 
   for (const std::string& file : files) {
     CompileCommandsEntry e;
