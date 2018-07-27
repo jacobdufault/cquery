@@ -62,7 +62,6 @@ struct Handler_TextDocumentDidOpen
         "CodeLens)");
 
     include_complete->AddFile(working_file->filename);
-    clang_complete->NotifyView(path);
 
     // Submit new index request.
     Project::Entry entry = project->FindCompilationEntryForFile(path);
@@ -72,11 +71,13 @@ struct Handler_TextDocumentDidOpen
             true /*is_interactive*/, params.textDocument.text, cache_manager),
         true /*priority*/);
 
-    clang_complete->FlushSession(entry.filename);
-    LOG_S(INFO) << "Flushed clang complete sessions for " << entry.filename;
     if (params.args.size()) {
       project->SetFlagsForFile(params.args, path);
     }
+
+    // Clear any existing completion state and preload completion.
+    clang_complete->FlushSession(entry.filename);
+    clang_complete->NotifyView(path);
   }
 };
 REGISTER_MESSAGE_HANDLER(Handler_TextDocumentDidOpen);
