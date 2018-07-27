@@ -311,7 +311,7 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
               return a.range.start < b.range.start;
             });
 
-  return QueryFile::DefUpdate(def, indexed.file_contents);
+  return QueryFile::DefUpdate{id_map.primary_file, indexed.file_contents, def};
 }
 
 Maybe<QueryId::File> GetQueryFileIdFromPath(QueryDatabase* query_db,
@@ -505,7 +505,8 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
       /*onRemoved:*/
       [this, &previous_id_map](IndexType* type) {
         if (type->def.spell)
-          types_removed.push_back(type->usr);
+          types_removed.push_back(WithId<QueryId::File, QueryId::Type>(
+              previous_id_map.primary_file, previous_id_map.ToQuery(type->id)));
         if (!type->declarations.empty())
           types_declarations.push_back(QueryType::DeclarationsUpdate(
               previous_id_map.ToQuery(type->id), {},
@@ -529,7 +530,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
             ToQuery(current_id_map, type->def);
         if (def_update)
           types_def_update.push_back(
-              QueryType::DefUpdate(type->usr, std::move(*def_update)));
+              QueryType::DefUpdate(current_id_map.ToQuery(type->id), std::move(*def_update)));
         if (!type->declarations.empty())
           types_declarations.push_back(QueryType::DeclarationsUpdate(
               current_id_map.ToQuery(type->id),
@@ -558,7 +559,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
             previous_remapped_def != current_remapped_def &&
             !current_remapped_def->detailed_name.empty()) {
           types_def_update.push_back(QueryType::DefUpdate(
-              current->usr, std::move(*current_remapped_def)));
+              current_id_map.ToQuery(current->id), std::move(*current_remapped_def)));
         }
 
         PROCESS_UPDATE_DIFF(QueryId::Type, types_declarations, declarations,
@@ -577,7 +578,8 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
       /*onRemoved:*/
       [this, &previous_id_map](IndexFunc* func) {
         if (func->def.spell)
-          funcs_removed.emplace_back(func->usr, previous_id_map.primary_file);
+          funcs_removed.push_back(WithId<QueryId::File, QueryId::Func>(
+              previous_id_map.primary_file, previous_id_map.ToQuery(func->id)));
         if (!func->declarations.empty())
           funcs_declarations.push_back(QueryFunc::DeclarationsUpdate(
               previous_id_map.ToQuery(func->id), {},
@@ -597,7 +599,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
             ToQuery(current_id_map, func->def);
         if (def_update)
           funcs_def_update.push_back(
-              QueryFunc::DefUpdate(func->usr, std::move(*def_update)));
+              QueryFunc::DefUpdate(current_id_map.ToQuery(func->id), std::move(*def_update)));
         if (!func->declarations.empty())
           funcs_declarations.push_back(QueryFunc::DeclarationsUpdate(
               current_id_map.ToQuery(func->id),
@@ -622,7 +624,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
             previous_remapped_def != current_remapped_def &&
             !current_remapped_def->detailed_name.empty()) {
           funcs_def_update.push_back(QueryFunc::DefUpdate(
-              current->usr, std::move(*current_remapped_def)));
+              current_id_map.ToQuery(current->id), std::move(*current_remapped_def)));
         }
 
         PROCESS_UPDATE_DIFF(QueryId::Func, funcs_declarations, declarations,
@@ -639,7 +641,8 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
       /*onRemoved:*/
       [this, &previous_id_map](IndexVar* var) {
         if (var->def.spell)
-          vars_removed.emplace_back(var->usr, previous_id_map.primary_file);
+          vars_removed.push_back(WithId<QueryId::File, QueryId::Var>(
+              previous_id_map.primary_file, previous_id_map.ToQuery(var->id)));
         if (!var->declarations.empty())
           vars_declarations.push_back(QueryVar::DeclarationsUpdate(
               previous_id_map.ToQuery(var->id), {},
@@ -654,7 +657,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
         optional<QueryVar::Def> def_update = ToQuery(current_id_map, var->def);
         if (def_update)
           vars_def_update.push_back(
-              QueryVar::DefUpdate(var->usr, std::move(*def_update)));
+              QueryVar::DefUpdate(current_id_map.ToQuery(var->id), std::move(*def_update)));
         if (!var->declarations.empty())
           vars_declarations.push_back(QueryVar::DeclarationsUpdate(
               current_id_map.ToQuery(var->id),
@@ -675,7 +678,7 @@ IndexUpdate::IndexUpdate(const IdMap& previous_id_map,
             previous_remapped_def != current_remapped_def &&
             !current_remapped_def->detailed_name.empty())
           vars_def_update.push_back(QueryVar::DefUpdate(
-              current->usr, std::move(*current_remapped_def)));
+              current_id_map.ToQuery(current->id), std::move(*current_remapped_def)));
 
         PROCESS_UPDATE_DIFF(QueryId::Var, vars_declarations, declarations,
                             QueryId::LexicalRef);
@@ -728,61 +731,54 @@ std::string IndexUpdate::ToString() {
 // QUERYDB THREAD FUNCTIONS
 // ------------------------
 
-void QueryDatabase::RemoveUsrs(SymbolKind usr_kind,
-                               const std::vector<Usr>& to_remove) {
-  // This function runs on the querydb thread.
+// When we remove an element, we just erase the state from the storage. We do
+// not update array indices because that would take a huge amount of time for a
+// very large index.
+//
+// There means that there is some memory growth that will never be reclaimed,
+// but it should be pretty minimal and is solved by simply restarting the
+// indexer and loading from cache, which is a fast operation.
+//
+// TODO: Add "cquery: Reload Index" command which unloads all querydb state and
+// fully reloads from cache. This will address the memory leak above.
+void QueryDatabase::Remove(const std::vector<WithId<QueryId::File, QueryId::Type>>& to_remove) {
+  for (const auto& entry : to_remove) {
+    QueryId::File file_id = entry.id;
+    QueryId::Type type_id = entry.value;
 
-  // When we remove an element, we just erase the state from the storage. We do
-  // not update array indices because that would take a huge amount of time for
-  // a very large index.
-  //
-  // There means that there is some memory growth that will never be reclaimed,
-  // but it should be pretty minimal and is solved by simply restarting the
-  // indexer and loading from cache, which is a fast operation.
-  //
-  // TODO: Add "cquery: Reload Index" command which unloads all querydb state
-  // and fully reloads from cache. This will address the memory leak above.
-
-  switch (usr_kind) {
-    case SymbolKind::Type: {
-      for (const Usr& usr : to_remove) {
-        QueryType& type = types[usr_to_type[usr].id];
-        if (type.symbol_idx)
-          symbols[type.symbol_idx].kind = SymbolKind::Invalid;
-        type.def.clear();
-      }
-      break;
-    }
-    default:
-      break;
+    QueryType& type = types[type_id.id];
+    type.def.remove_if([&](const QueryType::Def& def) {
+      return def.file == file_id;
+    });
+    if (type.symbol_idx != size_t(-1) && type.def.empty())
+      symbols[type.symbol_idx].kind = SymbolKind::Invalid;
   }
 }
 
-void QueryDatabase::RemoveUsrs(
-    SymbolKind usr_kind,
-    const std::vector<WithUsr<QueryId::File>>& to_remove) {
-  switch (usr_kind) {
-    case SymbolKind::Func: {
-      for (const auto& usr_file : to_remove) {
-        QueryFunc& func = funcs[usr_to_func[usr_file.usr].id];
-        func.def.remove_if([&](const QueryFunc::Def& def) {
-          return def.file == usr_file.value;
-        });
-      }
-      break;
-    }
-    case SymbolKind::Var: {
-      for (const auto& usr_file : to_remove) {
-        QueryVar& var = vars[usr_to_var[usr_file.usr].id];
-        var.def.remove_if([&](const QueryVar::Def& def) {
-          return def.file == usr_file.value;
-        });
-      }
-      break;
-    }
-    default:
-      assert(false);
-      break;
+void QueryDatabase::Remove(const std::vector<WithId<QueryId::File, QueryId::Func>>& to_remove) {
+  for (const auto& entry : to_remove) {
+    QueryId::File file_id = entry.id;
+    QueryId::Func func_id = entry.value;
+
+    QueryFunc& func = funcs[func_id.id];
+    func.def.remove_if([&](const QueryFunc::Def& def) {
+      return def.file == file_id;
+    });
+    if (func.symbol_idx != size_t(-1) && func.def.empty())
+      symbols[func.symbol_idx].kind = SymbolKind::Invalid;
+  }
+}
+void QueryDatabase::Remove(const std::vector<WithId<QueryId::File, QueryId::Var>>& to_remove) {
+  for (const auto& entry : to_remove) {
+    QueryId::File file_id = entry.id;
+    QueryId::Var var_id = entry.value;
+
+    QueryVar& var = vars[var_id.id];
+    var.def.remove_if([&](const QueryVar::Def& def) {
+      return def.file == file_id;
+    });
+    if (var.symbol_idx != size_t(-1) && var.def.empty())
+      symbols[var.symbol_idx].kind = SymbolKind::Invalid;
   }
 }
 
@@ -806,20 +802,20 @@ void QueryDatabase::ApplyIndexUpdate(IndexUpdate* update) {
     files[usr_to_file[filename].id].def = nullopt;
   ImportOrUpdate(update->files_def_update);
 
-  RemoveUsrs(SymbolKind::Type, update->types_removed);
+  Remove(update->types_removed);
   ImportOrUpdate(std::move(update->types_def_update));
   HANDLE_MERGEABLE(types_declarations, declarations, types);
   HANDLE_MERGEABLE(types_derived, derived, types);
   HANDLE_MERGEABLE(types_instances, instances, types);
   HANDLE_MERGEABLE(types_uses, uses, types);
 
-  RemoveUsrs(SymbolKind::Func, update->funcs_removed);
+  Remove(update->funcs_removed);
   ImportOrUpdate(std::move(update->funcs_def_update));
   HANDLE_MERGEABLE(funcs_declarations, declarations, funcs);
   HANDLE_MERGEABLE(funcs_derived, derived, funcs);
   HANDLE_MERGEABLE(funcs_uses, uses, funcs);
 
-  RemoveUsrs(SymbolKind::Var, update->vars_removed);
+  Remove(update->vars_removed);
   ImportOrUpdate(std::move(update->vars_def_update));
   HANDLE_MERGEABLE(vars_declarations, declarations, vars);
   HANDLE_MERGEABLE(vars_uses, uses, vars);
@@ -832,13 +828,11 @@ void QueryDatabase::ImportOrUpdate(
   // This function runs on the querydb thread.
 
   for (auto& def : updates) {
-    auto it = usr_to_file.find(def.value.path);
-    assert(it != usr_to_file.end());
-
-    QueryFile& existing = files[it->second.id];
+    assert(def.id.id >= 0 && def.id.id < types.size());
+    QueryFile& existing = files[def.id.id];
 
     existing.def = def.value;
-    UpdateSymbols(&existing.symbol_idx, SymbolKind::File, it->second);
+    UpdateSymbols(&existing.symbol_idx, SymbolKind::File, def.id);
   }
 }
 
@@ -848,15 +842,11 @@ void QueryDatabase::ImportOrUpdate(
 
   for (auto& def : updates) {
     assert(!def.value.detailed_name.empty());
-
-    auto it = usr_to_type.find(def.usr);
-    assert(it != usr_to_type.end());
-
-    assert(it->second.id >= 0 && it->second.id < types.size());
-    QueryType& existing = types[it->second.id];
+    assert(def.id.id >= 0 && def.id.id < types.size());
+    QueryType& existing = types[def.id.id];
     if (!TryReplaceDef(existing.def, std::move(def.value))) {
       existing.def.push_front(std::move(def.value));
-      UpdateSymbols(&existing.symbol_idx, SymbolKind::Type, it->second);
+      UpdateSymbols(&existing.symbol_idx, SymbolKind::Type, def.id);
     }
   }
 }
@@ -867,15 +857,11 @@ void QueryDatabase::ImportOrUpdate(
 
   for (auto& def : updates) {
     assert(!def.value.detailed_name.empty());
-
-    auto it = usr_to_func.find(def.usr);
-    assert(it != usr_to_func.end());
-
-    assert(it->second.id >= 0 && it->second.id < funcs.size());
-    QueryFunc& existing = funcs[it->second.id];
+    assert(def.id.id >= 0 && def.id.id < funcs.size());
+    QueryFunc& existing = funcs[def.id.id];
     if (!TryReplaceDef(existing.def, std::move(def.value))) {
       existing.def.push_front(std::move(def.value));
-      UpdateSymbols(&existing.symbol_idx, SymbolKind::Func, it->second);
+      UpdateSymbols(&existing.symbol_idx, SymbolKind::Func, def.id);
     }
   }
 }
@@ -885,16 +871,12 @@ void QueryDatabase::ImportOrUpdate(std::vector<QueryVar::DefUpdate>&& updates) {
 
   for (auto& def : updates) {
     assert(!def.value.detailed_name.empty());
-
-    auto it = usr_to_var.find(def.usr);
-    assert(it != usr_to_var.end());
-
-    assert(it->second.id >= 0 && it->second.id < vars.size());
-    QueryVar& existing = vars[it->second.id];
+    assert(def.id.id >= 0 && def.id.id < vars.size());
+    QueryVar& existing = vars[def.id.id];
     if (!TryReplaceDef(existing.def, std::move(def.value))) {
       existing.def.push_front(std::move(def.value));
       if (!existing.def.front().is_local())
-        UpdateSymbols(&existing.symbol_idx, SymbolKind::Var, it->second);
+        UpdateSymbols(&existing.symbol_idx, SymbolKind::Var, def.id);
     }
   }
 }
@@ -1011,11 +993,12 @@ TEST_SUITE("query") {
 
     IndexUpdate update = GetDelta(previous, current);
 
-    REQUIRE(update.types_removed == std::vector<Usr>{HashUsr("usr1")});
+    REQUIRE(update.types_removed.size() == 1);
+    REQUIRE(update.types_removed[0].id.id == 0);
     REQUIRE(update.funcs_removed.size() == 1);
-    REQUIRE(update.funcs_removed[0].usr == HashUsr("usr2"));
+    REQUIRE(update.funcs_removed[0].id.id == 0);
     REQUIRE(update.vars_removed.size() == 1);
-    REQUIRE(update.vars_removed[0].usr == HashUsr("usr3"));
+    REQUIRE(update.vars_removed[0].id.id == 0);
   }
 
   TEST_CASE("do not remove ref-only defs") {
@@ -1034,7 +1017,7 @@ TEST_SUITE("query") {
 
     IndexUpdate update = GetDelta(previous, current);
 
-    REQUIRE(update.types_removed == std::vector<Usr>{});
+    REQUIRE(update.types_removed.empty());
     REQUIRE(update.funcs_removed.empty());
     REQUIRE(update.vars_removed.empty());
   }
@@ -1076,7 +1059,7 @@ TEST_SUITE("query") {
 
     IndexUpdate update = GetDelta(previous, current);
 
-    REQUIRE(update.types_removed == std::vector<Usr>{});
+    REQUIRE(update.types_removed.empty());
     REQUIRE(update.types_def_update.empty());
     REQUIRE(update.types_uses.size() == 1);
     REQUIRE(update.types_uses[0].to_remove.size() == 1);

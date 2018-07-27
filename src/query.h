@@ -80,35 +80,19 @@ void Reflect(TVisitor& visitor, MergeableUpdate<TId, TValue>& value) {
   REFLECT_MEMBER_END();
 }
 
-template <typename T>
-struct WithUsr {
-  Usr usr;
-  T value;
+template <typename TId, typename TValue>
+struct WithId {
+  TId id;
+  TValue value;
 
-  WithUsr(Usr usr, const T& value) : usr(usr), value(value) {}
-  WithUsr(Usr usr, T&& value) : usr(usr), value(std::move(value)) {}
+  WithId(TId id, const TValue& value) : id(id), value(value) {}
+  WithId(TId id, TValue&& value) : id(id), value(std::move(value)) {}
 };
-template <typename TVisitor, typename T>
-void Reflect(TVisitor& visitor, WithUsr<T>& value) {
+template <typename TVisitor, typename TId, typename TValue>
+void Reflect(TVisitor& visitor, WithId<TId, TValue>& value) {
   REFLECT_MEMBER_START();
-  REFLECT_MEMBER(usr);
+  REFLECT_MEMBER(id);
   REFLECT_MEMBER(value);
-  REFLECT_MEMBER_END();
-}
-
-template <typename T>
-struct WithFileContent {
-  T value;
-  std::string file_content;
-
-  WithFileContent(const T& value, const std::string& file_content)
-      : value(value), file_content(file_content) {}
-};
-template <typename TVisitor, typename T>
-void Reflect(TVisitor& visitor, WithFileContent<T>& value) {
-  REFLECT_MEMBER_START();
-  REFLECT_MEMBER(value);
-  REFLECT_MEMBER(file_content);
   REFLECT_MEMBER_END();
 }
 
@@ -131,8 +115,11 @@ struct QueryFile {
     std::vector<AbsolutePath> dependencies;
   };
 
-  using DefUpdate = WithFileContent<Def>;
-
+  struct DefUpdate {
+    QueryId::File id;
+    std::string file_content;
+    Def value;
+  };
   optional<Def> def;
   size_t symbol_idx = -1;
 
@@ -154,7 +141,7 @@ MAKE_REFLECT_STRUCT(QueryFile::Def,
 template <typename Q, typename QDef>
 struct QueryEntity {
   using Def = QDef;
-  using DefUpdate = WithUsr<Def>;
+  using DefUpdate = WithId<Id<Q>, Def>;
   using DeclarationsUpdate = MergeableUpdate<Id<Q>, QueryId::LexicalRef>;
   using UsesUpdate = MergeableUpdate<Id<Q>, QueryId::LexicalRef>;
   Def* AnyDef() {
@@ -227,7 +214,7 @@ struct IndexUpdate {
   std::vector<QueryFile::DefUpdate> files_def_update;
 
   // Type updates.
-  std::vector<Usr> types_removed;
+  std::vector<WithId<QueryId::File, QueryId::Type>> types_removed;
   std::vector<QueryType::DefUpdate> types_def_update;
   std::vector<QueryType::DeclarationsUpdate> types_declarations;
   std::vector<QueryType::DerivedUpdate> types_derived;
@@ -235,14 +222,14 @@ struct IndexUpdate {
   std::vector<QueryType::UsesUpdate> types_uses;
 
   // Function updates.
-  std::vector<WithUsr<QueryId::File>> funcs_removed;
+  std::vector<WithId<QueryId::File, QueryId::Func>> funcs_removed;
   std::vector<QueryFunc::DefUpdate> funcs_def_update;
   std::vector<QueryFunc::DeclarationsUpdate> funcs_declarations;
   std::vector<QueryFunc::DerivedUpdate> funcs_derived;
   std::vector<QueryFunc::UsesUpdate> funcs_uses;
 
   // Variable updates.
-  std::vector<WithUsr<QueryId::File>> vars_removed;
+  std::vector<WithId<QueryId::File, QueryId::Var>> vars_removed;
   std::vector<QueryVar::DefUpdate> vars_def_update;
   std::vector<QueryVar::DeclarationsUpdate> vars_declarations;
   std::vector<QueryVar::UsesUpdate> vars_uses;
@@ -292,10 +279,11 @@ struct QueryDatabase {
   spp::sparse_hash_map<Usr, QueryId::Func> usr_to_func;
   spp::sparse_hash_map<Usr, QueryId::Var> usr_to_var;
 
-  // Marks the given Usrs as invalid.
-  void RemoveUsrs(SymbolKind usr_kind, const std::vector<Usr>& to_remove);
-  void RemoveUsrs(SymbolKind usr_kind,
-                  const std::vector<WithUsr<QueryId::File>>& to_remove);
+  // Removes data for the given ids in the given files.
+  void Remove(const std::vector<WithId<QueryId::File, QueryId::Type>>& to_remove);
+  void Remove(const std::vector<WithId<QueryId::File, QueryId::Func>>& to_remove);
+  void Remove(const std::vector<WithId<QueryId::File, QueryId::Var>>& to_remove);
+
   // Insert the contents of |update| into |db|.
   void ApplyIndexUpdate(IndexUpdate* update);
   void ImportOrUpdate(const std::vector<QueryFile::DefUpdate>& updates);
