@@ -2,7 +2,7 @@
 
 #include <atomic>
 
-class DiagnosticsEngine;
+struct DiagnosticsEngine;
 struct FileConsumerSharedState;
 struct ImportManager;
 struct Project;
