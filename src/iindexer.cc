@@ -29,12 +29,11 @@ struct TestIndexer : IIndexer {
 
       if (entry.num_indexes > 0) {
         indexes.push_back(
-            std::make_unique<IndexFile>(AbsolutePath(entry.path), "<empty>"));
+            std::make_unique<IndexFile>(AbsolutePath(entry.path)));
       }
       for (int i = 1; i < entry.num_indexes; ++i) {
         indexes.push_back(std::make_unique<IndexFile>(
-            AbsolutePath(entry.path + "_extra_" + std::to_string(i) + ".h"),
-            "<empty>"));
+            AbsolutePath(entry.path + "_extra_" + std::to_string(i) + ".h")));
       }
 
       result->indexes.insert(std::make_pair(entry.path, std::move(indexes)));

@@ -485,7 +485,7 @@ struct IndexFile {
   // File contents at the time of index. Not serialized.
   std::string file_contents;
 
-  IndexFile(const AbsolutePath& path, const std::string& contents);
+  IndexFile(const AbsolutePath& path);
 
   IndexId::Type ToTypeId(Usr usr);
   IndexId::Func ToFuncId(Usr usr);

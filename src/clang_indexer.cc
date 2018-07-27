@@ -737,8 +737,8 @@ const int IndexFile::kMajorVersion = 15;
 // static
 const int IndexFile::kMinorVersion = 0;
 
-IndexFile::IndexFile(const AbsolutePath& path, const std::string& contents)
-    : id_cache(path), path(path), file_contents(contents) {}
+IndexFile::IndexFile(const AbsolutePath& path)
+    : id_cache(path), path(path), file_contents("#error <NONE>") {}
 
 IndexId::Type IndexFile::ToTypeId(Usr usr) {
   auto it = id_cache.usr_to_type_id.find(usr);

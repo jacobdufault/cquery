@@ -461,7 +461,7 @@ IndexUpdate IndexUpdate::CreateDelta(const IdMap* previous_id_map,
 
   if (!previous_id_map) {
     assert(!previous);
-    IndexFile empty(current->path, "<empty>");
+    IndexFile empty(current->path);
     return IndexUpdate(*current_id_map, *current_id_map, empty, *current);
   }
   return IndexUpdate(*previous_id_map, *current_id_map, *previous, *current);
@@ -819,7 +819,7 @@ void QueryDatabase::ImportOrUpdate(
   // This function runs on the querydb thread.
 
   for (auto& def : updates) {
-    assert(def.id.id >= 0 && def.id.id < types.size());
+    assert(def.id.id >= 0 && def.id.id < files.size());
     QueryFile& existing = files[def.id.id];
 
     existing.def = def.value;
@@ -972,8 +972,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("remove defs") {
-    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
-    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"));
+    IndexFile current(AbsolutePath("foo.cc"));
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))->def.spell =
         IndexId::LexicalRef(Range(Position(1, 0)), {}, {}, {});
@@ -993,8 +993,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("do not remove ref-only defs") {
-    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
-    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"));
+    IndexFile current(AbsolutePath("foo.cc"));
 
     previous.Resolve(previous.ToTypeId(HashUsr("usr1")))
         ->uses.push_back(IndexId::LexicalRef(Range(Position(1, 0)), AnyId(0),
@@ -1014,8 +1014,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("func callers") {
-    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
-    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"));
+    IndexFile current(AbsolutePath("foo.cc"));
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));
@@ -1037,8 +1037,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("type usages") {
-    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
-    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"));
+    IndexFile current(AbsolutePath("foo.cc"));
 
     IndexType* pt = previous.Resolve(previous.ToTypeId(HashUsr("usr")));
     IndexType* ct = current.Resolve(current.ToTypeId(HashUsr("usr")));
@@ -1060,8 +1060,8 @@ TEST_SUITE("query") {
   }
 
   TEST_CASE("apply delta") {
-    IndexFile previous(AbsolutePath("foo.cc"), "<empty>");
-    IndexFile current(AbsolutePath("foo.cc"), "<empty>");
+    IndexFile previous(AbsolutePath("foo.cc"));
+    IndexFile current(AbsolutePath("foo.cc"));
 
     IndexFunc* pf = previous.Resolve(previous.ToFuncId(HashUsr("usr")));
     IndexFunc* cf = current.Resolve(current.ToFuncId(HashUsr("usr")));

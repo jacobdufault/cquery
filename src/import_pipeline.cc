@@ -709,7 +709,7 @@ TEST_SUITE("ImportPipeline") {
       std::unique_ptr<IndexFile> opt_previous_index;
       if (!old_args.empty()) {
         opt_previous_index = std::make_unique<IndexFile>(
-            AbsolutePath("---.cc", false /*validate*/), "<empty>");
+            AbsolutePath("---.cc", false /*validate*/));
         opt_previous_index->args = old_args;
       }
       optional<AbsolutePath> from;
