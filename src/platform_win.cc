@@ -5,6 +5,9 @@
 
 #include <loguru.hpp>
 
+// Has to be included before knownFolders.h
+#include <initguid.h>
+
 #include <Knownfolders.h>
 #include <Objbase.h>
 #include <Shlobj.h>
