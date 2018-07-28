@@ -302,7 +302,7 @@ optional<std::string> GetGlobalConfigDirectory() {
       MakeDirectoryRecursive(AbsolutePath(*config, false));
     }
   } else if (home) {
-    *config = home;
+    config = std::string(home);
   }
 
   if (config) {
