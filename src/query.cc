@@ -173,8 +173,11 @@ void CompareGroups(std::vector<T>& previous_data,
                    std::function<void(T*)> on_removed,
                    std::function<void(T*)> on_added,
                    std::function<void(T*, T*)> on_found) {
-  std::sort(previous_data.begin(), previous_data.end());
-  std::sort(current_data.begin(), current_data.end());
+  auto compare_by_usr = [](const T& a, const T& b) {
+    return a.usr < b.usr;
+  };
+  std::sort(previous_data.begin(), previous_data.end(), compare_by_usr);
+  std::sort(current_data.begin(), current_data.end(), compare_by_usr);
 
   auto prev_it = previous_data.begin();
   auto curr_it = current_data.begin();
