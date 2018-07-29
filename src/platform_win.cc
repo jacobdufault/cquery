@@ -5,6 +5,8 @@
 
 #include <loguru.hpp>
 
+#include <windows.h>
+
 // Has to be included before knownFolders.h
 #include <initguid.h>
 
@@ -14,7 +16,6 @@
 #include <direct.h>
 #include <fcntl.h>
 #include <io.h>
-#include <windows.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
