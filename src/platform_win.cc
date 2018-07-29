@@ -5,13 +5,14 @@
 
 #include <loguru.hpp>
 
+#include <windows.h>
+
 #include <Knownfolders.h>
 #include <Objbase.h>
 #include <Shlobj.h>
 #include <direct.h>
 #include <fcntl.h>
 #include <io.h>
-#include <windows.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
