@@ -13,8 +13,12 @@ set(7ZIP_EXTRACT_DIR ${7ZIP_DOWNLOAD_LOCATION}/${7ZIP_NAME})
 set(7ZIP_URL https://www.7-zip.org/a/${7ZIP_FULL_NAME})
 
 # Exit if 7-Zip is already downloaded and extracted
-find_program(7ZIP_EXECUTABLE 7z NO_DEFAULT_PATH
-             PATHS ${7ZIP_EXTRACT_DIR}/Files/7-Zip)
+find_program(7ZIP_EXECUTABLE 
+  NAMES 7z 
+  NO_DEFAULT_PATH
+  PATHS ${7ZIP_EXTRACT_DIR}/Files/7-Zip
+)
+
 if(7ZIP_EXECUTABLE)
   message(STATUS "7-Zip already downloaded")
   return()
@@ -38,10 +42,12 @@ file(TO_NATIVE_PATH ${7ZIP_EXTRACT_DIR} 7ZIP_EXTRACT_DIR)
 # msiexec with /a option allows extraction of msi installers without requiring
 # admin privileges. We use this to extract the 7-Zip installer without
 # requiring any actions from the user
-execute_process(COMMAND ${MSIEXEC_EXECUTABLE} /a ${7ZIP_FILE} /qn
-                        TARGETDIR=${7ZIP_EXTRACT_DIR}
-                WORKING_DIRECTORY ${7ZIP_DOWNLOAD_LOCATION}
-                OUTPUT_QUIET)     
+execute_process(
+  COMMAND ${MSIEXEC_EXECUTABLE} /a ${7ZIP_FILE} /qn 
+          TARGETDIR=${7ZIP_EXTRACT_DIR}
+  WORKING_DIRECTORY ${7ZIP_DOWNLOAD_LOCATION}
+  OUTPUT_QUIET
+)     
 
 # Convert back to CMake separators (/) before returning
 file(TO_CMAKE_PATH ${7ZIP_EXTRACT_DIR} 7ZIP_EXTRACT_DIR)
