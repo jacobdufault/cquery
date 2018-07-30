@@ -13,7 +13,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
 
   # Default to Ubuntu 16.04
   set(CLANG_ARCHIVE_NAME 
-      clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-16.04)
+      clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04)
 
   find_program(LSB_RELEASE lsb_release)
   if(LSB_RELEASE)
@@ -23,9 +23,9 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
       OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
-    if(${UBUNTU_VERSION} MATCHES 14.04)
+    if(${UBUNTU_VERSION} MATCHES 16.04)
       set(CLANG_ARCHIVE_NAME 
-          clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04)
+          clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-16.04)
     endif()
   endif()
 
