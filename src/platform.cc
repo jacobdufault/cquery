@@ -91,62 +91,50 @@ void MakeDirectoryRecursive(const AbsolutePath& path) {
 
 optional<std::string> RunExecutable(const std::vector<std::string>& command,
                                     std::string_view input) {
-  using reproc::Reproc;
-
   std::string command_string = "\"" + StringJoin(command, " ") + "\"";
-  auto command_with_error = [command_string](reproc::Error error) {
-    return command_string + ": " + reproc::error_to_string(error);
+
+  auto command_with_error = [command_string](std::error_code ec) {
+    return command_string + ": " + ec.message() + " (" +
+           std::to_string(ec.value()) + ")";
   };
 
-  Reproc reproc;
-  reproc::Error error = reproc::SUCCESS;
+  reproc::process process;
+  std::error_code ec;
 
-  error = reproc.start(command, nullptr);
-  if (error) {
-    LOG_S(ERROR) << "Error starting reproc " << command_with_error(error);
+  ec = process.start(command, nullptr);
+  if (ec) {
+    LOG_S(ERROR) << "Error starting " << command_with_error(ec);
     return nullopt;
   }
 
   unsigned int bytes_written = 0;
-  error = reproc.write(input.data(), input.length(), &bytes_written);
-  if (error) {
-    LOG_S(ERROR) << "Error writing to stdin of " << command_with_error(error)
+  ec = process.write(input.data(), input.length(), &bytes_written);
+  if (ec) {
+    LOG_S(ERROR) << "Error writing to stdin of " << command_with_error(ec)
                  << ". " << bytes_written << " out of " << input.length()
                  << " bytes were written";
     return nullopt;
   }
 
-  error = reproc.close(reproc::STDIN);
-  if (error) {
-    LOG_S(ERROR) << "Error closing stdin of " << command_with_error(error);
-    return nullopt;
-  }
+  process.close(reproc::stream::cin);
 
   std::string output{};
-  error = reproc.read(reproc::STDOUT, reproc::string_parser(output));
-  if (error) {
-    LOG_S(ERROR) << "Error reading output of " << command_with_error(error);
+  ec = process.read(reproc::stream::cout, reproc::string_parser(output));
+  if (ec) {
+    LOG_S(ERROR) << "Error reading stdout output of " << command_with_error(ec);
     return nullopt;
   }
 
-  error = reproc.read(reproc::STDERR, reproc::string_parser(output));
-  if (error) {
-    LOG_S(ERROR) << "Error reading stderr output of "
-                 << command_with_error(error);
+  ec = process.read(reproc::stream::cerr, reproc::string_parser(output));
+  if (ec) {
+    LOG_S(ERROR) << "Error reading stderr output of " << command_with_error(ec);
     return nullopt;
   }
 
-  error = reproc.wait(reproc::INFINITE);
-  if (error) {
-    LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(error);
-    return nullopt;
-  }
-
-  int exit_status = 0;
-  error = reproc.exit_status(&exit_status);
-  if (error) {
-    LOG_S(ERROR) << "Error retrieving exit status of "
-                 << command_with_error(error);
+  unsigned int exit_status = 0;
+  ec = process.wait(reproc::infinite, &exit_status);
+  if (ec) {
+    LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(ec);
     return nullopt;
   }
 
