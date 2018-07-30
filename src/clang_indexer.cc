@@ -336,7 +336,7 @@ IndexFile* ConsumeFile(IndexParam* param, CXFile file) {
       param->file_consumer->TryConsumeFile(file, &is_first_ownership);
 
   // If we are generating an index for the file:
-  if (db) {
+  if (db && is_first_ownership) {
     // Fetch indexed file contents from libclang.
     size_t size;
     const char* contentsPtr =
