@@ -15,6 +15,6 @@ print('  $ cd build')
 print('  $ cmake .. -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=release -DCMAKE_EXPORT_COMPILE_COMMANDS=YES')
 print('  $ make install -j8')
 print('')
-print('See https://github.com/cquery-project/cquery/wiki/Build-%28CMake%29 for more details')
+print('See https://github.com/cquery-project/cquery/wiki/Building-cquery for more details')
 
 sys.exit(1)
