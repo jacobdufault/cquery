@@ -98,7 +98,9 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
            std::to_string(ec.value()) + ")";
   };
 
-  reproc::process process;
+  // RunExecutable is used to run short lived processes (clang-format, ...) so 
+  // we can wait indefinetely until the child process exits on its own
+  reproc::process process(reproc::cleanup::wait, reproc::infinite);
   std::error_code ec;
 
   ec = process.start(command, nullptr);
@@ -116,23 +118,24 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
     return nullopt;
   }
 
-  process.close(reproc::stream::cin);
+  process.close(reproc::stream::in);
 
   std::string output{};
-  ec = process.read(reproc::stream::cout, reproc::string_parser(output));
+  ec = process.read(reproc::stream::out, reproc::string_parser(output));
   if (ec) {
     LOG_S(ERROR) << "Error reading stdout output of " << command_with_error(ec);
     return nullopt;
   }
 
-  ec = process.read(reproc::stream::cerr, reproc::string_parser(output));
+  ec = process.read(reproc::stream::err, reproc::string_parser(output));
   if (ec) {
     LOG_S(ERROR) << "Error reading stderr output of " << command_with_error(ec);
     return nullopt;
   }
 
+  // Wait explicitly so we can get the exit status of the child process
   unsigned int exit_status = 0;
-  ec = process.wait(reproc::infinite, &exit_status);
+  ec = process.stop(reproc::cleanup::wait, reproc::infinite, &exit_status);
   if (ec) {
     LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(ec);
     return nullopt;
