@@ -125,6 +125,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
   target_link_libraries(cquery PRIVATE ${Backtrace_LIBRARIES} kvm thr)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+  target_compile_definitions(cquery PRIVATE _WIN32_WINNT=0x0600) # Windows Vista
   # sparsepp/spp_memory.h uses LibPsapi
   target_link_libraries(cquery PRIVATE Psapi)
 endif()
