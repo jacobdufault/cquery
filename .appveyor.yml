@@ -8,6 +8,7 @@ install:
 
 environment:
   CLICOLOR_FORCE: 1
+  CHERE_INVOKING: 1 # Tell Bash to inherit the current working directory
   matrix:
     - MSYSTEM: MINGW64
     - MSYSTEM: MSVC
@@ -15,14 +16,28 @@ environment:
 matrix:
   fast_finish: true # Immediately finish build if one of the jobs fails.
 
-before_build: 
-  - cmake -DCI=ON -DCMAKE_INSTALL_PREFIX=install -DCMAKE_GENERATOR_PLATFORM=x64 .
-
-build:
-  project: cquery.sln
-
-after_build:
-  - cmake --build . --target install
+for:
+  -
+    matrix:
+      only:
+        - MSYSTEM: MINGW64
+    build_script:
+      ps: "C:\\msys64\\usr\\bin\\bash -lc @\"\n
+      cmake -G'MSYS Makefiles' -DCMAKE_INSTALL_PREFIX=install .\n
+      make -j$(nproc) install 2>&1\n
+      cp /mingw64/bin/libgcc_s_seh-1.dll install/bin\n
+      cp /mingw64/bin/libstdc++-6.dll install/bin\n
+      cp /mingw64/bin/libwinpthread-1.dll install/bin\n\"@"
+  -
+    matrix:
+      only:
+        - MSYSTEM: MSVC
+    before_build:
+      - cmake -DCI=ON -DCMAKE_INSTALL_PREFIX=install -DCMAKE_GENERATOR_PLATFORM=x64 .
+    build:
+      project: cquery.sln
+    after_build:
+      - cmake --build . --target install
 
 test_script:
   - .\install\bin\cquery.exe --ci --log-all-to-stderr --test-unit
