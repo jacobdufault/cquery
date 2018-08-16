@@ -732,7 +732,7 @@ void Uniquify(std::vector<IndexId::LexicalRef>& refs) {
 }  // namespace
 
 // static
-const int IndexFile::kMajorVersion = 15;
+const int IndexFile::kMajorVersion = 16;
 // static
 const int IndexFile::kMinorVersion = 0;
 
@@ -2272,7 +2272,7 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
       inc_to_line[inc.resolved_path] = inc.line;
 
   auto result = param.file_consumer->TakeLocalState();
-  auto args_hash = hash_arguments(args);
+  auto args_hash = HashArguments(args);
   for (std::unique_ptr<IndexFile>& entry : result) {
     entry->import_file = *file;
     entry->args_hash = args_hash;
