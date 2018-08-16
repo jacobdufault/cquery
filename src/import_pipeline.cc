@@ -165,7 +165,7 @@ ChangeResult ComputeChangeStatus(
   }
 
   if (opt_previous_index) {
-    if (hash_arguments(args) != opt_previous_index->args_hash) {
+    if (HashArguments(args) != opt_previous_index->args_hash) {
       LOG_S(INFO) << "Arguments have changed for " << path << unwrap_opt(from);
       return ChangeResult::kYes;
     }
@@ -700,7 +700,7 @@ TEST_SUITE("ImportPipeline") {
       if (!old_args.empty()) {
         opt_previous_index = std::make_unique<IndexFile>(
             AbsolutePath("---.cc", false /*validate*/));
-        opt_previous_index->args_hash = hash_arguments(old_args);
+        opt_previous_index->args_hash = HashArguments(old_args);
       }
       optional<AbsolutePath> from;
       if (is_dependency)

@@ -476,6 +476,19 @@ bool IsDirectory(const std::string& path) {
   return path_stat.st_mode & S_IFDIR;
 }
 
+size_t HashArguments(const std::vector<std::string>& args) {
+  auto is_file = [](const std::string& arg) {
+    return EndsWithAny(arg, {".h", ".c", ".cc", ".cpp", ".hpp", ".m", ".mm"});
+  };
+  size_t hash = 0;
+  for (auto it = args.begin(); it != args.end(); it++) {
+    if (!is_file(*it)) {
+      hash_combine(hash, *it);
+    }
+  }
+  return hash;
+}
+
 TEST_SUITE("AbsolutePath") {
   TEST_CASE("IsWindowsAbsolutePath works correctly") {
     REQUIRE(IsWindowsAbsolutePath("C:/Users/projects/"));
