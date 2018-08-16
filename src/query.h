@@ -99,7 +99,7 @@ struct QueryFile {
   struct Def {
     QueryId::File file;
     AbsolutePath path;
-    std::vector<std::string> args;
+    size_t args_hash;
     // Language identifier
     std::string language;
     // Includes in the file.
@@ -130,7 +130,7 @@ struct QueryFile {
 MAKE_REFLECT_STRUCT(QueryFile::Def,
                     file,
                     path,
-                    args,
+                    args_hash,
                     language,
                     outline,
                     all_symbols,

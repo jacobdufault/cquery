@@ -37,7 +37,7 @@ struct Handler_CqueryFileInfo : BaseMessageHandler<In_CqueryFileInfo> {
     out.id = request->id;
     // Expose some fields of |QueryFile::Def|.
     out.result.path = file->def->path;
-    out.result.args = file->def->args;
+    out.result.args_hash = file->def->args_hash;
     out.result.language = file->def->language;
     out.result.includes = file->def->includes;
     out.result.inactive_regions = file->def->inactive_regions;

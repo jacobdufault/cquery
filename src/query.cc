@@ -220,7 +220,6 @@ QueryFile::DefUpdate BuildFileDefUpdate(const IdMap& id_map,
   QueryFile::Def def;
   def.file = id_map.primary_file;
   def.path = indexed.path;
-  def.args = indexed.args;
   def.includes = indexed.includes;
   def.inactive_regions = indexed.skipped_by_preprocessor;
   def.dependencies = indexed.dependencies;

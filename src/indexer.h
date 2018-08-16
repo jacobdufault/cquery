@@ -461,7 +461,7 @@ struct IndexFile {
   static const int kMinorVersion;
 
   AbsolutePath path;
-  std::vector<std::string> args;
+  size_t args_hash;
   int64_t last_modification_time = 0;
   LanguageId language = LanguageId::Unknown;
 

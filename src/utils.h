@@ -144,4 +144,16 @@ bool IsAbsolutePath(const std::string& path);
 bool IsUnixAbsolutePath(const std::string& path);
 bool IsWindowsAbsolutePath(const std::string& path);
 
+inline size_t hash_arguments(const std::vector<std::string>& args) {
+  auto is_file = [](const std::string& arg) {
+    return EndsWithAny(arg, {".h", ".c", ".cc", ".cpp", ".hpp", ".m", ".mm"});
+  };
+  size_t hash = 0;
+  for (auto it = args.begin(); it != args.end(); it++) {
+    if (!is_file(*it)) {
+      hash_combine(hash, *it);
+    }
+  }
+  return hash;
+}
 bool IsDirectory(const std::string& path);

@@ -2272,9 +2272,10 @@ optional<std::vector<std::unique_ptr<IndexFile>>> Parse(
       inc_to_line[inc.resolved_path] = inc.line;
 
   auto result = param.file_consumer->TakeLocalState();
+  auto args_hash = hash_arguments(args);
   for (std::unique_ptr<IndexFile>& entry : result) {
     entry->import_file = *file;
-    entry->args = args;
+    entry->args_hash = args_hash;
     for (IndexFunc& func : entry->funcs) {
       // e.g. declaration + out-of-line definition
       Uniquify(func.derived);
