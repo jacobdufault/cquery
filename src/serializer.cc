@@ -284,7 +284,7 @@ void Reflect(TVisitor& visitor, IndexFile& value) {
     REFLECT_MEMBER(last_modification_time);
     REFLECT_MEMBER(language);
     REFLECT_MEMBER(import_file);
-    REFLECT_MEMBER(args);
+    REFLECT_MEMBER(args_hash);
   }
   REFLECT_MEMBER(includes);
   if (!gTestOutputMode)

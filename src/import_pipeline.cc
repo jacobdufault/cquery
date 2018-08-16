@@ -164,18 +164,8 @@ ChangeResult ComputeChangeStatus(
     return ChangeResult::kYes;
   }
 
-  // Command-line arguments changed.
-  auto is_file = [](const std::string& arg) {
-    return EndsWithAny(arg, {".h", ".c", ".cc", ".cpp", ".hpp", ".m", ".mm"});
-  };
   if (opt_previous_index) {
-    auto& prev_args = opt_previous_index->args;
-    bool same = prev_args.size() == args.size();
-    for (size_t i = 0; i < args.size() && same; ++i) {
-      same = prev_args[i] == args[i] ||
-             (is_file(prev_args[i]) && is_file(args[i]));
-    }
-    if (!same) {
+    if (hash_arguments(args) != opt_previous_index->args_hash) {
       LOG_S(INFO) << "Arguments have changed for " << path << unwrap_opt(from);
       return ChangeResult::kYes;
     }
@@ -710,7 +700,7 @@ TEST_SUITE("ImportPipeline") {
       if (!old_args.empty()) {
         opt_previous_index = std::make_unique<IndexFile>(
             AbsolutePath("---.cc", false /*validate*/));
-        opt_previous_index->args = old_args;
+        opt_previous_index->args_hash = hash_arguments(old_args);
       }
       optional<AbsolutePath> from;
       if (is_dependency)
