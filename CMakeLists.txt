@@ -131,8 +131,14 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 endif()
 
 ### Definitions
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/foo.cpp
+     "#include <cxxabi.h>\n#include <dlfcn.h>\n#include <execinfo.h>\nint main(){}")
+try_compile(LOGURU_STACKTRACES_ALLOWED ${CMAKE_CURRENT_BINARY_DIR}
+            SOURCES ${CMAKE_CURRENT_BINARY_DIR}/foo.cpp)
+file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/foo.cpp)
 
 target_compile_definitions(cquery PRIVATE
+  LOGURU_STACKTRACES=$<BOOL:${LOGURU_STACKTRACES_ALLOWED}>
   LOGURU_WITH_STREAMS=1
   LOGURU_FILENAME_WIDTH=18
   LOGURU_THREADNAME_WIDTH=13
