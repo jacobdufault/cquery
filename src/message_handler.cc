@@ -113,6 +113,17 @@ void EmitInactiveLines(WorkingFile* working_file,
   QueueManager::WriteStdout(kMethodType_CqueryPublishInactiveRegions, out);
 }
 
+struct SymbolAndRole {
+  SymbolIdx symbol;
+  Role role;
+
+  bool operator==(const SymbolAndRole& o) const {
+    return symbol == o.symbol && role == o.role;
+  }
+};
+MAKE_HASHABLE(SymbolAndRole, t.symbol, t.role);
+
+
 void EmitSemanticHighlighting(QueryDatabase* db,
                               SemanticHighlightSymbolCache* semantic_cache,
                               WorkingFile* working_file,
@@ -127,13 +138,14 @@ void EmitSemanticHighlighting(QueryDatabase* db,
       semantic_cache->GetCacheForFile(file->def->path);
 
   // Group symbols together.
-  std::unordered_map<SymbolIdx, Out_CqueryPublishSemanticHighlighting::Symbol>
+  std::unordered_map<SymbolAndRole, Out_CqueryPublishSemanticHighlighting::Symbol>
       grouped_symbols;
   for (QueryId::SymbolRef sym : file->def->all_symbols) {
     std::string_view detailed_name;
     lsSymbolKind parent_kind = lsSymbolKind::Unknown;
     lsSymbolKind kind = lsSymbolKind::Unknown;
     StorageClass storage = StorageClass::Invalid;
+    Role role = sym.role;
     // This switch statement also filters out symbols that are not highlighted.
     switch (sym.kind) {
       case SymbolKind::Func: {
@@ -217,8 +229,9 @@ void EmitSemanticHighlighting(QueryDatabase* db,
     }
 
     optional<lsRange> loc = GetLsRange(working_file, sym.range);
+    SymbolAndRole key{sym, role};
     if (loc) {
-      auto it = grouped_symbols.find(sym);
+      auto it = grouped_symbols.find(key);
       if (it != grouped_symbols.end()) {
         it->second.ranges.push_back(*loc);
       } else {
@@ -228,8 +241,9 @@ void EmitSemanticHighlighting(QueryDatabase* db,
         symbol.parentKind = parent_kind;
         symbol.kind = kind;
         symbol.storage = storage;
+        symbol.role = role;
         symbol.ranges.push_back(*loc);
-        grouped_symbols[sym] = symbol;
+        grouped_symbols[key] = symbol;
       }
     }
   }
