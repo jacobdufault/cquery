@@ -32,6 +32,7 @@ struct Out_CqueryPublishSemanticHighlighting
     lsSymbolKind parentKind;
     lsSymbolKind kind;
     StorageClass storage;
+    Role role;
     std::vector<lsRange> ranges;
   };
   struct Params {
@@ -46,6 +47,7 @@ MAKE_REFLECT_STRUCT(Out_CqueryPublishSemanticHighlighting::Symbol,
                     parentKind,
                     kind,
                     storage,
+                    role,
                     ranges);
 MAKE_REFLECT_STRUCT(Out_CqueryPublishSemanticHighlighting::Params,
                     uri,
