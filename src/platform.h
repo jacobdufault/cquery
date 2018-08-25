@@ -37,6 +37,9 @@ void MakeDirectoryRecursive(const AbsolutePath& path);
 // does not attempt to recursively create directories.
 bool TryMakeDirectory(const AbsolutePath& path);
 
+// tmpl: template string for mkdtemp(3), ignored on windows.
+optional<AbsolutePath> TryMakeTempDirectory(char *tmpl);
+
 void SetCurrentThreadName(const std::string& thread_name);
 
 optional<int64_t> GetLastModificationTime(const AbsolutePath& absolute_path);

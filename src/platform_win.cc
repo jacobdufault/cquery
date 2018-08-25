@@ -128,6 +128,34 @@ bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   return true;
 }
 
+optional<AbsolutePath> TryMakeTempDirectory(char * /* tmpl: ignored */) {
+    // get "temp" dir
+    char tmpdir_buf[MAX_PATH];
+    DWORD len = GetTempPath(MAX_PATH, tmpdir_buf);
+
+    // Unfortunately, there is no mkdtemp() on windows. We append a (random)
+    // GUID to use as a unique directory name.
+    GUID guid;
+    CoCreateGuid(&guid);
+    // simplest way to append the guid to the existing c string:
+    len += snprintf(tmpdir_buf + len, MAX_PATH - len,
+        "cquery-%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
+             guid.Data1, guid.Data2, guid.Data3,
+             guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
+             guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
+
+    AbsolutePath dirPath(std::string(tmpdir_buf, len));
+
+    // finally, create the dir
+    LOG_S(2) << "Creating temporary path " << dirPath;
+    if(!TryMakeDirectory(dirPath))
+    {
+        return {};
+    }
+
+    return dirPath;
+}
+
 // See https://msdn.microsoft.com/en-us/library/xcb2z8hs.aspx
 const DWORD MS_VC_EXCEPTION = 0x406D1388;
 #pragma pack(push, 8)

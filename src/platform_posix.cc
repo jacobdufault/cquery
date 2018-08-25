@@ -175,6 +175,13 @@ bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   return true;
 }
 
+optional<AbsolutePath> TryMakeTempDirectory(char *tmpl) {
+    if(!mkdtemp(tmpl)) {
+        return {};
+    }
+    return AbsolutePath(tmpl);
+}
+
 void SetCurrentThreadName(const std::string& thread_name) {
   loguru::set_thread_name(thread_name.c_str());
 #if defined(__APPLE__)

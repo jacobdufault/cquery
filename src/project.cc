@@ -21,6 +21,8 @@
 
 #if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
+#elif defined(_WIN32)
+#include <direct.h>
 #endif
 
 #include <optional.h>
@@ -572,13 +574,20 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
     // Try to load compile_commands.json, but fallback to a project listing.
   } else {
     project->mode = ProjectMode::ExternalCommand;
-#if defined(_WIN32)
-// TODO
-#else
-    char tmpdir[] = "/tmp/cquery-compdb-XXXXXX";
-    if (!mkdtemp(tmpdir))
-      return {};
-    comp_db_dir = tmpdir;
+
+    // generally it would be nice if we could just let clang load the
+    // compilation database (compile_commands.json) from memory.
+    // However, clang insists on reading compile_commands.json from a
+    // directory, so we create a temporary directory just for clang to read
+    // from.
+
+    char templ[] = "/tmp/cquery-compdb-XXXXXX";
+    auto tmpdir = TryMakeTempDirectory(templ);
+    if(!tmpdir.has_value()) {
+        return {};
+    }
+    comp_db_dir = tmpdir.value();
+
     rapidjson::StringBuffer input;
     rapidjson::Writer<rapidjson::StringBuffer> writer(input);
     JsonWriter json_writer(&writer);
@@ -589,7 +598,7 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
         input.GetString());
     std::ofstream(comp_db_dir + "/compile_commands.json")
         << contents.value_or("");
-#endif
+
   }
 
   CXCompilationDatabase_Error cx_db_load_error =
@@ -620,7 +629,8 @@ std::vector<Project::Entry> LoadCompilationEntriesFromDirectory(
 
   if (!g_config->compilationDatabaseCommand.empty()) {
 #if defined(_WIN32)
-// TODO
+    _unlink((comp_db_dir + "compile_commands.json").c_str());
+    _rmdir(comp_db_dir.c_str());
 #else
     unlink((comp_db_dir + "compile_commands.json").c_str());
     rmdir(comp_db_dir.c_str());
