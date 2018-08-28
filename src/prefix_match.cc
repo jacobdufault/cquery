@@ -1,6 +1,7 @@
 #include "prefix_match.h"
 
 #include <algorithm>
+#include <cctype>
 
 namespace {
     bool StartsWith(std::string_view text, std::string_view prefix) {
