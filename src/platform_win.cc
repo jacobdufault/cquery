@@ -120,6 +120,21 @@ optional<AbsolutePath> NormalizePath(const std::string& path0,
   return AbsolutePath(path, false /*validate*/);
 }
 
+void RemoveDirectoryRecursive(const AbsolutePath &path) {
+    // We use SHFileOperation, because its FO_DELETE operation is recursive.
+
+    std::string pathString = path.path;
+    // parameter 'pFrom' must be double NULL-terminated:
+    pathString.append(2, 0);
+
+    SHFILEOPSTRUCT op;
+    memset(&op, 0, sizeof(op));
+    op.wFunc = FO_DELETE;
+    op.pFrom = pathString.c_str();
+    op.fFlags = FOF_NO_UI;
+    SHFileOperation(&op);
+}
+
 bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   if (_mkdir(absolute_path.path.c_str()) == -1) {
     // Success if the directory exists.
@@ -128,7 +143,7 @@ bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   return true;
 }
 
-optional<AbsolutePath> TryMakeTempDirectory(char * /* tmpl: ignored */) {
+optional<AbsolutePath> TryMakeTempDirectory() {
     // get "temp" dir
     char tmpdir_buf[MAX_PATH];
     DWORD len = GetTempPath(MAX_PATH, tmpdir_buf);
@@ -150,7 +165,7 @@ optional<AbsolutePath> TryMakeTempDirectory(char * /* tmpl: ignored */) {
     LOG_S(2) << "Creating temporary path " << dirPath;
     if(!TryMakeDirectory(dirPath))
     {
-        return {};
+        return nullopt;
     }
 
     return dirPath;

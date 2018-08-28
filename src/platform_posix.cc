@@ -31,6 +31,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <ftw.h>
 
 #include <semaphore.h>
 #include <sys/mman.h>
@@ -166,6 +167,17 @@ optional<AbsolutePath> NormalizePath(const std::string& path,
   return RealPathNotExpandSymlink(path, ensure_exists);
 }
 
+static int nftwCallback(const char *name, const struct stat * /*unused*/,
+                    int /*unused*/, FTW * /*unused*/) {
+    remove(name);
+    return 0;
+}
+
+void RemoveDirectoryRecursive(const AbsolutePath &path) {
+    // https://stackoverflow.com/a/5467788/2192139
+    nftw(path.path.c_str(), nftwCallback, 64, FTW_DEPTH | FTW_PHYS);
+}
+
 bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   const mode_t kMode = 0777;  // UNIX style permissions
   if (mkdir(absolute_path.path.c_str(), kMode) == -1) {
@@ -175,9 +187,10 @@ bool TryMakeDirectory(const AbsolutePath& absolute_path) {
   return true;
 }
 
-optional<AbsolutePath> TryMakeTempDirectory(char *tmpl) {
+optional<AbsolutePath> TryMakeTempDirectory() {
+    char tmpl[] = "/tmp/cquery-XXXXXX";
     if(!mkdtemp(tmpl)) {
-        return {};
+        return nullopt;
     }
     return AbsolutePath(tmpl);
 }
