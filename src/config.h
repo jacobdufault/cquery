@@ -156,6 +156,9 @@ struct Config {
     // For example, to hide all files in a /CACHE/ folder, use ".*/CACHE/.*"
     std::vector<std::string> includeBlacklist;
     std::vector<std::string> includeWhitelist;
+
+    //
+    std::string matcherType = "cqueryMatcher";
   };
   Completion completion;
 
@@ -261,7 +264,8 @@ MAKE_REFLECT_STRUCT(Config::Completion,
                     includeMaxPathSize,
                     includeSuffixWhitelist,
                     includeBlacklist,
-                    includeWhitelist);
+                    includeWhitelist,
+                    matcherType);
 MAKE_REFLECT_STRUCT(Config::Formatting, enabled)
 MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     blacklist,

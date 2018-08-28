@@ -4,8 +4,9 @@
 
 #include <limits.h>
 #include <string>
+#include "completion_matcher.h"
 
-class FuzzyMatcher {
+class FuzzyMatcher : public CompletionMatcher {
  public:
   constexpr static int kMaxPat = 100;
   constexpr static int kMaxText = 200;
@@ -14,9 +15,11 @@ class FuzzyMatcher {
   constexpr static int kMinScore = INT_MIN / 4;
 
   FuzzyMatcher(std::string_view pattern);
-  int Match(std::string_view text);
+  int Match(std::string_view text) override;
+  int MinScore() const override;
 
  private:
+  std::string_view original_pattern;
   std::string pat;
   std::string_view text;
   int pat_set, text_set;

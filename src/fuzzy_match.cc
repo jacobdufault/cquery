@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <vector>
+#include "lex_utils.h"
 
 enum CharClass { Other, Lower, Upper };
 enum CharRole { None, Tail, Head };
@@ -73,6 +74,7 @@ int FuzzyMatcher::MatchScore(int i, int j, bool last) {
 }
 
 FuzzyMatcher::FuzzyMatcher(std::string_view pattern) {
+  original_pattern = pattern;
   CalculateRoles(pattern, pat_role, &pat_set);
   size_t n = 0;
   for (size_t i = 0; i < pattern.size(); i++)
@@ -85,6 +87,9 @@ FuzzyMatcher::FuzzyMatcher(std::string_view pattern) {
 }
 
 int FuzzyMatcher::Match(std::string_view text) {
+  if (!CaseFoldingSubsequenceMatch(original_pattern, text).first) {
+    return MinScore();
+  }
   int n = int(text.size());
   if (n > kMaxText)
     return kMinScore + 1;
@@ -121,6 +126,10 @@ int FuzzyMatcher::Match(std::string_view text) {
   for (int j = pat.size(); j <= n; j++)
     ret = std::max(ret, dp[pat.size() & 1][j][1] - 3 * (n - j));
   return ret;
+}
+
+int FuzzyMatcher::MinScore() const {
+  return kMinScore;
 }
 
 TEST_SUITE("fuzzy_match") {
