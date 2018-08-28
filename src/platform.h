@@ -32,13 +32,16 @@ optional<AbsolutePath> NormalizePath(const std::string& path,
 
 // Creates a directory at |path|. Creates directories recursively if needed.
 void MakeDirectoryRecursive(const AbsolutePath& path);
+
+// Removes a directory and all its contents.
+void RemoveDirectoryRecursive(const AbsolutePath& path);
+
 // Tries to create the directory given by |absolute_path|. Returns true if
 // successful or if the directory already exists. Returns false otherwise. This
 // does not attempt to recursively create directories.
 bool TryMakeDirectory(const AbsolutePath& path);
 
-// tmpl: template string for mkdtemp(3), ignored on windows.
-optional<AbsolutePath> TryMakeTempDirectory(char *tmpl);
+optional<AbsolutePath> TryMakeTempDirectory();
 
 void SetCurrentThreadName(const std::string& thread_name);
 
