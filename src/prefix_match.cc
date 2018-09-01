@@ -2,6 +2,7 @@
 
 #include "utils.h"
 #include <algorithm>
+#include <cctype>
 
 PrefixMatcher::PrefixMatcher(std::string_view pattern, bool case_sensitive) {
   original_pattern = pattern;

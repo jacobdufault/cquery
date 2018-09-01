@@ -1,7 +1,10 @@
 #include "fts_match.h"
 
 #define FTS_FUZZY_MATCH_IMPLEMENTATION 1
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 #include <fts_fuzzy_match.h>
+#pragma clang diagnostic pop
 
 FtsMatcher::FtsMatcher(std::string_view pattern) {
   original_pattern = pattern;
