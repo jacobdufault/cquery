@@ -157,7 +157,12 @@ struct Config {
     std::vector<std::string> includeBlacklist;
     std::vector<std::string> includeWhitelist;
 
-    //
+    // Matcher type to filter completion candidates.
+    // Available matchers are:
+    // "cqueryMatcher":                        default cquery fuzzy matching algorithm
+    // "ftsMatcher":                           fuzzy matching algorithm powered by
+    // lib_fts "caseSensitivePrefixMatcher":   simple case sensitive prefix
+    // matcher "caseInsensitivePrefixMatcher": simple case insensitive prefix
     std::string matcherType = "cqueryMatcher";
   };
   Completion completion;
