@@ -148,7 +148,7 @@ struct ClangCompleteManager {
   // Parse requests. The path may already be parsed, in which case it should be
   // reparsed.
   ThreadedQueue<PreloadRequest> preload_requests_;
-  int * config_options[SIZE_OF_OPTIONS];
+	int * config_options[SIZE_OF_OPTIONS]={&kMaxPreloadedSessions,&kMaxCompletionSessions};
   //Changing dynamically the options defined in config_options
   void ConfigurableOptions(int * config_options[],int option, int value);
 };
