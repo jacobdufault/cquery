@@ -863,9 +863,9 @@ void ClangCompleteManager::FlushAllSessions() {
   completion_sessions_.Clear();
 }
 
-void ConfigurableOptions(int * config_options [], int option, int value){
-	if(option >= SIZE_OF_OPTIONS)
-		return;
+void ConfigurableOptions(int* config_options[], int option, int value) {
+  if (option >= SIZE_OF_OPTIONS)
+    return;
 
-	*config_options[option] = value;
+  *config_options[option] = value;
 }
