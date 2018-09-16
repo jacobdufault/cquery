@@ -863,9 +863,10 @@ void ClangCompleteManager::FlushAllSessions() {
   completion_sessions_.Clear();
 }
 
-void ConfigurableOptions(int* config_options[], int option, int value) {
-  if (option >= SIZE_OF_OPTIONS)
-    return;
+void ClangCompleteManager::SetMaxPreloadedSessions(int value) {
+  kMaxPreloadedSessions = value;
+}
 
-  *config_options[option] = value;
+void ClangCompleteManager::SetMaxCompletionSessions(int value) {
+  kMaxCompletionSessions = value;
 }

@@ -17,10 +17,6 @@
 #include <mutex>
 #include <string>
 
-#define SIZE_OF_OPTIONS 2
-#define MAXPRELOADEDSESSIONS 0
-#define MAXCOMPLETIONSESSIONS 1
-
 struct CompletionSession
     : public std::enable_shared_from_this<CompletionSession> {
   // Translation unit for clang.
@@ -120,8 +116,8 @@ struct ClangCompleteManager {
   // Flushes all saved sessions
   void FlushAllSessions(void);
 
-  int kMaxPreloadedSessions = 10;
-  int kMaxCompletionSessions = 5;
+  int kMaxPreloadedSessions = MAXPRELOADEDSESSIONS;
+  int kMaxCompletionSessions = MAXCOMPLETIONSESSIONS;
 
   // Global state.
   Project* project_;
@@ -148,8 +144,8 @@ struct ClangCompleteManager {
   // Parse requests. The path may already be parsed, in which case it should be
   // reparsed.
   ThreadedQueue<PreloadRequest> preload_requests_;
-  int* config_options[SIZE_OF_OPTIONS] = {&kMaxPreloadedSessions,
-                                          &kMaxCompletionSessions};
+
   // Changing dynamically the options defined in config_options
-  void ConfigurableOptions(int* config_options[], int option, int value);
+  void SetMaxPreloadedSessions(int value);
+  void SetMaxCompletionSessions(int value);
 };

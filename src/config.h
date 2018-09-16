@@ -4,6 +4,9 @@
 
 #include <string>
 
+#define MAXPRELOADEDSESSIONS 10
+#define MAXCOMPLETIONSESSIONS 5
+
 /*
 The language client plugin needs to send initialization options in the
 `initialize` request to the cquery language server. The only required option is
