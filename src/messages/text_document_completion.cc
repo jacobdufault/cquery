@@ -145,19 +145,17 @@ std::vector<lsCompletionItem> PreprocessorKeywordCompletionItems(
   return items;
 }
 
-template <typename T>
-char* tofixedbase64(T input, char* out) {
-  const char* digits =
-      "./0123456789"
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      "abcdefghijklmnopqrstuvwxyz";
-  int len = (sizeof(T) * 8 - 1) / 6 + 1;
-  for (int i = len - 1; i >= 0; i--) {
-    out[i] = digits[input % 64];
-    input /= 64;
-  }
-  out[len] = '\0';
-  return out;
+// Returns a string that sorts in the same order as rank.
+std::string ToSortText(size_t rank) {
+  // 32 digits, could be more though. Lowercase should be excluded so that case
+  // insensitive comparisons do not reorder our results.
+  static constexpr char digits[] =
+      "0123456789"
+      "ABCDEFGHIJKLMNOPQRSTUV";
+  constexpr int n = sizeof(digits) - 1;
+  // Four digits is plenty, it can support 32^4 = 1048576 ranks.
+  return {digits[rank / (n * n * n) % n], digits[rank / (n * n) % n],
+          digits[rank / n % n], digits[rank % n]};
 }
 
 // Pre-filters completion responses before sending to vscode. This results in a
@@ -204,9 +202,8 @@ void FilterAndSortCompletionResponse(
 
     // Set sortText. Note that this happens after resizing - we could do it
     // before, but then we should also sort by priority.
-    char buf[16];
     for (size_t i = 0; i < items.size(); ++i)
-      items[i].sortText = tofixedbase64(i, buf);
+      items[i].sortText = ToSortText(i);
   };
 
   // No complete text; don't run any filtering logic except to trim the items.
