@@ -636,7 +636,8 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
         WorkThread::StartThread("indexer" + std::to_string(i), [=]() {
           Indexer_Main(diag_engine, file_consumer_shared, timestamp_manager,
                        import_manager, import_pipeline_status, project,
-                       working_files);
+                       working_files, global_code_complete_cache,
+                       non_global_code_complete_cache);
         });
       }
 

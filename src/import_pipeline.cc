@@ -1,6 +1,7 @@
 #include "import_pipeline.h"
 
 #include "cache_manager.h"
+#include "code_complete_cache.h"
 #include "config.h"
 #include "diagnostics_engine.h"
 #include "iindexer.h"
@@ -503,7 +504,9 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
                   ImportManager* import_manager,
                   ImportPipelineStatus* status,
                   Project* project,
-                  WorkingFiles* working_files) {
+                  WorkingFiles* working_files,
+                  CodeCompleteCache* global_code_complete_cache,
+                  CodeCompleteCache* non_global_code_complete_cache) {
   RealModificationTimestampFetcher modification_timestamp_fetcher;
   auto* queue = QueueManager::instance();
   // Build one index per-indexer, as building the index acquires a global lock.
@@ -536,6 +539,13 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
       // created index updates to reduce work on querydb thread.
       if (!did_work)
         did_work = IndexMergeIndexUpdates() || did_work;
+
+      // Our completion cache might not be correct once we've indexed a file
+      // so it should be cleared.
+      if (did_work) {
+        global_code_complete_cache->Clear();
+        non_global_code_complete_cache->Clear();
+      }
     }
 
     // We didn't do any work, so wait for a notification.
