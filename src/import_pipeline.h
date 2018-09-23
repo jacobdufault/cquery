@@ -10,6 +10,7 @@ struct QueryDatabase;
 struct SemanticHighlightSymbolCache;
 struct TimestampManager;
 struct WorkingFiles;
+struct CodeCompleteCache;
 
 // FIXME: rename
 struct ImportPipelineStatus {
@@ -25,7 +26,9 @@ void Indexer_Main(DiagnosticsEngine* diag_engine,
                   ImportManager* import_manager,
                   ImportPipelineStatus* status,
                   Project* project,
-                  WorkingFiles* working_files);
+                  WorkingFiles* working_files,
+                  CodeCompleteCache* global_code_complete_cache,
+                  CodeCompleteCache* non_global_code_complete_cache);
 
 bool QueryDb_ImportMain(QueryDatabase* db,
                         ImportManager* import_manager,

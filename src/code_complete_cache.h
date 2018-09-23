@@ -19,4 +19,5 @@ struct CodeCompleteCache {
 
   void WithLock(std::function<void()> action);
   bool IsCacheValid(lsTextDocumentPositionParams position);
+  void Clear();
 };
