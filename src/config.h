@@ -4,9 +4,6 @@
 
 #include <string>
 
-#define MAXPRELOADEDSESSIONS 10
-#define MAXCOMPLETIONSESSIONS 5
-
 /*
 The language client plugin needs to send initialization options in the
 `initialize` request to the cquery language server. The only required option is
@@ -145,7 +142,8 @@ struct Config {
     // will be elided with ".." put at the front. Set to 0 or a negative number
     // to disable eliding.
     int includeMaxPathSize = 30;
-
+    int MaxPreloadedSessions = 10;
+    int MaxCompleteSessions = 5;
     // Whitelist that file paths will be tested against. If a file path does not
     // end in one of these values, it will not be considered for
     // auto-completion. An example value is { ".h", ".hpp" }

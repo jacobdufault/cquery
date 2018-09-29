@@ -116,8 +116,8 @@ struct ClangCompleteManager {
   // Flushes all saved sessions
   void FlushAllSessions(void);
 
-  int kMaxPreloadedSessions = MAXPRELOADEDSESSIONS;
-  int kMaxCompletionSessions = MAXCOMPLETIONSESSIONS;
+  int kMaxPreloadedSessions = 10;
+  int kMaxCompletionSessions = 5;
 
   // Global state.
   Project* project_;
