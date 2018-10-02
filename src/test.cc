@@ -307,7 +307,7 @@ bool RunIndexTests(const std::string& filter_path, bool enable_update) {
   std::string clang_version = GetClangVersion();
   if (clang_version != "7.0.0") {
     std::cerr << "Index tests must be run using clang version \""
-              << "7.0.0" << "\" (cquery is running with \""
+              << "7" << "\" (cquery is running with \""
               << clang_version << "\")" << std::endl;
     return false;
   }
