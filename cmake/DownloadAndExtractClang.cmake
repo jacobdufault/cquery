@@ -42,11 +42,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
 
-  if(${CLANG_VERSION} STREQUAL 6.0.1)
-    set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-amd64-unknown-freebsd10)
-  else()
-    set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-amd64-unknown-freebsd11)
-  endif()
+  set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-amd64-unknown-freebsd11)
 
 endif()
 
