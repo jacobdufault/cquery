@@ -56,7 +56,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 11994188353303124840,
-      "detailed_name": "void Template::Foo()",
+      "detailed_name": "template <class T> void Template::Foo()",
       "short_name": "Foo",
       "kind": 6,
       "storage": 1,

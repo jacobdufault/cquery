@@ -27,7 +27,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 3277829753446788562,
-      "detailed_name": "void IFoo::foo()",
+      "detailed_name": "virtual void IFoo::foo() = 0",
       "short_name": "foo",
       "kind": 6,
       "storage": 1,

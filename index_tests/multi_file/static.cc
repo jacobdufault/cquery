@@ -27,7 +27,7 @@ OUTPUT: static.h
   "funcs": [{
       "id": 0,
       "usr": 14576076421851654759,
-      "detailed_name": "void Buffer::CreateSharedBuffer()",
+      "detailed_name": "static void Buffer::CreateSharedBuffer()",
       "short_name": "CreateSharedBuffer",
       "kind": 254,
       "storage": 3,

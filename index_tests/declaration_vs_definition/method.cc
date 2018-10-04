@@ -48,7 +48,7 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 10939323144126021546,
-      "detailed_name": "void Foo::purevirtual()",
+      "detailed_name": "virtual void Foo::purevirtual() = 0",
       "short_name": "purevirtual",
       "kind": 6,
       "storage": 1,

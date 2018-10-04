@@ -43,12 +43,12 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["8:3-8:9|1|3|32"],
+      "uses": ["8:3-8:9|1|3|36"],
       "callees": []
     }, {
       "id": 1,
       "usr": 3385168158331140247,
-      "detailed_name": "void Foo::Foo()",
+      "detailed_name": "Foo::Foo()",
       "short_name": "Foo",
       "kind": 9,
       "storage": 1,
@@ -63,7 +63,7 @@ OUTPUT:
       "derived": [],
       "vars": [],
       "uses": [],
-      "callees": ["8:3-8:9|0|3|32"]
+      "callees": ["8:3-8:9|0|3|36"]
     }],
   "vars": []
 }

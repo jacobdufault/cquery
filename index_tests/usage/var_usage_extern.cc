@@ -46,7 +46,7 @@ OUTPUT:
       "short_name": "a",
       "declarations": ["1:12-1:13|-1|1|1"],
       "type": 0,
-      "uses": ["4:3-4:4|0|3|4"],
+      "uses": ["4:3-4:4|0|3|20"],
       "kind": 13,
       "storage": 2
     }]

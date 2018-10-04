@@ -65,7 +65,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 16347272523198263017,
-      "detailed_name": "void Base0::~Base0() noexcept",
+      "detailed_name": "virtual Base0::~Base0() noexcept",
       "short_name": "~Base0",
       "kind": 6,
       "storage": 1,
@@ -81,7 +81,7 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 8401779086123965305,
-      "detailed_name": "void Base1::~Base1() noexcept",
+      "detailed_name": "virtual Base1::~Base1() noexcept",
       "short_name": "~Base1",
       "kind": 6,
       "storage": 1,
@@ -97,7 +97,7 @@ OUTPUT:
     }, {
       "id": 2,
       "usr": 13164726294460837993,
-      "detailed_name": "void Derived::~Derived() noexcept",
+      "detailed_name": "Derived::~Derived() noexcept override",
       "short_name": "~Derived",
       "kind": 6,
       "storage": 1,

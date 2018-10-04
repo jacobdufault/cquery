@@ -46,7 +46,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 9948027785633571339,
-      "detailed_name": "void Root::foo()",
+      "detailed_name": "virtual void Root::foo()",
       "short_name": "foo",
       "kind": 6,
       "storage": 1,
@@ -63,7 +63,7 @@ OUTPUT:
     }, {
       "id": 1,
       "usr": 6666242542855173890,
-      "detailed_name": "void Derived::foo()",
+      "detailed_name": "void Derived::foo() override",
       "short_name": "foo",
       "kind": 6,
       "storage": 1,

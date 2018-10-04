@@ -209,7 +209,7 @@ OUTPUT: impl.cc
       "derived": [],
       "vars": [],
       "uses": [],
-      "callees": ["4:3-4:7|1|3|32"]
+      "callees": ["4:3-4:7|1|3|36"]
     }, {
       "id": 1,
       "usr": 11650481237659640387,
@@ -221,7 +221,7 @@ OUTPUT: impl.cc
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["4:3-4:7|0|3|32"],
+      "uses": ["4:3-4:7|0|3|36"],
       "callees": []
     }],
   "vars": []

@@ -32,7 +32,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 326583651986177228,
-      "detailed_name": "int foo()",
+      "detailed_name": "static int foo()",
       "short_name": "foo",
       "kind": 12,
       "storage": 3,
@@ -42,7 +42,7 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["6:9-6:12|-1|1|32", "7:9-7:12|-1|1|32"],
+      "uses": ["6:9-6:12|-1|1|36", "7:9-7:12|-1|1|36"],
       "callees": []
     }],
   "vars": [{
