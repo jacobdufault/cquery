@@ -75,7 +75,7 @@ OUTPUT: static_function_in_type.h
   "funcs": [{
       "id": 0,
       "usr": 17019747379608639279,
-      "detailed_name": "void ns::Foo::Register(ns::Manager *)",
+      "detailed_name": "static void ns::Foo::Register(ns::Manager *)",
       "short_name": "Register",
       "kind": 254,
       "storage": 3,

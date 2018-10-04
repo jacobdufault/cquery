@@ -38,7 +38,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 3385168158331140247,
-      "detailed_name": "void Foo::Foo()",
+      "detailed_name": "Foo::Foo()",
       "short_name": "Foo",
       "kind": 9,
       "storage": 1,
@@ -49,12 +49,12 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["8:7-8:8|2|3|288"],
+      "uses": ["8:7-8:8|2|3|292"],
       "callees": []
     }, {
       "id": 1,
       "usr": 7440261702884428359,
-      "detailed_name": "void Foo::~Foo() noexcept",
+      "detailed_name": "Foo::~Foo() noexcept",
       "short_name": "~Foo",
       "kind": 6,
       "storage": 1,
@@ -81,7 +81,7 @@ OUTPUT:
       "derived": [],
       "vars": [0],
       "uses": [],
-      "callees": ["8:7-8:8|0|3|288", "8:7-8:8|0|3|288"]
+      "callees": ["8:7-8:8|0|3|292", "8:7-8:8|0|3|292"]
     }],
   "vars": [{
       "id": 0,

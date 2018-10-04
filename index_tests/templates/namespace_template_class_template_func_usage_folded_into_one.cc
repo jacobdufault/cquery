@@ -80,7 +80,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8221803074608342407,
-      "detailed_name": "int ns::Foo::foo()",
+      "detailed_name": "static int ns::Foo::foo()",
       "short_name": "foo",
       "kind": 254,
       "storage": 3,
@@ -91,7 +91,7 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["10:21-10:24|0|2|32", "11:22-11:25|0|2|32"],
+      "uses": ["10:21-10:24|0|2|36", "11:22-11:25|0|2|36"],
       "callees": []
     }],
   "vars": [{

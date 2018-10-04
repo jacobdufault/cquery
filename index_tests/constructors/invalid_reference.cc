@@ -32,7 +32,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 17319723337446061757,
-      "detailed_name": "void Foo::Foo()",
+      "detailed_name": "Foo::Foo()",
       "short_name": "Foo",
       "kind": 9,
       "storage": 1,

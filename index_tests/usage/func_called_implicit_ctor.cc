@@ -33,7 +33,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 10544127002917214589,
-      "detailed_name": "void Wrapper::Wrapper(int i)",
+      "detailed_name": "Wrapper::Wrapper(int i)",
       "short_name": "Wrapper",
       "kind": 9,
       "storage": 1,
@@ -45,7 +45,7 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["8:10-8:18|2|3|288"],
+      "uses": ["8:10-8:18|2|3|292"],
       "callees": []
     }, {
       "id": 1,
@@ -60,7 +60,7 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["8:10-8:16|2|3|32"],
+      "uses": ["8:10-8:16|2|3|36"],
       "callees": []
     }, {
       "id": 2,
@@ -76,7 +76,7 @@ OUTPUT:
       "derived": [],
       "vars": [],
       "uses": [],
-      "callees": ["8:10-8:18|0|3|288", "8:10-8:16|1|3|32"]
+      "callees": ["8:10-8:18|0|3|292", "8:10-8:16|1|3|36"]
     }],
   "vars": []
 }

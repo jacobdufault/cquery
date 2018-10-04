@@ -64,7 +64,7 @@ OUTPUT: make_functions.h
   "funcs": [{
       "id": 0,
       "usr": 13131778807733950299,
-      "detailed_name": "void Foobar::Foobar()",
+      "detailed_name": "Foobar::Foobar()",
       "short_name": "Foobar",
       "kind": 9,
       "storage": 1,
@@ -80,7 +80,7 @@ OUTPUT: make_functions.h
     }, {
       "id": 1,
       "usr": 13028995015627606181,
-      "detailed_name": "void Foobar::Foobar(int)",
+      "detailed_name": "Foobar::Foobar(int)",
       "short_name": "Foobar",
       "kind": 9,
       "storage": 1,
@@ -96,7 +96,7 @@ OUTPUT: make_functions.h
     }, {
       "id": 2,
       "usr": 3765833212244435302,
-      "detailed_name": "void Foobar::Foobar(int &&, Bar *, bool *)",
+      "detailed_name": "Foobar::Foobar(int &&, Bar *, bool *)",
       "short_name": "Foobar",
       "kind": 9,
       "storage": 1,
@@ -112,7 +112,7 @@ OUTPUT: make_functions.h
     }, {
       "id": 3,
       "usr": 17321436359755983845,
-      "detailed_name": "void Foobar::Foobar(int, Bar *, bool *)",
+      "detailed_name": "Foobar::Foobar(int, Bar *, bool *)",
       "short_name": "Foobar",
       "kind": 9,
       "storage": 1,

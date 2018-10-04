@@ -46,7 +46,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 13788753348312146871,
-      "detailed_name": "void Foo::Foo(Foo &&)",
+      "detailed_name": "Foo::Foo(Foo &&) = delete",
       "short_name": "Foo",
       "kind": 9,
       "storage": 1,

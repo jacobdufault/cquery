@@ -58,7 +58,7 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["8:3-8:9|1|3|32"],
+      "uses": ["8:3-8:9|1|3|36"],
       "callees": []
     }, {
       "id": 1,
@@ -74,7 +74,7 @@ OUTPUT:
       "derived": [],
       "vars": [],
       "uses": [],
-      "callees": ["8:3-8:9|0|3|32"]
+      "callees": ["8:3-8:9|0|3|36"]
     }],
   "vars": [{
       "id": 0,
@@ -83,7 +83,7 @@ OUTPUT:
       "short_name": "x",
       "declarations": ["2:14-2:15|0|2|1"],
       "type": 1,
-      "uses": ["8:15-8:16|1|3|4"],
+      "uses": ["8:15-8:16|1|3|12"],
       "kind": 8,
       "storage": 3
     }]

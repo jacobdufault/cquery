@@ -115,7 +115,7 @@ OUTPUT:
     }, {
       "id": 3,
       "usr": 7746867874366499515,
-      "detailed_name": "const Type &external()",
+      "detailed_name": "extern const Type &external()",
       "short_name": "external",
       "kind": 12,
       "storage": 2,
@@ -131,7 +131,7 @@ OUTPUT:
     }, {
       "id": 4,
       "usr": 18408440185620243373,
-      "detailed_name": "Type *bar()",
+      "detailed_name": "static Type *bar()",
       "short_name": "bar",
       "kind": 12,
       "storage": 3,

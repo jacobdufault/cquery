@@ -42,7 +42,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 8105378401105136463,
-      "detailed_name": "func g",
+      "detailed_name": "static int g(const int *, const int *)",
       "short_name": "g",
       "kind": 12,
       "storage": 3,

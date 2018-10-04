@@ -25,7 +25,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 5010253035933134245,
-      "detailed_name": "void (anon)::foo()",
+      "detailed_name": "void (anonymous namespace)::foo()",
       "short_name": "foo",
       "kind": 12,
       "storage": 1,

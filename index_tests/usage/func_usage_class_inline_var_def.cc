@@ -45,7 +45,7 @@ OUTPUT:
   "funcs": [{
       "id": 0,
       "usr": 9630503130605430498,
-      "detailed_name": "int helper()",
+      "detailed_name": "static int helper()",
       "short_name": "helper",
       "kind": 12,
       "storage": 3,
@@ -55,7 +55,7 @@ OUTPUT:
       "bases": [],
       "derived": [],
       "vars": [],
-      "uses": ["6:11-6:17|0|2|32"],
+      "uses": ["6:11-6:17|0|2|36"],
       "callees": []
     }],
   "vars": [{
