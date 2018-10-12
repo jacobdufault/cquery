@@ -82,7 +82,6 @@ struct Handler_TextDocumentDefinition
               spell.range.Contains(target_line, target_column)) {
             on_def = spell;
             uses.clear();
-            return false;
           }
           // We use spelling start and extent end because this causes vscode
           // to highlight the entire definition when previewing / hoving with
@@ -101,8 +100,6 @@ struct Handler_TextDocumentDefinition
           uses.push_back(*on_def);
       }
       AddRange(&out.result, GetLsLocations(db, working_files, uses));
-      if (!out.result.empty())
-        break;
     }
 
     // No symbols - check for includes.
