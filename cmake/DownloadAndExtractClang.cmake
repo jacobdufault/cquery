@@ -31,8 +31,6 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 
-  # No Darwin binaries were released for LLVM 6.0.1
-  set(CLANG_VERSION 6.0.0)
   set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-x86_64-apple-darwin)
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
