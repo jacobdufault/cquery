@@ -25,7 +25,6 @@ optional<CCppProperties> LoadCCppPropertiesFromStr(
     const std::string_view filecontent,
     const std::string& project_dir) {
   CCppProperties res;
-  res.args.push_back("%clang");
   rapidjson::Document document;
   document.Parse(filecontent.data());
   if (!document.IsObject())
@@ -38,6 +37,26 @@ optional<CCppProperties> LoadCCppPropertiesFromStr(
   for (auto& conf : conf_it->value.GetArray()) {
     if (!conf.HasMember("name") || conf["name"].GetString() != kCurrentPlatform)
       continue;
+
+    // If "compilerPath" entry is specified, it is used instead of clang.
+    if (conf.HasMember("compilerPath")) {
+      if (conf["compilerPath"].IsArray()) {
+        // If "compilerPath" entry is an array (non-standard), then it specifies
+        // the compiler in the first entry, and its arguments in the following entries.
+        const auto& compilerPath = conf["compilerPath"].GetArray();
+        res.args.reserve(res.args.size() + compilerPath.Size());
+        for (const auto& element : compilerPath) {
+          res.args.emplace_back(element.GetString());
+        }
+      } else {
+        // "compilerPath" entry is conventionally a string.
+        res.args.emplace_back(conf["compilerPath"].GetString());
+      }
+    } else {
+      // No compiler specified. Default to clang.
+      res.args.emplace_back("%clang");
+    }
+
     auto def_it = conf.FindMember("defines");
     if (def_it != conf.MemberEnd() && def_it->value.IsArray()) {
       for (auto& def : def_it->value.GetArray()) {
@@ -66,6 +85,10 @@ optional<CCppProperties> LoadCCppPropertiesFromStr(
     }
   }
 
+  if (res.args.empty()) {
+    // No usable configurations are specified. Default to clang.
+    res.args.emplace_back("%clang");
+  }
   return res;
 }
 
