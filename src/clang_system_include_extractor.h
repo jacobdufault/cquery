@@ -13,3 +13,9 @@ std::vector<std::string> FindSystemIncludeDirectories(
     const std::string& language,
     const std::string& working_directory,
     const std::vector<std::string>& extra_flags);
+
+std::vector<std::string> FindSystemDefines(
+    const std::vector<std::string>& compiler_drivers,
+    const std::string& language,
+    const std::string& working_directory,
+    const std::vector<std::string>& extra_flags);

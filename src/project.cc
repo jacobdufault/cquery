@@ -82,6 +82,8 @@ enum class ProjectMode {
 struct ProjectConfig {
   std::unordered_map<LanguageId, std::vector<std::string>>
       discovered_system_includes;
+  std::unordered_map<LanguageId, std::vector<std::string>>
+      discovered_system_defines;
   std::unordered_set<Directory> quote_dirs;
   std::unordered_set<Directory> angle_dirs;
   std::vector<std::string> extra_flags;
@@ -153,22 +155,38 @@ const std::vector<std::string>& GetSystemIncludes(
     }
   }
 
-  std::vector<std::string> compiler_drivers = {
-      GetExecutablePathNextToCqueryBinary("cquery-clang").path, "clang++",
-      "g++"};
+  std::vector<std::string> compiler_drivers;
   if (IsAbsolutePath(compiler_driver)) {
-    compiler_drivers.insert(compiler_drivers.begin(), compiler_driver);
+    compiler_drivers.emplace_back(compiler_driver);
+  } else {
+    compiler_drivers.emplace_back(GetExecutablePathNextToCqueryBinary("cquery-clang").path);
+    compiler_drivers.emplace_back("clang++");
+    compiler_drivers.emplace_back("g++");
   }
 
   project_config->discovered_system_includes[language] =
       FindSystemIncludeDirectories(compiler_drivers, language_string,
                                    working_directory, extra_flags);
+  project_config->discovered_system_defines[language] =
+      FindSystemDefines(compiler_drivers, language_string, working_directory, extra_flags);
   LOG_S(INFO) << "Using system include directory flags\n  "
               << StringJoin(
                      project_config->discovered_system_includes[language],
                      "\n  ");
+  LOG_S(INFO) << "Using system preprocessor defines\n  "
+              << StringJoin(
+                     project_config->discovered_system_defines[language],
+                     "\n  ");
   LOG_S(INFO) << "To disable this set the discoverSystemIncludes config "
               << "option to false.";
+
+  project_config->discovered_system_includes[language].reserve(
+      project_config->discovered_system_includes[language].size()
+      + project_config->discovered_system_defines[language].size());
+
+  for (const auto& element : project_config->discovered_system_defines[language]) {
+      project_config->discovered_system_includes[language].emplace_back(element);
+  }
 
   return project_config->discovered_system_includes[language];
 }
