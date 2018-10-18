@@ -64,6 +64,31 @@ std::vector<std::string> ExtractSystemIncludePaths(
   return output;
 }
 
+std::vector<std::string> ExtractSystemDefines(
+    const std::string& preprocessor_output) {
+  std::vector<std::string> lines = SplitString(preprocessor_output, "\n");
+  std::vector<std::string> output;
+  for (auto& line : lines) {
+    TrimInPlace(line);
+    if (!StartsWith(line, "#define ")) continue;
+
+    size_t space_index = line.find(" ", 8);
+    if (space_index == std::string::npos) {
+      output.emplace_back("-D" + line.substr(8));
+      continue;
+    }
+
+    auto value = line.substr(space_index + 1);
+    if (value.find(" ") == std::string::npos) {
+      output.emplace_back("-D" + line.substr(8, space_index - 8) + "=" + value);
+    } else {
+      output.emplace_back("-D'" + line.substr(8, space_index - 8) + "=" + value + "'");
+    }
+  }
+
+  return output;
+}
+
 }  // namespace
 
 // Run clang specified by `clang_binary` and return the set of system includes
@@ -94,6 +119,36 @@ std::vector<std::string> FindSystemIncludeDirectories(
     std::vector<std::string> paths = ExtractSystemIncludePaths(*clang_output);
     if (!paths.empty())
       return paths;
+  }
+  return {};
+}
+
+std::vector<std::string> FindSystemDefines(
+  const std::vector<std::string>& compiler_drivers,
+  const std::string& language,
+  const std::string& working_directory,
+  const std::vector<std::string>& extra_flags) {
+  LOG_S(INFO) << "Using compiler drivers " << StringJoin(compiler_drivers);
+  for (const std::string& compiler_driver : compiler_drivers) {
+    std::vector<std::string> flags = {
+      compiler_driver, "-E", "-x", language, "-dM", "-",
+    };
+
+    CompilerType compiler_type = FindCompilerType(compiler_driver);
+    CompilerAppendsFlagIfAccept(
+      compiler_type, "-working-directory=" + working_directory, flags);
+
+    AddRange(&flags, extra_flags);
+
+    LOG_S(INFO) << "Running " << StringJoin(flags, " ");
+    optional<std::string> preprocessor_output = RunExecutable(flags, "");
+    if (!preprocessor_output || preprocessor_output->empty())
+      continue;
+
+    LOG_S(INFO) << "Output:\n" << Trim(*preprocessor_output);
+    std::vector<std::string> defines = ExtractSystemDefines(*preprocessor_output);
+    if (!defines.empty())
+      return defines;
   }
   return {};
 }
