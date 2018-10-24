@@ -209,6 +209,7 @@ void RunQueryDbThread(const std::string& bin_name) {
   WorkingFiles working_files;
   FileConsumerSharedState file_consumer_shared;
   DiagnosticsEngine diag_engine;
+  diag_engine.Init();
 
   ClangCompleteManager clang_complete(
       &project, &working_files,
