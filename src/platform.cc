@@ -6,6 +6,7 @@
 #include <reproc/parser.hpp>
 #include <reproc/reproc.hpp>
 
+#include <future>
 #include <iterator>
 #include <sstream>
 #include <string>
@@ -98,7 +99,7 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
            std::to_string(ec.value()) + ")";
   };
 
-  // RunExecutable is used to run short lived processes (clang-format, ...) so 
+  // RunExecutable is used to run short lived processes (clang-format, ...) so
   // we can wait indefinetely until the child process exits on its own
   reproc::process process(reproc::cleanup::wait, reproc::infinite);
   std::error_code ec;
@@ -120,26 +121,37 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
 
   process.close(reproc::stream::in);
 
-  std::string output{};
+  std::string out;
+  std::string err;
 
-  // Read stderr first to avoid GCC hang on Windows.
-  ec = process.read(reproc::stream::err, reproc::string_parser(output));
+  // Read stdout and stderr output simultaneously to avoid GCC hang on Windows.
+  // See https://github.com/cquery-project/cquery/issues/781 for more details.
+
+  auto read_stdout = std::async(std::launch::async, [&process, &out]() {
+    return process.read(reproc::stream::out, reproc::string_parser(out));
+  });
+
+  auto read_stderr = std::async(std::launch::async, [&process, &err]() {
+    return process.read(reproc::stream::err, reproc::string_parser(err));
+  });
+
+  // Wait explicitly so we can get the exit status of the child process.
+  unsigned int exit_status = 0;
+  ec = process.stop(reproc::cleanup::wait, reproc::infinite, &exit_status);
   if (ec) {
-    LOG_S(ERROR) << "Error reading stderr output of " << command_with_error(ec);
+    LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(ec);
     return nullopt;
   }
-  
-  ec = process.read(reproc::stream::out, reproc::string_parser(output));
+
+  ec = read_stdout.get();
   if (ec) {
     LOG_S(ERROR) << "Error reading stdout output of " << command_with_error(ec);
     return nullopt;
   }
 
-  // Wait explicitly so we can get the exit status of the child process
-  unsigned int exit_status = 0;
-  ec = process.stop(reproc::cleanup::wait, reproc::infinite, &exit_status);
+  ec = read_stderr.get();
   if (ec) {
-    LOG_S(ERROR) << "Error waiting for exit of " << command_with_error(ec);
+    LOG_S(ERROR) << "Error reading stderr output of " << command_with_error(ec);
     return nullopt;
   }
 
@@ -150,7 +162,7 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
 
   LOG_S(INFO) << "Executed " << command_string;
 
-  return output;
+  return out + err;
 }
 
 TEST_SUITE("Platform") {
