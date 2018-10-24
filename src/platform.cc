@@ -121,15 +121,17 @@ optional<std::string> RunExecutable(const std::vector<std::string>& command,
   process.close(reproc::stream::in);
 
   std::string output{};
-  ec = process.read(reproc::stream::out, reproc::string_parser(output));
-  if (ec) {
-    LOG_S(ERROR) << "Error reading stdout output of " << command_with_error(ec);
-    return nullopt;
-  }
 
+  // Read stderr first to avoid GCC hang on Windows.
   ec = process.read(reproc::stream::err, reproc::string_parser(output));
   if (ec) {
     LOG_S(ERROR) << "Error reading stderr output of " << command_with_error(ec);
+    return nullopt;
+  }
+  
+  ec = process.read(reproc::stream::out, reproc::string_parser(output));
+  if (ec) {
+    LOG_S(ERROR) << "Error reading stdout output of " << command_with_error(ec);
     return nullopt;
   }
 
