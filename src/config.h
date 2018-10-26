@@ -232,13 +232,21 @@ struct Config {
   };
   Index index;
 
+  // List of folders opened in current workspace.
+  std::vector<std::string> workspaceFolders;
+
   struct WorkspaceSymbol {
+    constexpr static char const* JUST_MY_CODE = "Just My Code";
     // Maximum workspace search results.
     int maxNum = 1000;
     // If true, workspace search results will be dynamically rescored/reordered
     // as the search progresses. Some clients do their own ordering and assume
     // that the results stay sorted in the same order as the search progresses.
     bool sort = true;
+    // If Just My Code, workspace search results will only contain symbols from
+    // workspace folders.
+    std::string workspaceSearchResults = JUST_MY_CODE;
+    bool justMyCode = true;
   };
   WorkspaceSymbol workspaceSymbol;
 
@@ -278,7 +286,10 @@ MAKE_REFLECT_STRUCT(Config::Index,
                     enabled,
                     logSkippedPaths,
                     threads);
-MAKE_REFLECT_STRUCT(Config::WorkspaceSymbol, maxNum, sort);
+MAKE_REFLECT_STRUCT(Config::WorkspaceSymbol,
+                    maxNum,
+                    sort,
+                    workspaceSearchResults);
 MAKE_REFLECT_STRUCT(Config::Xref, maxNum);
 MAKE_REFLECT_STRUCT(Config,
                     compilationDatabaseCommand,
@@ -302,6 +313,7 @@ MAKE_REFLECT_STRUCT(Config,
                     diagnostics,
                     highlight,
                     index,
+                    workspaceFolders,
                     workspaceSymbol,
                     xref,
 

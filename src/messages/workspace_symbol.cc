@@ -14,6 +14,17 @@
 namespace {
 MethodType kMethodType = "workspace/symbol";
 
+// Returns true iff symbol source file is from one of the workspace folders
+static bool SymbolInWorkspace(std::string_view symbolSourceFilePath) {
+  for (const auto& workspaceFolder : g_config->workspaceFolders) {
+    if (symbolSourceFilePath.find(workspaceFolder) != std::string::npos) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 // Lookup |symbol| in |db| and insert the value into |result|.
 bool InsertSymbolIntoResult(QueryDatabase* db,
                             WorkingFiles* working_files,
@@ -36,11 +47,15 @@ bool InsertSymbolIntoResult(QueryDatabase* db,
   }
 
   optional<lsLocation> ls_location = GetLsLocation(db, working_files, loc);
-  if (!ls_location)
-    return false;
-  info->location = *ls_location;
-  result->push_back(*info);
-  return true;
+
+  if (ls_location && (!g_config->workspaceSymbol.justMyCode ||
+                      SymbolInWorkspace(ls_location->uri.raw_uri_))) {
+    info->location = *ls_location;
+    result->push_back(*info);
+    return true;
+  }
+
+  return false;
 }
 
 struct In_WorkspaceSymbol : public RequestInMessage {
