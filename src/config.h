@@ -245,7 +245,7 @@ struct Config {
     bool sort = true;
     // If Just My Code, workspace search results will only contain symbols from
     // workspace folders.
-    std::string workspaceSearchResults = "";
+    std::string workspaceSearchResults = "All";
     bool justMyCode = false;
   };
   WorkspaceSymbol workspaceSymbol;
