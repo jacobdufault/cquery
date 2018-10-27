@@ -546,8 +546,7 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
         }
 
         // Should Just My Code be enabled?
-        if (g_config->workspaceSymbol.workspaceSearchResults ==
-            Config::WorkspaceSymbol::JUST_MY_CODE) {
+        if (g_config->workspaceSymbol.justMyCode) {
           if (g_config->workspaceFolders.empty()) {
             g_config->workspaceSymbol.justMyCode = false;
           } else {
