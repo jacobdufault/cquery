@@ -83,6 +83,7 @@ struct MessageHandler {
   CodeCompleteCache* global_code_complete_cache = nullptr;
   CodeCompleteCache* non_global_code_complete_cache = nullptr;
   CodeCompleteCache* signature_cache = nullptr;
+  std::unique_ptr<std::vector<std::string>> workspaceFolders;
 
   virtual MethodType GetMethodType() const = 0;
   virtual void Run(std::unique_ptr<InMessage> message) = 0;

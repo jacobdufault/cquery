@@ -564,7 +564,10 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
               workspaceFolders.emplace_back(std::move(folderPath.value()));
             }
 
-            g_config->workspaceFolders = std::move(workspaceFolders);
+            for (MessageHandler* handler : *MessageHandler::message_handlers) {
+              handler->workspaceFolders =
+                  std::make_unique<std::vector<std::string>>(workspaceFolders);
+            }
           }
 
           if (!g_config->workspaceSymbol.justMyCode) {
