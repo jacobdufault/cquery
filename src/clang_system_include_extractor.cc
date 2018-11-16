@@ -66,6 +66,12 @@ std::vector<std::string> ExtractSystemIncludePaths(
 
 std::vector<std::string> ExtractSystemDefines(
     const std::string& preprocessor_output) {
+  // Disabled due to bug reports, ie,
+  // https://github.com/cquery-project/cquery/issues/824. This can be re-enabled
+  // on master after the reported issues are investigated.
+  return {};
+
+  /*
   std::vector<std::string> lines = SplitString(preprocessor_output, "\n");
   std::vector<std::string> output;
   for (auto& line : lines) {
@@ -87,6 +93,7 @@ std::vector<std::string> ExtractSystemDefines(
   }
 
   return output;
+  */
 }
 
 }  // namespace
