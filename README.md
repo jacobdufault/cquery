@@ -26,7 +26,7 @@ some extra features to boot:
   * auto-implement functions without a definition
   * semantic highlighting, including support for [rainbow semantic highlighting](https://medium.com/@evnbr/coding-in-color-3a6db2743a1e)
 
-# >>> [Getting started](https://github.com/cquery-project/cquery/wiki) (CLICK HERE) <<<
+# >>> [Getting started (CLICK HERE)](https://github.com/cquery-project/cquery/wiki) <<<
 
 <a href="https://repology.org/metapackage/cquery">
   <img src="https://repology.org/badge/vertical-allrepos/cquery.svg" alt="Packaging status" align="right">
