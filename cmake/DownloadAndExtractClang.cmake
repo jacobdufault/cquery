@@ -79,15 +79,19 @@ file an issue to get it added.")
 endif()
 
 # Download Clang archive
-message(STATUS "Downloading Clang ${CLANG_VERSION} (${CLANG_ARCHIVE_URL}) ...")
-file(DOWNLOAD ${CLANG_ARCHIVE_URL} ${CLANG_ARCHIVE_FILE}
-     STATUS CLANG_ARCHIVE_DOWNLOAD_RESULT)
+if (EXISTS ${CLANG_ARCHIVE_FILE})
+  message (STATUS "file exists, skipping download: ${CLANG_ARCHIVE_FILE}")
+else()
+  message(STATUS "Downloading Clang ${CLANG_VERSION} (${CLANG_ARCHIVE_URL}) ...")
+  file(DOWNLOAD ${CLANG_ARCHIVE_URL} ${CLANG_ARCHIVE_FILE}
+    STATUS CLANG_ARCHIVE_DOWNLOAD_RESULT)
 
-# Abort if download failed
-list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 0 ERROR_CODE)
-if(${ERROR_CODE})
-  list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 1 ERROR_STRING)
-  message(FATAL_ERROR ${ERROR_STRING})
+  # Abort if download failed
+  list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 0 ERROR_CODE)
+  if(${ERROR_CODE})
+    list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 1 ERROR_STRING)
+    message(FATAL_ERROR ${ERROR_STRING})
+  endif()
 endif()
 
 # Retrieve expected hash from file and strip newline
