@@ -27,7 +27,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
       set(CLANG_ARCHIVE_NAME 
           clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-16.04)
     endif()
-    message(${CMAKE_HOST_SYSTEM_PROCESSOR})
+    message(STATUS "Host system processor: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
     if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "aarch64")
       set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-aarch64-linux-gnu)
     elseif (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "armv7l")

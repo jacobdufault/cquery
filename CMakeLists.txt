@@ -116,6 +116,11 @@ target_link_libraries(cquery PRIVATE Threads::Threads)
 if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
   # loguru calls dladdr
   target_link_libraries(cquery PRIVATE ${CMAKE_DL_LIBS})
+  string(FIND ${CMAKE_HOST_SYSTEM_PROCESSOR} "armv7" result)
+
+  if(${result} GREATER -1)
+    target_link_libraries(cquery PRIVATE atomic)
+  endif()
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
   # loguru::stacktrace_as_stdstring calls backtrace_symbols
