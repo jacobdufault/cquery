@@ -1,6 +1,11 @@
-[![Join the chat at https://gitter.im/cquery-project/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cquery-project/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Archived
+
+cquery is no longer under development. [clangd](https://clangd.llvm.org/installation.html) and [ccls](https://github.com/MaskRay/ccls) are both good replacements.
 
 # cquery
+
+[![Join the chat at https://gitter.im/cquery-project/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cquery-project/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 cquery is a highly-scalable, low-latency language server for C/C++/Objective-C. It is tested
 and designed for large code bases like
