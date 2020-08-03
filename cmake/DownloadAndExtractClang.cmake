@@ -27,6 +27,12 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Linux)
       set(CLANG_ARCHIVE_NAME 
           clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-16.04)
     endif()
+    message(STATUS "Host system processor: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+    if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+      set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-aarch64-linux-gnu)
+    elseif (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "armv7l")
+      set(CLANG_ARCHIVE_NAME clang+llvm-${CLANG_VERSION}-armv7a-linux-gnueabihf)
+    endif()
   endif()
 
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
@@ -73,15 +79,19 @@ file an issue to get it added.")
 endif()
 
 # Download Clang archive
-message(STATUS "Downloading Clang ${CLANG_VERSION} (${CLANG_ARCHIVE_URL}) ...")
-file(DOWNLOAD ${CLANG_ARCHIVE_URL} ${CLANG_ARCHIVE_FILE}
-     STATUS CLANG_ARCHIVE_DOWNLOAD_RESULT)
+if (EXISTS ${CLANG_ARCHIVE_FILE})
+  message (STATUS "file exists, skipping download: ${CLANG_ARCHIVE_FILE}")
+else()
+  message(STATUS "Downloading Clang ${CLANG_VERSION} (${CLANG_ARCHIVE_URL}) ...")
+  file(DOWNLOAD ${CLANG_ARCHIVE_URL} ${CLANG_ARCHIVE_FILE}
+    STATUS CLANG_ARCHIVE_DOWNLOAD_RESULT)
 
-# Abort if download failed
-list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 0 ERROR_CODE)
-if(${ERROR_CODE})
-  list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 1 ERROR_STRING)
-  message(FATAL_ERROR ${ERROR_STRING})
+  # Abort if download failed
+  list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 0 ERROR_CODE)
+  if(${ERROR_CODE})
+    list(GET ${CLANG_ARCHIVE_DOWNLOAD_RESULT} 1 ERROR_STRING)
+    message(FATAL_ERROR ${ERROR_STRING})
+  endif()
 endif()
 
 # Retrieve expected hash from file and strip newline
