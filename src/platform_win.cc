@@ -93,7 +93,13 @@ optional<AbsolutePath> NormalizePath(const std::string& path0,
   // and this function is called with `c:\fooBar` this will return `c:\FooBar`.
   // (drive casing is lowercase).
   if (ensure_exists) {
-    len = GetLongPathName(path.c_str(), buffer, MAX_PATH);
+    // Ensure 'GetLongPathName' actually transforms every path segment to the correct
+    // case by first making all directories in 8.3 format.
+    len = GetShortPathName(path.c_str(), buffer, MAX_PATH);
+    if (!len)
+      return nullopt;
+    std::string shortPath(buffer, len);
+    len = GetLongPathName(shortPath.c_str(), buffer, MAX_PATH);
     if (!len)
       return nullopt;
     path = std::string(buffer, len);
