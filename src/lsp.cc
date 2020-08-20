@@ -332,7 +332,11 @@ std::string lsDocumentUri::GetRawPath() const {
 }
 
 AbsolutePath lsDocumentUri::GetAbsolutePath() const {
-  return *NormalizePath(GetRawPath(), false /*ensure_exists*/);
+  optional<AbsolutePath> normalized = NormalizePath(GetRawPath(), false /*ensure_exists*/);
+  if (!normalized) {
+    return AbsolutePath();
+  }
+  return *normalized;
 }
 
 void Reflect(Writer& visitor, lsDocumentUri& value) {
