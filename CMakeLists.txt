@@ -156,6 +156,7 @@ target_include_directories(cquery PRIVATE
   third_party/pugixml/src
   third_party/rapidjson/include
   third_party/sparsepp
+  third_party/lib_fts/code
 )
 
 ### Install
@@ -304,6 +305,8 @@ target_sources(cquery PRIVATE
   src/file_contents.cc
   src/file_types.cc
   src/fuzzy_match.cc
+  src/fts_match.cc
+  src/prefix_match.cc
   src/iindexer.cc
   src/import_manager.cc
   src/import_pipeline.cc

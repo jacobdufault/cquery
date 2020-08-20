@@ -1,11 +1,14 @@
 #include "clang_complete.h"
 #include "code_complete_cache.h"
 #include "fuzzy_match.h"
+#include "fts_match.h"
+#include "prefix_match.h"
 #include "include_complete.h"
 #include "message_handler.h"
 #include "queue_manager.h"
 #include "timer.h"
 #include "working_files.h"
+#include "config.h"
 
 #include "lex_utils.h"
 
@@ -218,17 +221,23 @@ void FilterAndSortCompletionResponse(
       item.filterText = item.label;
   }
 
-  // Fuzzy match and remove awful candidates.
-  FuzzyMatcher fuzzy(complete_text);
+  // Match and remove awful candidates.
+  std::unique_ptr<CompletionMatcher> matcher;
+  if (g_config->completion.matcherType == "cqueryMatcher") {
+    matcher = std::make_unique<FuzzyMatcher>(complete_text);
+  } else if (g_config->completion.matcherType == "ftsMatcher") {
+    matcher = std::make_unique<FtsMatcher>(complete_text);
+  } else if (g_config->completion.matcherType == "caseSensitivePrefixMatcher") {
+    matcher = std::make_unique<PrefixMatcher>(complete_text, true);
+  } else if (g_config->completion.matcherType == "caseInsensitivePrefixMatcher") {
+    matcher = std::make_unique<PrefixMatcher>(complete_text, false);
+  }
   for (auto& item : items) {
-    item.score_ =
-        CaseFoldingSubsequenceMatch(complete_text, *item.filterText).first
-            ? fuzzy.Match(*item.filterText)
-            : FuzzyMatcher::kMinScore;
+    item.score_ = matcher->Match(*item.filterText);
   }
   items.erase(std::remove_if(items.begin(), items.end(),
-                             [](const lsCompletionItem& item) {
-                               return item.score_ <= FuzzyMatcher::kMinScore;
+                             [&matcher](const lsCompletionItem& item) {
+                               return item.score_ <= matcher->MinScore();
                              }),
               items.end());
   std::sort(items.begin(), items.end(),

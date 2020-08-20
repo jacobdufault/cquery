@@ -19,3 +19,6 @@
 [submodule "third_party/reproc"]
 	path = third_party/reproc
 	url = https://github.com/DaanDeMeyer/reproc.git
+[submodule "third_party/lib_fts"]
+	path = third_party/lib_fts
+	url = https://github.com/forrestthewoods/lib_fts.git

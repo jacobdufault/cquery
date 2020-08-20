@@ -156,6 +156,14 @@ struct Config {
     // For example, to hide all files in a /CACHE/ folder, use ".*/CACHE/.*"
     std::vector<std::string> includeBlacklist;
     std::vector<std::string> includeWhitelist;
+
+    // Matcher type to filter completion candidates.
+    // Available matchers are:
+    // "cqueryMatcher":                        default cquery fuzzy matching algorithm
+    // "ftsMatcher":                           fuzzy matching algorithm powered by
+    // lib_fts "caseSensitivePrefixMatcher":   simple case sensitive prefix
+    // matcher "caseInsensitivePrefixMatcher": simple case insensitive prefix
+    std::string matcherType = "cqueryMatcher";
   };
   Completion completion;
 
@@ -261,7 +269,8 @@ MAKE_REFLECT_STRUCT(Config::Completion,
                     includeMaxPathSize,
                     includeSuffixWhitelist,
                     includeBlacklist,
-                    includeWhitelist);
+                    includeWhitelist,
+                    matcherType);
 MAKE_REFLECT_STRUCT(Config::Formatting, enabled)
 MAKE_REFLECT_STRUCT(Config::Diagnostics,
                     blacklist,

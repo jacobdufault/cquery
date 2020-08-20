@@ -24,6 +24,7 @@ uint64_t HashUsr(std::string_view s);
 
 // Returns true if |value| starts/ends with |start| or |ending|.
 bool StartsWith(std::string_view value, std::string_view start);
+bool StartsWithIgnoreCase(std::string_view value, std::string_view start);
 bool EndsWith(std::string_view value, std::string_view ending);
 bool AnyStartsWith(const std::vector<std::string>& values,
                    const std::string& start);

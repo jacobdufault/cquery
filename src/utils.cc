@@ -79,6 +79,12 @@ bool StartsWith(std::string_view value, std::string_view start) {
   return std::equal(start.begin(), start.end(), value.begin());
 }
 
+bool StartsWithIgnoreCase(std::string_view value, std::string_view start) {
+  if (start.size() > value.size())
+    return false;
+  return std::equal(start.begin(), start.end(), value.begin(), [](char ch1, char ch2) { return std::toupper(ch1) == std::toupper(ch2); });
+}
+
 bool AnyStartsWith(const std::vector<std::string>& values,
                    const std::string& start) {
   return std::any_of(
