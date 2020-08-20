@@ -544,6 +544,50 @@ struct Handler_Initialize : BaseMessageHandler<In_InitializeRequest> {
           g_config->cacheDirectory = *cacheDir;
           EnsureEndsInSlash(g_config->cacheDirectory);
         }
+
+        // Should Just My Code be enabled?
+        if (g_config->workspaceSymbol.justMyCode) {
+          if (g_config->workspaceFolders.empty()) {
+            g_config->workspaceSymbol.justMyCode = false;
+          } else {
+            std::vector<std::string> workspaceFolders;
+
+            for (const auto& folder : g_config->workspaceFolders) {
+              const auto folderPath = NormalizePath(folder);
+
+              // Bogus workspaceFolder received. Disable Just My Code.
+              if (!folderPath) {
+                g_config->workspaceSymbol.justMyCode = false;
+                break;
+              }
+
+              workspaceFolders.emplace_back(std::move(folderPath.value()));
+            }
+
+            for (MessageHandler* handler : *MessageHandler::message_handlers) {
+              handler->workspaceFolders =
+                  std::make_unique<std::vector<std::string>>(workspaceFolders);
+            }
+          }
+
+          if (!g_config->workspaceSymbol.justMyCode) {
+            std::string workspaceFoldersString = "";
+
+            for (const auto& folder : g_config->workspaceFolders) {
+              workspaceFoldersString += folder + ", ";
+            }
+
+            LOG_S(WARNING) << "[querydb] Cannot enable Just My Code with "
+                              "invalid workspaceFolders settings ("
+                           << workspaceFoldersString
+                           << "). Disabling Just My Code";
+          } else {
+            LOG_S(INFO) << "Just My Code Enabled";
+          }
+        } else {
+          g_config->workspaceSymbol.justMyCode = false;
+          LOG_S(INFO) << "Just My Code Disabled";
+        }
       }
 
       // Should snippets be enabled?

@@ -14,10 +14,23 @@
 namespace {
 MethodType kMethodType = "workspace/symbol";
 
+// Returns true iff symbol source file is from one of the workspace folders
+static bool SymbolInWorkspace(std::vector<std::string>* workspaceFolders,
+                              std::string_view symbolSourceFilePath) {
+  for (const auto& workspaceFolder : *workspaceFolders) {
+    if (symbolSourceFilePath.find(workspaceFolder) != std::string::npos) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 // Lookup |symbol| in |db| and insert the value into |result|.
 bool InsertSymbolIntoResult(QueryDatabase* db,
                             WorkingFiles* working_files,
                             SymbolIdx symbol,
+                            std::vector<std::string>* workspaceFolders,
                             std::vector<lsSymbolInformation>* result) {
   optional<lsSymbolInformation> info =
       GetSymbolInfo(db, working_files, symbol, false /*use_short_name*/);
@@ -36,11 +49,16 @@ bool InsertSymbolIntoResult(QueryDatabase* db,
   }
 
   optional<lsLocation> ls_location = GetLsLocation(db, working_files, loc);
-  if (!ls_location)
-    return false;
-  info->location = *ls_location;
-  result->push_back(*info);
-  return true;
+
+  if (ls_location &&
+      (!g_config->workspaceSymbol.justMyCode ||
+       SymbolInWorkspace(workspaceFolders, ls_location->uri.raw_uri_))) {
+    info->location = *ls_location;
+    result->push_back(*info);
+    return true;
+  }
+
+  return false;
 }
 
 struct In_WorkspaceSymbol : public RequestInMessage {
@@ -91,7 +109,7 @@ struct Handler_WorkspaceSymbol : BaseMessageHandler<In_WorkspaceSymbol> {
           continue;
 
         if (InsertSymbolIntoResult(db, working_files, db->symbols[i],
-                                   &unsorted_results)) {
+                                   workspaceFolders.get(), &unsorted_results)) {
           result_indices.push_back(i);
           if (unsorted_results.size() >= g_config->workspaceSymbol.maxNum)
             break;
@@ -116,6 +134,7 @@ struct Handler_WorkspaceSymbol : BaseMessageHandler<In_WorkspaceSymbol> {
             continue;
 
           if (InsertSymbolIntoResult(db, working_files, db->symbols[i],
+                                     workspaceFolders.get(),
                                      &unsorted_results)) {
             result_indices.push_back(i);
             if (unsorted_results.size() >= g_config->workspaceSymbol.maxNum)
