@@ -423,7 +423,7 @@ Project::Entry GetCompilationEntryFromCompileCommandEntry(
       // path needs to be absolute, otherwise clang_codeCompleteAt is extremely
       // slow. See
       // https://github.com/cquery-project/cquery/commit/af63df09d57d765ce12d40007bf56302a0446678.
-      if (EndsWith(arg, base_name))
+      if (EndsWith(arg, base_name) && !StartsWith(arg, "-"))
         arg = cleanup_maybe_relative_path(arg).path;
       // TODO Exclude .a .o to make link command in compile_commands.json work.
       // Also, clang_parseTranslationUnit2FullArgv does not seem to accept
